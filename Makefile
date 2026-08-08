@@ -1,0 +1,31 @@
+.PHONY: install install-all dry-run api worker test lint fmt typecheck clean
+
+install:              ## Minimal install for the dry run
+	pip install -e ".[dev]"
+
+install-all:          ## Everything, including GPU ASR (Python 3.11-3.13 only)
+	pip install -e ".[all]"
+
+dry-run:              ## End-to-end pipeline with a fake Drive and no credentials
+	python scripts/dry_run.py
+
+api:                  ## Webhook receiver + admin API
+	uvicorn pipeline.api.main:app --host 0.0.0.0 --port 8080 --reload
+
+worker:               ## Background worker (needs Redis + ffmpeg)
+	celery -A pipeline.orchestration.tasks worker --loglevel=INFO --queues=io,gpu
+
+test:
+	pytest -q
+
+lint:
+	ruff check src tests scripts
+
+fmt:
+	ruff format src tests scripts && ruff check --fix src tests scripts
+
+typecheck:
+	mypy
+
+clean:
+	rm -rf .dryrun .pytest_cache .ruff_cache .mypy_cache

@@ -1,0 +1,173 @@
+# Copy to config/settings.yaml and adjust.
+# Secrets do NOT belong here — they live in .env. This file is safe to commit.
+
+# ── Subjects ──────────────────────────────────────────────────────────────────
+# One entry per subject. Adding a subject is a config change, not a code change.
+subjects:
+  - id: as_chemistry
+    name: AS Chemistry
+    syllabus_code: "9701"
+    taxonomy_file: config/syllabi/as-chemistry-9701.yaml
+
+    # Drive root for this subject, e.g. the folder "5. AS Chemistry".
+    drive_root_folder_id: "${AS_CHEMISTRY_ROOT_FOLDER_ID}"
+
+    # Recordings live under this subfolder of the root, matching your existing
+    # structure: 5. AS Chemistry / 1. Notes, Assignments & Class Recordings /
+    recordings_subfolder: "1. Notes, Assignments & Class Recordings"
+
+    # Language(s) spoken. "auto" lets the ASR model detect per lecture.
+    # Set to ["en"] if lectures are confirmed English-only — it is faster and
+    # slightly more accurate. Leave as-is if teachers code-switch.
+    languages: ["auto"]
+
+    # Weighting for hybrid retrieval. Chemistry has dense, distinctive
+    # vocabulary, so lexical matching is weighted a little higher.
+    retrieval:
+      lexical_weight: 0.55
+      semantic_weight: 0.45
+
+    # Placement policy for this subject.
+    placement:
+      # Descend only as deep as folders that already exist. Your recordings sit
+      # directly in chapter folders, so this keeps them there.
+      strategy: deepest_existing
+      # Never invent folders without being told to.
+      allow_create_folders: false
+      # Add a Drive shortcut in secondary-topic folders for multi-topic lectures.
+      create_secondary_shortcuts: false
+
+# ── Transcription ─────────────────────────────────────────────────────────────
+asr:
+  provider: faster_whisper       # faster_whisper | whisperx | api | local_stub
+  model: large-v3                # large-v3 | distil-large-v3 (English-only) | medium
+  device: cuda                   # cuda | cpu | auto
+  compute_type: float16          # float16 | int8_float16 (less VRAM) | int8 (CPU)
+  beam_size: 5
+
+  # Essential for long lectures — Whisper loops on repeated text without this.
+  condition_on_previous_text: false
+
+  # Drops the "can everyone hear me" preamble and prevents hallucination
+  # over silence.
+  vad_filter: true
+  vad_min_silence_ms: 500
+
+  # Seed the decoder with subject vocabulary so specialist terms are
+  # transcribed correctly. Built automatically from the syllabus taxonomy.
+  prime_from_syllabus: true
+  max_hotwords: 60
+
+  word_timestamps: false         # true costs ~15% runtime; needed for karaoke subtitles
+  diarize: false                 # WhisperX only; separates teacher from students
+
+# ── Classification ────────────────────────────────────────────────────────────
+classify:
+  model: claude-opus-5
+  effort: high                   # low | medium | high | xhigh | max
+
+  window_seconds: 240            # ~4 minutes per window
+  window_overlap_seconds: 30
+  top_k_candidates: 8
+
+  # Below this confidence, route to review instead of filing. Calibrate against
+  # your own data — see docs/OPERATIONS.md § Tuning the confidence threshold.
+  review_threshold: 0.85
+
+  # Confident about a topic that occupied very little of the lecture is
+  # suspicious. Route those to review too.
+  coverage_floor: 0.25
+
+  # A secondary topic is recorded in metadata above this coverage.
+  secondary_coverage_min: 0.15
+
+  # Include recent human corrections as few-shot examples in the prompt.
+  use_corrections_as_examples: true
+  max_correction_examples: 5
+
+  embedding_model: BAAI/bge-m3   # multilingual; matters if lectures code-switch
+
+# ── Naming ────────────────────────────────────────────────────────────────────
+naming:
+  # Default reproduces your existing convention exactly:
+  #   "Aug, 5 - Atomic Structure.mp4"
+  template: "{month_abbr}, {day} - {topic}{part_suffix}{ext}"
+
+  # Alternative with more identifiers, if you want them:
+  # template: "{date} - {chapter} - {topic} [{teacher}]{ext}"
+
+  max_length: 120
+  # Characters that break Drive, Windows sync clients, and shell scripts.
+  strip_characters: '/\:*?"<>|'
+
+  # Same date + same topic almost always means one lecture split across two
+  # recordings, so name them Part 1 / Part 2 rather than (1) / (2).
+  collision_strategy: part_suffix
+
+  # Marker appended to filenames whose classification was below threshold, so
+  # anything that slips past review is visible in the folder listing.
+  # Must not contain a character listed in strip_characters above — "?" is
+  # illegal in Windows filenames and in Drive.
+  low_confidence_marker: " (review)"
+
+# ── Transcript output ─────────────────────────────────────────────────────────
+transcripts:
+  formats: [md, srt]             # md | srt | vtt | txt | json
+  # alongside → same folder as the recording
+  # subfolder → a "Transcripts" folder within the chapter folder
+  location: alongside
+  subfolder_name: Transcripts
+
+  # Sidecar JSON with full provenance: ASR model, classification, evidence,
+  # alternatives considered. Enables auditing and cheap reclassification later.
+  write_sidecar: true
+  sidecar_folder: ".lecture-meta"
+
+  include_timestamps: true
+  timestamp_heading_interval_s: 300
+
+# ── Ingestion ─────────────────────────────────────────────────────────────────
+ingest:
+  zoom_webhook_enabled: true
+  drive_watch_enabled: true
+
+  # Prefer Zoom's audio-only M4A over the MP4 — roughly a tenth the size.
+  prefer_audio_only: true
+
+  reconcile_interval_minutes: 10
+  watch_renew_interval_minutes: 30
+  stuck_job_timeout_minutes: 90
+
+  video_extensions: [".mp4", ".m4v", ".mov", ".mkv"]
+  audio_extensions: [".m4a", ".mp3", ".wav"]
+  min_duration_seconds: 300      # ignore accidental short recordings
+
+# ── Safety ────────────────────────────────────────────────────────────────────
+safety:
+  # Log intended Drive changes without making them. Leave true for the first
+  # week of live operation.
+  dry_run: false
+
+  # Refuse any operation resolving outside the configured root folder.
+  confine_to_root: true
+
+  # There is no delete call in the Drive client; this is belt and braces.
+  allow_delete: false
+
+  audit_log: true
+  max_files_per_run: 50          # blast-radius cap on backfills
+
+# ── Runtime ───────────────────────────────────────────────────────────────────
+runtime:
+  media_cache_dir: media_cache
+  keep_audio_after_transcription: false
+  max_retries_per_step: 3
+  retry_backoff_seconds: 30
+  io_concurrency: 8
+  gpu_concurrency: 1             # must equal the number of GPUs
+
+notifications:
+  on_needs_review: true
+  on_failure: true
+  on_success: false              # noisy; leave off
+  daily_summary: true

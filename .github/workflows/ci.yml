@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The ASR worker needs <3.14 (ctranslate2/torch wheels lag new CPython
+        # releases). The rest of the codebase should stay compatible with both.
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install
+        # Core + test deps only. The ASR extra pulls large GPU wheels that CI
+        # does not need — the pipeline is exercised through the stub provider.
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "." pytest ruff
+
+      - name: Lint
+        run: ruff check src tests scripts
+
+      - name: Test
+        run: pytest -q
+
+      - name: Dry run
+        # The end-to-end smoke test: full pipeline against a local fake Drive,
+        # no credentials required.
+        run: python scripts/dry_run.py
