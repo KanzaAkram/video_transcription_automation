@@ -73,7 +73,7 @@ Recordings also live **directly inside chapter folders** in your Drive, not in s
 
 ## Dry run
 
-Runs the full pipeline with no credentials: a fake Drive backed by a local directory, a fixture transcript, and a keyword-only classifier.
+Runs the full pipeline with no credentials: a fake Drive backed by a local directory, fixture transcripts, and a keyword-only classifier.
 
 ```bash
 python -m venv .venv
@@ -83,9 +83,25 @@ pip install -e ".[dev]"
 python scripts/dry_run.py
 ```
 
-It builds a miniature copy of your `AS Chemistry` tree under `.dryrun/`, drops an unclassified recording into the inbox, and processes it. Expected output ends with the file renamed and moved into `1. Atomic Structure (Chapter 1)` with a transcript beside it.
+It builds a miniature copy of your `AS Chemistry` tree under `.dryrun/`, drops two unclassified recordings into the inbox, and processes both — deliberately chosen to show each outcome:
 
-Add `--llm` to use the real Claude classifier instead of the keyword stub (needs `ANTHROPIC_API_KEY`).
+| Lecture | Outcome |
+|---|---|
+| Halogenoalkanes — one topic throughout | **Filed.** Renamed `Sep, 14 - Halogenoalkanes.mp4`, moved into `9. Halogenoalkanes (Chapter 16)`, transcript and subtitles uploaded beside it. |
+| Relative atomic mass — opens with a recap of the previous chapter | **Sent to review.** Correct topic identified, but not confidently enough to file. |
+
+Both recordings carry the Zoom meeting topic `"Chemistry Class"`, which tells you nothing — the classification comes entirely from the transcript.
+
+The second outcome is the safety mechanism, not a failure: a misfiled lecture is worse than an unfiled one because it's invisible. Add `--llm` to use the real Claude classifier (needs `ANTHROPIC_API_KEY`); `--keep` leaves `.dryrun/` in place so you can inspect the result.
+
+## Other scripts
+
+| Script | Purpose |
+|---|---|
+| `scripts/verify_config.py` | Validate `.env`, settings, taxonomies, local tooling. No network calls. |
+| `scripts/bootstrap_drive_map.py` | Read-only. Resolve every syllabus node to a Drive folder and report how each match was made. |
+
+[scripts/README.md](scripts/README.md) lists what exists today versus what is deferred to Phase 2.
 
 ## Layout
 
