@@ -127,9 +127,18 @@ tests/             unit and pipeline tests
 
 ## Requirements
 
-- **Python 3.11–3.13** for the worker. Not 3.14 yet — `ctranslate2`/`torch` wheels lag new releases, and this machine currently has 3.14.3. The API service alone is fine on 3.14.
-- **ffmpeg** on PATH for the worker (audio extraction). Not currently installed here.
-- **An NVIDIA GPU** for self-hosted transcription, or set `asr.provider` to a hosted API instead — both paths are supported, see [docs/DECISIONS.md](docs/DECISIONS.md#adr-004--transcription-engine).
+**To run the dry run and the tests: Python 3.11+ and nothing else.** Verified working on 3.14.3, which is what this machine has. `pip install -e ".[dev]"` takes about two minutes and pulls no ML dependencies.
+
+The transcription worker needs more, and only the worker:
+
+| | Needed for | Note |
+|---|---|---|
+| **ffmpeg** on PATH | Audio extraction | Not currently installed here. Windows: `winget install Gyan.FFmpeg` |
+| **Python 3.11–3.13** | `[asr]` extra | `ctranslate2`/`torch` wheels lag new CPython releases. Installing `[asr]` on 3.14 is a harmless no-op rather than a build failure. |
+| **NVIDIA GPU** | Self-hosted transcription | Optional — set `asr.provider` to a hosted API instead. Both paths are supported ([ADR-004](docs/DECISIONS.md#adr-004--transcription-engine)). |
+| **`[embeddings]` extra** | Semantic retrieval | Optional. Pulls torch (multi-GB). Without it, retrieval is lexical-only — worse at paraphrase, but everything still works. |
+
+The split is deliberate: nothing you need to evaluate this design requires a GPU or a large download.
 
 ## What is deliberately not built yet
 

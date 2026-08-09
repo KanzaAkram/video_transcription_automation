@@ -7,9 +7,12 @@ name = "lecture-pipeline"
 version = "0.1.0"
 description = "Zoom recordings to syllabus-organised, transcribed lectures on Google Drive"
 readme = "README.md"
-# Upper bound is deliberate: ctranslate2 / torch wheels (needed by the ASR
-# worker) lag new CPython releases. The API service alone runs fine on 3.14.
-requires-python = ">=3.11,<3.14"
+# The core package, the API, the tests and the dry run all run on any 3.11+.
+# The ASR *worker* additionally needs 3.11-3.13 because ctranslate2 / torch
+# wheels lag new CPython releases — enforced by the marker on the `asr` extra
+# below rather than here, so a 3.14 interpreter can still install and run
+# everything else.
+requires-python = ">=3.11"
 
 dependencies = [
     "pydantic>=2.7",
@@ -37,15 +40,25 @@ cloud = [
 ]
 
 # Transcription. Needs ffmpeg on PATH; CUDA strongly recommended.
+# The markers keep these off interpreters with no wheels yet — installing the
+# extra on 3.14 is a no-op rather than a build failure, and `verify_config.py`
+# reports the version mismatch explicitly.
 asr = [
-    "faster-whisper>=1.0.3",
-    "ctranslate2>=4.3",
+    "faster-whisper>=1.0.3; python_version < '3.14'",
+    "ctranslate2>=4.3; python_version < '3.14'",
 ]
 
-# Classification: embeddings for candidate retrieval + Claude for the decision.
+# Classification. Lightweight on purpose: BM25 retrieval plus the Claude call.
 classify = [
     "anthropic>=0.40",
     "rank-bm25>=0.2.2",
+]
+
+# Semantic retrieval. Split out because it pulls torch, which is a multi-GB
+# download and has no wheels on the newest CPython. Retrieval degrades to
+# lexical-only without it (see pipeline/classify/retriever.py), so nothing
+# breaks — it just gets worse at paraphrase. Install it on the worker host.
+embeddings = [
     "sentence-transformers>=3.0",
 ]
 
@@ -58,6 +71,8 @@ queue = [
     "celery[redis]>=5.4",
 ]
 
+# Enough to run the tests and the dry run. Deliberately excludes `embeddings`
+# and `asr` so a fresh clone installs in seconds rather than pulling torch.
 dev = [
     "lecture-pipeline[api,cloud,classify,queue]",
     "pytest>=8.2",
@@ -66,8 +81,8 @@ dev = [
     "mypy>=1.10",
 ]
 
-# Everything, including the GPU-dependent ASR extra.
-all = ["lecture-pipeline[api,cloud,asr,classify,queue,dev]"]
+# Everything, including the heavy ML dependencies. Use on the worker host.
+all = ["lecture-pipeline[api,cloud,asr,classify,embeddings,queue,dev]"]
 
 [project.scripts]
 lecture-pipeline = "pipeline.cli:main"

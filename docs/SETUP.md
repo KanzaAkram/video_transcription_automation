@@ -124,9 +124,18 @@ Cost is a few cents per lecture. Set a spend limit in the console for peace of m
 | ffmpeg | Install and put on PATH | Included in the worker container image |
 | GPU | Optional | Needed for self-hosted ASR; skip it and use a hosted ASR provider instead |
 
+Install extras by role rather than all at once:
+
+```bash
+pip install -e ".[dev]"                    # tests + dry run; no ML deps, seconds to install
+pip install -e ".[dev,asr,embeddings]"     # transcription worker; needs 3.11-3.13 + ffmpeg
+```
+
+`[embeddings]` (semantic retrieval) is optional everywhere — without it retrieval falls back to lexical-only, which is worse at paraphrase but fully functional.
+
 `ffmpeg` is currently **not installed** on this machine. Windows: `winget install Gyan.FFmpeg`, then restart the shell.
 
-Python must be **3.11–3.13** for the ASR worker. This machine has 3.14.3, which is ahead of `ctranslate2`/`torch` wheel availability. The API service alone runs fine on 3.14.
+**Python versions.** The core package, the API, the tests and the dry run run on any 3.11+ — verified on this machine's 3.14.3. Only the **transcription worker** needs 3.11–3.13, because `ctranslate2`/`torch` wheels lag new CPython releases. Installing the `asr` extra on 3.14 is a no-op rather than a build failure, and `verify_config.py` reports the mismatch explicitly, so you find out from a clear message rather than a compiler error.
 
 ---
 

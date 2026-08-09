@@ -1,9 +1,12 @@
 .PHONY: install install-all dry-run api worker test lint fmt typecheck clean
 
-install:              ## Minimal install for the dry run
+install:              ## Tests + dry run. No ML dependencies, any Python 3.11+
 	pip install -e ".[dev]"
 
-install-all:          ## Everything, including GPU ASR (Python 3.11-3.13 only)
+install-worker:       ## Adds ASR and embeddings. Needs Python 3.11-3.13 + ffmpeg
+	pip install -e ".[dev,asr,embeddings]"
+
+install-all:          ## Everything
 	pip install -e ".[all]"
 
 dry-run:              ## End-to-end pipeline with a fake Drive and no credentials
