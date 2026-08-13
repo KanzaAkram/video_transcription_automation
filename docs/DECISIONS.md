@@ -178,3 +178,25 @@ The classifier sits behind an interface, so a cheaper model can be used for easy
 **Why.** Directly responsive to "I don't want to give credentials yet" — the entire pipeline can be built, demonstrated, and tested end-to-end before any account is connected. It also makes tests fast and deterministic, and gives a genuinely safe rehearsal environment: mirror the real folder structure locally and watch what the system does to it before letting it near the real thing.
 
 **Consequences.** One interface to maintain. Worth it several times over.
+
+---
+
+## ADR-015 — A lesson layer beneath the syllabus, generated from an overlay
+
+**Decision.** The taxonomy carries three levels: syllabus topic, syllabus subtopic, and **lesson**. Topics, subtopics and learning-outcome text are extracted verbatim from the official PDF by `scripts/ingest_syllabus.py` and marked `verified: true`. Lessons come from a hand-written overlay, are marked `verified: false`, and must cite the learning-outcome numbers they cover.
+
+**Why.** A syllabus subtopic is not a lecture. Cambridge 9700 topic 12 has two subtopics, *Energy* and *Respiration*, and the corresponding Drive folder holds six recordings. Naming files after subtopics gives six files two names between them, one of which duplicates the folder name — no better than `class 4 (9 aug).mp4`. The granularity teaching actually happens at is the learning outcome, and lessons are the natural grouping of those.
+
+Keeping the two sources separate is what makes the split safe. The syllabus half is never typed, so 134 outcomes arrive without transcription errors in the text that retrieval scores against. The invented half is never presented as Cambridge's, and because each lesson cites outcome numbers, the ingester can copy real syllabus prose onto it — a lesson is matched against the syllabus, not against a title this repo made up.
+
+**Consequences.** Adding a subject is two files, not one, and the overlay has to be kept in step with the outcome numbering (the ingester fails loudly if a lesson cites an outcome that does not exist). The lesson layer is also the part most likely to need revision after seeing real lectures: the first draft grouped 12.1's outcomes 1–3 into one lesson, and the first two recordings turned out to be exactly the 1 / 2–3 split, so they were being handed the same name. That is a cheap edit to the overlay and a regeneration — no code change.
+
+---
+
+## ADR-016 — Verification warnings track outcome text, not node flags
+
+**Decision.** `load_taxonomy` warns about nodes carrying unverified *learning-outcome text*, not about every node whose `verified` flag is false.
+
+**Why.** The lesson layer (ADR-015) is unverified by design and permanent. Counting it would print "89 of 117 nodes unverified" on every single load — an expected, unfixable warning, which is the fastest way to teach an operator to ignore warnings. The actual risk being tracked is outcome text that was typed rather than extracted, because that is the text retrieval scores against.
+
+**Consequences.** The generated Biology taxonomy loads clean; the hand-written Chemistry one still warns, correctly, until its outcomes are regenerated from the 9701 PDF.

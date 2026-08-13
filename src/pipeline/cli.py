@@ -16,6 +16,8 @@ COMMANDS = {
     "dry-run": ("dry_run.py", "Run the full pipeline against a local fake Drive"),
     "verify-config": ("verify_config.py", "Validate configuration without any network calls"),
     "map-drive": ("bootstrap_drive_map.py", "Resolve syllabus nodes to Drive folders (read-only)"),
+    "ingest-syllabus": ("ingest_syllabus.py", "Build a taxonomy YAML from a syllabus PDF"),
+    "rename-folder": ("rename_folder.py", "Rename the recordings in one folder, in place"),
 }
 
 

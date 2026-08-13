@@ -1,0 +1,3291 @@
+# A2 Biology 9700 (2025-2027)
+#
+# GENERATED — do not edit by hand. Regenerate with:
+#   python scripts/ingest_syllabus.py --pdf <syllabus.pdf> \
+#       --overlay config/syllabi/overlays/a2-biology-9700.yaml --out config/syllabi/a2-biology-9700.yaml
+#
+# Titles and learning outcomes are verbatim from the official PDF and are
+# marked verified. Keywords, aliases, Drive folder names and the lesson
+# layer come from the overlay: edit those there, not here.
+
+version: 1
+subject_id: a2_biology
+subject_name: A2 Biology
+syllabus_code: '9700'
+syllabus_years: 2025-2027
+awarding_body: Cambridge International
+source: Topic, subtopic and learning-outcome text extracted verbatim from the official Cambridge International
+  AS & A Level Biology 9700 syllabus for 2025, 2026 and 2027. Keywords, aliases and the lesson layer are
+  hand-curated.
+subject_vocabulary:
+- ATP
+- adenosine triphosphate
+- phosphorylation
+- glycolysis
+- pyruvate
+- Krebs cycle
+- oxaloacetate
+- decarboxylation
+- dehydrogenation
+- chemiosmosis
+- oxidative phosphorylation
+- mitochondria
+- cristae
+- NAD
+- FAD
+- NADP
+- rubisco
+- ribulose bisphosphate
+- Calvin cycle
+- thylakoid
+- photophosphorylation
+- chloroplast
+- nephron
+- glomerulus
+- ultrafiltration
+- osmoregulation
+- homeostasis
+- neurone
+- action potential
+- saltatory conduction
+- sarcomere
+- tropomyosin
+- meiosis
+- homologous chromosomes
+- genotype
+- phenotype
+- codominant
+- epistasis
+- operon
+- transcription factor
+- gibberellin
+- allele frequency
+- Hardy-Weinberg
+- speciation
+- taxonomic hierarchy
+- Simpson's index
+- restriction endonuclease
+- electrophoresis
+- polymerase chain reaction
+- recombinant DNA
+nodes:
+- id: bio.topic_12
+  title: Energy and respiration
+  syllabus_topic: '12'
+  teaching_order: 1
+  drive_folder_name: chap 12-Respiration
+  verified: true
+  aliases:
+  - respiration
+  - cellular respiration
+  - chapter 12
+  - chap 12
+  keywords:
+  - ATP
+  - respiration
+  - energy
+  - mitochondria
+  - glucose
+  - oxygen
+  children:
+  - id: bio.12_1
+    title: Energy
+    syllabus_topic: '12.1'
+    verified: true
+    aliases:
+    - energy
+    - ATP
+    - energy currency
+    keywords:
+    - ATP
+    - adenosine triphosphate
+    - ADP
+    - inorganic phosphate
+    - energy currency
+    - active transport
+    - anabolic reaction
+    - substrate-linked phosphorylation
+    - chemiosmosis
+    - respiratory substrate
+    - energy value
+    - respiratory quotient
+    - RQ
+    - respirometer
+    - germinating seeds
+    learning_outcomes:
+    - code: 12.1.1
+      text: outline the need for energy in living organisms, as illustrated by active transport, movement
+        and anabolic reactions, such as those occurring in DNA replication and protein synthesis
+      verified: true
+    - code: 12.1.2
+      text: describe the features of ATP that make it suitable as the universal energy currency
+      verified: true
+    - code: 12.1.3
+      text: 'state that ATP is synthesised by: - transfer of phosphate in substrate-linked reactions -
+        chemiosmosis in membranes of mitochondria and chloroplasts'
+      verified: true
+    - code: 12.1.4
+      text: explain the relative energy values of carbohydrates, lipids and proteins as respiratory substrates
+      verified: true
+    - code: 12.1.5
+      text: state that the respiratory quotient (RQ) is the ratio of the number of molecules of carbon
+        dioxide produced to the number of molecules of oxygen taken in, as a result of respiration
+      verified: true
+    - code: 12.1.6
+      text: calculate RQ values of different respiratory substrates from equations for respiration
+      verified: true
+    - code: 12.1.7
+      text: describe and carry out investigations, using simple respirometers, to determine the RQ of
+        germinating seeds or small invertebrates (e.g. blowfly larvae)
+      verified: true
+    children:
+    - id: bio.12_1.the_need_for_energy_in_living_organisms
+      title: The Need for Energy in Living Organisms
+      verified: false
+      aliases:
+      - need for energy
+      - why we need energy
+      - uses of energy
+      keywords:
+      - active transport
+      - sodium
+      - potassium
+      - pump
+      - carrier
+      - gradient
+      - anabolic
+      - condensation
+      - movement
+      - contraction
+      - impulse
+      - neurone
+      - replication
+      - bioluminescence
+      - firefly
+      - luciferin
+      learning_outcomes:
+      - code: 12.1.1
+        text: outline the need for energy in living organisms, as illustrated by active transport, movement
+          and anabolic reactions, such as those occurring in DNA replication and protein synthesis
+        verified: true
+    - id: bio.12_1.structure_and_properties_of_atp
+      title: Structure and Properties of ATP
+      verified: false
+      aliases:
+      - structure of ATP
+      - ATP structure
+      - energy currency
+      - universal energy currency
+      - properties of ATP
+      keywords:
+      - adenosine
+      - adenine
+      - ribose
+      - nucleotide
+      - phosphorylated
+      - hydrolysis
+      - ADP
+      - inorganic phosphate
+      - currency
+      - universal
+      - soluble
+      - diffuse
+      - unstable
+      - substrate-linked
+      learning_outcomes:
+      - code: 12.1.2
+        text: describe the features of ATP that make it suitable as the universal energy currency
+        verified: true
+      - code: 12.1.3
+        text: 'state that ATP is synthesised by: - transfer of phosphate in substrate-linked reactions
+          - chemiosmosis in membranes of mitochondria and chloroplasts'
+        verified: true
+    - id: bio.12_1.respiratory_substrates_and_energy_values
+      title: Respiratory Substrates and Energy Values
+      verified: false
+      aliases:
+      - energy values
+      - respiratory substrates
+      keywords:
+      - carbohydrate
+      - lipid
+      - protein
+      - energy value
+      - kJ per gram
+      - hydrogen atoms
+      - fatty acid
+      - deamination
+      learning_outcomes:
+      - code: 12.1.4
+        text: explain the relative energy values of carbohydrates, lipids and proteins as respiratory
+          substrates
+        verified: true
+    - id: bio.12_1.the_respiratory_quotient
+      title: The Respiratory Quotient
+      verified: false
+      aliases:
+      - RQ
+      - respiratory quotient
+      - RQ calculations
+      keywords:
+      - respiratory quotient
+      - RQ
+      - carbon dioxide produced
+      - oxygen taken in
+      - ratio
+      - RQ value
+      - equation for respiration
+      - RQ of glucose
+      - RQ of lipid
+      learning_outcomes:
+      - code: 12.1.5
+        text: state that the respiratory quotient (RQ) is the ratio of the number of molecules of carbon
+          dioxide produced to the number of molecules of oxygen taken in, as a result of respiration
+        verified: true
+      - code: 12.1.6
+        text: calculate RQ values of different respiratory substrates from equations for respiration
+        verified: true
+    - id: bio.12_1.investigating_rq_with_a_respirometer
+      title: Investigating RQ with a Respirometer
+      verified: false
+      aliases:
+      - respirometer
+      - RQ practical
+      keywords:
+      - respirometer
+      - soda lime
+      - potassium hydroxide
+      - manometer
+      - capillary tube
+      - germinating seeds
+      - blowfly larvae
+      - control tube
+      learning_outcomes:
+      - code: 12.1.7
+        text: describe and carry out investigations, using simple respirometers, to determine the RQ of
+          germinating seeds or small invertebrates (e.g. blowfly larvae)
+        verified: true
+  - id: bio.12_2
+    title: Respiration
+    syllabus_topic: '12.2'
+    verified: true
+    aliases:
+    - respiration
+    - aerobic respiration
+    - anaerobic respiration
+    keywords:
+    - glycolysis
+    - link reaction
+    - Krebs cycle
+    - oxidative phosphorylation
+    - mitochondria
+    - anaerobic
+    - fermentation
+    learning_outcomes:
+    - code: 12.2.1
+      text: 'State where each of the four stages in aerobic respiration occurs in eukaryotic cells: -
+        glycolysis in the cytoplasm - link reaction in the mitochondrial matrix - Krebs cycle in the mitochondrial
+        matrix - oxidative phosphorylation on the inner membrane of mitochondria'
+      verified: true
+    - code: 12.2.2
+      text: outline glycolysis as phosphorylation of glucose and the subsequent splitting of fructose
+        1,6-bisphosphate (6C) into two triose phosphate molecules (3C), which are then further oxidised
+        to pyruvate (3C), with the production of ATP and reduced NAD
+      verified: true
+    - code: 12.2.3
+      text: explain that, when oxygen is available, pyruvate enters mitochondria to take part in the link
+        reaction
+      verified: true
+    - code: 12.2.4
+      text: describe the link reaction, including the role of coenzyme A in the transfer of acetyl (2C)
+        groups
+      verified: true
+    - code: 12.2.5
+      text: outline the Krebs cycle, explaining that oxaloacetate (4C) acts as an acceptor of the 2C fragment
+        from acetyl coenzyme A to form citrate (6C), which is converted back to oxaloacetate in a series
+        of small steps
+      verified: true
+    - code: 12.2.6
+      text: explain that reactions in the Krebs cycle involve decarboxylation and dehydrogenation and
+        the reduction of the coenzymes NAD and FAD
+      verified: true
+    - code: 12.2.7
+      text: describe the role of NAD and FAD in transferring hydrogen to carriers in the inner mitochondrial
+        membrane
+      verified: true
+    - code: 12.2.8
+      text: 'explain that during oxidative phosphorylation: - hydrogen atoms split into protons and energetic
+        electrons - energetic electrons release energy as they pass through the electron transport chain
+        (details of carriers are not expected) - the released energy is used to transfer protons across
+        the inner mitochondrial membrane - protons return to the mitochondrial matrix by facilitated diffusion
+        through ATP synthase, providing energy for ATP synthesis (details of ATP synthase are not expected)
+        - oxygen acts as the final electron acceptor to form water'
+      verified: true
+    - code: 12.2.9
+      text: describe the relationship between the structure and function of mitochondria using diagrams
+        and electron micrographs
+      verified: true
+    - code: 12.2.10
+      text: outline respiration in anaerobic conditions in mammals (lactate fermentation) and in yeast
+        cells (ethanol fermentation)
+      verified: true
+    - code: 12.2.11
+      text: explain why the energy yield from respiration in aerobic conditions is much greater than the
+        energy yield from respiration in anaerobic conditions (a detailed account of the total yield of
+        ATP from the aerobic respiration of glucose is not expected)
+      verified: true
+    - code: 12.2.12
+      text: explain how rice is adapted to grow with its roots submerged in water, limited to the development
+        of aerenchyma in roots, ethanol fermentation in roots and faster growth of stems
+      verified: true
+    - code: 12.2.13
+      text: describe and carry out investigations using redox indicators, including DCPIP and methylene
+        blue, to determine the effects of temperature and substrate concentration on the rate of respiration
+        of yeast
+      verified: true
+    - code: 12.2.14
+      text: describe and carry out investigations using simple respirometers to determine the effect of
+        temperature on the rate of respiration
+      verified: true
+    children:
+    - id: bio.12_2.overview_of_aerobic_respiration
+      title: Overview of Aerobic Respiration
+      verified: false
+      aliases:
+      - four stages
+      - stages of respiration
+      - overview
+      - definition of respiration
+      keywords:
+      - four stages
+      - oxidation
+      - food molecules
+      - release energy
+      - aerobic
+      - anaerobic
+      - cytoplasm
+      - matrix
+      - eukaryotic
+      learning_outcomes:
+      - code: 12.2.1
+        text: 'State where each of the four stages in aerobic respiration occurs in eukaryotic cells:
+          - glycolysis in the cytoplasm - link reaction in the mitochondrial matrix - Krebs cycle in the
+          mitochondrial matrix - oxidative phosphorylation on the inner membrane of mitochondria'
+        verified: true
+    - id: bio.12_2.glycolysis
+      title: Glycolysis
+      verified: false
+      aliases:
+      - glycolysis
+      keywords:
+      - glycolysis
+      - phosphorylation of glucose
+      - hexose bisphosphate
+      - fructose 1,6-bisphosphate
+      - 6C
+      - triose phosphate
+      - 3C
+      - oxidised to pyruvate
+      - net gain of ATP
+      - reduced NAD
+      - cytoplasm
+      learning_outcomes:
+      - code: 12.2.2
+        text: outline glycolysis as phosphorylation of glucose and the subsequent splitting of fructose
+          1,6-bisphosphate (6C) into two triose phosphate molecules (3C), which are then further oxidised
+          to pyruvate (3C), with the production of ATP and reduced NAD
+        verified: true
+    - id: bio.12_2.the_link_reaction
+      title: The Link Reaction
+      verified: false
+      aliases:
+      - link reaction
+      - pyruvate oxidation
+      keywords:
+      - link reaction
+      - pyruvate
+      - coenzyme A
+      - acetyl coenzyme A
+      - acetyl group
+      - 2C
+      - decarboxylation
+      - dehydrogenation
+      - mitochondrial matrix
+      - active transport of pyruvate
+      learning_outcomes:
+      - code: 12.2.3
+        text: explain that, when oxygen is available, pyruvate enters mitochondria to take part in the
+          link reaction
+        verified: true
+      - code: 12.2.4
+        text: describe the link reaction, including the role of coenzyme A in the transfer of acetyl (2C)
+          groups
+        verified: true
+    - id: bio.12_2.coenzymes_nad_and_fad
+      title: Coenzymes - NAD and FAD
+      verified: false
+      aliases:
+      - coenzymes
+      - NAD
+      - FAD
+      - hydrogen carriers
+      keywords:
+      - coenzyme
+      - cofactor
+      - NAD
+      - nicotinamide adenine dinucleotide
+      - FAD
+      - flavin adenine dinucleotide
+      - reduced NAD
+      - reduced FAD
+      - hydrogen atoms
+      - protons and electrons
+      - hydrogen carrier
+      - dehydrogenase
+      - inner mitochondrial membrane
+      learning_outcomes:
+      - code: 12.2.7
+        text: describe the role of NAD and FAD in transferring hydrogen to carriers in the inner mitochondrial
+          membrane
+        verified: true
+    - id: bio.12_2.the_krebs_cycle
+      title: The Krebs Cycle
+      verified: false
+      aliases:
+      - Krebs cycle
+      - citric acid cycle
+      - TCA cycle
+      keywords:
+      - Krebs cycle
+      - oxaloacetate
+      - 4C
+      - citrate
+      - 6C
+      - acetyl coenzyme A
+      - decarboxylation
+      - dehydrogenation
+      - carbon dioxide released
+      - one ATP per turn
+      - series of small steps
+      learning_outcomes:
+      - code: 12.2.5
+        text: outline the Krebs cycle, explaining that oxaloacetate (4C) acts as an acceptor of the 2C
+          fragment from acetyl coenzyme A to form citrate (6C), which is converted back to oxaloacetate
+          in a series of small steps
+        verified: true
+      - code: 12.2.6
+        text: explain that reactions in the Krebs cycle involve decarboxylation and dehydrogenation and
+          the reduction of the coenzymes NAD and FAD
+        verified: true
+    - id: bio.12_2.oxidative_phosphorylation_and_chemiosmosis
+      title: Oxidative Phosphorylation and Chemiosmosis
+      verified: false
+      aliases:
+      - oxidative phosphorylation
+      - electron transport chain
+      - chemiosmosis
+      - ETC
+      keywords:
+      - oxidative phosphorylation
+      - electron transport chain
+      - energetic electrons
+      - protons
+      - proton gradient
+      - inner mitochondrial membrane
+      - ATP synthase
+      - facilitated diffusion
+      - chemiosmosis
+      - final electron acceptor
+      - oxygen
+      - water
+      learning_outcomes:
+      - code: 12.2.8
+        text: 'explain that during oxidative phosphorylation: - hydrogen atoms split into protons and
+          energetic electrons - energetic electrons release energy as they pass through the electron transport
+          chain (details of carriers are not expected) - the released energy is used to transfer protons
+          across the inner mitochondrial membrane - protons return to the mitochondrial matrix by facilitated
+          diffusion through ATP synthase, providing energy for ATP synthesis (details of ATP synthase
+          are not expected) - oxygen acts as the final electron acceptor to form water'
+        verified: true
+    - id: bio.12_2.structure_and_function_of_mitochondria
+      title: Structure and Function of Mitochondria
+      verified: false
+      aliases:
+      - mitochondria
+      - mitochondrion structure
+      - electron micrographs
+      keywords:
+      - mitochondrion
+      - cristae
+      - matrix
+      - inner membrane
+      - outer membrane
+      - intermembrane space
+      - surface area
+      - electron micrograph
+      - mitochondrial DNA
+      - stalked particles
+      learning_outcomes:
+      - code: 12.2.9
+        text: describe the relationship between the structure and function of mitochondria using diagrams
+          and electron micrographs
+        verified: true
+    - id: bio.12_2.anaerobic_respiration_and_energy_yield
+      title: Anaerobic Respiration and Energy Yield
+      verified: false
+      aliases:
+      - anaerobic respiration
+      - fermentation
+      - lactate
+      - ethanol
+      keywords:
+      - anaerobic
+      - lactate fermentation
+      - ethanol fermentation
+      - yeast
+      - oxygen debt
+      - regeneration of NAD
+      - energy yield
+      - much greater in aerobic
+      - lactic acid
+      - carbon dioxide and ethanol
+      learning_outcomes:
+      - code: 12.2.10
+        text: outline respiration in anaerobic conditions in mammals (lactate fermentation) and in yeast
+          cells (ethanol fermentation)
+        verified: true
+      - code: 12.2.11
+        text: explain why the energy yield from respiration in aerobic conditions is much greater than
+          the energy yield from respiration in anaerobic conditions (a detailed account of the total yield
+          of ATP from the aerobic respiration of glucose is not expected)
+        verified: true
+    - id: bio.12_2.adaptations_of_rice_to_waterlogged_conditions
+      title: Adaptations of Rice to Waterlogged Conditions
+      verified: false
+      aliases:
+      - rice
+      - waterlogging
+      - aerenchyma
+      keywords:
+      - rice
+      - submerged roots
+      - aerenchyma
+      - ethanol fermentation in roots
+      - faster growth of stems
+      - waterlogged
+      - flooded
+      - paddy field
+      learning_outcomes:
+      - code: 12.2.12
+        text: explain how rice is adapted to grow with its roots submerged in water, limited to the development
+          of aerenchyma in roots, ethanol fermentation in roots and faster growth of stems
+        verified: true
+    - id: bio.12_2.investigating_the_rate_of_respiration
+      title: Investigating the Rate of Respiration
+      verified: false
+      aliases:
+      - respiration practical
+      - redox indicators
+      - DCPIP
+      keywords:
+      - DCPIP
+      - methylene blue
+      - redox indicator
+      - colour change
+      - yeast
+      - substrate concentration
+      - temperature
+      - rate of respiration
+      - respirometer
+      - practical investigation
+      learning_outcomes:
+      - code: 12.2.13
+        text: describe and carry out investigations using redox indicators, including DCPIP and methylene
+          blue, to determine the effects of temperature and substrate concentration on the rate of respiration
+          of yeast
+        verified: true
+      - code: 12.2.14
+        text: describe and carry out investigations using simple respirometers to determine the effect
+          of temperature on the rate of respiration
+        verified: true
+- id: bio.topic_13
+  title: Photosynthesis
+  syllabus_topic: '13'
+  teaching_order: 2
+  verified: true
+  aliases:
+  - photosynthesis
+  - chapter 13
+  keywords:
+  - photosynthesis
+  - chloroplast
+  - light
+  - carbon dioxide
+  - glucose
+  children:
+  - id: bio.13_1
+    title: Photosynthesis as an energy transfer process
+    syllabus_topic: '13.1'
+    verified: true
+    aliases:
+    - photosynthesis
+    - light dependent stage
+    - light independent stage
+    keywords:
+    - chloroplast
+    - thylakoid
+    - granum
+    - stroma
+    - chlorophyll
+    - photosystem
+    - photophosphorylation
+    - Calvin cycle
+    - rubisco
+    - RuBP
+    - GP
+    - TP
+    - reduced NADP
+    learning_outcomes:
+    - code: 13.1.1
+      text: describe the relationship between the structure of chloroplasts, as shown in diagrams and
+        electron micrographs, and their function
+      verified: true
+    - code: 13.1.2
+      text: explain that energy transferred as ATP and reduced NADP from the light-dependent stage is
+        used during the light- independent stage (Calvin cycle) of photosynthesis to produce complex organic
+        molecules
+      verified: true
+    - code: 13.1.3
+      text: state that within a chloroplast, the thylakoids (thylakoid membranes and thylakoid spaces),
+        which occur in stacks called grana, are the site of the light-dependent stage and the stroma is
+        the site of the light-independent stage
+      verified: true
+    - code: 13.1.4
+      text: describe the role of chloroplast pigments (chlorophyll a, chlorophyll b, carotene and xanthophyll)
+        in light absorption in thylakoids
+      verified: true
+    - code: 13.1.5
+      text: interpret absorption spectra of chloroplast pigments and action spectra for photosynthesis
+      verified: true
+    - code: 13.1.6
+      text: describe and use chromatography to separate and identify chloroplast pigments (reference should
+        be made to Rf values in identification of chloroplast pigments)
+      verified: true
+    - code: 13.1.7
+      text: state that cyclic photophosphorylation and non-cyclic photophosphorylation occur during the
+        light-dependent stage of photosynthesis
+      verified: true
+    - code: 13.1.8
+      text: 'explain that in cyclic photophosphorylation: - only photosystem I (PSI) is involved - photoactivation
+        of chlorophyll occurs - ATP is synthesised'
+      verified: true
+    - code: 13.1.9
+      text: 'explain that in non-cyclic photophosphorylation: - photosystem I (PSI) and photosystem II
+        (PSII) are both involved - photoactivation of chlorophyll occurs - the oxygen-evolving complex
+        catalyses the photolysis of water - ATP and reduced NADP are synthesised'
+      verified: true
+    - code: 13.1.10
+      text: 'explain that during photophosphorylation: - energetic electrons release energy as they pass
+        through the electron transport chain (details of carriers are not expected) - the released energy
+        is used to transfer protons across the thylakoid membrane - protons return to the stroma from
+        the thylakoid space by facilitated diffusion through ATP synthase, providing energy for ATP synthesis
+        (details of ATP synthase are not expected)'
+      verified: true
+    - code: 13.1.11
+      text: 'outline the three main stages of the Calvin cycle: - rubisco catalyses the fixation of carbon
+        dioxide by combination with a molecule of ribulose bisphosphate (RuBP), a 5C compound, to yield
+        two molecules of glycerate 3-phosphate (GP), a 3C compound - GP is reduced to triose phosphate
+        (TP) in reactions involving reduced NADP and ATP - RuBP is regenerated from TP in reactions that
+        use ATP'
+      verified: true
+    - code: 13.1.12
+      text: state that Calvin cycle intermediates are used to produce other molecules, limited to GP to
+        produce some amino acids and TP to produce carbohydrates, lipids and amino acids
+      verified: true
+    children:
+    - id: bio.13_1.structure_and_function_of_chloroplasts
+      title: Structure and Function of Chloroplasts
+      verified: false
+      aliases:
+      - chloroplast structure
+      keywords:
+      - chloroplast
+      - thylakoid
+      - thylakoid space
+      - grana
+      - granum
+      - stroma
+      - envelope
+      - electron micrograph
+      - starch grain
+      learning_outcomes:
+      - code: 13.1.1
+        text: describe the relationship between the structure of chloroplasts, as shown in diagrams and
+          electron micrographs, and their function
+        verified: true
+      - code: 13.1.3
+        text: state that within a chloroplast, the thylakoids (thylakoid membranes and thylakoid spaces),
+          which occur in stacks called grana, are the site of the light-dependent stage and the stroma
+          is the site of the light-independent stage
+        verified: true
+    - id: bio.13_1.overview_of_the_two_stages_of_photosynthesis
+      title: Overview of the Two Stages of Photosynthesis
+      verified: false
+      aliases:
+      - two stages
+      - overview of photosynthesis
+      keywords:
+      - light-dependent stage
+      - light-independent stage
+      - ATP
+      - reduced NADP
+      - Calvin cycle
+      - complex organic molecules
+      learning_outcomes:
+      - code: 13.1.2
+        text: explain that energy transferred as ATP and reduced NADP from the light-dependent stage is
+          used during the light- independent stage (Calvin cycle) of photosynthesis to produce complex
+          organic molecules
+        verified: true
+    - id: bio.13_1.photosynthetic_pigments_and_chromatography
+      title: Photosynthetic Pigments and Chromatography
+      verified: false
+      aliases:
+      - pigments
+      - chromatography
+      - absorption spectrum
+      - action spectrum
+      keywords:
+      - chlorophyll a
+      - chlorophyll b
+      - carotene
+      - xanthophyll
+      - absorption spectrum
+      - action spectrum
+      - chromatography
+      - Rf value
+      - solvent front
+      - light absorption
+      learning_outcomes:
+      - code: 13.1.4
+        text: describe the role of chloroplast pigments (chlorophyll a, chlorophyll b, carotene and xanthophyll)
+          in light absorption in thylakoids
+        verified: true
+      - code: 13.1.5
+        text: interpret absorption spectra of chloroplast pigments and action spectra for photosynthesis
+        verified: true
+      - code: 13.1.6
+        text: describe and use chromatography to separate and identify chloroplast pigments (reference
+          should be made to Rf values in identification of chloroplast pigments)
+        verified: true
+    - id: bio.13_1.the_light_dependent_stage
+      title: The Light-Dependent Stage
+      verified: false
+      aliases:
+      - light dependent reaction
+      - photophosphorylation
+      - photolysis
+      keywords:
+      - cyclic photophosphorylation
+      - non-cyclic photophosphorylation
+      - photosystem I
+      - PSI
+      - photosystem II
+      - PSII
+      - photoactivation
+      - oxygen-evolving complex
+      - photolysis of water
+      - electron transport chain
+      - ATP synthase
+      - reduced NADP
+      learning_outcomes:
+      - code: 13.1.7
+        text: state that cyclic photophosphorylation and non-cyclic photophosphorylation occur during
+          the light-dependent stage of photosynthesis
+        verified: true
+      - code: 13.1.8
+        text: 'explain that in cyclic photophosphorylation: - only photosystem I (PSI) is involved - photoactivation
+          of chlorophyll occurs - ATP is synthesised'
+        verified: true
+      - code: 13.1.9
+        text: 'explain that in non-cyclic photophosphorylation: - photosystem I (PSI) and photosystem
+          II (PSII) are both involved - photoactivation of chlorophyll occurs - the oxygen-evolving complex
+          catalyses the photolysis of water - ATP and reduced NADP are synthesised'
+        verified: true
+      - code: 13.1.10
+        text: 'explain that during photophosphorylation: - energetic electrons release energy as they
+          pass through the electron transport chain (details of carriers are not expected) - the released
+          energy is used to transfer protons across the thylakoid membrane - protons return to the stroma
+          from the thylakoid space by facilitated diffusion through ATP synthase, providing energy for
+          ATP synthesis (details of ATP synthase are not expected)'
+        verified: true
+    - id: bio.13_1.the_calvin_cycle
+      title: The Calvin Cycle
+      verified: false
+      aliases:
+      - Calvin cycle
+      - light independent stage
+      - carbon fixation
+      keywords:
+      - rubisco
+      - ribulose bisphosphate
+      - RuBP
+      - glycerate 3-phosphate
+      - GP
+      - triose phosphate
+      - TP
+      - carbon fixation
+      - regeneration of RuBP
+      - amino acids
+      - carbohydrates
+      - lipids
+      learning_outcomes:
+      - code: 13.1.11
+        text: 'outline the three main stages of the Calvin cycle: - rubisco catalyses the fixation of
+          carbon dioxide by combination with a molecule of ribulose bisphosphate (RuBP), a 5C compound,
+          to yield two molecules of glycerate 3-phosphate (GP), a 3C compound - GP is reduced to triose
+          phosphate (TP) in reactions involving reduced NADP and ATP - RuBP is regenerated from TP in
+          reactions that use ATP'
+        verified: true
+      - code: 13.1.12
+        text: state that Calvin cycle intermediates are used to produce other molecules, limited to GP
+          to produce some amino acids and TP to produce carbohydrates, lipids and amino acids
+        verified: true
+  - id: bio.13_2
+    title: Investigation of limiting factors
+    syllabus_topic: '13.2'
+    verified: true
+    aliases:
+    - limiting factors
+    - rate of photosynthesis
+    keywords:
+    - limiting factor
+    - light intensity
+    - carbon dioxide concentration
+    - temperature
+    - rate of photosynthesis
+    - DCPIP
+    - aquatic plant
+    learning_outcomes:
+    - code: 13.2.1
+      text: state that light intensity, carbon dioxide concentration and temperature are examples of limiting
+        factors of photosynthesis
+      verified: true
+    - code: 13.2.2
+      text: explain the effects of changes in light intensity, carbon dioxide concentration and temperature
+        on the rate of photosynthesis
+      verified: true
+    - code: 13.2.3
+      text: describe and carry out investigations using redox indicators, including DCPIP and methylene
+        blue, and a suspension of chloroplasts to determine the effects of light intensity and light wavelength
+        on the rate of photosynthesis
+      verified: true
+    - code: 13.2.4
+      text: describe and carry out investigations using whole plants, including aquatic plants, to determine
+        the effects of light intensity, carbon dioxide concentration and temperature on the rate of photosynthesis
+      verified: true
+    children:
+    - id: bio.13_2.limiting_factors_of_photosynthesis
+      title: Limiting Factors of Photosynthesis
+      verified: false
+      aliases:
+      - limiting factors
+      - law of limiting factors
+      keywords:
+      - limiting factor
+      - plateau
+      - saturation
+      - optimum
+      - levels off
+      - denatured
+      - graph
+      - curve
+      - plotted
+      - light intensity
+      - temperature
+      learning_outcomes:
+      - code: 13.2.1
+        text: state that light intensity, carbon dioxide concentration and temperature are examples of
+          limiting factors of photosynthesis
+        verified: true
+      - code: 13.2.2
+        text: explain the effects of changes in light intensity, carbon dioxide concentration and temperature
+          on the rate of photosynthesis
+        verified: true
+    - id: bio.13_2.investigating_photosynthesis_with_redox_indicators
+      title: Investigating Photosynthesis with Redox Indicators
+      verified: false
+      aliases:
+      - chloroplast suspension
+      - DCPIP practical
+      - Hill reaction
+      keywords:
+      - DCPIP
+      - methylene blue
+      - redox indicator
+      - chloroplast suspension
+      - light intensity
+      - light wavelength
+      - colour change
+      learning_outcomes:
+      - code: 13.2.3
+        text: describe and carry out investigations using redox indicators, including DCPIP and methylene
+          blue, and a suspension of chloroplasts to determine the effects of light intensity and light
+          wavelength on the rate of photosynthesis
+        verified: true
+    - id: bio.13_2.investigating_photosynthesis_in_whole_plants
+      title: Investigating Photosynthesis in Whole Plants
+      verified: false
+      aliases:
+      - whole plant practical
+      - aquatic plant
+      keywords:
+      - aquatic plant
+      - pondweed
+      - bubbles of oxygen
+      - light intensity
+      - carbon dioxide concentration
+      - temperature
+      - rate of photosynthesis
+      learning_outcomes:
+      - code: 13.2.4
+        text: describe and carry out investigations using whole plants, including aquatic plants, to determine
+          the effects of light intensity, carbon dioxide concentration and temperature on the rate of
+          photosynthesis
+        verified: true
+- id: bio.topic_14
+  title: Homeostasis
+  syllabus_topic: '14'
+  teaching_order: 3
+  verified: true
+  aliases:
+  - homeostasis
+  - chapter 14
+  keywords:
+  - homeostasis
+  - negative feedback
+  - kidney
+  - blood glucose
+  - stomata
+  children:
+  - id: bio.14_1
+    title: Homeostasis in mammals
+    syllabus_topic: '14.1'
+    verified: true
+    aliases:
+    - homeostasis in mammals
+    - kidney
+    - excretion
+    - blood glucose
+    keywords:
+    - homeostasis
+    - negative feedback
+    - receptor
+    - effector
+    - urea
+    - deamination
+    - nephron
+    - glomerulus
+    - ultrafiltration
+    - ADH
+    - insulin
+    - glucagon
+    - biosensor
+    learning_outcomes:
+    - code: 14.1.1
+      text: explain what is meant by homeostasis and the importance of homeostasis in mammals
+      verified: true
+    - code: 14.1.2
+      text: explain the principles of homeostasis in terms of internal and external stimuli, receptors,
+        coordination systems (nervous system and endocrine system), effectors (muscles and glands) and
+        negative feedback
+      verified: true
+    - code: 14.1.3
+      text: state that urea is produced in the liver from the deamination of excess amino acids
+      verified: true
+    - code: 14.1.4
+      text: 'describe the structure of the human kidney, limited to: - fibrous capsule - cortex - medulla
+        - renal pelvis - ureter - branches of the renal artery and renal vein'
+      verified: true
+    - code: 14.1.5
+      text: 'Identify, in diagrams, photomicrographs and electron micrographs, the parts of a nephron
+        and its associated blood vessels and structures, limited to: - glomerulus - Bowman''s capsule
+        - proximal convoluted tubule - loop of Henle - distal convoluted tubule - collecting duct'
+      verified: true
+    - code: 14.1.6
+      text: 'describe and explain the formation of urine in the nephron, limited to: - the formation of
+        glomerular filtrate by ultrafiltration in the Bowman''s capsule - selective reabsorption in the
+        proximal convoluted tubule'
+      verified: true
+    - code: 14.1.7
+      text: relate the detailed structure of the Bowman's capsule and proximal convoluted tubule to their
+        functions in the formation of urine
+      verified: true
+    - code: 14.1.8
+      text: describe the roles of the hypothalamus, posterior pituitary gland, antidiuretic hormone (ADH),
+        aquaporins and collecting ducts in osmoregulation
+      verified: true
+    - code: 14.1.9
+      text: 'describe the principles of cell signalling using the example of the control of blood glucose
+        concentration by glucagon, limited to: - binding of hormone to cell surface receptor causing conformational
+        change - activation of G-protein leading to stimulation of adenylyl cyclase - formation of the
+        second messenger, cyclic AMP (cAMP) - activation of protein kinase A by cAMP leading to initiation
+        of an enzyme cascade - amplification of the signal through the enzyme cascade as a result of activation
+        of more and more enzymes by phosphorylation - cellular response in which the final enzyme in the
+        pathway is activated, catalysing the breakdown of glycogen'
+      verified: true
+    - code: 14.1.10
+      text: explain how negative feedback control mechanisms regulate blood glucose concentration, with
+        reference to the effects of insulin on muscle cells and liver cells and the effect of glucagon
+        on liver cells
+      verified: true
+    - code: 14.1.11
+      text: explain the principles of operation of test strips and biosensors for measuring the concentration
+        of glucose in blood and urine, with reference to glucose oxidase and peroxidase enzymes
+      verified: true
+    children:
+    - id: bio.14_1.principles_of_homeostasis
+      title: Principles of Homeostasis
+      verified: false
+      aliases:
+      - homeostasis
+      - negative feedback
+      - set point
+      keywords:
+      - homeostasis
+      - internal environment
+      - stimulus
+      - receptor
+      - coordination system
+      - effector
+      - negative feedback
+      - set point
+      - nervous system
+      - endocrine system
+      learning_outcomes:
+      - code: 14.1.1
+        text: explain what is meant by homeostasis and the importance of homeostasis in mammals
+        verified: true
+      - code: 14.1.2
+        text: explain the principles of homeostasis in terms of internal and external stimuli, receptors,
+          coordination systems (nervous system and endocrine system), effectors (muscles and glands) and
+          negative feedback
+        verified: true
+    - id: bio.14_1.excretion_and_the_structure_of_the_kidney
+      title: Excretion and the Structure of the Kidney
+      verified: false
+      aliases:
+      - excretion
+      - kidney structure
+      - urea
+      keywords:
+      - urea
+      - deamination
+      - excess amino acids
+      - liver
+      - fibrous capsule
+      - cortex
+      - medulla
+      - renal pelvis
+      - ureter
+      - renal artery
+      - renal vein
+      learning_outcomes:
+      - code: 14.1.3
+        text: state that urea is produced in the liver from the deamination of excess amino acids
+        verified: true
+      - code: 14.1.4
+        text: 'describe the structure of the human kidney, limited to: - fibrous capsule - cortex - medulla
+          - renal pelvis - ureter - branches of the renal artery and renal vein'
+        verified: true
+    - id: bio.14_1.the_nephron_and_the_formation_of_urine
+      title: The Nephron and the Formation of Urine
+      verified: false
+      aliases:
+      - nephron
+      - ultrafiltration
+      - selective reabsorption
+      keywords:
+      - nephron
+      - glomerulus
+      - Bowman's capsule
+      - proximal convoluted tubule
+      - loop of Henle
+      - distal convoluted tubule
+      - collecting duct
+      - ultrafiltration
+      - glomerular filtrate
+      - selective reabsorption
+      - podocyte
+      - basement membrane
+      - microvilli
+      learning_outcomes:
+      - code: 14.1.5
+        text: 'Identify, in diagrams, photomicrographs and electron micrographs, the parts of a nephron
+          and its associated blood vessels and structures, limited to: - glomerulus - Bowman''s capsule
+          - proximal convoluted tubule - loop of Henle - distal convoluted tubule - collecting duct'
+        verified: true
+      - code: 14.1.6
+        text: 'describe and explain the formation of urine in the nephron, limited to: - the formation
+          of glomerular filtrate by ultrafiltration in the Bowman''s capsule - selective reabsorption
+          in the proximal convoluted tubule'
+        verified: true
+      - code: 14.1.7
+        text: relate the detailed structure of the Bowman's capsule and proximal convoluted tubule to
+          their functions in the formation of urine
+        verified: true
+    - id: bio.14_1.osmoregulation_and_adh
+      title: Osmoregulation and ADH
+      verified: false
+      aliases:
+      - osmoregulation
+      - ADH
+      - antidiuretic hormone
+      keywords:
+      - osmoregulation
+      - hypothalamus
+      - posterior pituitary
+      - antidiuretic hormone
+      - ADH
+      - aquaporin
+      - collecting duct
+      - water potential of blood
+      - osmoreceptor
+      learning_outcomes:
+      - code: 14.1.8
+        text: describe the roles of the hypothalamus, posterior pituitary gland, antidiuretic hormone
+          (ADH), aquaporins and collecting ducts in osmoregulation
+        verified: true
+    - id: bio.14_1.cell_signalling_and_control_of_blood_glucose
+      title: Cell Signalling and Control of Blood Glucose
+      verified: false
+      aliases:
+      - blood glucose
+      - insulin
+      - glucagon
+      - cell signalling
+      keywords:
+      - cell signalling
+      - cell surface receptor
+      - G protein
+      - adenylyl cyclase
+      - cyclic AMP
+      - second messenger
+      - glucagon
+      - insulin
+      - glycogenolysis
+      - glycogenesis
+      - liver cells
+      - muscle cells
+      - negative feedback
+      learning_outcomes:
+      - code: 14.1.9
+        text: 'describe the principles of cell signalling using the example of the control of blood glucose
+          concentration by glucagon, limited to: - binding of hormone to cell surface receptor causing
+          conformational change - activation of G-protein leading to stimulation of adenylyl cyclase -
+          formation of the second messenger, cyclic AMP (cAMP) - activation of protein kinase A by cAMP
+          leading to initiation of an enzyme cascade - amplification of the signal through the enzyme
+          cascade as a result of activation of more and more enzymes by phosphorylation - cellular response
+          in which the final enzyme in the pathway is activated, catalysing the breakdown of glycogen'
+        verified: true
+      - code: 14.1.10
+        text: explain how negative feedback control mechanisms regulate blood glucose concentration, with
+          reference to the effects of insulin on muscle cells and liver cells and the effect of glucagon
+          on liver cells
+        verified: true
+    - id: bio.14_1.test_strips_and_biosensors
+      title: Test Strips and Biosensors
+      verified: false
+      aliases:
+      - biosensor
+      - test strips
+      - glucose testing
+      keywords:
+      - test strip
+      - biosensor
+      - glucose oxidase
+      - peroxidase
+      - colour change
+      - blood glucose concentration
+      - urine
+      learning_outcomes:
+      - code: 14.1.11
+        text: explain the principles of operation of test strips and biosensors for measuring the concentration
+          of glucose in blood and urine, with reference to glucose oxidase and peroxidase enzymes
+        verified: true
+  - id: bio.14_2
+    title: Homeostasis in plants
+    syllabus_topic: '14.2'
+    verified: true
+    aliases:
+    - homeostasis in plants
+    - stomata
+    keywords:
+    - stomata
+    - guard cells
+    - abscisic acid
+    - water stress
+    - turgor
+    learning_outcomes:
+    - code: 14.2.1
+      text: explain that stomata respond to changes in environmental conditions by opening and closing
+        and that regulation of stomatal aperture balances the need for carbon dioxide uptake by diffusion
+        with the need to minimise water loss by transpiration
+      verified: true
+    - code: 14.2.2
+      text: explain that stomata have daily rhythms of opening and closing
+      verified: true
+    - code: 14.2.3
+      text: describe the structure and function of guard cells and explain the mechanism by which they
+        open and close stomata
+      verified: true
+    - code: 14.2.4
+      text: describe the role of abscisic acid in the closure of stomata during times of water stress,
+        including the role of calcium ions as a second messenger
+      verified: true
+    children:
+    - id: bio.14_2.stomata_and_guard_cells
+      title: Stomata and Guard Cells
+      verified: false
+      aliases:
+      - stomata
+      - guard cells
+      - stomatal aperture
+      keywords:
+      - stoma
+      - stomata
+      - guard cell
+      - stomatal aperture
+      - turgid
+      - flaccid
+      - potassium ions
+      - transpiration
+      - daily rhythm
+      - carbon dioxide uptake
+      - water loss
+      learning_outcomes:
+      - code: 14.2.1
+        text: explain that stomata respond to changes in environmental conditions by opening and closing
+          and that regulation of stomatal aperture balances the need for carbon dioxide uptake by diffusion
+          with the need to minimise water loss by transpiration
+        verified: true
+      - code: 14.2.2
+        text: explain that stomata have daily rhythms of opening and closing
+        verified: true
+      - code: 14.2.3
+        text: describe the structure and function of guard cells and explain the mechanism by which they
+          open and close stomata
+        verified: true
+    - id: bio.14_2.abscisic_acid_and_water_stress
+      title: Abscisic Acid and Water Stress
+      verified: false
+      aliases:
+      - abscisic acid
+      - ABA
+      - water stress
+      keywords:
+      - abscisic acid
+      - ABA
+      - water stress
+      - stomatal closure
+      - calcium ions
+      - second messenger
+      - receptor
+      learning_outcomes:
+      - code: 14.2.4
+        text: describe the role of abscisic acid in the closure of stomata during times of water stress,
+          including the role of calcium ions as a second messenger
+        verified: true
+- id: bio.topic_15
+  title: Control and coordination
+  syllabus_topic: '15'
+  teaching_order: 4
+  verified: true
+  aliases:
+  - control and coordination
+  - chapter 15
+  - nervous system
+  keywords:
+  - neurone
+  - action potential
+  - synapse
+  - muscle
+  - hormone
+  - auxin
+  children:
+  - id: bio.15_1
+    title: Control and coordination in mammals
+    syllabus_topic: '15.1'
+    verified: true
+    aliases:
+    - control and coordination in mammals
+    - nervous system
+    - muscles
+    keywords:
+    - neurone
+    - action potential
+    - resting potential
+    - synapse
+    - saltatory conduction
+    - sarcomere
+    - sliding filament
+    learning_outcomes:
+    - code: 15.1.1
+      text: describe the features of the endocrine system with reference to the hormones ADH, glucagon
+        and insulin (see 14.1.8, 14.1.9 and 14.1.10)
+      verified: true
+    - code: 15.1.2
+      text: compare the features of the nervous system and the endocrine system
+      verified: true
+    - code: 15.1.3
+      text: describe the structure and function of a sensory neurone and a motor neurone and state that
+        intermediate neurones connect sensory neurones and motor neurones
+      verified: true
+    - code: 15.1.4
+      text: outline the role of sensory receptor cells in detecting stimuli and stimulating the transmission
+        of impulses in sensory neurones
+      verified: true
+    - code: 15.1.5
+      text: describe the sequence of events that results in an action potential in a sensory neurone,
+        using a chemoreceptor cell in a human taste bud as an example
+      verified: true
+    - code: 15.1.6
+      text: 'describe and explain changes to the membrane potential of neurones, including: - how the
+        resting potential is maintained - the events that occur during an action potential - how the resting
+        potential is restored during the refractory period'
+      verified: true
+    - code: 15.1.7
+      text: describe and explain the rapid transmission of an impulse in a myelinated neurone with reference
+        to saltatory conduction
+      verified: true
+    - code: 15.1.8
+      text: explain the importance of the refractory period in determining the frequency of impulses
+      verified: true
+    - code: 15.1.9
+      text: describe the structure of a cholinergic synapse and explain how it functions, including the
+        role of calcium ions
+      verified: true
+    - code: 15.1.10
+      text: describe the roles of neuromuscular junctions, the T-tubule system and sarcoplasmic reticulum
+        in stimulating contraction in striated muscle
+      verified: true
+    - code: 15.1.11
+      text: describe the ultrastructure of striated muscle with reference to sarcomere structure using
+        electron micrographs and diagrams
+      verified: true
+    - code: 15.1.12
+      text: explain the sliding filament model of muscular contraction including the roles of troponin,
+        tropomyosin, calcium ions and ATP
+      verified: true
+    children:
+    - id: bio.15_1.the_endocrine_system_and_the_nervous_system_compared
+      title: The Endocrine System and the Nervous System Compared
+      verified: false
+      aliases:
+      - endocrine system
+      - hormones
+      - comparison
+      keywords:
+      - endocrine system
+      - hormone
+      - ADH
+      - glucagon
+      - insulin
+      - target cell
+      - bloodstream
+      - nervous system
+      - electrical impulse
+      - speed of response
+      - duration of response
+      learning_outcomes:
+      - code: 15.1.1
+        text: describe the features of the endocrine system with reference to the hormones ADH, glucagon
+          and insulin (see 14.1.8, 14.1.9 and 14.1.10)
+        verified: true
+      - code: 15.1.2
+        text: compare the features of the nervous system and the endocrine system
+        verified: true
+    - id: bio.15_1.neurones_and_sensory_receptors
+      title: Neurones and Sensory Receptors
+      verified: false
+      aliases:
+      - neurone structure
+      - receptors
+      - transducer
+      keywords:
+      - sensory neurone
+      - motor neurone
+      - intermediate neurone
+      - cell body
+      - dendron
+      - axon
+      - myelin sheath
+      - Schwann cell
+      - node of Ranvier
+      - receptor cell
+      - transducer
+      - taste bud
+      - chemoreceptor
+      - generator potential
+      learning_outcomes:
+      - code: 15.1.3
+        text: describe the structure and function of a sensory neurone and a motor neurone and state that
+          intermediate neurones connect sensory neurones and motor neurones
+        verified: true
+      - code: 15.1.4
+        text: outline the role of sensory receptor cells in detecting stimuli and stimulating the transmission
+          of impulses in sensory neurones
+        verified: true
+      - code: 15.1.5
+        text: describe the sequence of events that results in an action potential in a sensory neurone,
+          using a chemoreceptor cell in a human taste bud as an example
+        verified: true
+    - id: bio.15_1.resting_potential_and_the_action_potential
+      title: Resting Potential and the Action Potential
+      verified: false
+      aliases:
+      - action potential
+      - resting potential
+      - depolarisation
+      keywords:
+      - resting potential
+      - sodium-potassium pump
+      - potassium ion
+      - sodium ion
+      - voltage-gated channel
+      - depolarisation
+      - repolarisation
+      - hyperpolarisation
+      - threshold
+      - all-or-nothing
+      - millivolts
+      - membrane potential
+      learning_outcomes:
+      - code: 15.1.6
+        text: 'describe and explain changes to the membrane potential of neurones, including: - how the
+          resting potential is maintained - the events that occur during an action potential - how the
+          resting potential is restored during the refractory period'
+        verified: true
+    - id: bio.15_1.transmission_of_impulses_and_the_refractory_period
+      title: Transmission of Impulses and the Refractory Period
+      verified: false
+      aliases:
+      - saltatory conduction
+      - myelination
+      - refractory period
+      keywords:
+      - saltatory conduction
+      - myelinated
+      - node of Ranvier
+      - local circuit
+      - speed of conduction
+      - refractory period
+      - frequency of impulses
+      learning_outcomes:
+      - code: 15.1.7
+        text: describe and explain the rapid transmission of an impulse in a myelinated neurone with reference
+          to saltatory conduction
+        verified: true
+      - code: 15.1.8
+        text: explain the importance of the refractory period in determining the frequency of impulses
+        verified: true
+    - id: bio.15_1.synapses
+      title: Synapses
+      verified: false
+      aliases:
+      - synapse
+      - cholinergic synapse
+      - neurotransmitter
+      keywords:
+      - cholinergic synapse
+      - synaptic cleft
+      - presynaptic
+      - postsynaptic
+      - acetylcholine
+      - vesicle
+      - calcium ions
+      - receptor
+      - acetylcholinesterase
+      - exocytosis
+      learning_outcomes:
+      - code: 15.1.9
+        text: describe the structure of a cholinergic synapse and explain how it functions, including
+          the role of calcium ions
+        verified: true
+    - id: bio.15_1.muscle_structure_and_the_neuromuscular_junction
+      title: Muscle Structure and the Neuromuscular Junction
+      verified: false
+      aliases:
+      - striated muscle
+      - sarcomere
+      - neuromuscular junction
+      keywords:
+      - neuromuscular junction
+      - T-tubule
+      - sarcoplasmic reticulum
+      - striated muscle
+      - myofibril
+      - sarcomere
+      - actin
+      - myosin
+      - A band
+      - I band
+      - Z line
+      - H zone
+      - electron micrograph
+      learning_outcomes:
+      - code: 15.1.10
+        text: describe the roles of neuromuscular junctions, the T-tubule system and sarcoplasmic reticulum
+          in stimulating contraction in striated muscle
+        verified: true
+      - code: 15.1.11
+        text: describe the ultrastructure of striated muscle with reference to sarcomere structure using
+          electron micrographs and diagrams
+        verified: true
+    - id: bio.15_1.the_sliding_filament_model
+      title: The Sliding Filament Model
+      verified: false
+      aliases:
+      - sliding filament
+      - muscle contraction
+      keywords:
+      - sliding filament
+      - actin
+      - myosin head
+      - cross bridge
+      - troponin
+      - tropomyosin
+      - calcium ions
+      - ATP
+      - ATPase
+      - power stroke
+      - binding site
+      learning_outcomes:
+      - code: 15.1.12
+        text: explain the sliding filament model of muscular contraction including the roles of troponin,
+          tropomyosin, calcium ions and ATP
+        verified: true
+  - id: bio.15_2
+    title: Control and coordination in plants
+    syllabus_topic: '15.2'
+    verified: true
+    aliases:
+    - control and coordination in plants
+    - plant responses
+    keywords:
+    - Venus fly trap
+    - auxin
+    - gibberellin
+    - elongation growth
+    learning_outcomes:
+    - code: 15.2.1
+      text: describe the rapid response of the Venus fly trap to stimulation of hairs on the lobes of
+        modified leaves and explain how the closure of the trap is achieved
+      verified: true
+    - code: 15.2.2
+      text: explain the role of auxin in elongation growth by stimulating proton pumping to acidify cell
+        walls
+      verified: true
+    - code: 15.2.3
+      text: describe the role of gibberellin in the germination of barley (see 16.3.4)
+      verified: true
+    children:
+    - id: bio.15_2.rapid_responses_in_plants_the_venus_fly_trap
+      title: Rapid Responses in Plants - the Venus Fly Trap
+      verified: false
+      aliases:
+      - Venus fly trap
+      - rapid plant response
+      keywords:
+      - Venus fly trap
+      - sensory hairs
+      - receptor potential
+      - action potential
+      - turgor
+      - closure of the trap
+      - modified leaves
+      learning_outcomes:
+      - code: 15.2.1
+        text: describe the rapid response of the Venus fly trap to stimulation of hairs on the lobes of
+          modified leaves and explain how the closure of the trap is achieved
+        verified: true
+    - id: bio.15_2.auxin_and_elongation_growth
+      title: Auxin and Elongation Growth
+      verified: false
+      aliases:
+      - auxin
+      - cell elongation
+      - acid growth
+      keywords:
+      - auxin
+      - IAA
+      - proton pumping
+      - acidify cell walls
+      - expansin
+      - elongation growth
+      - cell wall loosening
+      learning_outcomes:
+      - code: 15.2.2
+        text: explain the role of auxin in elongation growth by stimulating proton pumping to acidify
+          cell walls
+        verified: true
+    - id: bio.15_2.gibberellin_and_germination
+      title: Gibberellin and Germination
+      verified: false
+      aliases:
+      - gibberellin
+      - germination
+      - barley
+      - amylase
+      keywords:
+      - gibberellin
+      - barley
+      - aleurone layer
+      - amylase
+      - germination
+      - endosperm
+      - starch
+      learning_outcomes:
+      - code: 15.2.3
+        text: describe the role of gibberellin in the germination of barley (see 16.3.4)
+        verified: true
+- id: bio.topic_16
+  title: Inheritance
+  syllabus_topic: '16'
+  teaching_order: 5
+  verified: true
+  aliases:
+  - inheritance
+  - genetics
+  - chapter 16
+  - inherited change
+  keywords:
+  - meiosis
+  - allele
+  - genotype
+  - phenotype
+  - cross
+  - operon
+  children:
+  - id: bio.16_1
+    title: Passage of information from parents to offspring
+    syllabus_topic: '16.1'
+    verified: true
+    aliases:
+    - meiosis
+    - passage of information
+    - gametes
+    keywords:
+    - haploid
+    - diploid
+    - homologous chromosomes
+    - meiosis
+    - crossing over
+    - independent assortment
+    - gametes
+    - fertilisation
+    learning_outcomes:
+    - code: 16.1.1
+      text: explain the meanings of the terms haploid (n) and diploid (2n)
+      verified: true
+    - code: 16.1.2
+      text: explain what is meant by homologous pairs of chromosomes
+      verified: true
+    - code: 16.1.3
+      text: explain the need for a reduction division during meiosis in the production of gametes
+      verified: true
+    - code: 16.1.4
+      text: 'describe the behaviour of chromosomes in plant and animal cells during meiosis and the associated
+        behaviour of the nuclear envelope, the cell surface membrane and the spindle (names of the main
+        stages of meiosis, but not the sub-divisions of prophase I, are expected: prophase I, metaphase
+        I, anaphase I, telophase I, prophase II, metaphase II, anaphase II and telophase II)'
+      verified: true
+    - code: 16.1.5
+      text: interpret photomicrographs and diagrams of cells in different stages of meiosis and identify
+        the main stages of meiosis
+      verified: true
+    - code: 16.1.6
+      text: explain that crossing over and random orientation (independent assortment) of pairs of homologous
+        chromosomes and sister chromatids during meiosis produces genetically different gametes
+      verified: true
+    - code: 16.1.7
+      text: explain that the random fusion of gametes at fertilisation produces genetically different
+        individuals
+      verified: true
+    children:
+    - id: bio.16_1.haploid_diploid_and_homologous_chromosomes
+      title: Haploid, Diploid and Homologous Chromosomes
+      verified: false
+      aliases:
+      - haploid
+      - diploid
+      - homologous pairs
+      keywords:
+      - haploid
+      - diploid
+      - 2n
+      - n
+      - homologous pair
+      - chromosome
+      - chromatid
+      - centromere
+      - locus
+      learning_outcomes:
+      - code: 16.1.1
+        text: explain the meanings of the terms haploid (n) and diploid (2n)
+        verified: true
+      - code: 16.1.2
+        text: explain what is meant by homologous pairs of chromosomes
+        verified: true
+    - id: bio.16_1.meiosis
+      title: Meiosis
+      verified: false
+      aliases:
+      - meiosis
+      - reduction division
+      keywords:
+      - meiosis
+      - reduction division
+      - prophase I
+      - metaphase I
+      - anaphase I
+      - telophase I
+      - meiosis II
+      - bivalent
+      - chiasma
+      - spindle
+      - nuclear envelope
+      - photomicrograph
+      learning_outcomes:
+      - code: 16.1.3
+        text: explain the need for a reduction division during meiosis in the production of gametes
+        verified: true
+      - code: 16.1.4
+        text: 'describe the behaviour of chromosomes in plant and animal cells during meiosis and the
+          associated behaviour of the nuclear envelope, the cell surface membrane and the spindle (names
+          of the main stages of meiosis, but not the sub-divisions of prophase I, are expected: prophase
+          I, metaphase I, anaphase I, telophase I, prophase II, metaphase II, anaphase II and telophase
+          II)'
+        verified: true
+      - code: 16.1.5
+        text: interpret photomicrographs and diagrams of cells in different stages of meiosis and identify
+          the main stages of meiosis
+        verified: true
+    - id: bio.16_1.genetic_variation_from_meiosis_and_fertilisation
+      title: Genetic Variation from Meiosis and Fertilisation
+      verified: false
+      aliases:
+      - crossing over
+      - independent assortment
+      - genetic variation
+      keywords:
+      - crossing over
+      - random orientation
+      - independent assortment
+      - sister chromatids
+      - genetically different gametes
+      - random fusion of gametes
+      - variation
+      learning_outcomes:
+      - code: 16.1.6
+        text: explain that crossing over and random orientation (independent assortment) of pairs of homologous
+          chromosomes and sister chromatids during meiosis produces genetically different gametes
+        verified: true
+      - code: 16.1.7
+        text: explain that the random fusion of gametes at fertilisation produces genetically different
+          individuals
+        verified: true
+  - id: bio.16_2
+    title: The roles of genes in determining the phenotype
+    syllabus_topic: '16.2'
+    verified: true
+    aliases:
+    - genetic crosses
+    - monohybrid
+    - dihybrid
+    - genetic diagrams
+    keywords:
+    - allele
+    - dominant
+    - recessive
+    - codominant
+    - genotype
+    - phenotype
+    - Punnett square
+    - test cross
+    - linkage
+    - epistasis
+    - chi-squared
+    learning_outcomes:
+    - code: 16.2.1
+      text: explain the terms gene, locus, allele, dominant, recessive, codominant, linkage, test cross,
+        F1, F2, phenotype, genotype, homozygous and heterozygous
+      verified: true
+    - code: 16.2.2
+      text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+        the results of monohybrid crosses and dihybrid crosses that involve dominance, codominance, multiple
+        alleles and sex linkage
+      verified: true
+    - code: 16.2.3
+      text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+        the results of dihybrid crosses that involve autosomal linkage and epistasis (knowledge of the
+        expected ratios for different types of epistasis is not expected)
+      verified: true
+    - code: 16.2.4
+      text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+        the results of test crosses
+      verified: true
+    - code: 16.2.5
+      text: use the chi-squared test to test the significance of differences between observed and expected
+        results (the formula for the chi-squared test will be provided, as shown in the Mathematical requirements)
+      verified: true
+    - code: 16.2.6
+      text: 'explain the relationship between genes, proteins and phenotype with respect to the: - TYR
+        gene, tyrosinase and albinism - HBB gene, haemoglobin and sickle cell anaemia - F8 gene, factor
+        VIII and haemophilia - HTT gene, huntingtin and Huntington''s disease'
+      verified: true
+    - code: 16.2.7
+      text: explain the role of gibberellin in stem elongation including the role of the dominant allele,
+        Le, that codes for a functional enzyme in the gibberellin synthesis pathway, and the recessive
+        allele, le, that codes for a non-functional enzyme
+      verified: true
+    children:
+    - id: bio.16_2.genetic_terminology
+      title: Genetic Terminology
+      verified: false
+      aliases:
+      - genetics terms
+      - definitions
+      keywords:
+      - gene
+      - locus
+      - allele
+      - dominant
+      - recessive
+      - codominant
+      - linkage
+      - test cross
+      - F1
+      - F2
+      - phenotype
+      - genotype
+      - homozygous
+      - heterozygous
+      learning_outcomes:
+      - code: 16.2.1
+        text: explain the terms gene, locus, allele, dominant, recessive, codominant, linkage, test cross,
+          F1, F2, phenotype, genotype, homozygous and heterozygous
+        verified: true
+    - id: bio.16_2.monohybrid_and_dihybrid_crosses
+      title: Monohybrid and Dihybrid Crosses
+      verified: false
+      aliases:
+      - monohybrid cross
+      - dihybrid cross
+      - Punnett square
+      keywords:
+      - monohybrid cross
+      - dihybrid cross
+      - Punnett square
+      - genetic diagram
+      - ratio
+      - '3:1'
+      - '9:3:3:1'
+      - codominance
+      - multiple alleles
+      - sex linkage
+      learning_outcomes:
+      - code: 16.2.2
+        text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+          the results of monohybrid crosses and dihybrid crosses that involve dominance, codominance,
+          multiple alleles and sex linkage
+        verified: true
+    - id: bio.16_2.autosomal_linkage_and_epistasis
+      title: Autosomal Linkage and Epistasis
+      verified: false
+      aliases:
+      - linkage
+      - epistasis
+      keywords:
+      - autosomal linkage
+      - epistasis
+      - recombination
+      - parental phenotypes
+      - recombinant
+      - expected ratio
+      - gene interaction
+      learning_outcomes:
+      - code: 16.2.3
+        text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+          the results of dihybrid crosses that involve autosomal linkage and epistasis (knowledge of the
+          expected ratios for different types of epistasis is not expected)
+        verified: true
+    - id: bio.16_2.test_crosses
+      title: Test Crosses
+      verified: false
+      aliases:
+      - test cross
+      - back cross
+      keywords:
+      - test cross
+      - homozygous recessive
+      - unknown genotype
+      - offspring ratio
+      learning_outcomes:
+      - code: 16.2.4
+        text: interpret and construct genetic diagrams, including Punnett squares, to explain and predict
+          the results of test crosses
+        verified: true
+    - id: bio.16_2.the_chi_squared_test
+      title: The Chi-squared Test
+      verified: false
+      aliases:
+      - chi squared
+      - statistical test
+      - significance
+      keywords:
+      - chi-squared test
+      - observed
+      - expected
+      - degrees of freedom
+      - probability
+      - critical value
+      - null hypothesis
+      - significance
+      learning_outcomes:
+      - code: 16.2.5
+        text: use the chi-squared test to test the significance of differences between observed and expected
+          results (the formula for the chi-squared test will be provided, as shown in the Mathematical
+          requirements)
+        verified: true
+    - id: bio.16_2.genes_proteins_and_phenotype
+      title: Genes, Proteins and Phenotype
+      verified: false
+      aliases:
+      - gene to phenotype
+      - albinism
+      - sickle cell
+      keywords:
+      - TYR gene
+      - tyrosinase
+      - albinism
+      - HBB gene
+      - haemoglobin
+      - sickle cell anaemia
+      - F8 gene
+      - factor VIII
+      - haemophilia
+      - gibberellin
+      - Le allele
+      - stem elongation
+      learning_outcomes:
+      - code: 16.2.6
+        text: 'explain the relationship between genes, proteins and phenotype with respect to the: - TYR
+          gene, tyrosinase and albinism - HBB gene, haemoglobin and sickle cell anaemia - F8 gene, factor
+          VIII and haemophilia - HTT gene, huntingtin and Huntington''s disease'
+        verified: true
+      - code: 16.2.7
+        text: explain the role of gibberellin in stem elongation including the role of the dominant allele,
+          Le, that codes for a functional enzyme in the gibberellin synthesis pathway, and the recessive
+          allele, le, that codes for a non-functional enzyme
+        verified: true
+  - id: bio.16_3
+    title: Gene control
+    syllabus_topic: '16.3'
+    verified: true
+    aliases:
+    - gene control
+    - gene expression
+    - operon
+    keywords:
+    - structural gene
+    - regulatory gene
+    - lac operon
+    - transcription factor
+    - DELLA
+    - gibberellin
+    learning_outcomes:
+    - code: 16.3.1
+      text: describe the differences between structural genes and regulatory genes and the differences
+        between repressible enzymes and inducible enzymes
+      verified: true
+    - code: 16.3.2
+      text: explain genetic control of protein production in a prokaryote using the lac operon (knowledge
+        of the role of cAMP is not expected)
+      verified: true
+    - code: 16.3.3
+      text: state that transcription factors are proteins that bind to DNA and are involved in the control
+        of gene expression in eukaryotes by decreasing or increasing the rate of transcription
+      verified: true
+    - code: 16.3.4
+      text: explain how gibberellin activates genes by causing the breakdown of DELLA protein repressors,
+        which normally inhibit factors that promote transcription
+      verified: true
+    children:
+    - id: bio.16_3.structural_and_regulatory_genes
+      title: Structural and Regulatory Genes
+      verified: false
+      aliases:
+      - structural genes
+      - regulatory genes
+      keywords:
+      - structural gene
+      - regulatory gene
+      - repressible enzyme
+      - inducible enzyme
+      - repressor
+      learning_outcomes:
+      - code: 16.3.1
+        text: describe the differences between structural genes and regulatory genes and the differences
+          between repressible enzymes and inducible enzymes
+        verified: true
+    - id: bio.16_3.the_lac_operon
+      title: The lac Operon
+      verified: false
+      aliases:
+      - lac operon
+      - prokaryote gene control
+      keywords:
+      - lac operon
+      - lactose
+      - E. coli
+      - promoter
+      - operator
+      - repressor protein
+      - lacZ
+      - beta-galactosidase
+      - RNA polymerase
+      - inducible
+      learning_outcomes:
+      - code: 16.3.2
+        text: explain genetic control of protein production in a prokaryote using the lac operon (knowledge
+          of the role of cAMP is not expected)
+        verified: true
+    - id: bio.16_3.transcription_factors_in_eukaryotes
+      title: Transcription Factors in Eukaryotes
+      verified: false
+      aliases:
+      - transcription factors
+      - eukaryote gene control
+      keywords:
+      - transcription factor
+      - promoter
+      - rate of transcription
+      - gene expression
+      - binds to DNA
+      learning_outcomes:
+      - code: 16.3.3
+        text: state that transcription factors are proteins that bind to DNA and are involved in the control
+          of gene expression in eukaryotes by decreasing or increasing the rate of transcription
+        verified: true
+    - id: bio.16_3.gibberellin_and_della_proteins
+      title: Gibberellin and DELLA Proteins
+      verified: false
+      aliases:
+      - DELLA
+      - gibberellin gene activation
+      keywords:
+      - gibberellin
+      - DELLA protein
+      - repressor
+      - breakdown
+      - transcription factor
+      - gene activation
+      learning_outcomes:
+      - code: 16.3.4
+        text: explain how gibberellin activates genes by causing the breakdown of DELLA protein repressors,
+          which normally inhibit factors that promote transcription
+        verified: true
+- id: bio.topic_17
+  title: Selection and evolution
+  syllabus_topic: '17'
+  teaching_order: 6
+  verified: true
+  aliases:
+  - selection and evolution
+  - chapter 17
+  - evolution
+  keywords:
+  - variation
+  - natural selection
+  - evolution
+  - speciation
+  - allele frequency
+  children:
+  - id: bio.17_1
+    title: Variation
+    syllabus_topic: '17.1'
+    verified: true
+    aliases:
+    - variation
+    keywords:
+    - phenotypic variation
+    - continuous variation
+    - discontinuous variation
+    - t-test
+    - genetic factors
+    - environmental factors
+    learning_outcomes:
+    - code: 17.1.1
+      text: explain, with examples, that phenotypic variation is due to genetic factors or environmental
+        factors or a combination of genetic and environmental factors
+      verified: true
+    - code: 17.1.2
+      text: explain what is meant by discontinuous variation and continuous variation
+      verified: true
+    - code: 17.1.3
+      text: explain the genetic basis of discontinuous variation and continuous variation
+      verified: true
+    - code: 17.1.4
+      text: use the t-test to compare the means of two different samples (the formula for the t-test will
+        be provided, as shown in the Mathematical requirements)
+      verified: true
+    children:
+    - id: bio.17_1.causes_of_phenotypic_variation
+      title: Causes of Phenotypic Variation
+      verified: false
+      aliases:
+      - variation
+      - genetic and environmental
+      keywords:
+      - phenotypic variation
+      - genetic factors
+      - environmental factors
+      - combination
+      learning_outcomes:
+      - code: 17.1.1
+        text: explain, with examples, that phenotypic variation is due to genetic factors or environmental
+          factors or a combination of genetic and environmental factors
+        verified: true
+    - id: bio.17_1.continuous_and_discontinuous_variation
+      title: Continuous and Discontinuous Variation
+      verified: false
+      aliases:
+      - continuous variation
+      - discontinuous variation
+      keywords:
+      - continuous variation
+      - discontinuous variation
+      - polygenes
+      - normal distribution
+      - distinct categories
+      - single gene
+      learning_outcomes:
+      - code: 17.1.2
+        text: explain what is meant by discontinuous variation and continuous variation
+        verified: true
+      - code: 17.1.3
+        text: explain the genetic basis of discontinuous variation and continuous variation
+        verified: true
+    - id: bio.17_1.the_t_test
+      title: The t-test
+      verified: false
+      aliases:
+      - t test
+      - statistics
+      keywords:
+      - t-test
+      - means
+      - two samples
+      - standard deviation
+      - degrees of freedom
+      - significance
+      - probability
+      learning_outcomes:
+      - code: 17.1.4
+        text: use the t-test to compare the means of two different samples (the formula for the t-test
+          will be provided, as shown in the Mathematical requirements)
+        verified: true
+  - id: bio.17_2
+    title: Natural and artificial selection
+    syllabus_topic: '17.2'
+    verified: true
+    aliases:
+    - natural selection
+    - artificial selection
+    - selective breeding
+    keywords:
+    - natural selection
+    - stabilising
+    - disruptive
+    - directional
+    - genetic drift
+    - founder effect
+    - bottleneck
+    - Hardy-Weinberg
+    - antibiotic resistance
+    - selective breeding
+    learning_outcomes:
+    - code: 17.2.1
+      text: explain that natural selection occurs because populations have the capacity to produce many
+        offspring that compete for resources; in the 'struggle for existence', individuals that are best
+        adapted are most likely to survive to reproduce and pass on their alleles to the next generation
+      verified: true
+    - code: 17.2.2
+      text: explain how environmental factors can act as stabilising, disruptive and directional forces
+        of natural selection
+      verified: true
+    - code: 17.2.3
+      text: explain how selection, the founder effect and genetic drift, including the bottleneck effect,
+        may affect allele frequencies in populations
+      verified: true
+    - code: 17.2.4
+      text: outline how bacteria become resistant to antibiotics as an example of natural selection
+      verified: true
+    - code: 17.2.5
+      text: use the Hardy-Weinberg principle to calculate allele and genotype frequencies in populations
+        and state the conditions when this principle can be applied (the two equations for the Hardy-Weinberg
+        principle will be provided, as shown in the Mathematical requirements)
+      verified: true
+    - code: 17.2.6
+      text: describe the principles of selective breeding (artificial selection)
+      verified: true
+    - code: 17.2.7
+      text: 'outline the following examples of selective breeding: - the introduction of disease resistance
+        to varieties of wheat and rice - inbreeding and hybridisation to produce vigorous, uniform varieties
+        of maize - improving the milk yield of dairy cattle'
+      verified: true
+    children:
+    - id: bio.17_2.natural_selection
+      title: Natural Selection
+      verified: false
+      aliases:
+      - natural selection
+      - survival of the fittest
+      keywords:
+      - natural selection
+      - struggle for existence
+      - competition
+      - selection pressure
+      - advantageous allele
+      - reproductive success
+      - adapted
+      learning_outcomes:
+      - code: 17.2.1
+        text: explain that natural selection occurs because populations have the capacity to produce many
+          offspring that compete for resources; in the 'struggle for existence', individuals that are
+          best adapted are most likely to survive to reproduce and pass on their alleles to the next generation
+        verified: true
+    - id: bio.17_2.stabilising_disruptive_and_directional_selection
+      title: Stabilising, Disruptive and Directional Selection
+      verified: false
+      aliases:
+      - types of selection
+      keywords:
+      - stabilising selection
+      - disruptive selection
+      - directional selection
+      - environmental factors
+      - phenotype distribution
+      learning_outcomes:
+      - code: 17.2.2
+        text: explain how environmental factors can act as stabilising, disruptive and directional forces
+          of natural selection
+        verified: true
+    - id: bio.17_2.genetic_drift_founder_effect_and_bottlenecks
+      title: Genetic Drift, Founder Effect and Bottlenecks
+      verified: false
+      aliases:
+      - genetic drift
+      - founder effect
+      - bottleneck
+      keywords:
+      - genetic drift
+      - founder effect
+      - bottleneck effect
+      - allele frequency
+      - small population
+      - chance
+      learning_outcomes:
+      - code: 17.2.3
+        text: explain how selection, the founder effect and genetic drift, including the bottleneck effect,
+          may affect allele frequencies in populations
+        verified: true
+    - id: bio.17_2.antibiotic_resistance
+      title: Antibiotic Resistance
+      verified: false
+      aliases:
+      - antibiotic resistance
+      - bacteria
+      keywords:
+      - antibiotic resistance
+      - bacteria
+      - mutation
+      - plasmid
+      - selection pressure
+      - MRSA
+      - resistant strain
+      learning_outcomes:
+      - code: 17.2.4
+        text: outline how bacteria become resistant to antibiotics as an example of natural selection
+        verified: true
+    - id: bio.17_2.the_hardy_weinberg_principle
+      title: The Hardy-Weinberg Principle
+      verified: false
+      aliases:
+      - Hardy Weinberg
+      - allele frequency calculations
+      keywords:
+      - Hardy-Weinberg
+      - allele frequency
+      - genotype frequency
+      - p squared
+      - two pq
+      - q squared
+      - equilibrium
+      - conditions
+      learning_outcomes:
+      - code: 17.2.5
+        text: use the Hardy-Weinberg principle to calculate allele and genotype frequencies in populations
+          and state the conditions when this principle can be applied (the two equations for the Hardy-Weinberg
+          principle will be provided, as shown in the Mathematical requirements)
+        verified: true
+    - id: bio.17_2.selective_breeding
+      title: Selective Breeding
+      verified: false
+      aliases:
+      - artificial selection
+      - selective breeding
+      keywords:
+      - selective breeding
+      - artificial selection
+      - disease resistance
+      - wheat
+      - rice
+      - inbreeding
+      - hybridisation
+      - hybrid vigour
+      - maize
+      - dairy cattle
+      - milk yield
+      learning_outcomes:
+      - code: 17.2.6
+        text: describe the principles of selective breeding (artificial selection)
+        verified: true
+      - code: 17.2.7
+        text: 'outline the following examples of selective breeding: - the introduction of disease resistance
+          to varieties of wheat and rice - inbreeding and hybridisation to produce vigorous, uniform varieties
+          of maize - improving the milk yield of dairy cattle'
+        verified: true
+  - id: bio.17_3
+    title: Evolution
+    syllabus_topic: '17.3'
+    verified: true
+    aliases:
+    - evolution
+    - speciation
+    keywords:
+    - evolution
+    - gene pool
+    - speciation
+    - allopatric
+    - sympatric
+    - molecular evidence
+    learning_outcomes:
+    - code: 17.3.1
+      text: outline the theory of evolution as a process leading to the formation of new species from
+        pre-existing species over time, as a result of changes to gene pools from generation to generation
+      verified: true
+    - code: 17.3.2
+      text: discuss how DNA sequence data can show evolutionary relationships between species
+      verified: true
+    - code: 17.3.3
+      text: 'explain how speciation may occur as a result of genetic isolation by: - geographical separation
+        (allopatric speciation) - ecological and behavioural separation (sympatric speciation)'
+      verified: true
+    children:
+    - id: bio.17_3.the_theory_of_evolution
+      title: The Theory of Evolution
+      verified: false
+      aliases:
+      - evolution theory
+      - Darwin
+      keywords:
+      - evolution
+      - new species
+      - pre-existing species
+      - gene pool
+      - generation to generation
+      - Darwin
+      - Wallace
+      learning_outcomes:
+      - code: 17.3.1
+        text: outline the theory of evolution as a process leading to the formation of new species from
+          pre-existing species over time, as a result of changes to gene pools from generation to generation
+        verified: true
+    - id: bio.17_3.molecular_evidence_for_evolution
+      title: Molecular Evidence for Evolution
+      verified: false
+      aliases:
+      - DNA sequence data
+      - molecular evidence
+      keywords:
+      - DNA sequence data
+      - evolutionary relationship
+      - common ancestor
+      - mitochondrial DNA
+      - amino acid sequence
+      - phylogenetic tree
+      learning_outcomes:
+      - code: 17.3.2
+        text: discuss how DNA sequence data can show evolutionary relationships between species
+        verified: true
+    - id: bio.17_3.speciation
+      title: Speciation
+      verified: false
+      aliases:
+      - speciation
+      - allopatric
+      - sympatric
+      keywords:
+      - speciation
+      - genetic isolation
+      - geographical separation
+      - allopatric
+      - ecological separation
+      - behavioural separation
+      - sympatric
+      - reproductive isolation
+      learning_outcomes:
+      - code: 17.3.3
+        text: 'explain how speciation may occur as a result of genetic isolation by: - geographical separation
+          (allopatric speciation) - ecological and behavioural separation (sympatric speciation)'
+        verified: true
+- id: bio.topic_18
+  title: Classification, biodiversity and conservation
+  syllabus_topic: '18'
+  teaching_order: 7
+  verified: true
+  aliases:
+  - classification biodiversity and conservation
+  - chapter 18
+  - ecology
+  keywords:
+  - species
+  - domain
+  - kingdom
+  - biodiversity
+  - quadrat
+  - conservation
+  children:
+  - id: bio.18_1
+    title: Classification
+    syllabus_topic: '18.1'
+    verified: true
+    aliases:
+    - classification
+    - taxonomy
+    keywords:
+    - species concept
+    - domain
+    - Archaea
+    - Bacteria
+    - Eukarya
+    - kingdom
+    - phylum
+    - class
+    - order
+    - family
+    - genus
+    - virus
+    learning_outcomes:
+    - code: 18.1.1
+      text: discuss the meaning of the term species, limited to the biological species concept, morphological
+        species concept and ecological species concept
+      verified: true
+    - code: 18.1.2
+      text: 'describe the classification of organisms into three domains: Archaea, Bacteria and Eukarya'
+      verified: true
+    - code: 18.1.3
+      text: state that Archaea and Bacteria are prokaryotes and that there are differences between them,
+        limited to differences in membrane lipids, ribosomal RNA and composition of cell walls
+      verified: true
+    - code: 18.1.4
+      text: describe the classification of organisms in the Eukarya domain into the taxonomic hierarchy
+        of kingdom, phylum, class, order, family, genus and species
+      verified: true
+    - code: 18.1.5
+      text: outline the characteristic features of the kingdoms Protoctista, Fungi, Plantae and Animalia
+      verified: true
+    - code: 18.1.6
+      text: outline how viruses are classified, limited to the type of nucleic acid (RNA or DNA) and whether
+        this is single stranded or double stranded
+      verified: true
+    children:
+    - id: bio.18_1.the_species_concept
+      title: The Species Concept
+      verified: false
+      aliases:
+      - species
+      - species concept
+      keywords:
+      - biological species concept
+      - morphological species concept
+      - ecological species concept
+      - interbreed
+      - fertile offspring
+      learning_outcomes:
+      - code: 18.1.1
+        text: discuss the meaning of the term species, limited to the biological species concept, morphological
+          species concept and ecological species concept
+        verified: true
+    - id: bio.18_1.the_three_domains
+      title: The Three Domains
+      verified: false
+      aliases:
+      - three domains
+      - Archaea
+      - Bacteria
+      - Eukarya
+      keywords:
+      - domain
+      - Archaea
+      - Bacteria
+      - Eukarya
+      - prokaryote
+      - membrane lipids
+      - ribosomal RNA
+      - cell wall composition
+      learning_outcomes:
+      - code: 18.1.2
+        text: 'describe the classification of organisms into three domains: Archaea, Bacteria and Eukarya'
+        verified: true
+      - code: 18.1.3
+        text: state that Archaea and Bacteria are prokaryotes and that there are differences between them,
+          limited to differences in membrane lipids, ribosomal RNA and composition of cell walls
+        verified: true
+    - id: bio.18_1.the_taxonomic_hierarchy_and_the_kingdoms
+      title: The Taxonomic Hierarchy and the Kingdoms
+      verified: false
+      aliases:
+      - taxonomic hierarchy
+      - kingdoms
+      - binomial
+      keywords:
+      - kingdom
+      - phylum
+      - class
+      - order
+      - family
+      - genus
+      - species
+      - Protoctista
+      - Fungi
+      - Plantae
+      - Animalia
+      - taxonomic hierarchy
+      - binomial name
+      learning_outcomes:
+      - code: 18.1.4
+        text: describe the classification of organisms in the Eukarya domain into the taxonomic hierarchy
+          of kingdom, phylum, class, order, family, genus and species
+        verified: true
+      - code: 18.1.5
+        text: outline the characteristic features of the kingdoms Protoctista, Fungi, Plantae and Animalia
+        verified: true
+    - id: bio.18_1.classification_of_viruses
+      title: Classification of Viruses
+      verified: false
+      aliases:
+      - viruses
+      - virus classification
+      keywords:
+      - virus
+      - nucleic acid
+      - RNA
+      - DNA
+      - single stranded
+      - double stranded
+      - not living
+      learning_outcomes:
+      - code: 18.1.6
+        text: outline how viruses are classified, limited to the type of nucleic acid (RNA or DNA) and
+          whether this is single stranded or double stranded
+        verified: true
+  - id: bio.18_2
+    title: Biodiversity
+    syllabus_topic: '18.2'
+    verified: true
+    aliases:
+    - biodiversity
+    - sampling
+    - ecology practical
+    keywords:
+    - ecosystem
+    - niche
+    - random sampling
+    - quadrat
+    - transect
+    - mark-release-recapture
+    - Simpson's index
+    - Spearman
+    - Pearson
+    learning_outcomes:
+    - code: 18.2.1
+      text: define the terms ecosystem and niche
+      verified: true
+    - code: 18.2.2
+      text: 'explain that biodiversity can be assessed at different levels, including: - the number and
+        range of different ecosystems and habitats - the number of species and their relative abundance
+        - the genetic variation within each species'
+      verified: true
+    - code: 18.2.3
+      text: explain the importance of random sampling in determining the biodiversity of an area
+      verified: true
+    - code: 18.2.4
+      text: describe and use suitable methods to assess the distribution and abundance of organisms in
+        an area, limited to frame quadrats, line transects, belt transects and mark-release- recapture
+        using the Lincoln index (the formula for the Lincoln index will be provided, as shown in the Mathematical
+        requirements)
+      verified: true
+    - code: 18.2.5
+      text: use Spearman's rank correlation and Pearson's linear correlation to analyse the relationships
+        between two variables, including how biotic and abiotic factors affect the distribution and abundance
+        of species (the formulae for these correlations will be provided, as shown in the Mathematical
+        requirements)
+      verified: true
+    - code: 18.2.6
+      text: use Simpson's index of diversity (D) to calculate the biodiversity of an area, and state the
+        significance of different values of D (the formula for Simpson's index of diversity will be provided,
+        as shown in the Mathematical requirements)
+      verified: true
+    children:
+    - id: bio.18_2.ecosystems_niches_and_levels_of_biodiversity
+      title: Ecosystems, Niches and Levels of Biodiversity
+      verified: false
+      aliases:
+      - ecosystem
+      - niche
+      - biodiversity levels
+      keywords:
+      - ecosystem
+      - niche
+      - habitat
+      - species richness
+      - species evenness
+      - genetic diversity
+      - relative abundance
+      learning_outcomes:
+      - code: 18.2.1
+        text: define the terms ecosystem and niche
+        verified: true
+      - code: 18.2.2
+        text: 'explain that biodiversity can be assessed at different levels, including: - the number
+          and range of different ecosystems and habitats - the number of species and their relative abundance
+          - the genetic variation within each species'
+        verified: true
+    - id: bio.18_2.random_sampling_and_field_techniques
+      title: Random Sampling and Field Techniques
+      verified: false
+      aliases:
+      - sampling
+      - quadrats
+      - transects
+      - mark release recapture
+      keywords:
+      - random sampling
+      - bias
+      - frame quadrat
+      - line transect
+      - belt transect
+      - mark-release-recapture
+      - Lincoln index
+      - abundance
+      - distribution
+      - percentage cover
+      learning_outcomes:
+      - code: 18.2.3
+        text: explain the importance of random sampling in determining the biodiversity of an area
+        verified: true
+      - code: 18.2.4
+        text: describe and use suitable methods to assess the distribution and abundance of organisms
+          in an area, limited to frame quadrats, line transects, belt transects and mark-release- recapture
+          using the Lincoln index (the formula for the Lincoln index will be provided, as shown in the
+          Mathematical requirements)
+        verified: true
+    - id: bio.18_2.correlation_tests
+      title: Correlation Tests
+      verified: false
+      aliases:
+      - Spearman
+      - Pearson
+      - correlation
+      keywords:
+      - Spearman's rank correlation
+      - Pearson's linear correlation
+      - biotic factor
+      - abiotic factor
+      - significance
+      - correlation coefficient
+      learning_outcomes:
+      - code: 18.2.5
+        text: use Spearman's rank correlation and Pearson's linear correlation to analyse the relationships
+          between two variables, including how biotic and abiotic factors affect the distribution and
+          abundance of species (the formulae for these correlations will be provided, as shown in the
+          Mathematical requirements)
+        verified: true
+    - id: bio.18_2.simpson_s_index_of_diversity
+      title: Simpson's Index of Diversity
+      verified: false
+      aliases:
+      - Simpson's index
+      - diversity index
+      keywords:
+      - Simpson's index of diversity
+      - D value
+      - species richness
+      - relative abundance
+      - calculation
+      learning_outcomes:
+      - code: 18.2.6
+        text: use Simpson's index of diversity (D) to calculate the biodiversity of an area, and state
+          the significance of different values of D (the formula for Simpson's index of diversity will
+          be provided, as shown in the Mathematical requirements)
+        verified: true
+  - id: bio.18_3
+    title: Conservation
+    syllabus_topic: '18.3'
+    verified: true
+    aliases:
+    - conservation
+    - endangered species
+    keywords:
+    - extinction
+    - conservation
+    - zoo
+    - seed bank
+    - IVF
+    - IUCN
+    - CITES
+    - invasive species
+    learning_outcomes:
+    - code: 18.3.1
+      text: 'explain why populations and species can become extinct as a result of: - climate change -
+        competition - hunting by humans - degradation and loss of habitats'
+      verified: true
+    - code: 18.3.2
+      text: outline reasons for the need to maintain biodiversity
+      verified: true
+    - code: 18.3.3
+      text: outline the roles of zoos, botanic gardens, conserved areas (including national parks and
+        marine parks), 'frozen zoos' and seed banks, in the conservation of endangered species
+      verified: true
+    - code: 18.3.4
+      text: describe methods of assisted reproduction used in the conservation of endangered mammals,
+        limited to IVF, embryo transfer and surrogacy
+      verified: true
+    - code: 18.3.5
+      text: explain reasons for controlling invasive alien species
+      verified: true
+    - code: 18.3.6
+      text: outline the role in conservation of the International Union for Conservation of Nature (IUCN)
+        and the Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES)
+      verified: true
+    children:
+    - id: bio.18_3.causes_of_extinction
+      title: Causes of Extinction
+      verified: false
+      aliases:
+      - extinction
+      keywords:
+      - extinction
+      - climate change
+      - competition
+      - hunting
+      - habitat loss
+      - habitat degradation
+      - endangered
+      learning_outcomes:
+      - code: 18.3.1
+        text: 'explain why populations and species can become extinct as a result of: - climate change
+          - competition - hunting by humans - degradation and loss of habitats'
+        verified: true
+    - id: bio.18_3.reasons_for_maintaining_biodiversity
+      title: Reasons for Maintaining Biodiversity
+      verified: false
+      aliases:
+      - why conserve
+      - importance of biodiversity
+      keywords:
+      - maintain biodiversity
+      - ecological
+      - economic
+      - ethical
+      - aesthetic
+      - agricultural
+      - medicinal
+      learning_outcomes:
+      - code: 18.3.2
+        text: outline reasons for the need to maintain biodiversity
+        verified: true
+    - id: bio.18_3.methods_of_conservation
+      title: Methods of Conservation
+      verified: false
+      aliases:
+      - conservation methods
+      - ex situ
+      - in situ
+      - assisted reproduction
+      keywords:
+      - zoo
+      - botanic garden
+      - national park
+      - marine park
+      - frozen zoo
+      - seed bank
+      - captive breeding
+      - IVF
+      - embryo transfer
+      - surrogacy
+      - in situ
+      - ex situ
+      learning_outcomes:
+      - code: 18.3.3
+        text: outline the roles of zoos, botanic gardens, conserved areas (including national parks and
+          marine parks), 'frozen zoos' and seed banks, in the conservation of endangered species
+        verified: true
+      - code: 18.3.4
+        text: describe methods of assisted reproduction used in the conservation of endangered mammals,
+          limited to IVF, embryo transfer and surrogacy
+        verified: true
+    - id: bio.18_3.invasive_alien_species
+      title: Invasive Alien Species
+      verified: false
+      aliases:
+      - invasive species
+      - alien species
+      keywords:
+      - invasive alien species
+      - competition
+      - no natural predators
+      - control
+      - native species
+      learning_outcomes:
+      - code: 18.3.5
+        text: explain reasons for controlling invasive alien species
+        verified: true
+    - id: bio.18_3.the_roles_of_iucn_and_cites
+      title: The Roles of IUCN and CITES
+      verified: false
+      aliases:
+      - IUCN
+      - CITES
+      - red list
+      keywords:
+      - IUCN
+      - red list
+      - CITES
+      - international trade
+      - endangered species
+      - convention
+      - legislation
+      learning_outcomes:
+      - code: 18.3.6
+        text: outline the role in conservation of the International Union for Conservation of Nature (IUCN)
+          and the Convention on International Trade in Endangered Species of Wild Fauna and Flora (CITES)
+        verified: true
+- id: bio.topic_19
+  title: Genetic technology
+  syllabus_topic: '19'
+  teaching_order: 8
+  verified: true
+  aliases:
+  - genetic technology
+  - chapter 19
+  - genetic engineering
+  - biotechnology
+  keywords:
+  - recombinant DNA
+  - plasmid
+  - PCR
+  - electrophoresis
+  - gene therapy
+  - GMO
+  children:
+  - id: bio.19_1
+    title: Principles of genetic technology
+    syllabus_topic: '19.1'
+    verified: true
+    aliases:
+    - principles of genetic technology
+    - genetic engineering
+    keywords:
+    - recombinant DNA
+    - restriction endonuclease
+    - DNA ligase
+    - plasmid
+    - vector
+    - reverse transcriptase
+    - promoter
+    - marker gene
+    - gene editing
+    - PCR
+    - gel electrophoresis
+    - microarray
+    learning_outcomes:
+    - code: 19.1.1
+      text: define the term recombinant DNA
+      verified: true
+    - code: 19.1.2
+      text: explain that genetic engineering is the deliberate manipulation of genetic material to modify
+        specific characteristics of an organism and that this may involve transferring a gene into an
+        organism so that the gene is expressed
+      verified: true
+    - code: 19.1.3
+      text: 'explain that genes to be transferred into an organism may be: - extracted from the DNA of
+        a donor organism - synthesised from the mRNA of a donor organism - synthesised chemically from
+        nucleotides'
+      verified: true
+    - code: 19.1.4
+      text: explain the roles of restriction endonucleases, DNA ligase, plasmids, DNA polymerase and reverse
+        transcriptase in the transfer of a gene into an organism
+      verified: true
+    - code: 19.1.5
+      text: explain why a promoter may have to be transferred into an organism as well as the desired
+        gene
+      verified: true
+    - code: 19.1.6
+      text: explain how gene expression may be confirmed by the use of marker genes coding for fluorescent
+        products
+      verified: true
+    - code: 19.1.7
+      text: explain that gene editing is a form of genetic engineering involving the insertion, deletion
+        or replacement of DNA at specific sites in the genome
+      verified: true
+    - code: 19.1.8
+      text: describe and explain the steps involved in the polymerase chain reaction (PCR) to clone and
+        amplify DNA, including the role of Taq polymerase
+      verified: true
+    - code: 19.1.9
+      text: describe and explain how gel electrophoresis is used to separate DNA fragments of different
+        lengths
+      verified: true
+    - code: 19.1.10
+      text: outline how microarrays are used in the analysis of genomes and in detecting mRNA in studies
+        of gene expression
+      verified: true
+    - code: 19.1.11
+      text: outline the benefits of using databases that provide information about nucleotide sequences
+        of genes and genomes, and amino acid sequences of proteins and protein structures
+      verified: true
+    children:
+    - id: bio.19_1.recombinant_dna_and_genetic_engineering
+      title: Recombinant DNA and Genetic Engineering
+      verified: false
+      aliases:
+      - recombinant DNA
+      - genetic engineering
+      - gene sources
+      keywords:
+      - recombinant DNA
+      - genetic engineering
+      - transgenic
+      - donor organism
+      - mRNA
+      - reverse transcriptase
+      - synthesised chemically
+      - gene transfer
+      learning_outcomes:
+      - code: 19.1.1
+        text: define the term recombinant DNA
+        verified: true
+      - code: 19.1.2
+        text: explain that genetic engineering is the deliberate manipulation of genetic material to modify
+          specific characteristics of an organism and that this may involve transferring a gene into an
+          organism so that the gene is expressed
+        verified: true
+      - code: 19.1.3
+        text: 'explain that genes to be transferred into an organism may be: - extracted from the DNA
+          of a donor organism - synthesised from the mRNA of a donor organism - synthesised chemically
+          from nucleotides'
+        verified: true
+    - id: bio.19_1.enzymes_vectors_and_marker_genes
+      title: Enzymes, Vectors and Marker Genes
+      verified: false
+      aliases:
+      - restriction enzymes
+      - plasmids
+      - vectors
+      - markers
+      keywords:
+      - restriction endonuclease
+      - sticky ends
+      - DNA ligase
+      - plasmid
+      - vector
+      - DNA polymerase
+      - reverse transcriptase
+      - promoter
+      - marker gene
+      - fluorescent product
+      - GFP
+      learning_outcomes:
+      - code: 19.1.4
+        text: explain the roles of restriction endonucleases, DNA ligase, plasmids, DNA polymerase and
+          reverse transcriptase in the transfer of a gene into an organism
+        verified: true
+      - code: 19.1.5
+        text: explain why a promoter may have to be transferred into an organism as well as the desired
+          gene
+        verified: true
+      - code: 19.1.6
+        text: explain how gene expression may be confirmed by the use of marker genes coding for fluorescent
+          products
+        verified: true
+    - id: bio.19_1.gene_editing
+      title: Gene Editing
+      verified: false
+      aliases:
+      - gene editing
+      - CRISPR
+      keywords:
+      - gene editing
+      - insertion
+      - deletion
+      - replacement
+      - specific site
+      - genome
+      learning_outcomes:
+      - code: 19.1.7
+        text: explain that gene editing is a form of genetic engineering involving the insertion, deletion
+          or replacement of DNA at specific sites in the genome
+        verified: true
+    - id: bio.19_1.the_polymerase_chain_reaction
+      title: The Polymerase Chain Reaction
+      verified: false
+      aliases:
+      - PCR
+      - DNA amplification
+      keywords:
+      - polymerase chain reaction
+      - PCR
+      - Taq polymerase
+      - primer
+      - denaturation
+      - annealing
+      - extension
+      - thermal cycler
+      - amplify
+      learning_outcomes:
+      - code: 19.1.8
+        text: describe and explain the steps involved in the polymerase chain reaction (PCR) to clone
+          and amplify DNA, including the role of Taq polymerase
+        verified: true
+    - id: bio.19_1.gel_electrophoresis
+      title: Gel Electrophoresis
+      verified: false
+      aliases:
+      - electrophoresis
+      - DNA fragments
+      keywords:
+      - gel electrophoresis
+      - agarose
+      - DNA fragments
+      - negatively charged
+      - electric field
+      - separation by length
+      - DNA probe
+      learning_outcomes:
+      - code: 19.1.9
+        text: describe and explain how gel electrophoresis is used to separate DNA fragments of different
+          lengths
+        verified: true
+    - id: bio.19_1.microarrays_and_bioinformatics
+      title: Microarrays and Bioinformatics
+      verified: false
+      aliases:
+      - microarray
+      - databases
+      - bioinformatics
+      keywords:
+      - microarray
+      - gene expression
+      - mRNA
+      - genome analysis
+      - database
+      - nucleotide sequence
+      - amino acid sequence
+      - protein structure
+      - bioinformatics
+      learning_outcomes:
+      - code: 19.1.10
+        text: outline how microarrays are used in the analysis of genomes and in detecting mRNA in studies
+          of gene expression
+        verified: true
+      - code: 19.1.11
+        text: outline the benefits of using databases that provide information about nucleotide sequences
+          of genes and genomes, and amino acid sequences of proteins and protein structures
+        verified: true
+  - id: bio.19_2
+    title: Genetic technology applied to medicine
+    syllabus_topic: '19.2'
+    verified: true
+    aliases:
+    - genetic technology in medicine
+    - gene therapy
+    keywords:
+    - recombinant protein
+    - insulin
+    - factor VIII
+    - genetic screening
+    - BRCA1
+    - gene therapy
+    - SCID
+    learning_outcomes:
+    - code: 19.2.1
+      text: explain the advantages of using recombinant human proteins to treat disease, using the examples
+        insulin, factor VIII and adenosine deaminase
+      verified: true
+    - code: 19.2.2
+      text: outline the advantages of genetic screening, using the examples of breast cancer (BRCA1 and
+        BRCA2), Huntington's disease and cystic fibrosis
+      verified: true
+    - code: 19.2.3
+      text: outline how genetic diseases can be treated with gene therapy, using the examples severe combined
+        immunodeficiency (SCID) and inherited eye diseases
+      verified: true
+    - code: 19.2.4
+      text: discuss the social and ethical considerations of using genetic screening and gene therapy
+        in medicine
+      verified: true
+    children:
+    - id: bio.19_2.recombinant_human_proteins
+      title: Recombinant Human Proteins
+      verified: false
+      aliases:
+      - recombinant proteins
+      - insulin production
+      keywords:
+      - recombinant human protein
+      - insulin
+      - factor VIII
+      - adenosine deaminase
+      - purity
+      - supply
+      - rejection
+      - ethical
+      learning_outcomes:
+      - code: 19.2.1
+        text: explain the advantages of using recombinant human proteins to treat disease, using the examples
+          insulin, factor VIII and adenosine deaminase
+        verified: true
+    - id: bio.19_2.genetic_screening
+      title: Genetic Screening
+      verified: false
+      aliases:
+      - genetic screening
+      - genetic testing
+      keywords:
+      - genetic screening
+      - BRCA1
+      - BRCA2
+      - breast cancer
+      - Huntington's disease
+      - cystic fibrosis
+      - carrier
+      - prenatal
+      learning_outcomes:
+      - code: 19.2.2
+        text: outline the advantages of genetic screening, using the examples of breast cancer (BRCA1
+          and BRCA2), Huntington's disease and cystic fibrosis
+        verified: true
+    - id: bio.19_2.gene_therapy
+      title: Gene Therapy
+      verified: false
+      aliases:
+      - gene therapy
+      keywords:
+      - gene therapy
+      - SCID
+      - severe combined immunodeficiency
+      - inherited eye disease
+      - vector
+      - somatic cells
+      learning_outcomes:
+      - code: 19.2.3
+        text: outline how genetic diseases can be treated with gene therapy, using the examples severe
+          combined immunodeficiency (SCID) and inherited eye diseases
+        verified: true
+    - id: bio.19_2.social_and_ethical_considerations
+      title: Social and Ethical Considerations
+      verified: false
+      aliases:
+      - ethics of genetic technology
+      keywords:
+      - social implications
+      - ethical implications
+      - consent
+      - insurance
+      - discrimination
+      - genetic screening
+      - gene therapy
+      learning_outcomes:
+      - code: 19.2.4
+        text: discuss the social and ethical considerations of using genetic screening and gene therapy
+          in medicine
+        verified: true
+  - id: bio.19_3
+    title: Genetically modified organisms in agriculture
+    syllabus_topic: '19.3'
+    verified: true
+    aliases:
+    - GMOs in agriculture
+    - genetically modified organisms
+    keywords:
+    - GM salmon
+    - herbicide resistance
+    - insect resistance
+    - Bt
+    - golden rice
+    - GMO ethics
+    learning_outcomes:
+    - code: 19.3.1
+      text: explain that genetic engineering may help to solve the global demand for food by improving
+        the quality and productivity of farmed animals and crop plants, using the examples of GM salmon,
+        herbicide resistance in soybean and insect resistance in cotton
+      verified: true
+    - code: 19.3.2
+      text: discuss the ethical and social implications of using genetically modified organisms (GMOs)
+        in food production
+      verified: true
+    children:
+    - id: bio.19_3.genetically_modified_organisms_in_agriculture
+      title: Genetically Modified Organisms in Agriculture
+      verified: false
+      aliases:
+      - GM crops
+      - GM animals
+      keywords:
+      - genetically modified
+      - GM salmon
+      - herbicide resistance
+      - insect resistance
+      - Bt toxin
+      - golden rice
+      - yield
+      - food security
+      learning_outcomes:
+      - code: 19.3.1
+        text: explain that genetic engineering may help to solve the global demand for food by improving
+          the quality and productivity of farmed animals and crop plants, using the examples of GM salmon,
+          herbicide resistance in soybean and insect resistance in cotton
+        verified: true
+    - id: bio.19_3.ethical_and_social_implications_of_gmos
+      title: Ethical and Social Implications of GMOs
+      verified: false
+      aliases:
+      - GMO ethics
+      - GM debate
+      keywords:
+      - ethical implications
+      - social implications
+      - GMO
+      - food production
+      - cross-pollination
+      - monoculture
+      - labelling
+      learning_outcomes:
+      - code: 19.3.2
+        text: discuss the ethical and social implications of using genetically modified organisms (GMOs)
+          in food production
+        verified: true

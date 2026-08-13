@@ -37,6 +37,31 @@ subjects:
       # Add a Drive shortcut in secondary-topic folders for multi-topic lectures.
       create_secondary_shortcuts: false
 
+  - id: a2_biology
+    name: A2 Biology
+    syllabus_code: "9700"
+    taxonomy_file: config/syllabi/a2-biology-9700.yaml
+
+    drive_root_folder_id: "${A2_BIOLOGY_ROOT_FOLDER_ID}"
+
+    # Biology chapter folders in this Drive hold recordings directly, with no
+    # "Notes, Assignments & Class Recordings" level above them — the Chemistry
+    # layout is not universal, which is why this is per-subject.
+    recordings_subfolder: null
+
+    languages: ["en"]
+
+    # Weighted the same as Chemistry: A2 Biology vocabulary is just as dense
+    # and just as distinctive ("aerenchyma", "oxaloacetate", "rubisco").
+    retrieval:
+      lexical_weight: 0.55
+      semantic_weight: 0.45
+
+    placement:
+      strategy: deepest_existing
+      allow_create_folders: false
+      create_secondary_shortcuts: false
+
 # ── Transcription ─────────────────────────────────────────────────────────────
 asr:
   provider: faster_whisper       # faster_whisper | whisperx | api | local_stub

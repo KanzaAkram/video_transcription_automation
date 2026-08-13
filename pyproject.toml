@@ -39,13 +39,22 @@ cloud = [
     "httpx>=0.27",
 ]
 
-# Transcription. Needs ffmpeg on PATH; CUDA strongly recommended.
-# The markers keep these off interpreters with no wheels yet — installing the
-# extra on 3.14 is a no-op rather than a build failure, and `verify_config.py`
-# reports the version mismatch explicitly.
+# Transcription. CUDA strongly recommended but not required — CPU int8 runs at
+# roughly 5x realtime on a modern laptop, which is enough for a few lectures a
+# week. No ffmpeg binary is needed: faster-whisper decodes through PyAV, which
+# ships its own ffmpeg libraries.
+#
+# The 3.14 exclusion these once carried is gone: ctranslate2 4.8 and
+# faster-whisper 1.2 both publish cp314 wheels.
 asr = [
-    "faster-whisper>=1.0.3; python_version < '3.14'",
-    "ctranslate2>=4.3; python_version < '3.14'",
+    "faster-whisper>=1.2",
+    "ctranslate2>=4.8",
+]
+
+# Syllabus ingestion — reading the official PDF into a taxonomy YAML. Only
+# needed when adding or updating a subject, not at runtime.
+syllabus = [
+    "pymupdf>=1.24",
 ]
 
 # Classification. Lightweight on purpose: BM25 retrieval plus the Claude call.
@@ -82,7 +91,7 @@ dev = [
 ]
 
 # Everything, including the heavy ML dependencies. Use on the worker host.
-all = ["lecture-pipeline[api,cloud,asr,classify,embeddings,queue,dev]"]
+all = ["lecture-pipeline[api,cloud,asr,classify,embeddings,queue,syllabus,dev]"]
 
 [project.scripts]
 lecture-pipeline = "pipeline.cli:main"

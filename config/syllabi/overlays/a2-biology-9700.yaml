@@ -1,0 +1,946 @@
+# Curation overlay for Cambridge International A Level Biology 9700 (2025-2027).
+#
+# Everything the syllabus PDF already contains — topic numbers, subtopic
+# numbers, titles, learning-outcome text — is extracted by
+# scripts/ingest_syllabus.py and must NOT be repeated here. This file holds
+# only what the PDF cannot tell you:
+#
+#   keywords / aliases    what a teacher actually says out loud, which is what
+#                         retrieval scores the transcript against
+#   drive_folder_name     where the recordings live
+#   lessons               the teaching layer beneath each subtopic
+#
+# ── Why the lesson layer exists ───────────────────────────────────────────────
+# Topic 12 has exactly two syllabus subtopics, "12.1 Energy" and
+# "12.2 Respiration", but six recordings. Naming files after subtopics would
+# produce two distinct names for six lectures, which is useless in a folder
+# listing. The lesson layer is the level teaching actually happens at, and it
+# is what goes in the filename.
+#
+# Lessons are NOT syllabus content, so they are emitted with verified: false.
+# Each one cites the learning outcomes it covers by number; the ingester copies
+# that outcome text onto the lesson node, so a lesson is retrieved against real
+# syllabus prose rather than against a title someone made up.
+
+subject_id: a2_biology
+subject_name: A2 Biology
+syllabus_code: "9700"
+syllabus_years: "2025-2027"
+node_id_prefix: bio
+source: >-
+  Topic, subtopic and learning-outcome text extracted verbatim from the official
+  Cambridge International AS & A Level Biology 9700 syllabus for 2025, 2026 and
+  2027. Keywords, aliases and the lesson layer are hand-curated.
+
+# Primed into the ASR decoder for every lecture in this subject. These are the
+# terms generic speech recognition reliably mangles — "Krebs" becomes "crabs",
+# "chemiosmosis" becomes "chemo osmosis" — and they are also the terms
+# classification leans on hardest, so the error is expensive twice over.
+subject_vocabulary:
+  - ATP
+  - adenosine triphosphate
+  - phosphorylation
+  - glycolysis
+  - pyruvate
+  - Krebs cycle
+  - oxaloacetate
+  - decarboxylation
+  - dehydrogenation
+  - chemiosmosis
+  - oxidative phosphorylation
+  - mitochondria
+  - cristae
+  - NAD
+  - FAD
+  - NADP
+  - rubisco
+  - ribulose bisphosphate
+  - Calvin cycle
+  - thylakoid
+  - photophosphorylation
+  - chloroplast
+  - nephron
+  - glomerulus
+  - ultrafiltration
+  - osmoregulation
+  - homeostasis
+  - neurone
+  - action potential
+  - saltatory conduction
+  - sarcomere
+  - tropomyosin
+  - meiosis
+  - homologous chromosomes
+  - genotype
+  - phenotype
+  - codominant
+  - epistasis
+  - operon
+  - transcription factor
+  - gibberellin
+  - allele frequency
+  - Hardy-Weinberg
+  - speciation
+  - taxonomic hierarchy
+  - Simpson's index
+  - restriction endonuclease
+  - electrophoresis
+  - polymerase chain reaction
+  - recombinant DNA
+
+topics:
+
+  # ── 12 Energy and respiration ───────────────────────────────────────────────
+  "12":
+    teaching_order: 1
+    drive_folder_name: "chap 12-Respiration"
+    aliases: [respiration, cellular respiration, chapter 12, chap 12]
+    keywords: [ATP, respiration, energy, mitochondria, glucose, oxygen]
+    subtopics:
+      "12.1":
+        aliases: [energy, ATP, energy currency]
+        keywords:
+          - ATP
+          - adenosine triphosphate
+          - ADP
+          - inorganic phosphate
+          - energy currency
+          - active transport
+          - anabolic reaction
+          - substrate-linked phosphorylation
+          - chemiosmosis
+          - respiratory substrate
+          - energy value
+          - respiratory quotient
+          - RQ
+          - respirometer
+          - germinating seeds
+        lessons:
+          # Outcome 1 is a lesson in its own right, and outcomes 2-3 are
+          # another. Grouping all three together was the obvious reading of the
+          # syllabus and the wrong reading of the teaching: the first two
+          # recordings in this chapter are exactly this split, and a single
+          # combined lesson gave both of them the same name.
+          - title: The Need for Energy in Living Organisms
+            outcomes: [1]
+            aliases: [need for energy, why we need energy, uses of energy]
+            keywords:
+              - active transport
+              - sodium
+              - potassium
+              - pump
+              - carrier
+              - gradient
+              - anabolic
+              - condensation
+              - movement
+              - contraction
+              - impulse
+              - neurone
+              - replication
+              - bioluminescence
+              - firefly
+              - luciferin
+          - title: Structure and Properties of ATP
+            outcomes: [2, 3]
+            aliases: [structure of ATP, ATP structure, energy currency,
+                      universal energy currency, properties of ATP]
+            # Note what is NOT here: bare "ATP". Every lecture in this chapter
+            # says it constantly, so as a keyword it fires everywhere and
+            # discriminates nothing — it pulled two unrelated lectures onto
+            # this node before it was removed. Keywords have to be the terms
+            # that separate *this* lesson from its siblings, which is not the
+            # same as the terms the lesson is about.
+            keywords:
+              - adenosine
+              - adenine
+              - ribose
+              - nucleotide
+              - phosphorylated
+              - hydrolysis
+              - ADP
+              - inorganic phosphate
+              - currency
+              - universal
+              - soluble
+              - diffuse
+              - unstable
+              - substrate-linked
+          - title: Respiratory Substrates and Energy Values
+            outcomes: [4]
+            aliases: [energy values, respiratory substrates]
+            keywords:
+              - carbohydrate
+              - lipid
+              - protein
+              - energy value
+              - kJ per gram
+              - hydrogen atoms
+              - fatty acid
+              - deamination
+          - title: The Respiratory Quotient
+            outcomes: [5, 6]
+            aliases: [RQ, respiratory quotient, RQ calculations]
+            keywords:
+              - respiratory quotient
+              - RQ
+              - carbon dioxide produced
+              - oxygen taken in
+              - ratio
+              - RQ value
+              - equation for respiration
+              - RQ of glucose
+              - RQ of lipid
+          - title: Investigating RQ with a Respirometer
+            outcomes: [7]
+            aliases: [respirometer, RQ practical]
+            keywords:
+              - respirometer
+              - soda lime
+              - potassium hydroxide
+              - manometer
+              - capillary tube
+              - germinating seeds
+              - blowfly larvae
+              - control tube
+
+      "12.2":
+        aliases: [respiration, aerobic respiration, anaerobic respiration]
+        keywords:
+          - glycolysis
+          - link reaction
+          - Krebs cycle
+          - oxidative phosphorylation
+          - mitochondria
+          - anaerobic
+          - fermentation
+        lessons:
+          # Keywords are kept to one or two tokens throughout. A multi-word
+          # keyword only counts when every one of its tokens appears in the
+          # same window, so "glycolysis in the cytoplasm" almost never fires
+          # while "cytoplasm" reliably does.
+          - title: Overview of Aerobic Respiration
+            outcomes: [1]
+            aliases: [four stages, stages of respiration, overview,
+                      definition of respiration]
+            keywords:
+              - four stages
+              - oxidation
+              - food molecules
+              - release energy
+              - aerobic
+              - anaerobic
+              - cytoplasm
+              - matrix
+              - eukaryotic
+          - title: Glycolysis
+            outcomes: [2]
+            aliases: [glycolysis]
+            keywords:
+              - glycolysis
+              - phosphorylation of glucose
+              - hexose bisphosphate
+              - fructose 1,6-bisphosphate
+              - 6C
+              - triose phosphate
+              - 3C
+              - oxidised to pyruvate
+              - net gain of ATP
+              - reduced NAD
+              - cytoplasm
+          - title: The Link Reaction
+            outcomes: [3, 4]
+            aliases: [link reaction, pyruvate oxidation]
+            keywords:
+              - link reaction
+              - pyruvate
+              - coenzyme A
+              - acetyl coenzyme A
+              - acetyl group
+              - 2C
+              - decarboxylation
+              - dehydrogenation
+              - mitochondrial matrix
+              - active transport of pyruvate
+          # Outcome 7 (NAD and FAD as hydrogen carriers) is taught as its own
+          # lesson before Krebs, not as part of it — the 6 Aug recording is
+          # half four-stage overview and half coenzymes, and folding 7 into
+          # the Krebs lesson left it with nowhere to land.
+          - title: Coenzymes - NAD and FAD
+            outcomes: [7]
+            aliases: [coenzymes, NAD, FAD, hydrogen carriers]
+            keywords:
+              - coenzyme
+              - cofactor
+              - NAD
+              - nicotinamide adenine dinucleotide
+              - FAD
+              - flavin adenine dinucleotide
+              - reduced NAD
+              - reduced FAD
+              - hydrogen atoms
+              - protons and electrons
+              - hydrogen carrier
+              - dehydrogenase
+              - inner mitochondrial membrane
+          - title: The Krebs Cycle
+            outcomes: [5, 6]
+            aliases: [Krebs cycle, citric acid cycle, TCA cycle]
+            keywords:
+              - Krebs cycle
+              - oxaloacetate
+              - 4C
+              - citrate
+              - 6C
+              - acetyl coenzyme A
+              - decarboxylation
+              - dehydrogenation
+              - carbon dioxide released
+              - one ATP per turn
+              - series of small steps
+          - title: Oxidative Phosphorylation and Chemiosmosis
+            outcomes: [8]
+            aliases: [oxidative phosphorylation, electron transport chain, chemiosmosis, ETC]
+            keywords:
+              - oxidative phosphorylation
+              - electron transport chain
+              - energetic electrons
+              - protons
+              - proton gradient
+              - inner mitochondrial membrane
+              - ATP synthase
+              - facilitated diffusion
+              - chemiosmosis
+              - final electron acceptor
+              - oxygen
+              - water
+          - title: Structure and Function of Mitochondria
+            outcomes: [9]
+            aliases: [mitochondria, mitochondrion structure, electron micrographs]
+            keywords:
+              - mitochondrion
+              - cristae
+              - matrix
+              - inner membrane
+              - outer membrane
+              - intermembrane space
+              - surface area
+              - electron micrograph
+              - mitochondrial DNA
+              - stalked particles
+          - title: Anaerobic Respiration and Energy Yield
+            outcomes: [10, 11]
+            aliases: [anaerobic respiration, fermentation, lactate, ethanol]
+            keywords:
+              - anaerobic
+              - lactate fermentation
+              - ethanol fermentation
+              - yeast
+              - oxygen debt
+              - regeneration of NAD
+              - energy yield
+              - much greater in aerobic
+              - lactic acid
+              - carbon dioxide and ethanol
+          - title: Adaptations of Rice to Waterlogged Conditions
+            outcomes: [12]
+            aliases: [rice, waterlogging, aerenchyma]
+            keywords:
+              - rice
+              - submerged roots
+              - aerenchyma
+              - ethanol fermentation in roots
+              - faster growth of stems
+              - waterlogged
+              - flooded
+              - paddy field
+          - title: Investigating the Rate of Respiration
+            outcomes: [13, 14]
+            aliases: [respiration practical, redox indicators, DCPIP]
+            keywords:
+              - DCPIP
+              - methylene blue
+              - redox indicator
+              - colour change
+              - yeast
+              - substrate concentration
+              - temperature
+              - rate of respiration
+              - respirometer
+              - practical investigation
+
+  # ── 13 Photosynthesis ───────────────────────────────────────────────────────
+  "13":
+    teaching_order: 2
+    aliases: [photosynthesis, chapter 13]
+    keywords: [photosynthesis, chloroplast, light, carbon dioxide, glucose]
+    subtopics:
+      "13.1":
+        aliases: [photosynthesis, light dependent stage, light independent stage]
+        keywords:
+          - chloroplast
+          - thylakoid
+          - granum
+          - stroma
+          - chlorophyll
+          - photosystem
+          - photophosphorylation
+          - Calvin cycle
+          - rubisco
+          - RuBP
+          - GP
+          - TP
+          - reduced NADP
+        lessons:
+          - title: Structure and Function of Chloroplasts
+            outcomes: [1, 3]
+            aliases: [chloroplast structure]
+            keywords: [chloroplast, thylakoid, thylakoid space, grana, granum,
+                       stroma, envelope, electron micrograph, starch grain]
+          - title: Overview of the Two Stages of Photosynthesis
+            outcomes: [2]
+            aliases: [two stages, overview of photosynthesis]
+            keywords: [light-dependent stage, light-independent stage, ATP,
+                       reduced NADP, Calvin cycle, complex organic molecules]
+          - title: Photosynthetic Pigments and Chromatography
+            outcomes: [4, 5, 6]
+            aliases: [pigments, chromatography, absorption spectrum, action spectrum]
+            keywords: [chlorophyll a, chlorophyll b, carotene, xanthophyll,
+                       absorption spectrum, action spectrum, chromatography,
+                       Rf value, solvent front, light absorption]
+          - title: The Light-Dependent Stage
+            outcomes: [7, 8, 9, 10]
+            aliases: [light dependent reaction, photophosphorylation, photolysis]
+            keywords: [cyclic photophosphorylation, non-cyclic photophosphorylation,
+                       photosystem I, PSI, photosystem II, PSII, photoactivation,
+                       oxygen-evolving complex, photolysis of water, electron
+                       transport chain, ATP synthase, reduced NADP]
+          - title: The Calvin Cycle
+            outcomes: [11, 12]
+            aliases: [Calvin cycle, light independent stage, carbon fixation]
+            keywords: [rubisco, ribulose bisphosphate, RuBP, glycerate 3-phosphate,
+                       GP, triose phosphate, TP, carbon fixation, regeneration of
+                       RuBP, amino acids, carbohydrates, lipids]
+      "13.2":
+        aliases: [limiting factors, rate of photosynthesis]
+        keywords: [limiting factor, light intensity, carbon dioxide concentration,
+                   temperature, rate of photosynthesis, DCPIP, aquatic plant]
+        lessons:
+          # Its siblings are both practicals, so the shared vocabulary (light
+          # intensity, temperature, rate) cannot select this one. The theory
+          # terms below are what distinguish it.
+          - title: Limiting Factors of Photosynthesis
+            outcomes: [1, 2]
+            aliases: [limiting factors, law of limiting factors]
+            keywords: [limiting factor, plateau, saturation, optimum,
+                       levels off, denatured, graph, curve, plotted,
+                       light intensity, temperature]
+          - title: Investigating Photosynthesis with Redox Indicators
+            outcomes: [3]
+            aliases: [chloroplast suspension, DCPIP practical, Hill reaction]
+            keywords: [DCPIP, methylene blue, redox indicator, chloroplast
+                       suspension, light intensity, light wavelength, colour change]
+          - title: Investigating Photosynthesis in Whole Plants
+            outcomes: [4]
+            aliases: [whole plant practical, aquatic plant]
+            keywords: [aquatic plant, pondweed, bubbles of oxygen, light intensity,
+                       carbon dioxide concentration, temperature, rate of photosynthesis]
+
+  # ── 14 Homeostasis ──────────────────────────────────────────────────────────
+  "14":
+    teaching_order: 3
+    aliases: [homeostasis, chapter 14]
+    keywords: [homeostasis, negative feedback, kidney, blood glucose, stomata]
+    subtopics:
+      "14.1":
+        aliases: [homeostasis in mammals, kidney, excretion, blood glucose]
+        keywords: [homeostasis, negative feedback, receptor, effector, urea,
+                   deamination, nephron, glomerulus, ultrafiltration, ADH,
+                   insulin, glucagon, biosensor]
+        lessons:
+          - title: Principles of Homeostasis
+            outcomes: [1, 2]
+            aliases: [homeostasis, negative feedback, set point]
+            keywords: [homeostasis, internal environment, stimulus, receptor,
+                       coordination system, effector, negative feedback, set point,
+                       nervous system, endocrine system]
+          - title: Excretion and the Structure of the Kidney
+            outcomes: [3, 4]
+            aliases: [excretion, kidney structure, urea]
+            keywords: [urea, deamination, excess amino acids, liver, fibrous
+                       capsule, cortex, medulla, renal pelvis, ureter, renal artery,
+                       renal vein]
+          - title: The Nephron and the Formation of Urine
+            outcomes: [5, 6, 7]
+            aliases: [nephron, ultrafiltration, selective reabsorption]
+            keywords: [nephron, glomerulus, Bowman's capsule, proximal convoluted
+                       tubule, loop of Henle, distal convoluted tubule, collecting
+                       duct, ultrafiltration, glomerular filtrate, selective
+                       reabsorption, podocyte, basement membrane, microvilli]
+          - title: Osmoregulation and ADH
+            outcomes: [8]
+            aliases: [osmoregulation, ADH, antidiuretic hormone]
+            keywords: [osmoregulation, hypothalamus, posterior pituitary,
+                       antidiuretic hormone, ADH, aquaporin, collecting duct,
+                       water potential of blood, osmoreceptor]
+          - title: Cell Signalling and Control of Blood Glucose
+            outcomes: [9, 10]
+            aliases: [blood glucose, insulin, glucagon, cell signalling]
+            keywords: [cell signalling, cell surface receptor, G protein, adenylyl
+                       cyclase, cyclic AMP, second messenger, glucagon, insulin,
+                       glycogenolysis, glycogenesis, liver cells, muscle cells,
+                       negative feedback]
+          - title: Test Strips and Biosensors
+            outcomes: [11]
+            aliases: [biosensor, test strips, glucose testing]
+            keywords: [test strip, biosensor, glucose oxidase, peroxidase, colour
+                       change, blood glucose concentration, urine]
+      "14.2":
+        aliases: [homeostasis in plants, stomata]
+        keywords: [stomata, guard cells, abscisic acid, water stress, turgor]
+        lessons:
+          - title: Stomata and Guard Cells
+            outcomes: [1, 2, 3]
+            aliases: [stomata, guard cells, stomatal aperture]
+            keywords: [stoma, stomata, guard cell, stomatal aperture, turgid,
+                       flaccid, potassium ions, transpiration, daily rhythm,
+                       carbon dioxide uptake, water loss]
+          - title: Abscisic Acid and Water Stress
+            outcomes: [4]
+            aliases: [abscisic acid, ABA, water stress]
+            keywords: [abscisic acid, ABA, water stress, stomatal closure,
+                       calcium ions, second messenger, receptor]
+
+  # ── 15 Control and coordination ─────────────────────────────────────────────
+  "15":
+    teaching_order: 4
+    aliases: [control and coordination, chapter 15, nervous system]
+    keywords: [neurone, action potential, synapse, muscle, hormone, auxin]
+    subtopics:
+      "15.1":
+        aliases: [control and coordination in mammals, nervous system, muscles]
+        keywords: [neurone, action potential, resting potential, synapse,
+                   saltatory conduction, sarcomere, sliding filament]
+        lessons:
+          - title: The Endocrine System and the Nervous System Compared
+            outcomes: [1, 2]
+            aliases: [endocrine system, hormones, comparison]
+            keywords: [endocrine system, hormone, ADH, glucagon, insulin, target
+                       cell, bloodstream, nervous system, electrical impulse,
+                       speed of response, duration of response]
+          - title: Neurones and Sensory Receptors
+            outcomes: [3, 4, 5]
+            aliases: [neurone structure, receptors, transducer]
+            keywords: [sensory neurone, motor neurone, intermediate neurone,
+                       cell body, dendron, axon, myelin sheath, Schwann cell,
+                       node of Ranvier, receptor cell, transducer, taste bud,
+                       chemoreceptor, generator potential]
+          - title: Resting Potential and the Action Potential
+            outcomes: [6]
+            aliases: [action potential, resting potential, depolarisation]
+            keywords: [resting potential, sodium-potassium pump, potassium ion,
+                       sodium ion, voltage-gated channel, depolarisation,
+                       repolarisation, hyperpolarisation, threshold, all-or-nothing,
+                       millivolts, membrane potential]
+          - title: Transmission of Impulses and the Refractory Period
+            outcomes: [7, 8]
+            aliases: [saltatory conduction, myelination, refractory period]
+            keywords: [saltatory conduction, myelinated, node of Ranvier, local
+                       circuit, speed of conduction, refractory period, frequency
+                       of impulses]
+          - title: Synapses
+            outcomes: [9]
+            aliases: [synapse, cholinergic synapse, neurotransmitter]
+            keywords: [cholinergic synapse, synaptic cleft, presynaptic,
+                       postsynaptic, acetylcholine, vesicle, calcium ions,
+                       receptor, acetylcholinesterase, exocytosis]
+          - title: Muscle Structure and the Neuromuscular Junction
+            outcomes: [10, 11]
+            aliases: [striated muscle, sarcomere, neuromuscular junction]
+            keywords: [neuromuscular junction, T-tubule, sarcoplasmic reticulum,
+                       striated muscle, myofibril, sarcomere, actin, myosin,
+                       A band, I band, Z line, H zone, electron micrograph]
+          - title: The Sliding Filament Model
+            outcomes: [12]
+            aliases: [sliding filament, muscle contraction]
+            keywords: [sliding filament, actin, myosin head, cross bridge,
+                       troponin, tropomyosin, calcium ions, ATP, ATPase,
+                       power stroke, binding site]
+      "15.2":
+        aliases: [control and coordination in plants, plant responses]
+        keywords: [Venus fly trap, auxin, gibberellin, elongation growth]
+        lessons:
+          - title: Rapid Responses in Plants - the Venus Fly Trap
+            outcomes: [1]
+            aliases: [Venus fly trap, rapid plant response]
+            keywords: [Venus fly trap, sensory hairs, receptor potential, action
+                       potential, turgor, closure of the trap, modified leaves]
+          - title: Auxin and Elongation Growth
+            outcomes: [2]
+            aliases: [auxin, cell elongation, acid growth]
+            keywords: [auxin, IAA, proton pumping, acidify cell walls, expansin,
+                       elongation growth, cell wall loosening]
+          - title: Gibberellin and Germination
+            outcomes: [3]
+            aliases: [gibberellin, germination, barley, amylase]
+            keywords: [gibberellin, barley, aleurone layer, amylase, germination,
+                       endosperm, starch]
+
+  # ── 16 Inheritance ──────────────────────────────────────────────────────────
+  "16":
+    teaching_order: 5
+    aliases: [inheritance, genetics, chapter 16, inherited change]
+    keywords: [meiosis, allele, genotype, phenotype, cross, operon]
+    subtopics:
+      "16.1":
+        aliases: [meiosis, passage of information, gametes]
+        keywords: [haploid, diploid, homologous chromosomes, meiosis, crossing
+                   over, independent assortment, gametes, fertilisation]
+        lessons:
+          - title: Haploid, Diploid and Homologous Chromosomes
+            outcomes: [1, 2]
+            aliases: [haploid, diploid, homologous pairs]
+            keywords: [haploid, diploid, 2n, n, homologous pair, chromosome,
+                       chromatid, centromere, locus]
+          - title: Meiosis
+            outcomes: [3, 4, 5]
+            aliases: [meiosis, reduction division]
+            keywords: [meiosis, reduction division, prophase I, metaphase I,
+                       anaphase I, telophase I, meiosis II, bivalent, chiasma,
+                       spindle, nuclear envelope, photomicrograph]
+          - title: Genetic Variation from Meiosis and Fertilisation
+            outcomes: [6, 7]
+            aliases: [crossing over, independent assortment, genetic variation]
+            keywords: [crossing over, random orientation, independent assortment,
+                       sister chromatids, genetically different gametes, random
+                       fusion of gametes, variation]
+      "16.2":
+        aliases: [genetic crosses, monohybrid, dihybrid, genetic diagrams]
+        keywords: [allele, dominant, recessive, codominant, genotype, phenotype,
+                   Punnett square, test cross, linkage, epistasis, chi-squared]
+        lessons:
+          - title: Genetic Terminology
+            outcomes: [1]
+            aliases: [genetics terms, definitions]
+            keywords: [gene, locus, allele, dominant, recessive, codominant,
+                       linkage, test cross, F1, F2, phenotype, genotype,
+                       homozygous, heterozygous]
+          - title: Monohybrid and Dihybrid Crosses
+            outcomes: [2]
+            aliases: [monohybrid cross, dihybrid cross, Punnett square]
+            # Quoted: unquoted "3:1" is read by YAML as a sexagesimal integer.
+            keywords: [monohybrid cross, dihybrid cross, Punnett square, genetic
+                       diagram, ratio, "3:1", "9:3:3:1", codominance,
+                       multiple alleles, sex linkage]
+          - title: Autosomal Linkage and Epistasis
+            outcomes: [3]
+            aliases: [linkage, epistasis]
+            keywords: [autosomal linkage, epistasis, recombination, parental
+                       phenotypes, recombinant, expected ratio, gene interaction]
+          - title: Test Crosses
+            outcomes: [4]
+            aliases: [test cross, back cross]
+            keywords: [test cross, homozygous recessive, unknown genotype,
+                       offspring ratio]
+          - title: The Chi-squared Test
+            outcomes: [5]
+            aliases: [chi squared, statistical test, significance]
+            keywords: [chi-squared test, observed, expected, degrees of freedom,
+                       probability, critical value, null hypothesis, significance]
+          - title: Genes, Proteins and Phenotype
+            outcomes: [6, 7]
+            aliases: [gene to phenotype, albinism, sickle cell]
+            keywords: [TYR gene, tyrosinase, albinism, HBB gene, haemoglobin,
+                       sickle cell anaemia, F8 gene, factor VIII, haemophilia,
+                       gibberellin, Le allele, stem elongation]
+      "16.3":
+        aliases: [gene control, gene expression, operon]
+        keywords: [structural gene, regulatory gene, lac operon, transcription
+                   factor, DELLA, gibberellin]
+        lessons:
+          - title: Structural and Regulatory Genes
+            outcomes: [1]
+            aliases: [structural genes, regulatory genes]
+            keywords: [structural gene, regulatory gene, repressible enzyme,
+                       inducible enzyme, repressor]
+          - title: The lac Operon
+            outcomes: [2]
+            aliases: [lac operon, prokaryote gene control]
+            keywords: [lac operon, lactose, E. coli, promoter, operator,
+                       repressor protein, lacZ, beta-galactosidase, RNA polymerase,
+                       inducible]
+          - title: Transcription Factors in Eukaryotes
+            outcomes: [3]
+            aliases: [transcription factors, eukaryote gene control]
+            keywords: [transcription factor, promoter, rate of transcription,
+                       gene expression, binds to DNA]
+          - title: Gibberellin and DELLA Proteins
+            outcomes: [4]
+            aliases: [DELLA, gibberellin gene activation]
+            keywords: [gibberellin, DELLA protein, repressor, breakdown,
+                       transcription factor, gene activation]
+
+  # ── 17 Selection and evolution ──────────────────────────────────────────────
+  "17":
+    teaching_order: 6
+    aliases: [selection and evolution, chapter 17, evolution]
+    keywords: [variation, natural selection, evolution, speciation, allele frequency]
+    subtopics:
+      "17.1":
+        aliases: [variation]
+        keywords: [phenotypic variation, continuous variation, discontinuous
+                   variation, t-test, genetic factors, environmental factors]
+        lessons:
+          - title: Causes of Phenotypic Variation
+            outcomes: [1]
+            aliases: [variation, genetic and environmental]
+            keywords: [phenotypic variation, genetic factors, environmental
+                       factors, combination]
+          - title: Continuous and Discontinuous Variation
+            outcomes: [2, 3]
+            aliases: [continuous variation, discontinuous variation]
+            keywords: [continuous variation, discontinuous variation, polygenes,
+                       normal distribution, distinct categories, single gene]
+          - title: The t-test
+            outcomes: [4]
+            aliases: [t test, statistics]
+            keywords: [t-test, means, two samples, standard deviation, degrees of
+                       freedom, significance, probability]
+      "17.2":
+        aliases: [natural selection, artificial selection, selective breeding]
+        keywords: [natural selection, stabilising, disruptive, directional,
+                   genetic drift, founder effect, bottleneck, Hardy-Weinberg,
+                   antibiotic resistance, selective breeding]
+        lessons:
+          - title: Natural Selection
+            outcomes: [1]
+            aliases: [natural selection, survival of the fittest]
+            keywords: [natural selection, struggle for existence, competition,
+                       selection pressure, advantageous allele, reproductive
+                       success, adapted]
+          - title: Stabilising, Disruptive and Directional Selection
+            outcomes: [2]
+            aliases: [types of selection]
+            keywords: [stabilising selection, disruptive selection, directional
+                       selection, environmental factors, phenotype distribution]
+          - title: Genetic Drift, Founder Effect and Bottlenecks
+            outcomes: [3]
+            aliases: [genetic drift, founder effect, bottleneck]
+            keywords: [genetic drift, founder effect, bottleneck effect, allele
+                       frequency, small population, chance]
+          - title: Antibiotic Resistance
+            outcomes: [4]
+            aliases: [antibiotic resistance, bacteria]
+            keywords: [antibiotic resistance, bacteria, mutation, plasmid,
+                       selection pressure, MRSA, resistant strain]
+          - title: The Hardy-Weinberg Principle
+            outcomes: [5]
+            aliases: [Hardy Weinberg, allele frequency calculations]
+            keywords: [Hardy-Weinberg, allele frequency, genotype frequency,
+                       p squared, two pq, q squared, equilibrium, conditions]
+          - title: Selective Breeding
+            outcomes: [6, 7]
+            aliases: [artificial selection, selective breeding]
+            keywords: [selective breeding, artificial selection, disease
+                       resistance, wheat, rice, inbreeding, hybridisation,
+                       hybrid vigour, maize, dairy cattle, milk yield]
+      "17.3":
+        aliases: [evolution, speciation]
+        keywords: [evolution, gene pool, speciation, allopatric, sympatric,
+                   molecular evidence]
+        lessons:
+          - title: The Theory of Evolution
+            outcomes: [1]
+            aliases: [evolution theory, Darwin]
+            keywords: [evolution, new species, pre-existing species, gene pool,
+                       generation to generation, Darwin, Wallace]
+          - title: Molecular Evidence for Evolution
+            outcomes: [2]
+            aliases: [DNA sequence data, molecular evidence]
+            keywords: [DNA sequence data, evolutionary relationship, common
+                       ancestor, mitochondrial DNA, amino acid sequence,
+                       phylogenetic tree]
+          - title: Speciation
+            outcomes: [3]
+            aliases: [speciation, allopatric, sympatric]
+            keywords: [speciation, genetic isolation, geographical separation,
+                       allopatric, ecological separation, behavioural separation,
+                       sympatric, reproductive isolation]
+
+  # ── 18 Classification, biodiversity and conservation ────────────────────────
+  "18":
+    teaching_order: 7
+    aliases: [classification biodiversity and conservation, chapter 18, ecology]
+    keywords: [species, domain, kingdom, biodiversity, quadrat, conservation]
+    subtopics:
+      "18.1":
+        aliases: [classification, taxonomy]
+        keywords: [species concept, domain, Archaea, Bacteria, Eukarya, kingdom,
+                   phylum, class, order, family, genus, virus]
+        lessons:
+          - title: The Species Concept
+            outcomes: [1]
+            aliases: [species, species concept]
+            keywords: [biological species concept, morphological species concept,
+                       ecological species concept, interbreed, fertile offspring]
+          - title: The Three Domains
+            outcomes: [2, 3]
+            aliases: [three domains, Archaea, Bacteria, Eukarya]
+            keywords: [domain, Archaea, Bacteria, Eukarya, prokaryote, membrane
+                       lipids, ribosomal RNA, cell wall composition]
+          - title: The Taxonomic Hierarchy and the Kingdoms
+            outcomes: [4, 5]
+            aliases: [taxonomic hierarchy, kingdoms, binomial]
+            keywords: [kingdom, phylum, class, order, family, genus, species,
+                       Protoctista, Fungi, Plantae, Animalia, taxonomic hierarchy,
+                       binomial name]
+          - title: Classification of Viruses
+            outcomes: [6]
+            aliases: [viruses, virus classification]
+            keywords: [virus, nucleic acid, RNA, DNA, single stranded,
+                       double stranded, not living]
+      "18.2":
+        aliases: [biodiversity, sampling, ecology practical]
+        keywords: [ecosystem, niche, random sampling, quadrat, transect,
+                   mark-release-recapture, Simpson's index, Spearman, Pearson]
+        lessons:
+          - title: Ecosystems, Niches and Levels of Biodiversity
+            outcomes: [1, 2]
+            aliases: [ecosystem, niche, biodiversity levels]
+            keywords: [ecosystem, niche, habitat, species richness, species
+                       evenness, genetic diversity, relative abundance]
+          - title: Random Sampling and Field Techniques
+            outcomes: [3, 4]
+            aliases: [sampling, quadrats, transects, mark release recapture]
+            keywords: [random sampling, bias, frame quadrat, line transect, belt
+                       transect, mark-release-recapture, Lincoln index, abundance,
+                       distribution, percentage cover]
+          - title: Correlation Tests
+            outcomes: [5]
+            aliases: [Spearman, Pearson, correlation]
+            keywords: [Spearman's rank correlation, Pearson's linear correlation,
+                       biotic factor, abiotic factor, significance, correlation
+                       coefficient]
+          - title: Simpson's Index of Diversity
+            outcomes: [6]
+            aliases: [Simpson's index, diversity index]
+            keywords: [Simpson's index of diversity, D value, species richness,
+                       relative abundance, calculation]
+      "18.3":
+        aliases: [conservation, endangered species]
+        keywords: [extinction, conservation, zoo, seed bank, IVF, IUCN, CITES,
+                   invasive species]
+        lessons:
+          - title: Causes of Extinction
+            outcomes: [1]
+            aliases: [extinction]
+            keywords: [extinction, climate change, competition, hunting, habitat
+                       loss, habitat degradation, endangered]
+          - title: Reasons for Maintaining Biodiversity
+            outcomes: [2]
+            aliases: [why conserve, importance of biodiversity]
+            keywords: [maintain biodiversity, ecological, economic, ethical,
+                       aesthetic, agricultural, medicinal]
+          - title: Methods of Conservation
+            outcomes: [3, 4]
+            aliases: [conservation methods, ex situ, in situ, assisted reproduction]
+            keywords: [zoo, botanic garden, national park, marine park, frozen
+                       zoo, seed bank, captive breeding, IVF, embryo transfer,
+                       surrogacy, in situ, ex situ]
+          - title: Invasive Alien Species
+            outcomes: [5]
+            aliases: [invasive species, alien species]
+            keywords: [invasive alien species, competition, no natural predators,
+                       control, native species]
+          - title: The Roles of IUCN and CITES
+            outcomes: [6]
+            aliases: [IUCN, CITES, red list]
+            keywords: [IUCN, red list, CITES, international trade, endangered
+                       species, convention, legislation]
+
+  # ── 19 Genetic technology ───────────────────────────────────────────────────
+  "19":
+    teaching_order: 8
+    aliases: [genetic technology, chapter 19, genetic engineering, biotechnology]
+    keywords: [recombinant DNA, plasmid, PCR, electrophoresis, gene therapy, GMO]
+    subtopics:
+      "19.1":
+        aliases: [principles of genetic technology, genetic engineering]
+        keywords: [recombinant DNA, restriction endonuclease, DNA ligase,
+                   plasmid, vector, reverse transcriptase, promoter, marker gene,
+                   gene editing, PCR, gel electrophoresis, microarray]
+        lessons:
+          - title: Recombinant DNA and Genetic Engineering
+            outcomes: [1, 2, 3]
+            aliases: [recombinant DNA, genetic engineering, gene sources]
+            keywords: [recombinant DNA, genetic engineering, transgenic, donor
+                       organism, mRNA, reverse transcriptase, synthesised
+                       chemically, gene transfer]
+          - title: Enzymes, Vectors and Marker Genes
+            outcomes: [4, 5, 6]
+            aliases: [restriction enzymes, plasmids, vectors, markers]
+            keywords: [restriction endonuclease, sticky ends, DNA ligase, plasmid,
+                       vector, DNA polymerase, reverse transcriptase, promoter,
+                       marker gene, fluorescent product, GFP]
+          - title: Gene Editing
+            outcomes: [7]
+            aliases: [gene editing, CRISPR]
+            keywords: [gene editing, insertion, deletion, replacement, specific
+                       site, genome]
+          - title: The Polymerase Chain Reaction
+            outcomes: [8]
+            aliases: [PCR, DNA amplification]
+            keywords: [polymerase chain reaction, PCR, Taq polymerase, primer,
+                       denaturation, annealing, extension, thermal cycler, amplify]
+          - title: Gel Electrophoresis
+            outcomes: [9]
+            aliases: [electrophoresis, DNA fragments]
+            keywords: [gel electrophoresis, agarose, DNA fragments, negatively
+                       charged, electric field, separation by length, DNA probe]
+          - title: Microarrays and Bioinformatics
+            outcomes: [10, 11]
+            aliases: [microarray, databases, bioinformatics]
+            keywords: [microarray, gene expression, mRNA, genome analysis,
+                       database, nucleotide sequence, amino acid sequence,
+                       protein structure, bioinformatics]
+      "19.2":
+        aliases: [genetic technology in medicine, gene therapy]
+        keywords: [recombinant protein, insulin, factor VIII, genetic screening,
+                   BRCA1, gene therapy, SCID]
+        lessons:
+          - title: Recombinant Human Proteins
+            outcomes: [1]
+            aliases: [recombinant proteins, insulin production]
+            keywords: [recombinant human protein, insulin, factor VIII, adenosine
+                       deaminase, purity, supply, rejection, ethical]
+          - title: Genetic Screening
+            outcomes: [2]
+            aliases: [genetic screening, genetic testing]
+            keywords: [genetic screening, BRCA1, BRCA2, breast cancer,
+                       Huntington's disease, cystic fibrosis, carrier, prenatal]
+          - title: Gene Therapy
+            outcomes: [3]
+            aliases: [gene therapy]
+            keywords: [gene therapy, SCID, severe combined immunodeficiency,
+                       inherited eye disease, vector, somatic cells]
+          - title: Social and Ethical Considerations
+            outcomes: [4]
+            aliases: [ethics of genetic technology]
+            keywords: [social implications, ethical implications, consent,
+                       insurance, discrimination, genetic screening, gene therapy]
+      "19.3":
+        aliases: [GMOs in agriculture, genetically modified organisms]
+        keywords: [GM salmon, herbicide resistance, insect resistance, Bt,
+                   golden rice, GMO ethics]
+        lessons:
+          - title: Genetically Modified Organisms in Agriculture
+            outcomes: [1]
+            aliases: [GM crops, GM animals]
+            keywords: [genetically modified, GM salmon, herbicide resistance,
+                       insect resistance, Bt toxin, golden rice, yield,
+                       food security]
+          - title: Ethical and Social Implications of GMOs
+            outcomes: [2]
+            aliases: [GMO ethics, GM debate]
+            keywords: [ethical implications, social implications, GMO, food
+                       production, cross-pollination, monoculture, labelling]

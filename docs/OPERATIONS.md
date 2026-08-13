@@ -87,7 +87,7 @@ The reconciler should catch 1 and 2 on its own within ten minutes. If it hasn't,
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `ffmpeg not found` | Not on PATH | Install it; restart the worker |
+| `ffmpeg not found` | Not on PATH | Install it; restart the worker. Only the Zoom audio-extraction step needs it — transcription itself decodes through PyAV |
 | CUDA out of memory | Model too large for the card, or concurrent jobs | `gpu` concurrency to 1; drop to `medium`; or `compute_type: int8_float16` |
 | Empty transcript | Silent or corrupt audio | Check the source; verify the M4A downloaded fully |
 | Repeated identical sentences | `condition_on_previous_text` is on | Set it to `false` — this is exactly the loop it causes |

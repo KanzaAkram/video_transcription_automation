@@ -216,17 +216,30 @@ def load_taxonomy(path: Path | str) -> Taxonomy:
     _link(taxonomy.pending_nodes, None, index)
     taxonomy._index = index
 
-    unverified = [n.id for n in taxonomy.all_nodes() if not n.verified]
-    if unverified:
+    # Warn about *text that might be wrong*, not about every node whose
+    # `verified` flag is false. A hand-added lesson node is unverified by
+    # design — it is teaching structure, not syllabus content — and warning
+    # about it on every load would be a permanent, expected warning, which is
+    # the fastest way to train someone to ignore warnings entirely.
+    #
+    # The real risk is learning-outcome text that was typed rather than
+    # extracted, because that is what retrieval scores against.
+    suspect = [
+        n.id
+        for n in taxonomy.all_nodes()
+        if any(not o.verified for o in n.learning_outcomes)
+        or (not n.verified and not n.learning_outcomes)
+    ]
+    if suspect:
         log.warning(
-            "%s: %d of %d syllabus nodes are unverified (%s%s). "
-            "Check them against the syllabus PDF before production use — "
+            "%s: %d of %d syllabus nodes carry unverified learning-outcome text "
+            "(%s%s). Check them against the syllabus PDF before production use — "
             "see the header of %s.",
             taxonomy.subject_id,
-            len(unverified),
+            len(suspect),
             len(taxonomy.all_nodes()),
-            ", ".join(unverified[:3]),
-            "..." if len(unverified) > 3 else "",
+            ", ".join(suspect[:3]),
+            "..." if len(suspect) > 3 else "",
             path.name,
         )
     return taxonomy

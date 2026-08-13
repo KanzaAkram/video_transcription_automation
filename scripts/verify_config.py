@@ -74,16 +74,24 @@ def main() -> int:
 
         nodes = taxonomy.all_nodes()
         placeable = taxonomy.placeable_nodes()
-        unverified = [n for n in nodes if not n.verified]
+        # Mirrors load_taxonomy: what matters is unverified outcome *text*,
+        # since that is what retrieval scores against. A lesson node is
+        # unverified by design and is not a finding.
+        suspect = [
+            n
+            for n in nodes
+            if any(not o.verified for o in n.learning_outcomes)
+            or (not n.verified and not n.learning_outcomes)
+        ]
         report(
             OK,
             f"{subject.id}: {len(nodes)} nodes, {len(placeable)} with a Drive folder",
         )
-        if unverified:
+        if suspect:
             report(
                 WARN,
-                f"{subject.id}: {len(unverified)}/{len(nodes)} nodes unverified — "
-                "check learning outcomes against the syllabus PDF before production",
+                f"{subject.id}: {len(suspect)}/{len(nodes)} nodes carry unverified "
+                "learning-outcome text — check against the syllabus PDF before production",
             )
         if not subject.drive_root_folder_id:
             report(WARN, f"{subject.id}: drive_root_folder_id is not set")
@@ -133,19 +141,35 @@ def main() -> int:
         )
 
     # ── Local tooling ────────────────────────────────────────────────────────
+    # ffmpeg is needed to extract audio from a Zoom download, not to
+    # transcribe: faster-whisper decodes through PyAV, which carries its own
+    # ffmpeg libraries. So a missing binary blocks the Zoom path and nothing
+    # else — scripts/rename_folder.py works fine without it.
     if shutil.which("ffmpeg"):
         report(OK, "ffmpeg found on PATH")
-    elif settings.asr.provider in ("faster_whisper", "whisperx"):
-        report(FAIL, "ffmpeg not on PATH but a self-hosted ASR provider is configured")
     else:
-        report(WARN, "ffmpeg not on PATH")
-
-    if sys.version_info >= (3, 14) and settings.asr.provider == "faster_whisper":
         report(
             WARN,
-            f"Python {sys.version_info.major}.{sys.version_info.minor} may not have "
-            "ctranslate2/torch wheels yet; the ASR worker needs 3.11-3.13",
+            "ffmpeg not on PATH. Needed for audio extraction from Zoom "
+            "downloads; not needed to transcribe a local file",
         )
+
+    # Checked by importing rather than by comparing version numbers: the
+    # interpreter version is a proxy for "are there wheels", and it was wrong
+    # in both directions once ctranslate2 4.8 shipped cp314.
+    if settings.asr.provider in ("faster_whisper", "whisperx"):
+        try:
+            import faster_whisper  # noqa: F401
+
+            report(OK, "faster-whisper importable")
+        except ImportError:
+            report(
+                FAIL,
+                f'faster-whisper is not installed on Python '
+                f'{sys.version_info.major}.{sys.version_info.minor} but '
+                f'asr.provider is "{settings.asr.provider}". '
+                'Install with: pip install -e ".[asr]"',
+            )
 
     # ── Safety ───────────────────────────────────────────────────────────────
     if settings.safety.dry_run:

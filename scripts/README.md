@@ -10,8 +10,15 @@ the runbooks don't promise tools that aren't written yet.
 | `dry_run.py` | Full pipeline against a local fake Drive and fixture transcripts. **No credentials.** Start here. |
 | `verify_config.py` | Validate `.env`, `settings.yaml`, taxonomies and local tooling. No network calls. |
 | `bootstrap_drive_map.py` | Read-only. Resolve every syllabus node to a Drive folder and report how each match was made. Run before anything writes. |
+| `ingest_syllabus.py` | Turn an official syllabus PDF into a taxonomy YAML. Outcomes come out verbatim and verified; keywords and the lesson layer come from an overlay. |
+| `rename_folder.py` | Rename the recordings in **one local folder**, in place. Transcribes, classifies, renames. Nothing moves. Dry run by default. |
 
 Run order when connecting real accounts is in [docs/SETUP.md § 5](../docs/SETUP.md).
+
+`rename_folder.py` is the shortest path from "a folder of `class 4 (9 aug).mp4`"
+to "a folder of `Aug, 9 - The Krebs Cycle.mp4`", and it needs no credentials at
+all — download the folder, run it, upload the names back. See
+[docs/RENAMING.md](../docs/RENAMING.md).
 
 ## Deferred to Phase 2
 
@@ -26,7 +33,6 @@ be wasted work.
 | `process_one.py` | Run one real recording end to end | Drive + Zoom credentials |
 | `verify_zoom.py` | List recent Zoom recordings, read-only | Zoom credentials |
 | `google_oauth_setup.py` | Browser consent flow, prints a refresh token | `oauth_user` mode only |
-| `ingest_syllabus.py` | Extract a first-pass taxonomy from a syllabus PDF | — |
 | `status.py` | Daily health summary | job store |
 | `explain.py` | Why a given recording was classified as it was | job store |
 | `calibrate.py` | Confidence threshold sweep against corrections | job store + corrections |

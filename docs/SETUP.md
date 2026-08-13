@@ -121,21 +121,22 @@ Cost is a few cents per lecture. Set a spend limit in the console for peace of m
 |---|---|---|
 | Database | SQLite (default, no setup) | Postgres — change `DATABASE_URL` and run migrations |
 | Queue | Redis | Redis (managed is fine) |
-| ffmpeg | Install and put on PATH | Included in the worker container image |
+| ffmpeg | Only for the Zoom path — install and put on PATH | Included in the worker container image |
 | GPU | Optional | Needed for self-hosted ASR; skip it and use a hosted ASR provider instead |
 
 Install extras by role rather than all at once:
 
 ```bash
 pip install -e ".[dev]"                    # tests + dry run; no ML deps, seconds to install
-pip install -e ".[dev,asr,embeddings]"     # transcription worker; needs 3.11-3.13 + ffmpeg
+pip install -e ".[asr,syllabus]"           # transcription + syllabus ingestion; no GPU needed
+pip install -e ".[dev,asr,embeddings]"     # full transcription worker
 ```
 
 `[embeddings]` (semantic retrieval) is optional everywhere — without it retrieval falls back to lexical-only, which is worse at paraphrase but fully functional.
 
-`ffmpeg` is currently **not installed** on this machine. Windows: `winget install Gyan.FFmpeg`, then restart the shell.
+`ffmpeg` is currently **not installed** on this machine. Windows: `winget install Gyan.FFmpeg`, then restart the shell. It is needed to extract audio from a **Zoom** download; it is *not* needed to transcribe a local video, because faster-whisper decodes through PyAV, which carries its own ffmpeg libraries. `scripts/rename_folder.py` therefore runs on this machine as it stands.
 
-**Python versions.** The core package, the API, the tests and the dry run run on any 3.11+ — verified on this machine's 3.14.3. Only the **transcription worker** needs 3.11–3.13, because `ctranslate2`/`torch` wheels lag new CPython releases. Installing the `asr` extra on 3.14 is a no-op rather than a build failure, and `verify_config.py` reports the mismatch explicitly, so you find out from a clear message rather than a compiler error.
+**Python versions.** Everything runs on 3.11+, including the transcription worker — verified on this machine's 3.14.3. The `asr` extra used to be pinned below 3.14 because `ctranslate2` wheels lagged new CPython releases; that is no longer true (`ctranslate2` 4.8 and `faster-whisper` 1.2 both publish cp314 wheels), and the marker has been removed. `verify_config.py` now checks by importing rather than by comparing version numbers, so it reports what is actually installed.
 
 ---
 

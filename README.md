@@ -100,6 +100,8 @@ The second outcome is the safety mechanism, not a failure: a misfiled lecture is
 |---|---|
 | `scripts/verify_config.py` | Validate `.env`, settings, taxonomies, local tooling. No network calls. |
 | `scripts/bootstrap_drive_map.py` | Read-only. Resolve every syllabus node to a Drive folder and report how each match was made. |
+| `scripts/ingest_syllabus.py` | Turn an official syllabus PDF into a taxonomy YAML. Outcomes extracted verbatim. |
+| `scripts/rename_folder.py` | Rename the recordings in one local folder from what is said in them. No credentials. See [docs/RENAMING.md](docs/RENAMING.md). |
 
 [scripts/README.md](scripts/README.md) lists what exists today versus what is deferred to Phase 2.
 
@@ -133,9 +135,9 @@ The transcription worker needs more, and only the worker:
 
 | | Needed for | Note |
 |---|---|---|
-| **ffmpeg** on PATH | Audio extraction | Not currently installed here. Windows: `winget install Gyan.FFmpeg` |
-| **Python 3.11–3.13** | `[asr]` extra | `ctranslate2`/`torch` wheels lag new CPython releases. Installing `[asr]` on 3.14 is a harmless no-op rather than a build failure. |
-| **NVIDIA GPU** | Self-hosted transcription | Optional — set `asr.provider` to a hosted API instead. Both paths are supported ([ADR-004](docs/DECISIONS.md#adr-004--transcription-engine)). |
+| **ffmpeg** on PATH | Audio extraction from Zoom downloads | Not needed for `rename_folder.py` — faster-whisper decodes mp4 through PyAV, which bundles its own ffmpeg. Windows: `winget install Gyan.FFmpeg` |
+| **`[asr]` extra** | Transcription | Installs on 3.14: `ctranslate2` 4.8 and `faster-whisper` 1.2 both ship cp314 wheels. Measured here at ~5x realtime on CPU with `small`. |
+| **NVIDIA GPU** | Self-hosted transcription | Optional — CPU int8 is fast enough for a few lectures a week. Or set `asr.provider` to a hosted API ([ADR-004](docs/DECISIONS.md#adr-004--transcription-engine)). |
 | **`[embeddings]` extra** | Semantic retrieval | Optional. Pulls torch (multi-GB). Without it, retrieval is lexical-only — worse at paraphrase, but everything still works. |
 
 The split is deliberate: nothing you need to evaluate this design requires a GPU or a large download.
