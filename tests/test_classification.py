@@ -29,23 +29,46 @@ def _transcript(stub_asr, name):
 def test_finds_the_right_topic_from_content_alone(taxonomy, stub_asr):
     transcript = _transcript(stub_asr, "lecture_halogenoalkanes")
     top = _retriever(taxonomy).retrieve(transcript).top(1)[0]
-    assert top.node.id == "chem.halogenoalkanes"
+    assert top.node.id == "chem.15_1"
 
 
 def test_finds_a_subtopic_rather_than_its_parent(taxonomy, stub_asr):
-    """The lecture is about relative atomic mass specifically, even though it
-    is full of atomic-structure vocabulary."""
-    transcript = _transcript(stub_asr, "lecture_relative_atomic_mass")
-    top = _retriever(taxonomy).retrieve(transcript).top(1)[0]
-    assert top.node.id == "chem.atomic_structure.rel_atomic_mass"
+    """The lecture is full of chapter-level vocabulary, and the answer is
+    still the subtopic — that is what makes rule 1 possible.
+
+    "9. Halogenoalkanes" the chapter and 15.1 "Halogenoalkanes" the subtopic
+    carry near-identical vocabulary, so this is the hardest version of the
+    case: nothing but the depth distinguishes them.
+    """
+    transcript = _transcript(stub_asr, "lecture_halogenoalkanes")
+    result = _retriever(taxonomy).retrieve(transcript)
+    top = result.top(1)[0]
+    assert top.node.id == "chem.15_1"
+    assert top.node.depth == 1
+    chapter = next(c for c in result.candidates if c.node.id == "chem.halogenoalkanes")
+    assert top.coverage > chapter.coverage
 
 
 def test_recap_section_surfaces_as_a_secondary_topic(taxonomy, stub_asr):
     """The lecture opens with several minutes on the previous chapter, and
-    the coverage profile should show that rather than hide it."""
+    the coverage profile should show that rather than hide it.
+
+    Asserted at chapter level because that is the level the recap is *from*:
+    the recap covers 1.1 and 1.2, the new material 2.1, and they sit in
+    different Drive folders. A profile that showed only the winner would make
+    the multi-topic case invisible, which is the one case a reviewer needs.
+    """
+    from pipeline.classify.chapters import chapter_weights
+
     transcript = _transcript(stub_asr, "lecture_relative_atomic_mass")
-    profile = _retriever(taxonomy).retrieve(transcript).coverage_profile()
-    assert profile["chem.atomic_structure.rel_atomic_mass"] > profile["chem.atomic_structure"] > 0
+    result = _retriever(taxonomy).retrieve(transcript)
+    profile = result.coverage_profile()
+    # The recap and the new material both show up, as separate subtopics.
+    assert profile["chem.1_2"] > 0  # isotopes — the recap
+    assert profile["chem.2_1"] > 0  # relative atomic mass — the new material
+    weights = chapter_weights(result, taxonomy)
+    assert len(weights) > 1, "a lecture that spans chapters must look like one"
+    assert abs(sum(weights.values()) - 1.0) < 1e-9
 
 
 def test_unrelated_topics_get_no_coverage(taxonomy, stub_asr):
@@ -60,15 +83,54 @@ def test_unrelated_topics_get_no_coverage(taxonomy, stub_asr):
     assert "chem.hydrocarbons" not in profile
 
 
+def test_coverage_and_share_are_equal_when_every_window_matched(taxonomy, stub_asr):
+    """The identity the two measures are built on.
+
+    `share` divides by the windows that matched anything, `coverage` by all of
+    them, so they coincide exactly when nothing was unmatched. Both fixtures
+    are wall-to-wall chemistry against the full 51-subtopic syllabus, so this
+    is the case they exercise.
+    """
+    transcript = _transcript(stub_asr, "lecture_halogenoalkanes")
+    result = _retriever(taxonomy).retrieve(transcript)
+    assert result.unmatched_windows == 0
+    for candidate in result.candidates:
+        assert candidate.share == candidate.coverage
+
+
 def test_coverage_and_share_answer_different_questions(taxonomy, stub_asr):
     """`coverage` is share of the whole lecture; `share` is share of the part
     that could be classified at all. A lecture padded with admin should not
-    look uncertain when its subject matter is unambiguous."""
+    look uncertain when its subject matter is unambiguous.
+
+    The padding is added here rather than baked into a fixture so the test
+    states its own premise: fifteen minutes of genuinely contentless talk on
+    the end of an otherwise unambiguous lecture.
+    """
     transcript = _transcript(stub_asr, "lecture_halogenoalkanes")
+    last = transcript.segments[-1].end_s
+    padding = [
+        "Right, that is us for today. Before you go, a few notices from the office.",
+        "The hall is being used on Thursday so we are in the room across the corridor.",
+        "Anyone who has not handed in the permission slip, please see me at the front.",
+        "Can whoever borrowed the spare whiteboard pens bring them back. That is all.",
+    ]
+    for i, text in enumerate(padding):
+        transcript.segments.append(
+            type(transcript.segments[0])(
+                start_s=last + i * 240, end_s=last + (i + 1) * 240, text=text
+            )
+        )
+    transcript.duration_s = transcript.segments[-1].end_s  # `text` derives itself
+
     result = _retriever(taxonomy).retrieve(transcript)
     top = result.top(1)[0]
-    assert result.unmatched_windows > 0
+    assert result.unmatched_windows > 0, "the padding carries no subject vocabulary"
+    # Same lecture, same dominance — but coverage is diluted by the notices
+    # and share is not. Share is what confidence is built on, which is why
+    # reading the register does not make a lecture look ambiguous.
     assert top.share > top.coverage
+    assert top.node.id == "chem.15_1"
 
 
 def test_windows_overlap_so_transitions_are_not_lost(taxonomy, stub_asr):
@@ -92,20 +154,35 @@ def test_unambiguous_lecture_clears_the_threshold(taxonomy, stub_asr, recording_
     transcript = _transcript(stub_asr, "lecture_halogenoalkanes")
     service = _service(taxonomy)
     classification, _ = service.run(recording, transcript)
-    assert classification.primary.node_id == "chem.halogenoalkanes"
+    assert classification.primary.node_id == "chem.15_1"
+    assert classification.chapter_node_id == "chem.halogenoalkanes"
+    assert classification.topic_node_ids == ["chem.15_1"]
     assert not service.needs_review(classification)
 
 
 def test_split_lecture_is_sent_to_review(taxonomy, stub_asr, recording_factory):
-    """Correct topic, insufficient certainty. Review is the right outcome —
-    a misfiled lecture is worse than an unfiled one because it is invisible.
+    """Insufficient certainty. Review is the right outcome — a misfiled
+    lecture is worse than an unfiled one because it is invisible.
+
+    This fixture genuinely straddles three chapters: two windows recapping
+    atomic structure, two on relative atomic mass, two on the mass
+    spectrometer (which Cambridge puts in 22.2, taught twelve chapters
+    later). No node id is asserted, because there is no right one to assert —
+    that is the whole point of the fixture. What must hold is that the system
+    says so instead of picking.
     """
     recording = recording_factory("raw.mp4", meeting_topic="Chemistry Class")
     transcript = _transcript(stub_asr, "lecture_relative_atomic_mass")
     service = _service(taxonomy)
     classification, _ = service.run(recording, transcript)
-    assert classification.primary.node_id == "chem.atomic_structure.rel_atomic_mass"
     assert service.needs_review(classification)
+    # Still a committed, self-consistent answer — review needs something to
+    # show the reviewer, and an answer whose name disagreed with its folder
+    # would be worse than no answer.
+    assert classification.chapter_node_id
+    assert classification.topic_node_ids
+    for node_id in classification.topic_node_ids:
+        assert taxonomy.require(node_id).parent_id == classification.chapter_node_id
 
 
 def test_review_gate_triggers_on_low_confidence():

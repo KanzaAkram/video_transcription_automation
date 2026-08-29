@@ -143,6 +143,18 @@ class ClassifySettings(BaseModel):
     review_threshold: float = 0.85
     coverage_floor: float = 0.25
     secondary_coverage_min: float = 0.15
+
+    # When a second subtopic earns a place in the filename. Both bars must be
+    # cleared, because they catch different failures: the absolute one rejects
+    # a subtopic that was a passing remark, the relative one rejects a subtopic
+    # that only looks substantial next to a lecture with no real focus.
+    #
+    # A subtopic trailing the winner four-to-one was mentioned, not taught.
+    # Naming it makes the filename longer *and* less true, which is the worst
+    # trade available: the cost is paid on every glance at the folder and the
+    # benefit is a topic the student would not have looked for there anyway.
+    secondary_subtopic_min_coverage: float = 0.20
+    secondary_subtopic_ratio: float = 0.45
     use_corrections_as_examples: bool = True
     max_correction_examples: int = 5
     embedding_model: str = "BAAI/bge-m3"
@@ -151,7 +163,32 @@ class ClassifySettings(BaseModel):
 class NamingSettings(BaseModel):
     # Reproduces the existing convention: "Aug, 5 - Atomic Structure.mp4"
     template: str = "{month_abbr}, {day} - {topic}{part_suffix}{ext}"
-    max_length: int = 120
+    # 80, not 120. The names being reproduced are "Sep, 4 - Sigma and Pie
+    # Bonds.mp4" — keywords, not sentences. A cap generous enough to admit a
+    # syllabus sentence is a cap that lets one through.
+    max_length: int = 80
+
+    #: How many syllabus subtopics may appear in one filename.
+    #:
+    #: `le=2` is a hard rule, not a tuning knob, which is why it is expressed
+    #: as a validation bound rather than as a comment: a filename naming three
+    #: subtopics is unreadable, and every mechanism that could produce one —
+    #: config, an LLM reply, a hand-built Classification — has to be closed off
+    #: for the rule to hold. Setting 3 in settings.yaml fails to load.
+    max_subtopics: int = Field(default=2, ge=1, le=2)
+    #: Joins the two: "Solubility in Solvents + Induced Dipoles".
+    #:
+    #: " + " rather than " & " because the titles being joined contain "&"
+    #: themselves — 25 of the 51 chemistry short titles and 33 of the 72 maths
+    #: ones ("Chlorine & Disproportionation", "Atomic Orbitals &
+    #: Configuration"). Joined with " & ", two subtopics render as
+    #: "Halogens & Hydrogen Halides & Chlorine & Disproportionation", which
+    #: reads as four. The data is right and the name still breaks rule 3,
+    #: because the folder listing is the only place that rule is ever checked.
+    #: " + " is legal on Windows and in Drive and cannot be mistaken for part
+    #: of a title. Configuration, not code: set it back to " & " for a syllabus
+    #: whose titles never contain one.
+    subtopic_separator: str = " + "
     strip_characters: str = r'/\:*?"<>|'
     collision_strategy: Literal["part_suffix", "counter", "timestamp"] = "part_suffix"
     # Must not contain a character in `strip_characters` — "?" is illegal in

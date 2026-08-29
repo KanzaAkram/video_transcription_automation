@@ -52,7 +52,7 @@ def test_confident_lecture_is_filed_end_to_end(runner_factory, recording_factory
 
     assert result.final_stage == Stage.DONE
     assert result.error is None
-    assert result.node_id == "chem.halogenoalkanes"
+    assert result.node_id == "chem.15_1"
     assert result.filename == "Sep, 14 - Halogenoalkanes.mp4"
 
     chapter = Path(drive.root) / RECORDINGS_ROOT / "9. Halogenoalkanes (Chapter 16)"
@@ -92,7 +92,7 @@ def test_sidecar_records_provenance(runner_factory, recording_factory, drive):
     # Enough to reclassify later without re-transcribing, and to audit the
     # decision a year from now.
     assert payload["recording"]["original_filename"] == "raw.mp4"
-    assert payload["classification"]["primary"]["node_id"] == "chem.halogenoalkanes"
+    assert payload["classification"]["primary"]["node_id"] == "chem.15_1"
     assert payload["transcript"]["segment_count"] > 0
     assert payload["placement"]["resolution_method"] == "exact"
 
@@ -117,9 +117,10 @@ def test_uncertain_lecture_goes_to_review_not_a_chapter(
     assert result.final_stage == Stage.NEEDS_REVIEW
     review = Path(drive.root) / "_Needs Review"
     assert (review / "Aug, 10 - Relative Atomic Mass (review).mp4").exists()
-    # Emphatically not filed into a chapter.
-    chapter = Path(drive.root) / RECORDINGS_ROOT / "1. Atomic Structure (Chapter 1)"
-    assert not list(chapter.glob("Aug, 10*.mp4"))
+    # Emphatically not filed into a chapter -- any chapter. The fixture spans
+    # three, so naming the one it came closest to would under-test this.
+    root = Path(drive.root) / RECORDINGS_ROOT
+    assert not list(root.glob("*/Aug, 10*.mp4"))
 
 
 def test_review_item_carries_its_reasoning(runner_factory, recording_factory, drive):
@@ -131,9 +132,7 @@ def test_review_item_carries_its_reasoning(runner_factory, recording_factory, dr
     )
     runner_factory("lecture_relative_atomic_mass").process(recording)
 
-    sidecar = (
-        Path(drive.root) / "_Needs Review" / "Aug, 10 - Relative Atomic Mass (review).json"
-    )
+    sidecar = Path(drive.root) / "_Needs Review" / "Aug, 10 - Relative Atomic Mass (review).json"
     payload = json.loads(sidecar.read_text(encoding="utf-8"))
     assert payload["classification"]["reasoning"]
     assert payload["classification"]["primary"]["node_id"]

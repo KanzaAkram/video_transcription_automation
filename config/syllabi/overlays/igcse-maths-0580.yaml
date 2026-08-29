@@ -1,0 +1,1755 @@
+# Curation overlay for Cambridge IGCSE Mathematics 0580 (2025-2027).
+#
+# Everything the official syllabus already contains - topic numbers, subtopic
+# codes, subtopic titles, learning-objective text - is extracted by the
+# ingester and must NOT be repeated here. This file holds only what the
+# syllabus cannot tell you:
+#
+#   chapters              which syllabus subtopics are taught as one unit, and
+#                         which Drive folder that unit's recordings live in
+#   short_title           the KEYWORDS that go in the filename
+#   keywords / aliases    what a teacher actually says out loud, which is what
+#                         retrieval scores the transcript against
+#   teaching_order        the order the chapters are actually taught in
+#
+# -- A chapter is a Drive folder, not a syllabus topic -------------------------
+# depth 0 is the chapter: one Drive folder, and the unit a recording is filed
+# into whole. A recording is never split across two chapters; when a transcript
+# touches several, the heaviest one wins.
+#
+# depth 1 is the subtopic: one Cambridge subtopic code, and the unit filenames
+# are built from. One subtopic gives one name; two subtopics give two names;
+# three is not a thing - the cap is hard.
+#
+# Chapters and syllabus topics do not have to line up. In AS Chemistry they
+# famously do not: 9701 topic 1 "Atomic structure" is split across two of the
+# user's Drive folders. Here they happen to, one chapter per syllabus topic,
+# because there is no Drive listing yet to say otherwise - see below. Nothing
+# in the format requires it, and splitting topic 2 into an "Algebra" folder and
+# a "Graphs and Calculus" folder later is an overlay edit, not a schema change.
+#
+# -- No Drive folders exist for this subject yet -------------------------------
+# There is no Drive folder listing for IGCSE Maths at the time of writing, so
+# every chapter carries drive_folder_name: null and coursebook_chapter: null,
+# and teaching_order simply follows the syllabus topic order 1-9. That makes
+# the whole subject *pending*: the classifier can recognise every subtopic and
+# score against it, but placement routes to review rather than inventing a
+# folder to drop a file into.
+#
+# When the folders do appear, fill in drive_folder_name - and coursebook_chapter,
+# and the real teaching_order, which almost certainly is not 1-9 - HERE, and
+# re-run the ingester. That is an overlay edit plus a regeneration. It is never
+# a code change: no part of the pipeline hard-codes a folder name, and any patch
+# that adds one is the bug, not the fix.
+#
+# -- What this particular syllabus does to your keywords -----------------------
+# The 0580 source is shaped differently from the Chemistry one and it bites in
+# two places. Both are handled here, in the keywords; the objectives themselves
+# are copied verbatim by the ingester and are not edited.
+#
+# 1. Half the learning objectives are not objectives. Entries whose text opens
+#    "Notes and examples:" carry the worked detail, and that is where the
+#    concrete spoken vocabulary lives - "recurring decimal", "rationalise the
+#    denominator", "three-figure bearing", "frequency density", "alternate
+#    segment theorem". The formal objective above it reads "Understand and use
+#    set language", which no teacher has ever said aloud. So the keywords below
+#    are mined from the notes at least as hard as from the objectives.
+#
+# 2. Core and Extended statements of the same subtopic sit side by side as
+#    separate objectives. 1.2 Sets carries both the two-set Core version and the
+#    three-set Extended version; 1.4, 1.7, 1.10, 2.2, 2.5, 2.6, 2.7, 2.10, 2.11,
+#    4.1, 4.5, 4.6, 4.7, 5.3, 5.5, 7.1, 8.1, 8.3, 9.2 and 9.3 do the same. They
+#    are ONE subtopic and get ONE short_title, deliberately: a Core lesson and an
+#    Extended lesson on the same material must not compete for two different
+#    filenames. The keyword lists therefore span both tiers - "two sets" and
+#    "three sets" both appear under 1.2 - so either lecture lands on the same
+#    node and gets the same name.
+#
+# -- short_title is the filename -----------------------------------------------
+# Keywords only, 2-4 words, under about 35 characters, Title Case, "&" over
+# "and". It has to read like the user's own files - "Sep, 4 - Sigma and Pie
+# Bonds.mp4" - and never like a syllabus sentence.
+#
+# Most 0580 subtopic titles are already good and are kept verbatim: "Surds",
+# "Percentages", "Histograms", "Circle theorems I". The ones that were a list or
+# a description are cut down - "Fractions, decimals and percentages" becomes
+# "Fractions & Decimals", "Limits of accuracy" becomes "Upper & Lower Bounds",
+# "Non-right-angled triangles" becomes "Sine & Cosine Rules", and "Pythagoras'
+# theorem and trigonometry in 3D" becomes "Pythagoras & Trig in 3D".
+#
+# The Roman-numeral pairs stay numbered. "Indices I" / "Indices II" and "Circle
+# theorems I" / "Circle theorems II" are genuinely different lessons taught weeks
+# apart, and a filename that cannot tell them apart is worse than no filename.
+#
+# -- On keywords ---------------------------------------------------------------
+# A keyword has to be a phrase a teacher says out loud, and every token in it has
+# to land in the same ~4-minute window for it to count. So "solve the quadratic
+# equation by factorisation" never fires, while "factorise" and "quadratic
+# formula" both reliably do.
+#
+# It also has to SEPARATE a subtopic from its siblings, and maths is unusually
+# bad for this: "equation", "number", "graph", "value", "answer" and "formula"
+# are said in every lecture in the subject, so as keywords they fire everywhere
+# and discriminate nothing. They are deliberately absent below. What is present
+# is named methods and named objects - Venn diagram, HCF, standard form, upper
+# bound, completing the square, nth term, perpendicular bisector, three-figure
+# bearing, cosine rule, frustum, tree diagram, interquartile range, frequency
+# density.
+#
+# That rule applies to ALIASES too, which is easy to forget because they read
+# like labels rather than search terms. retriever._keyword_hits iterates
+# (*keywords, *aliases) and cannot tell them apart, so a bare word parked in
+# `aliases` fires exactly as widely as one in `keywords`. An earlier version of
+# this file said the paragraph above and then carried "sets", "ratio", "rates",
+# "time", "term", "equations", "angles", "gradient", "functions" and
+# "Pythagoras" as single-token aliases or keywords - each of them the name of
+# its own subtopic, and each of them said out loud by three or four siblings.
+# They are gone. A subtopic's own name does not need to be a keyword: the
+# `title` and `short_title` are both in search_document already, so the word
+# still scores; listing it again only lets it score on the neighbours.
+#
+# A term goes in `keywords` OR in `aliases`, never in both. _keyword_hits
+# counts it twice toward the coverage gate when it is in both, and
+# search_document emits keywords twice plus aliases once - so a term listed
+# twice carries three times the BM25 weight of an ordinary keyword, which is
+# an invisible thumb on the scale rather than a decision anyone made.
+#
+# Where two subtopics genuinely share a term, the term goes to the one that owns
+# it and the other is separated on something else. "Completing the square" sits
+# on 2.2, where it is a named objective, and 2.5 is separated on "quadratic
+# formula" and "solve by factorisation". "Exchange rate" sits on 1.16 Money, and
+# 1.12 Rates keeps speed, density and flow. "Tree diagram" sits on 8.3, and 8.4
+# is separated on "conditional probability" and "given that the first" - never
+# on bare "given that", which tokenises to {given, that} and so fires on any
+# window at all that happens to contain the word "given".
+
+subject_id: igcse_maths
+subject_name: IGCSE Mathematics
+syllabus_code: "0580"
+syllabus_years: "2025-2027"
+node_id_prefix: math
+source: >-
+  Topic numbers, subtopic codes, subtopic titles and learning-objective text
+  taken verbatim from the official Cambridge IGCSE Mathematics 0580 syllabus for
+  2025, 2026 and 2027, including the interleaved Core and Extended statements
+  and the "Notes and examples" entries. Chapter grouping, teaching order, short
+  titles, keywords, aliases and subject vocabulary are hand-curated. No Drive
+  folder names are known for this subject yet, so every chapter is pending.
+
+# Primed into the ASR decoder for every lecture in this subject. Maths is full of
+# words generic speech recognition has never met: "surd" comes back as "surd"
+# only if the decoder was told to expect it, "frustum" becomes "frustrum",
+# "isosceles" becomes almost anything. These are also the words classification
+# leans on hardest, so the error is expensive twice over.
+# Kept to ~50 deliberately: Taxonomy.vocabulary() weights these ten times a node
+# keyword and then truncates the list, so a longer subject list would push every
+# per-lecture term out of the ASR prompt.
+subject_vocabulary:
+  - surd
+  - rationalise
+  - reciprocal
+  - quadratic
+  - cubic
+  - coefficient
+  - indices
+  - HCF
+  - LCM
+  - highest common factor
+  - lowest common multiple
+  - recurring decimal
+  - upper bound
+  - lower bound
+  - simultaneous equations
+  - factorise
+  - completing the square
+  - nth term
+  - stationary point
+  - asymptote
+  - exponential
+  - depreciation
+  - perpendicular bisector
+  - collinear
+  - Cartesian
+  - hypotenuse
+  - Pythagoras
+  - isosceles
+  - scalene
+  - congruent
+  - rhombus
+  - trapezium
+  - parallelogram
+  - decagon
+  - tessellation
+  - locus
+  - radii
+  - frustum
+  - hemisphere
+  - sine rule
+  - cosine rule
+  - SOHCAHTOA
+  - theta
+  - sigma
+  - modulus
+  - Venn diagram
+  - quartile
+  - interquartile range
+  - cumulative frequency
+  - frequency density
+
+chapters:
+
+  # -- 1 Number ---------------------------------------------------------------
+  - id: number
+    title: Number
+    teaching_order: 1
+    coursebook_chapter: null
+    drive_folder_name: null
+    # "number" and "numbers" removed as aliases: they are this chapter's own
+    # title, which search_document already indexes, and as keywords they fired
+    # in 40 of 117 real windows including every chemistry lecture. "ratio" went
+    # for the same reason - 10 fires, all of them on the chemistry deflection
+    # lecture saying "charge to mass ratio". 1.11 carries the ratio vocabulary
+    # that actually discriminates.
+    aliases: [topic 1, chapter 1, arithmetic]
+    keywords:
+      - prime factors
+      - HCF
+      - LCM
+      - standard form
+      - percentage increase
+      - ratio of two quantities
+      - surd
+      - significant figures
+      - upper bound
+    subtopics:
+
+      - code: "1.1"
+        short_title: Types of Number
+        aliases: [prime factors, HCF and LCM, factors and multiples]
+        keywords:
+          - natural numbers
+          - prime number
+          - square number
+          - cube number
+          - common factor
+          - common multiple
+          - rational
+          - irrational
+          - reciprocal
+          - highest common factor
+          - lowest common multiple
+          - HCF
+          - LCM
+          - product of prime factors
+          - factor tree
+
+      - code: "1.2"
+        short_title: Sets & Venn Diagrams
+        # Bare "sets" is not here: it fires on any window that says the word,
+        # including 8.3's Venn-diagram probability work.
+        aliases: [Venn diagrams, set language, sets and Venn diagrams, shading sets]
+        # Core stops at two sets, Extended goes to three. Both tiers are keyworded
+        # here so a Core lesson and an Extended lesson land on the same node.
+        keywords:
+          - Venn diagram
+          - universal set
+          - complement
+          - union
+          - intersection
+          - subset
+          - empty set
+          - element of
+          - set notation
+          - number of elements
+          - two sets
+          - three sets
+          - shade the region
+          - curly brackets
+
+      - code: "1.3"
+        short_title: Powers & Roots
+        aliases: [powers and roots, square roots, cube roots]
+        keywords:
+          - square root
+          - cube root
+          - fourth root
+          - squared
+          - cubed
+          - recall of squares
+          - corresponding roots
+          - root sign
+          - work out the root
+          - perfect square
+
+      - code: "1.4"
+        short_title: Fractions & Decimals
+        aliases: [fractions decimals and percentages, converting fractions,
+                  recurring decimals]
+        keywords:
+          - proper fraction
+          - improper fraction
+          - mixed number
+          - lowest terms
+          - equivalent fractions
+          - recurring decimal
+          - terminating decimal
+          - dot notation
+          - numerator and denominator
+          - convert to a decimal
+          - fraction to a percentage
+          - decimal to a fraction
+          - cancel down
+
+      - code: "1.5"
+        short_title: Ordering & Inequality Signs
+        aliases: [ordering quantities, inequality symbols, putting in order,
+                  greater than and less than]
+        keywords:
+          # Bare "less than" removed as stopword-only; "less than or equal"
+          # and the ordering phrases below carry the same subtopic.
+          - order by magnitude
+          - greater than or equal
+          - less than or equal
+          - not equal to
+          - ascending order
+          - descending order
+          - smallest to largest
+          - largest to smallest
+          - order of size
+
+      - code: "1.6"
+        short_title: Four Operations
+        aliases: [the four operations]
+        keywords:
+          - order of operations
+          - BIDMAS
+          - BODMAS
+          - use of brackets
+          - negative times a negative
+          - adding fractions
+          - multiplying fractions
+          - dividing fractions
+          - common denominator
+          - temperature change
+          - long multiplication
+          - long division
+
+      - code: "1.7"
+        short_title: Indices I
+        # 1.7 is the numerical half of indices - "find the value of 7 to the
+        # power minus 2". The algebraic half is 2.4 Indices II, which is
+        # separated on "simplify" and on letters. Both tiers of 1.7 sit here:
+        # Core stops at integer indices, Extended adds fractional ones.
+        aliases: [indices, indices one, numerical indices]
+        # "power of a power" is gone: it is a description of the rule, not a
+        # phrase anyone says. Across 117 real windows it fires zero times, and
+        # its tokens are "power", "of", "a" - so all it ever did was carry two
+        # function words into this node's BM25 document.
+        #
+        # Bare "base" is kept, against the audit's advice. It was proposed for
+        # removal on the theory that it bleeds onto 2.4 and 1.17, and the word
+        # certainly is ordinary English - but on the real recordings it fires
+        # 13 times, all of them on the two indices lectures and none anywhere
+        # else, and on two windows of 10 Aug it is the ONLY term that lets this
+        # node through the gate. Removing it loses those windows for a risk
+        # that does not materialise here. The phrases below are added so the
+        # node no longer depends on it alone.
+        keywords:
+          - rules of indices
+          - index laws
+          - properties of indices
+          - zero index
+          - fractional index
+          - fractional powers
+          - anything to the power zero
+          - negative power
+          - add the powers
+          - subtract the powers
+          - multiply the powers
+          - powers are added
+          - powers are subtracted
+          - same base
+          - base is the same
+          - goes to the denominator
+          - base
+
+      - code: "1.8"
+        short_title: Standard Form
+        aliases: [standard index form]
+        keywords:
+          - standard form
+          - scientific notation
+          - times ten to the power
+          - ordinary number
+          - very large numbers
+          - very small numbers
+          - decimal point moves
+          # "between one and ten" is four stopwords. The spoken rule names the
+          # digit position instead.
+          - one non-zero digit before the decimal point
+          - positive power of ten
+          - negative power of ten
+          - out of standard form
+          - calculate in standard form
+
+      - code: "1.9"
+        short_title: Estimation & Rounding
+        aliases: [estimation, rounding]
+        keywords:
+          - significant figures
+          - decimal places
+          - round to the nearest
+          - nearest thousand
+          - nearest whole number
+          - one significant figure
+          - estimate the value
+          - degree of accuracy
+          - reasonable degree of accuracy
+          - rounding up
+          - rounding down
+          - approximate
+
+      - code: "1.10"
+        short_title: Upper & Lower Bounds
+        aliases: [bounds, upper and lower bounds, error interval]
+        keywords:
+          - upper bound
+          - lower bound
+          - limits of accuracy
+          - measured correct to
+          - nearest centimetre
+          - nearest metre
+          - half a unit
+          - maximum value
+          - minimum value
+          - bounds of the perimeter
+          - bounds of the area
+          - largest possible
+          - smallest possible
+
+      - code: "1.11"
+        short_title: Ratio & Proportion
+        # Numeric sharing only. Algebraic direct and inverse proportion is 2.8,
+        # so "directly proportional" and the constant k are kept off this node.
+        aliases: [ratio and proportion, sharing in a ratio, simplifying ratios,
+                  dividing in a ratio]
+        keywords:
+          - simplify the ratio
+          - divide in a given ratio
+          - share in the ratio
+          # "number of parts" alone is ordinary English; the ratio sense needs
+          # "total".
+          - total number of parts
+          - one part is worth
+          - proportional reasoning
+          - unitary method
+          - map scale
+          - best value
+          - adapt a recipe
+          - equivalent ratio
+          - ratio in its simplest form
+
+      - code: "1.12"
+        short_title: Rates & Average Speed
+        # "compound measures" is the classroom name for the speed/density/
+        # pressure family; bare "rates" fired on any window using the word.
+        aliases: [compound measures, density and pressure, rate per unit time]
+        keywords:
+          - average speed
+          - speed distance time
+          - distance divided by time
+          - metres per second
+          - kilometres per hour
+          - density
+          - population density
+          - pressure
+          - flow rate
+          - fuel consumption
+          - hourly rate of pay
+          - grams per cubic centimetre
+
+      - code: "1.13"
+        short_title: Percentages
+        aliases: [percentage change, percentage calculations, reverse percentages]
+        keywords:
+          - percentage of a quantity
+          - percentage increase
+          - percentage decrease
+          - simple interest
+          - compound interest
+          - reverse percentage
+          - multiplier
+          - percentage profit
+          - profit and loss
+          - discount
+          - deposit
+          - cost price
+          - selling price
+          - repeated percentage change
+
+      - code: "1.14"
+        short_title: Using a Calculator
+        aliases: [using a calculator, calculator skills]
+        keywords:
+          - calculator display
+          - do not round early
+          - round the final answer
+          - brackets on the calculator
+          - fraction key
+          - degrees minutes seconds
+          - enter the value
+          - interpret the display
+          - memory button
+          - calculator efficiently
+          - standard form on the calculator
+
+      - code: "1.15"
+        short_title: Time & Timetables
+        # Bare "time" is said in every lecture in the subject ("at the same
+        # time"), and 1.10, 1.12 and 1.14 all carry it in their own syllabus
+        # text. "hours and minutes" went the same way: 1.14's notes are
+        # literally "enter 2 hours 30 minutes as 2.5 hours". What is left is
+        # clock-and-timetable vocabulary nothing else in Number uses.
+        aliases: [timetables, clock times, journey duration]
+        keywords:
+          - 24-hour clock
+          - 12-hour clock
+          - timetable
+          - read the timetable
+          - train timetable
+          - time zone
+          - local time
+          - time difference
+          - departure time
+          - arrival time
+          - am and pm
+          - days weeks months
+          - duration of the journey
+
+      - code: "1.16"
+        short_title: Money & Currency
+        aliases: [money problems, currency conversion, exchange rates]
+        keywords:
+          - exchange rate
+          - convert currency
+          - one currency to another
+          - dollars
+          - pounds
+          - euros
+          - rupees
+          - cents
+          - wages
+          - bill
+          - work out the change
+          - cost in dollars
+
+      - code: "1.17"
+        short_title: Exponential Growth & Decay
+        aliases: [exponential growth and decay, population growth]
+        keywords:
+          - exponential growth
+          - exponential decay
+          - depreciation
+          - population change
+          - growth factor
+          - decay factor
+          - initial amount
+          - number of years
+          - value after n years
+          - halves each year
+          - doubles each year
+          - raised to the power n
+
+      - code: "1.18"
+        short_title: Surds
+        # Whisper does not transcribe "surd". On 10 Aug - 33 minutes of surds -
+        # it writes "search" ("the third form of exact answer could be search",
+        # "you are representing in terms of search"), elsewhere "surge" and
+        # "sird". Those are NOT added as aliases: they are ordinary English
+        # words that would fire on every lecture in the syllabus. The node
+        # needs vocabulary that survives the mis-transcription instead, which
+        # is what the four terms below are - they are how this teacher frames
+        # the topic ("exact answers ... fractions can be exact answers ... the
+        # other form of exact answers are in terms of pi"), and they are said
+        # in the clear.
+        #
+        # "in terms of pi" is also on 5.3, which is a different chapter rather
+        # than a sibling. Both nodes genuinely say it; the BM25 score decides
+        # which, and on a surds lecture this node now wins those windows.
+        aliases: [surds, rationalising the denominator, exact form]
+        keywords:
+          - surd
+          - surd form
+          - rationalise the denominator
+          - simplify the surd
+          - leave in exact form
+          - multiply the surds
+          - exact answer
+          - exact answers
+          - in terms of pi
+          - fractional power
+          - cube root of minus
+          - root two
+          - root three
+          - root five
+          - conjugate
+          - outside the root
+
+  # -- 2 Algebra and graphs ---------------------------------------------------
+  - id: algebra_and_graphs
+    title: Algebra and Graphs
+    teaching_order: 2
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [algebra, algebra and graphs, topic 2, chapter 2, graphs]
+    keywords:
+      - expand the brackets
+      - factorise
+      - simultaneous equations
+      - nth term
+      - quadratic formula
+      - differentiate
+      - function notation
+      - table of values
+    subtopics:
+
+      - code: "2.1"
+        short_title: Introduction to Algebra
+        aliases: [introduction to algebra, substitution, substituting into formulas]
+        keywords:
+          - letters represent numbers
+          - substitute into the expression
+          - substitute into the formula
+          - generalised numbers
+          - work out the value when x is
+          - replace the letter
+          - unknown quantity
+          - algebraic expression
+          - the letter stands for a number
+          - using letters for numbers
+          - value of the expression
+
+      - code: "2.2"
+        short_title: Expanding & Factorising
+        # "Completing the square" is a named objective HERE, so it lives here.
+        # 2.5 solves quadratics and is separated on the quadratic formula.
+        aliases: [algebraic manipulation, expanding brackets, factorising,
+                  collecting like terms]
+        keywords:
+          - collect like terms
+          - expand the brackets
+          - double brackets
+          - three brackets
+          - factorise fully
+          - common factor
+          - difference of two squares
+          - factorise by grouping
+          - completing the square
+          - completed square form
+          - perfect square
+          - simplify the expression
+          - FOIL
+
+      - code: "2.3"
+        short_title: Algebraic Fractions
+        aliases: [algebraic fractions, rational expressions, simplifying fractions]
+        keywords:
+          - algebraic fraction
+          - rational expression
+          - common denominator
+          - single fraction
+          - cancel the common factor
+          - factorise the numerator
+          - factorise the denominator
+          - numerator
+          - denominator
+          - multiply by the reciprocal
+
+      - code: "2.4"
+        short_title: Indices II
+        # The algebraic half of indices. Separated from 1.7 on "simplify", on
+        # letters and coefficients, and on index equations.
+        aliases: [indices two, laws of indices, index equations]
+        keywords:
+          - simplify the indices
+          - algebraic indices
+          - coefficient
+          - power of a power
+          - fractional index
+          - negative index
+          - equate the powers
+          - solve for the index
+          - two to the power x
+          - x to the power
+          - rules of indices
+          - logarithms are not required
+
+      - code: "2.5"
+        short_title: Solving Equations
+        aliases: [solving equations, changing the subject, quadratic equations,
+                  solve for the unknown]
+        keywords:
+          - linear equation
+          - simultaneous equations
+          - solve by elimination
+          - solve by substitution
+          - change the subject
+          - rearrange the formula
+          - quadratic formula
+          - solve by factorisation
+          - fractional equation
+          - one linear one non-linear
+          # "both sides" is two function words and fires on any shape lesson.
+          - both sides of the equation
+          - two solutions
+          - construct an equation
+          - subject appears twice
+
+      - code: "2.6"
+        short_title: Inequalities
+        aliases: [inequalities, regions, shading regions]
+        keywords:
+          - inequality
+          # "number line" says nothing here: "number" and "line" are among the
+          # commonest tokens in the syllabus. The circles below are what a
+          # teacher actually draws on one.
+          - open circle
+          - closed circle
+          - strict inequality
+          - shade the region
+          - unwanted region
+          - broken line
+          - solid line
+          - list the inequalities
+          - solve the inequality
+          - region defined by
+          - two variables
+
+      - code: "2.7"
+        short_title: Sequences & nth Term
+        aliases: [sequences, term to term rule, patterns]
+        keywords:
+          - nth term
+          - term-to-term rule
+          - linear sequence
+          - quadratic sequence
+          - cubic sequence
+          - exponential sequence
+          - common difference
+          - second difference
+          - next two terms
+          - position of the term
+          - subscript notation
+          - continue the pattern
+
+      - code: "2.8"
+        short_title: Direct & Inverse Proportion
+        aliases: [proportion, direct proportion, inverse proportion,
+                  proportionality]
+        keywords:
+          - directly proportional
+          - inversely proportional
+          - constant of proportionality
+          - proportional symbol
+          - varies as
+          - find the constant k
+          - square root proportion
+          - inverse square
+          - proportional to the cube
+          - y is proportional to x
+
+      - code: "2.9"
+        short_title: Travel & Speed-Time Graphs
+        aliases: [graphs in practical situations, travel graphs,
+                  distance time graphs, speed time graphs, conversion graphs]
+        keywords:
+          - distance-time graph
+          - speed-time graph
+          - travel graph
+          - conversion graph
+          - acceleration
+          - deceleration
+          - area under the graph
+          - distance travelled
+          - rate of change
+          - gradient of the tangent
+          - stationary part of the journey
+          - kinematics
+
+      - code: "2.10"
+        short_title: Graphs of Functions
+        # Plotting and reading off. Recognising shapes is 2.11, which owns
+        # "asymptote", "turning point" and "symmetry".
+        aliases: [graphs of functions, plotting graphs, solving graphically]
+        keywords:
+          - table of values
+          - plot the points
+          - draw a smooth curve
+          - join the points
+          - reciprocal graph
+          - cubic graph
+          - exponential graph
+          - intersection of a line and a curve
+          - solve graphically
+          - read off the graph
+          - roots from the graph
+          # "a over x" tokenises to {a, over, x} and fires on any algebra.
+          - y equals a over x
+
+      - code: "2.11"
+        short_title: Sketching Curves
+        aliases: [sketching curves, recognising graphs, shapes of graphs]
+        keywords:
+          - sketch the graph
+          - shape of the curve
+          - recognise the graph
+          - parabola
+          - cubic curve
+          - reciprocal curve
+          - exponential curve
+          - asymptote
+          - vertical asymptote
+          - horizontal asymptote
+          - line of symmetry
+          - where it crosses the axes
+
+      - code: "2.12"
+        short_title: Differentiation
+        aliases: [differentiation, calculus, stationary points, derivatives]
+        keywords:
+          - differentiate
+          - derivative
+          - dy by dx
+          - gradient function
+          - stationary point
+          - turning point
+          - maximum point
+          - minimum point
+          - second differential
+          - multiply by the power
+          - reduce the power by one
+          - draw a tangent
+          - estimate the gradient
+
+      - code: "2.13"
+        short_title: Functions & Inverses
+        # Bare "functions" is the word 2.10 "Graphs of functions", 2.11 and
+        # 2.12 all use throughout, so it separated nothing. "f of x" went too:
+        # it tokenises to {f, x} and fired on any window with a stray f and x.
+        aliases: [inverse functions, composite functions, domain and range]
+        keywords:
+          - function notation
+          - function machine
+          - input and output
+          - domain
+          - range
+          - inverse function
+          - f inverse
+          - composite function
+          - gf of x
+          - mapping diagram
+          - make x the subject
+          - substitute into the function
+          - reverse the operations
+
+  # -- 3 Coordinate geometry --------------------------------------------------
+  - id: coordinate_geometry
+    title: Coordinate Geometry
+    teaching_order: 3
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [coordinate geometry, topic 3, chapter 3, straight line graphs]
+    keywords:
+      - gradient
+      - y-intercept
+      - straight line
+      - midpoint
+      - perpendicular
+      - parallel
+      - coordinates
+    subtopics:
+
+      - code: "3.1"
+        short_title: Coordinates
+        aliases: [coordinate grid, plotting points, reading off a grid]
+        keywords:
+          - Cartesian coordinates
+          - x-coordinate
+          - y-coordinate
+          - ordered pair
+          - plot the point
+          - origin
+          - quadrant
+          - x-axis
+          - y-axis
+          # "across then up" is three stopwords; the mnemonic is what is said.
+          - along the corridor and up the stairs
+          - read off the coordinates
+
+      - code: "3.2"
+        short_title: Drawing Linear Graphs
+        aliases: [drawing linear graphs, straight line graphs, plotting lines]
+        keywords:
+          - straight-line graph
+          - table of values
+          - plot the points
+          - use a ruler
+          - extend the line
+          - substitute x values
+          - x equals k
+          - three points is enough
+
+      - code: "3.3"
+        short_title: Gradient of a Line
+        # 3.5, 3.6 and 3.7 are all about gradients and all say the word in
+        # their own syllabus text, so "gradient" and "gradient of a line"
+        # fired on all four lectures. This node is the one that *computes* a
+        # gradient, so it keeps the arithmetic of doing it. The word itself
+        # still reaches BM25 through the title and short_title.
+        aliases: [slope, how steep the line is, rise and run]
+        keywords:
+          - rise over run
+          - vertical over horizontal
+          - change in y over change in x
+          - steepness
+          - gradient triangle
+          - negative gradient
+          - positive gradient
+          - gradient from two points
+          - y two minus y one
+          - x two minus x one
+          - count the squares
+          - gradient from a grid
+
+      - code: "3.4"
+        short_title: Length & Midpoint
+        aliases: [length and midpoint]
+        keywords:
+          - length of a line segment
+          - midpoint
+          - midpoint of the line
+          - average of the coordinates
+          - distance between two points
+          - end points
+          - add and halve
+          - Pythagoras to find the length
+
+      - code: "3.5"
+        short_title: Equation of a Straight Line
+        aliases: [equations of linear graphs, finding the equation]
+        keywords:
+          - y equals mx plus c
+          - y-intercept
+          - gradient and intercept
+          - find the equation of the line
+          - ax plus by equals c
+          - rearrange into the form
+          - fully simplified form
+          - substitute to find c
+          - where it crosses the y-axis
+
+      - code: "3.6"
+        short_title: Parallel Lines
+        # Angle work in parallel lines is 4.6 and is separated on corresponding,
+        # alternate and co-interior angles. This node is about gradients.
+        aliases: [parallel lines]
+        keywords:
+          - same gradient
+          - parallel to the line
+          - parallel gradients
+          - gradient stays the same
+          - find the new intercept
+          - passes through the point
+          - equation of the parallel line
+          - never meet
+
+      - code: "3.7"
+        short_title: Perpendicular Lines
+        aliases: [perpendicular lines, perpendicular gradients]
+        keywords:
+          - perpendicular
+          - negative reciprocal
+          - product of the gradients
+          # "m one m two" has no rare token at all.
+          - m one times m two is minus one
+          - minus one over m
+          - perpendicular bisector
+          - at right angles to the line
+          - flip and change the sign
+          - midpoint of the line joining
+
+  # -- 4 Geometry -------------------------------------------------------------
+  - id: geometry
+    title: Geometry
+    teaching_order: 4
+    coursebook_chapter: null
+    drive_folder_name: null
+    # "angles" removed: an ordinary word that fired only on chemistry
+    # ("angle of deflection"). The specific angle terms below discriminate.
+    aliases: [geometry, topic 4, chapter 4, shape and space]
+    keywords:
+      - interior angle
+      - exterior angle
+      - polygon
+      - circle theorem
+      - congruent
+      - similar
+      - bearing
+      - line of symmetry
+    subtopics:
+
+      - code: "4.1"
+        short_title: Geometrical Terms
+        # The vocabulary lecture. It says "chord", "tangent" and "sector" too,
+        # but those belong to 4.7, 4.8 and 5.3, so this node is separated on the
+        # terms only a vocabulary lecture uses: reflex, scalene, decagon, net.
+        aliases: [geometrical terms, geometrical vocabulary, naming shapes]
+        keywords:
+          - reflex angle
+          - vertex
+          - scalene
+          - kite
+          - rhombus
+          - trapezium
+          - parallelogram
+          - hexagon
+          - octagon
+          - decagon
+          - equilateral
+          - cuboid
+          - frustum
+          - hemisphere
+          - face edge vertex
+
+      - code: "4.2"
+        short_title: Constructions & Nets
+        aliases: [geometrical constructions, constructions, drawing nets]
+        keywords:
+          - pair of compasses
+          - construction arcs
+          - construct the triangle
+          - ruler and compasses
+          - draw the net
+          - net of a cube
+          - net of a prism
+          - net of a pyramid
+          - measure the angle
+          - protractor
+          - arcs must be shown
+          - fold up the net
+
+      - code: "4.3"
+        short_title: Scale Drawings & Bearings
+        aliases: [scale drawings, bearings, three-figure bearings,
+                  compass directions]
+        keywords:
+          - three-figure bearing
+          - bearing of A from B
+          - clockwise from north
+          - due east
+          - due north
+          - due south
+          - due west
+          - back bearing
+          - scale drawing
+          - one centimetre represents
+          - measure the bearing
+
+      - code: "4.4"
+        short_title: Similar Shapes & Solids
+        aliases: [similarity, similar shapes, area and volume scale factors]
+        keywords:
+          - similar triangles
+          - corresponding sides
+          - similar solids
+          - linear scale factor
+          - area scale factor
+          - volume scale factor
+          - square the scale factor
+          - cube the scale factor
+          - ratio of the lengths
+          - show that they are similar
+          - geometric reasons
+
+      - code: "4.5"
+        short_title: Symmetry
+        aliases: [line symmetry, planes of symmetry, orders of symmetry]
+        keywords:
+          - line of symmetry
+          - rotational symmetry
+          - order of rotational symmetry
+          - plane of symmetry
+          - axis of symmetry
+          - mirror line
+          - order two
+          - order three
+          - symmetry of a prism
+          - symmetry of a cone
+          - symmetrical shape
+
+      - code: "4.6"
+        short_title: Angles & Polygons
+        # Bare "angles" is this node's whole syllabus title, so BM25 already
+        # has it; as a keyword it only fired on 4.1, 4.2 and 4.7 as well.
+        # "angles in polygons" is inside 4.1's vocabulary statement, so the
+        # polygon case is carried by "polygon angle sum" instead.
+        aliases: [angle facts, angles in parallel lines, polygon angle sum]
+        keywords:
+          - angles on a straight line
+          - angles at a point
+          - vertically opposite
+          - corresponding angles
+          - alternate angles
+          - co-interior angles
+          - allied angles
+          - sum of the interior angles
+          - angle sum of a triangle
+          - interior angle of a polygon
+          - exterior angle
+          - regular polygon
+          - three-letter notation
+          - sum to 360 degrees
+
+      - code: "4.7"
+        short_title: Circle Theorems I
+        aliases: [circle theorems one, angles in a circle, alternate segment]
+        keywords:
+          - angle in a semicircle
+          - angle between tangent and radius
+          - angle at the centre is twice
+          - angles in the same segment
+          - cyclic quadrilateral
+          - opposite angles add to 180
+          - alternate segment theorem
+          - subtended by the same arc
+          - at the circumference
+          - give a reason
+
+      - code: "4.8"
+        short_title: Circle Theorems II
+        aliases: [circle theorems two, chords and tangents]
+        keywords:
+          - equal chords
+          - equidistant from the centre
+          - perpendicular bisector of a chord
+          - passes through the centre
+          - tangents from an external point
+          - equal in length
+          - two tangents
+          - symmetry properties of circles
+          - isosceles triangle formed
+          - bisects the chord
+
+  # -- 5 Mensuration ----------------------------------------------------------
+  - id: mensuration
+    title: Mensuration
+    teaching_order: 5
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [mensuration, topic 5, chapter 5, area and volume, measures]
+    keywords:
+      - perimeter
+      - area of a circle
+      - arc length
+      - surface area
+      - volume of a prism
+      - cylinder
+      - cone
+      - sphere
+    subtopics:
+
+      - code: "5.1"
+        short_title: Units & Conversions
+        aliases: [units of measure, converting units]
+        keywords:
+          - metric units
+          - convert the units
+          - square centimetres
+          - square metres
+          - cubic centimetres
+          - cubic metres
+          - millilitres
+          - litres
+          - capacity
+          - kilograms
+          - larger or smaller units
+          - multiply by 100
+          - multiply by 1000
+
+      - code: "5.2"
+        short_title: Area & Perimeter
+        aliases: [area and perimeter]
+        keywords:
+          - perimeter
+          - area of a rectangle
+          - area of a triangle
+          - area of a parallelogram
+          - area of a trapezium
+          - base times height
+          - half base times height
+          - parallel sides
+          - perpendicular height
+          - add up all the sides
+          - length times width
+
+      - code: "5.3"
+        short_title: Circles, Arcs & Sectors
+        aliases: [circles arcs and sectors]
+        keywords:
+          - circumference
+          - area of a circle
+          - pi r squared
+          - two pi r
+          - arc length
+          - sector area
+          - sector angle
+          - minor sector
+          - major sector
+          - fraction of 360
+          - in terms of pi
+          - perimeter of the sector
+          - radius
+
+      - code: "5.4"
+        short_title: Surface Area & Volume
+        aliases: [surface area of a solid]
+        keywords:
+          - volume of a prism
+          - volume of a cylinder
+          - volume of a cone
+          - volume of a sphere
+          - volume of a pyramid
+          - curved surface area
+          - surface area of a sphere
+          - uniform cross-section
+          - slant height
+          # "one third" is stopword-only; the cone formula is what is said.
+          - one third pi r squared h
+          - four thirds
+          - height of the solid
+
+      - code: "5.5"
+        short_title: Compound Shapes & Solids
+        aliases: [compound shapes, parts of shapes, compound solids]
+        keywords:
+          - compound shape
+          - compound solid
+          - part of a shape
+          - half of a sphere
+          - hemisphere
+          - frustum
+          - split the shape up
+          - subtract the area
+          - shaded region
+          - remaining area
+          - add the volumes together
+          - cut off the top
+
+  # -- 6 Trigonometry ---------------------------------------------------------
+  - id: trigonometry
+    title: Trigonometry
+    teaching_order: 6
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [trigonometry, trig, topic 6, chapter 6]
+    keywords:
+      - Pythagoras
+      - hypotenuse
+      - sine
+      - cosine
+      - tangent
+      - sine rule
+      - cosine rule
+      - angle of elevation
+    subtopics:
+
+      - code: "6.1"
+        short_title: Pythagoras' Theorem
+        # 6.2 "Solve problems in two dimensions using Pythagoras' theorem and
+        # trigonometry" and 6.6 "Pythagoras' theorem and trigonometry in 3D"
+        # both say Pythagoras all lesson, so "Pythagoras" and "Pythagoras
+        # theorem" named three lectures at once. The title and short_title
+        # still carry the word for BM25. "right-angled triangles" is 6.2's
+        # verbatim syllabus title and belongs to it alone.
+        aliases: [missing side, third side of a triangle, sum of the two squares]
+        keywords:
+          - hypotenuse
+          - a squared plus b squared
+          - c squared
+          - square the sides
+          - square the two shorter sides
+          - longest side
+          - shorter side
+          - add the squares
+          - subtract the squares
+          - square root the answer
+          - find the missing side
+          - Pythagorean triple
+          - three four five triangle
+
+      - code: "6.2"
+        short_title: Right-Angled Trigonometry
+        aliases: [right-angled triangles, sine cosine tangent,
+                  angles of elevation and depression]
+        keywords:
+          - SOHCAHTOA
+          - sine ratio
+          - cosine ratio
+          - tangent ratio
+          - opposite and adjacent
+          - inverse sine
+          - inverse cosine
+          - inverse tan
+          - angle of elevation
+          - angle of depression
+          - shortest distance to the line
+          - label the sides
+          - one decimal place
+
+      - code: "6.3"
+        short_title: Exact Trig Values
+        aliases: [exact trigonometric values, exact values, special angles]
+        keywords:
+          - exact value of sin
+          - exact value of cos
+          - exact value of tan
+          - thirty degrees
+          - forty-five degrees
+          - sixty degrees
+          - root three over two
+          - one over root two
+          - a half
+          - without a calculator
+          - special triangles
+          - leave in surd form
+
+      - code: "6.4"
+        short_title: Trig Graphs & Equations
+        aliases: [trigonometric functions, solving trig equations]
+        keywords:
+          - graph of sin x
+          - graph of cos x
+          - graph of tan x
+          - sine curve
+          - cosine curve
+          - asymptote of tan
+          - second solution
+          - between 0 and 360
+          - symmetry of the curve
+          - repeats every 360
+          - solve the trig equation
+          - sketch the curve
+
+      - code: "6.5"
+        short_title: Sine & Cosine Rules
+        aliases: [non-right-angled triangles, area of a triangle]
+        keywords:
+          - sine rule
+          - cosine rule
+          - ambiguous case
+          - obtuse angle
+          - half ab sin C
+          - area of any triangle
+          - two sides and the included angle
+          - side opposite the angle
+          - rearrange the cosine rule
+          # "three sides given" is three function words in any order.
+          - all three sides
+          - list of formulas
+
+      - code: "6.6"
+        short_title: Pythagoras & Trig in 3D
+        aliases: [trigonometry in 3D]
+        keywords:
+          - three dimensions
+          - angle between a line and a plane
+          - diagonal of a cuboid
+          - space diagonal
+          - base diagonal
+          - vertical height
+          - triangle inside the solid
+          - sketch the triangle
+          - two-stage Pythagoras
+          - foot of the perpendicular
+
+  # -- 7 Transformations and vectors ------------------------------------------
+  - id: transformations_and_vectors
+    title: Transformations and Vectors
+    teaching_order: 7
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [transformations and vectors, transformations, vectors,
+              topic 7, chapter 7]
+    keywords:
+      - reflection
+      - rotation
+      - enlargement
+      - translation
+      - column vector
+      - position vector
+      - magnitude
+      - scale factor
+    subtopics:
+
+      - code: "7.1"
+        short_title: Transformations
+        aliases: [transformations, describing transformations]
+        keywords:
+          - reflection
+          - rotation
+          - enlargement
+          - translation
+          - mirror line
+          - centre of rotation
+          - centre of enlargement
+          - scale factor
+          - clockwise
+          - anticlockwise
+          - describe the transformation
+          - negative scale factor
+          - fractional scale factor
+          - object and image
+          - combinations of transformations
+
+      - code: "7.2"
+        short_title: Column Vectors
+        aliases: [vectors in two dimensions, column vectors, adding vectors,
+                  multiplying by a scalar]
+        keywords:
+          - column vector
+          - add the vectors
+          - subtract the vectors
+          - multiply by a scalar
+          - scalar
+          - top number and bottom number
+          - translation vector
+          - written in column form
+          - vector AB
+          - resultant vector
+          - components
+
+      - code: "7.3"
+        short_title: Magnitude of a Vector
+        aliases: [magnitude of a vector, modulus of a vector, length of a vector]
+        keywords:
+          - magnitude
+          - modulus signs
+          - length of the vector
+          - square root of x squared plus y squared
+          - magnitude of AB
+          - modulus of a
+          - size of the vector
+          - Pythagoras on the components
+
+      - code: "7.4"
+        short_title: Vector Geometry
+        aliases: [vector geometry, position vectors, collinear points]
+        keywords:
+          - position vector
+          - directed line segment
+          - collinear
+          - parallel vectors
+          - coplanar vectors
+          - express in terms of
+          - multiple of the vector
+          - route from O
+          - OA plus AB
+          - show that the points are collinear
+          - vector proof
+          - ratio along the line
+
+  # -- 8 Probability ----------------------------------------------------------
+  - id: probability
+    title: Probability
+    teaching_order: 8
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [probability, topic 8, chapter 8, chance]
+    keywords:
+      - probability scale
+      - relative frequency
+      - tree diagram
+      - without replacement
+      - conditional probability
+      - expected frequency
+    subtopics:
+
+      - code: "8.1"
+        short_title: Introduction to Probability
+        # "P of A" tokenises to {p, of, a} - two of those are in every window
+        # ever recorded - and "probability notation" is a phrase 8.3 and 8.4
+        # both carry in their own syllabus text. Both are already in this
+        # node's outcome text, which BM25 indexes, so nothing is lost by
+        # taking them off the keyword list.
+        aliases: [introduction to probability, likelihood, chance of an event]
+        # Bare "certain" is the ordinary adverb before it is a probability
+        # term - it fired on "certain questions from another chapter" in four
+        # recordings and on none that teach probability. "out of the total" is
+        # four function words plus "total"; adjacency stops it firing but it
+        # still carries its tokens into this node's BM25 document.
+        keywords:
+          - probability scale
+          - impossible
+          - certain event
+          - even chance
+          - equally likely
+          - single event
+          - the event not happening
+          - one minus the probability
+          - the probabilities add to one
+          - complement
+          - as a fraction or a decimal
+          - number of outcomes
+          - out of the total number of outcomes
+
+      - code: "8.2"
+        short_title: Relative & Expected Frequency
+        aliases: [bias and fairness]
+        keywords:
+          - relative frequency
+          - expected frequency
+          - estimate of probability
+          - experimental probability
+          - spinner
+          - trials
+          - fair
+          - biased
+          - random
+          # "number of times" is ordinary English - it fired in 9 windows
+          # across five recordings, none of them about probability.
+          - number of trials
+          - expected number of successes
+          - multiply by the number of trials
+          - long run
+
+      - code: "8.3"
+        short_title: Combined Events & Tree Diagrams
+        # 8.4 also draws trees, but is separated on "given that". Venn work here
+        # is kept to "Venn diagram probability" so it does not compete with 1.2.
+        aliases: [probability of combined events, tree diagrams,
+                  sample space diagrams, with and without replacement]
+        keywords:
+          - tree diagram
+          - sample space diagram
+          - with replacement
+          - without replacement
+          - branches
+          - multiply along the branches
+          - add the outcomes
+          - independent events
+          - mutually exclusive
+          - two events
+          # "at least one" is three function words; the probability sense only
+          # exists next to "probability of".
+          - probability of at least one
+          - Venn diagram probability
+          - possibility space
+
+      - code: "8.4"
+        short_title: Conditional Probability
+        # Six of the twelve keywords here were built out of English rather
+        # than mathematics: "given that the first", "now that we know", "out of
+        # the ones who", "already been taken", "knowing the first result", "the
+        # first event affects the second". Every token in each is a function
+        # word, so they carried no subject meaning in either matcher. Under the
+        # old bag-of-tokens gate "now that we know" fired in 35 of 117 real
+        # windows - including all three chemistry lectures - and won the
+        # course-orientation recording of 5 Aug for this node. Adjacency
+        # matching has since stopped them firing, but they still poison the
+        # BM25 score: search_document emits keywords twice, so "now"/"that"/
+        # "we"/"know" sit in this node's document with a high idf (no other
+        # node document contains them) and lift 8.4 on every window that says
+        # them. They are removed for the score, not only for the gate.
+        #
+        # "denominator goes down" went with them for a different reason: bare
+        # "denominator" belongs to 2.3, where it fires 13 times on real
+        # lectures, so this key made conditional probability compete on
+        # algebraic fractions.
+        #
+        # NOT added: "without replacement" (sibling 8.3 owns it, and the
+        # chapter header makes that the 8.3/8.4 boundary) and "given that the
+        # first is" - adding "is" to a phrase of function words changes
+        # nothing, and it fires on exactly the same seven windows as the
+        # keyword it was meant to replace. The 8.3/8.4 boundary cannot be
+        # carried by "given that" at all: it is four function words. It is
+        # carried instead by the terms below, each of which has a token that
+        # classroom admin never says.
+        aliases: [probability of one event given another, second selection,
+                  dependent probability]
+        keywords:
+          - conditional probability
+          - dependent events
+          - reduced sample space
+          - two-way table
+          - not replaced
+          - without replacing
+          - second pick
+          - depends on the first
+
+  # -- 9 Statistics -----------------------------------------------------------
+  - id: statistics
+    title: Statistics
+    teaching_order: 9
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [statistics, stats, topic 9, chapter 9, data handling]
+    # Bare "mean" and "mode" removed for the reason given on 9.3: they are
+    # ordinary English ("I mean", "demo mode") and fired on lectures with no
+    # statistics in them.
+    keywords:
+      - the mean
+      - median
+      - modal value
+      - range
+      - quartile
+      - cumulative frequency
+      - histogram
+      - scatter diagram
+    subtopics:
+
+      - code: "9.1"
+        short_title: Tally & Two-Way Tables
+        aliases: [classifying statistical data, tally charts, two-way tables,
+                  tabulating data]
+        keywords:
+          - tally chart
+          - tally marks
+          - two-way table
+          - tabulate the data
+          - classify the data
+          - categories
+          - discrete data
+          - continuous data
+          - qualitative
+          - quantitative
+          - class interval
+          - grouped data
+          - fill in the table
+
+      - code: "9.2"
+        short_title: Comparing Data Sets
+        # Separated from 9.3 by being about comparison rather than calculation:
+        # "compare the averages", "more consistent", not "how to find the median".
+        aliases: [interpreting statistical data, comparing data,
+                  drawing conclusions, inferences]
+        keywords:
+          - compare the averages
+          - compare the ranges
+          - two data sets
+          - on average higher
+          - more consistent
+          - less spread out
+          - draw a conclusion
+          - draw inferences
+          - restrictions on the conclusion
+          - misleading
+          - sample size
+          - interpret the diagram
+
+      - code: "9.3"
+        short_title: Averages & Spread
+        # Bare "mean" is the single worst keyword in either overlay. It is
+        # the discourse filler "I mean", and it fired in 33 of 117 real
+        # windows - 15 of them on maths lectures that teach no statistics at
+        # all, and 7 on the 5 Aug course-orientation recording, which it won
+        # outright and named "Averages & Spread". Bare "mode" is the same
+        # defect one size down: on 5 Aug every hit was "demo mode" in the
+        # student portal. Both are replaced by the forms a teacher actually
+        # says, each of which carries a token that ordinary speech does not.
+        # "median", "range" and the quartile terms are left alone - they are
+        # not ordinary English and they fired on nothing spurious.
+        #
+        # Note what this cannot fix: on 5 Aug the teacher READS THE SYLLABUS
+        # CONTENTS ALOUD ("mean, median, mod, histograms, cumulative frequency
+        # curves, and quartiles"). Any honest statistics vocabulary fires
+        # there. That window is meant to be carried by the coverage floor, not
+        # by the keyword list.
+        aliases: [mean median mode, estimated mean, working out the average]
+        keywords:
+          - the mean
+          - find the mean
+          - mean of the data
+          - arithmetic mean
+          - median
+          - modal value
+          - most common value
+          - range
+          - lower quartile
+          - upper quartile
+          - interquartile range
+          - modal class
+          - estimate of the mean
+          - midpoint of the class
+          - sum of fx
+          - middle value
+          - divide by the total frequency
+          - grouped frequency
+
+      - code: "9.4"
+        short_title: Statistical Charts
+        # One label for bar charts, pie charts, pictograms and stem-and-leaf.
+        # A vague-but-correct name beats four specific names for one subtopic,
+        # and the siblings 9.5, 9.6 and 9.7 are already named precisely.
+        aliases: [statistical charts and diagrams, bar charts, pie charts,
+                  pictograms, stem-and-leaf diagrams]
+        keywords:
+          - bar chart
+          - pie chart
+          - pictogram
+          - stem-and-leaf diagram
+          - read the key
+          - sector angle
+          - degrees in a pie chart
+          - composite bar chart
+          - dual bar chart
+          - stacked bar chart
+          - ordered data
+          - leaves
+
+      - code: "9.5"
+        short_title: Scatter Diagrams
+        aliases: [scatter diagrams, scatter graphs]
+        keywords:
+          - scatter diagram
+          - scatter graph
+          - correlation
+          - positive correlation
+          - negative correlation
+          - zero correlation
+          - line of best fit
+          - drawn by eye
+          - strong correlation
+          - weak correlation
+          - relationship between the two
+          - outlier
+
+      - code: "9.6"
+        short_title: Cumulative Frequency
+        aliases: [cumulative frequency diagrams, percentiles, reading off quartiles]
+        keywords:
+          - cumulative frequency
+          - cumulative frequency curve
+          - cumulative frequency table
+          - running total
+          - percentile
+          - upper class boundary
+          - read off the median
+          - smooth curve
+          - S-shaped curve
+          - halfway up the axis
+          - estimate from the graph
+
+      - code: "9.7"
+        short_title: Histograms
+        aliases: [histograms]
+        keywords:
+          - histogram
+          - frequency density
+          - class width
+          - unequal class widths
+          - frequency divided by class width
+          - area of the bar
+          - vertical axis is frequency density
+          - bars touch
+          - work out the frequency
+          - height of the bar

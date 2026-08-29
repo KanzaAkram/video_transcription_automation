@@ -15,6 +15,25 @@ Aggregating per-window rather than over the whole transcript produces a
 **coverage profile** — "78% relative atomic mass, 18% atomic structure" — which
 is what makes multi-topic lectures tractable. See docs/CLASSIFICATION.md.
 
+Scores decide the ranking; they do not decide attribution. Two rules do that,
+and both exist because a normalised score always puts *some* node at 1.0 and
+so can never say "none of these":
+
+  * A window counts toward a node only if the node's own vocabulary is in it
+    (`MIN_KEYWORD_HITS`), and a multi-word keyword counts only when its words
+    appear **in order and adjacent**. "Mass to charge ratio" and "charge to
+    mass ratio" are the same bag of words and different physics — one is the
+    axis of a mass spectrum, the other is why an electron beam bends between
+    charged plates — so a bag-of-words test hands ninety minutes of atomic
+    structure to Mass Spectrometry. It also means "relative atomic mass" does
+    not fire on a window that merely says "mass" somewhere near "relative".
+
+  * The window is attributed to the highest-scoring node **that passes that
+    gate**, not to the highest-scoring node full stop. Asking the argmax alone
+    discards the whole window whenever a node with no vocabulary in it happens
+    to outrank one that genuinely matched, which on a real 100-minute maths
+    lecture threw away nineteen windows of twenty-nine.
+
 BM25 has a pure-Python fallback so the dry run works with no extra
 dependencies; embeddings degrade to lexical-only if sentence-transformers is
 not installed.
@@ -36,12 +55,15 @@ log = logging.getLogger(__name__)
 
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-']*")
 
-#: A window must contain at least this many of the winning node's own terms to
+#: A window must contain at least this many of a node's own terms before it can
 #: count toward that node's coverage. Without it, windows containing no subject
 #: content at all — "can everybody hear me at the back", homework admin, the
 #: silence before a lecture starts — attach to whichever node scores least
 #: badly and inflate its coverage. Scores alone cannot express this, because
 #: normalising per window always puts *some* node at 1.0.
+#:
+#: It is a bar every node is held to, not a veto held over the winner: the
+#: window goes to the best-scoring node that clears it. See `_best_supported`.
 MIN_KEYWORD_HITS = 1
 
 
@@ -55,6 +77,66 @@ class Window:
     start_s: float
     end_s: float
     text: str
+
+
+# ── Keyword vocabulary ────────────────────────────────────────────────────────
+
+
+@dataclass(frozen=True)
+class _NodeTerms:
+    """One node's keywords and aliases, tokenised once.
+
+    Split by length because the two match differently: a single token is a
+    membership test, a phrase is an ordered adjacency test. Built in the
+    retriever's constructor rather than inside the scoring loop, which runs
+    this against every node for every window.
+    """
+
+    singles: frozenset[str]
+    phrases: tuple[tuple[str, ...], ...]
+
+    @classmethod
+    def of(cls, node: SyllabusNode) -> _NodeTerms:
+        singles: set[str] = set()
+        phrases: list[tuple[str, ...]] = []
+        seen: set[tuple[str, ...]] = set()
+        for term in (*node.keywords, *node.aliases):
+            parts = tuple(tokenise(term))
+            if not parts or parts in seen:
+                continue  # the same term twice is not twice the evidence
+            seen.add(parts)
+            if len(parts) == 1:
+                singles.add(parts[0])
+            else:
+                phrases.append(parts)
+        return cls(singles=frozenset(singles), phrases=tuple(phrases))
+
+
+class _WindowVocabulary:
+    """A window's words, indexed for phrase lookup.
+
+    Phrases are matched against sets of the window's n-grams rather than
+    scanned for. Scanning would cost a pass over the window per keyword per
+    node per window; this costs one pass over the window per phrase length
+    the taxonomy actually uses — typically four — and turns every subsequent
+    keyword test into a hash lookup.
+    """
+
+    __slots__ = ("tokens", "_ngrams")
+
+    def __init__(self, tokens: list[str], lengths: frozenset[int]) -> None:
+        self.tokens = frozenset(tokens)
+        self._ngrams = {
+            n: {tuple(tokens[i : i + n]) for i in range(len(tokens) - n + 1)} for n in lengths
+        }
+
+    def hits(self, terms: _NodeTerms) -> int:
+        """How many of `terms` appear in this window."""
+        count = sum(1 for token in terms.singles if token in self.tokens)
+        for phrase in terms.phrases:
+            if phrase in self._ngrams.get(len(phrase), ()):
+                count += 1
+        return count
 
 
 @dataclass
@@ -146,6 +228,10 @@ class HybridRetriever:
         self.weights = retrieval_settings
         self.nodes = taxonomy.classifiable_nodes()
         self._bm25 = _BM25([tokenise(n.search_document()) for n in self.nodes])
+        self._terms = [_NodeTerms.of(n) for n in self.nodes]
+        self._phrase_lengths = frozenset(
+            len(phrase) for terms in self._terms for phrase in terms.phrases
+        )
         self._embedder = None
         self._node_embeddings = None
 
@@ -219,16 +305,13 @@ class HybridRetriever:
         top_windows: dict[int, list[int]] = {}
 
         for window in windows:
-            fused = self._score_window(window.text)
-            tokens = set(tokenise(window.text))
+            tokens = tokenise(window.text)
+            fused = self._score_window(window.text, tokens)
             for i, score in enumerate(fused):
                 totals[i] += score
                 peaks[i] = max(peaks[i], score)
-            best = max(range(len(fused)), key=lambda i: fused[i])
-            # Gate on actual vocabulary presence, not on score. Per-window
-            # normalisation puts the best node at 1.0 every time, so a score
-            # threshold here would be dead code (and was, until this fix).
-            if self._keyword_hits(self.nodes[best], tokens) >= MIN_KEYWORD_HITS:
+            best = self._best_supported(fused, _WindowVocabulary(tokens, self._phrase_lengths))
+            if best is not None:
                 top_hits[best] += 1
                 top_windows.setdefault(best, []).append(window.index)
 
@@ -254,22 +337,29 @@ class HybridRetriever:
             unmatched_windows=total_windows - matched_windows,
         )
 
-    @staticmethod
-    def _keyword_hits(node: SyllabusNode, tokens: set[str]) -> int:
-        """How many of `node`'s own terms appear in a window.
+    def _best_supported(self, fused: list[float], vocab: _WindowVocabulary) -> int | None:
+        """The best-scoring node whose own vocabulary is in the window.
 
-        A multi-word keyword counts only when every one of its tokens is
-        present, so "relative atomic mass" does not fire on a bare "mass".
+        Gate on vocabulary presence, not on score: per-window normalisation
+        puts the best node at 1.0 every time, so a score threshold here would
+        be dead code.
+
+        Descending score order, first node that clears the gate — rather than
+        testing the argmax and giving up if it fails. A window whose top raw
+        match is a node with none of its terms in it is not evidence of
+        nothing; it is evidence about whichever node *did* have terms in it,
+        and throwing it away loses real teaching to a node that was never
+        mentioned. Returns None only when no node has any vocabulary in the
+        window at all — silence, admin, homework notices — which is the case
+        the gate exists for.
         """
-        hits = 0
-        for term in (*node.keywords, *node.aliases):
-            parts = tokenise(term)
-            if parts and all(part in tokens for part in parts):
-                hits += 1
-        return hits
+        for i in sorted(range(len(fused)), key=lambda i: -fused[i]):
+            if vocab.hits(self._terms[i]) >= MIN_KEYWORD_HITS:
+                return i
+        return None
 
-    def _score_window(self, text: str) -> list[float]:
-        query = tokenise(text)
+    def _score_window(self, text: str, tokens: list[str] | None = None) -> list[float]:
+        query = tokens if tokens is not None else tokenise(text)
         lexical = self._bm25.scores(query)
         lexical = _normalise(lexical)
 

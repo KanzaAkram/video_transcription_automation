@@ -121,7 +121,19 @@ naming:
   # Alternative with more identifiers, if you want them:
   # template: "{date} - {chapter} - {topic} [{teacher}]{ext}"
 
-  max_length: 120
+  # 80, not 120. Filenames carry keywords, not syllabus prose. A cap generous
+  # enough to admit "Intermolecular forces, electronegativity and bond
+  # properties" is a cap that will eventually admit it.
+  max_length: 80
+
+  # At most two subtopics in a name. Never three - see
+  # src/pipeline/classify/chapters.py. The separator is " + " rather than
+  # " & " because 25 of 51 chemistry short titles already contain "&"
+  # ("Chlorine & Disproportionation"), so joining two of them with "&"
+  # renders a two-subtopic name as four.
+  max_subtopics: 2
+  subtopic_separator: " + "
+
   # Characters that break Drive, Windows sync clients, and shell scripts.
   strip_characters: '/\:*?"<>|'
 

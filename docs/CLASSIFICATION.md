@@ -64,15 +64,19 @@ Scores are normalised and combined with a configurable weight (default 0.5/0.5).
 Per-window scores aggregate into a per-node profile:
 
 ```
-chem.atomic_structure.rel_masses   coverage 0.78   peak 0.91   windows 14/18
-chem.atomic_structure              coverage 0.18   peak 0.44   windows  3/18
-chem.moles_stoichiometry           coverage 0.04   peak 0.21   windows  1/18
+chem.2_1    Relative Atomic Mass     coverage 0.78   peak 0.91   windows 14/18
+chem.1_2    Isotopes                 coverage 0.18   peak 0.44   windows  3/18
+chem.2_2    Moles & Avogadro         coverage 0.04   peak 0.21   windows  1/18
 ```
+
+Nodes here are **subtopics** (depth 1). Their **chapters** (depth 0) are what
+the file is placed into, and coverage is rolled up per chapter to decide that —
+see "One chapter, at most two subtopics" below.
 
 `coverage` is the share of the lecture attributable to a node. This is the number that makes multi-topic lectures work:
 
 - One node dominant → straightforward, file it there
-- Two nodes with real coverage → primary is the larger, secondary is recorded in metadata (and optionally gets a Drive shortcut)
+- Two nodes with real coverage → both may name the file, if they are in the same chapter and the second clears both secondary bars
 - Nothing above the floor → the lecture may be revision, an exam debrief, or admin. Route to review rather than forcing a match
 
 It also detects **continuation lectures**: high coverage on a node that the previous lecture also covered, with the lecture opening mid-topic, indicates a part 2. That feeds the naming rules.
@@ -101,6 +105,9 @@ Weak signals are explicitly labelled as weak in the prompt. They are useful tie-
     "evidence": [{"quote": "string", "start_s": 0.0}]
   },
   "secondary": [{"node_id": "string", "coverage": 0.0}],
+  "chapter_node_id": "string|null",
+  "chapter_weights": {"chem.moles_stoichiometry": 0.0},
+  "topic_node_ids": ["string"],
   "is_continuation": false,
   "suggested_topic_label": "string",
   "reasoning": "string",
@@ -108,6 +115,40 @@ Weak signals are explicitly labelled as weak in the prompt. They are useful tie-
   "abstain_reason": "string|null"
 }
 ```
+
+`chapter_node_id` is the placement answer and `topic_node_ids` the naming one.
+They are separate fields rather than one because they answer different
+questions and can legitimately disagree in shape: one chapter, one *or two*
+subtopics. `topic_node_ids` is validated to at most two — the model is asked
+for at most two and the field **raises** rather than truncating if more arrive,
+because silently dropping the third would hide a model that had stopped
+following the instruction.
+
+## One chapter, at most two subtopics
+
+Four rules, in `src/pipeline/classify/chapters.py`:
+
+1. A recording belongs to **exactly one chapter**. Chapters are Drive folders,
+   and a lecture is one lesson; it goes in one folder. Each subtopic's coverage
+   is attributed to its chapter, the totals are normalised, and the heaviest
+   wins — so four subtopics at 15% beat one at 50%, which is the right answer
+   when the lecture worked through most of a chapter.
+2. Most recordings cover **one subtopic**, and the filename is that subtopic's
+   `short_title`.
+3. A recording that genuinely straddles two gets both, joined by `" & "`. The
+   second must clear an absolute coverage bar *and* a ratio of the first: the
+   two bars fail differently, and one alone lets through either a four-minute
+   aside or a weak runner-up to a weak winner.
+4. **Never three.** Capped in three places — `NamingSettings.max_subtopics`
+   (`le=2`), `Classification`'s validator, and `HARD_SUBTOPIC_CAP` in
+   `chapters.py` — because by three the filename is wider than the folder
+   listing and a name nobody reads is worse than a short name that is only
+   mostly right.
+
+The chapter's own node is never chosen as the second subtopic. Without that,
+the recap minutes at the start of a lecture produced
+`Aug, 10 - Relative Atomic Mass & Atomic Structure.mp4` filed inside *Atomic
+Structure* — the folder name said twice.
 
 Schema-validated at the API layer, so a malformed response is impossible rather than merely unlikely.
 

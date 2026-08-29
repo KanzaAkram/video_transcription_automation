@@ -1,0 +1,1761 @@
+# Curation overlay for Cambridge International AS Level Chemistry 9701 (2025-2027).
+#
+# Everything the official syllabus already contains — subtopic codes, verbatim
+# subtopic titles, learning-outcome text — is read from the syllabus JSON by
+# scripts/ingest_syllabus.py and must NOT be repeated here. This file holds only
+# what the syllabus cannot tell you:
+#
+#   chapters              which Drive folder each syllabus subtopic is taught in
+#   drive_folder_name     the exact folder string placement matches on
+#   teaching_order        the leading "3." in the folder name
+#   coursebook_chapter    the "(Chapter 4)" in the folder name
+#   short_title           the KEYWORDS-ONLY label that lands in the filename
+#   keywords / aliases    what a teacher actually says out loud, which is what
+#                         retrieval scores the transcript against
+#
+# ── A chapter is a folder, not a syllabus topic ───────────────────────────────
+# These do not correspond one-to-one, and assuming they do misfiles whole
+# chapters. Cambridge topic 1 "Atomic structure" is split across two folders:
+# 1.1/1.2 are taught in "1. Atomic Structure (Chapter 1)" and 1.3/1.4 in
+# "2. Electrons in Atoms (Chapter 2)". Conversely one folder can hold subtopics
+# from three different topics — "7. Hydrocarbons (Chapter 15)" holds 14.1, 14.2
+# and 20.1, because addition polymerisation is taught the day after alkenes.
+#
+# So the tree this overlay produces is:
+#
+#     depth 0 = chapter   one Drive folder. A recording belongs to exactly one,
+#                         chosen by weighting transcript content per chapter.
+#     depth 1 = subtopic  one Cambridge subtopic. Filenames are named from
+#                         these: one subtopic normally, two at most, never three.
+#
+# ── short_title is the filename ───────────────────────────────────────────────
+# It is not a summary of the subtopic, it is the text a student reads in a
+# folder listing next to a date. Two to four words, under about 35 characters,
+# Title Case, "&" rather than "and", and distinguishable from every sibling in
+# the same folder. Several Cambridge titles are unusable verbatim and are cut
+# down here: "Intermolecular forces, electronegativity and bond properties"
+# becomes "Intermolecular Forces"; "Redox processes: electron transfer and
+# changes in oxidation number (oxidation state)" becomes "Redox & Oxidation
+# Numbers". The verbatim title is still carried on the node for retrieval — only
+# the filename uses the short form.
+#
+# ── The two keyword rules ─────────────────────────────────────────────────────
+# Both are load-bearing and both fail silently when broken.
+#
+# 1. A keyword is a phrase a teacher SAYS OUT LOUD, never a description of the
+#    topic. Retrieval counts a keyword only when EVERY one of its tokens appears
+#    in the same ~4-minute window, so "explain the trend in electronegativity
+#    across a period" never fires. "electronegativity", "Pauling" and "across a
+#    period" do.
+#
+# 2. A keyword must SEPARATE a subtopic from its siblings in the same chapter.
+#    A term every lecture in the folder says — "bond" in Chemical Bonding,
+#    "mole" in Moles and Stoichiometry, "electron" anywhere — fires on all of
+#    them and actively degrades the ranking. Where two siblings genuinely share
+#    content (17.1 and 19.2 both cover the HCN/KCN addition) the shared terms
+#    are assigned to one of them on purpose and a comment says which.
+#
+#    This includes a subtopic's OWN name when a sibling teaches the same
+#    molecule: "alkene" sat on 14.2 and fired on 14.1 (which makes alkenes by
+#    cracking) and on 20.1 (which polymerises them), so a pure polymerisation
+#    lecture came out named "Alkenes + Addition Polymerisation". The word is
+#    already in the node's title, short_title and outcome text, all of which
+#    search_document indexes, so dropping it as a keyword costs nothing.
+#
+# 3. A term belongs to `keywords` OR to `aliases`, never to both.
+#    retriever._keyword_hits iterates (*keywords, *aliases), so a term in both
+#    counts twice toward the coverage gate; and search_document emits keywords
+#    twice plus aliases once, so it also carries three times the BM25 weight of
+#    an ordinary keyword. Nothing warns about it and the effect is uneven
+#    across nodes, which is worse than either weight chosen deliberately.
+#
+# Formulae are written the way they are spoken, not the way they are printed:
+# "acidified potassium dichromate", not K2Cr2O7. Whisper transcribes speech.
+
+subject_id: as_chemistry
+subject_name: AS Chemistry
+syllabus_code: "9701"
+syllabus_years: "2025-2027"
+node_id_prefix: chem
+source: >-
+  Subtopic codes, verbatim subtopic titles and learning-outcome text extracted
+  from the official Cambridge International AS Level Chemistry 9701 syllabus for
+  2025, 2026 and 2027. The chapter grouping, Drive folder names, teaching order,
+  coursebook chapter numbers, short filename titles, keywords and aliases are
+  hand-curated here. Drive folder names were transcribed from the live folder
+  listing and are reproduced exactly, typos included.
+
+# Primed into the ASR decoder for every lecture in this subject. These are the
+# terms generic speech recognition reliably mangles — "Le Chatelier" comes back
+# as "luh shot alley", "halogenoalkane" as "halogen alkane" — and they are also
+# the terms classification leans on hardest, so the error is expensive twice
+# over.
+subject_vocabulary:
+  - stoichiometry
+  - Avogadro
+  - electronegativity
+  - Pauling
+  - halogenoalkane
+  - nucleophilic
+  - electrophilic
+  - enthalpy
+  - Hess
+  - calorimetry
+  - Le Chatelier
+  - equilibrium
+  - Bronsted-Lowry
+  - Boltzmann
+  - isotope
+  - orbital
+  - subshell
+  - covalent
+  - ionic
+  - dative
+  - VSEPR
+  - hybridisation
+  - allotrope
+  - buckminsterfullerene
+  - van der Waals
+  - homologous
+  - isomerism
+  - enantiomer
+  - chiral
+  - Markovnikov
+  - carbocation
+  - disproportionation
+  - amphoteric
+  - dichromate
+  - manganate
+  - Tollens
+  - Fehling
+  - dinitrophenylhydrazine
+  - tri-iodomethane
+  - hydroxynitrile
+  - nitrile
+  - aldehyde
+  - ketone
+  - carboxylic
+  - esterification
+  - titration
+  - molarity
+  - wavenumber
+  - spectrometry
+  - delocalised
+
+# On teaching_order: it is the leading number in the Drive folder name and
+# nothing else. Two folders share "12." and two share "19." in the real Drive.
+# That is reproduced faithfully rather than corrected, because placement matches
+# on drive_folder_name and the number is only a sort hint.
+
+chapters:
+
+  # ── 0. Introduction ─────────────────────────────────────────────────────────
+  # Admin, not teaching. Excluded so a course-intro recording cannot absorb
+  # genuine content — an intro session name-checks half the syllabus in forty
+  # minutes and would otherwise outscore the lecture that actually taught it.
+  - id: introduction
+    title: Introduction
+    teaching_order: 0
+    coursebook_chapter: null
+    drive_folder_name: "0. Introduction"
+    exclude_from_classification: true
+    aliases: [orientation, course intro, first class, welcome, induction]
+    keywords:
+      - syllabus
+      - assessment
+      - exam structure
+      - paper 1
+      - paper 2
+      - paper 3
+      - grade boundaries
+      - course outline
+      - data booklet
+
+  # ── 1. Atomic Structure (Chapter 1) ─────────────────────────────────────────
+  # Topic 1 is split across this folder and the next. 1.1 and 1.2 only.
+  - id: atomic_structure
+    title: Atomic Structure
+    teaching_order: 1
+    coursebook_chapter: 1
+    drive_folder_name: "1. Atomic Structure (Chapter 1)"
+    aliases: [structure of the atom, subatomic particles, chapter 1,
+              AOD, atomic orbital diagram]
+    keywords:
+      - nucleus
+      - proton
+      - neutron
+      - nucleon number
+      - proton number
+      - isotope
+      - atomic radius
+    subtopics:
+      - code: "1.1"
+        # "Subatomic Particles & Radius" until the audit of the August 2026
+        # recordings. Cambridge 1.1.7 really is the radius trends, so the old
+        # title described the SUBTOPIC honestly - but short_title is not a
+        # description of the subtopic, it is the filename, and it has to be
+        # true of the recording it lands on. Of the two real 1.1 lectures,
+        # 11 Aug says "radius" not once, and 13 Aug reaches it only at 42:58
+        # of 52 minutes - about seven minutes, after the deflection
+        # demonstration that is the substance of both. Naming 88% of a lecture
+        # after its last 13% is the failure the "&" form invites.
+        #
+        # What this costs: a future lecture that really is 1.1.7 - the
+        # variation of atomic and ionic radius across a period and down a
+        # group - now comes out called "Subatomic Particles", which is wrong
+        # in the other direction. The keywords "atomic radius", "ionic
+        # radius", "across a period" and "down a group" are still on the node,
+        # so such a lecture is still MATCHED correctly; only its label is
+        # poor. If it turns out to be taught as its own session often enough
+        # to matter, the fix is to split 1.1 into two nodes rather than to put
+        # both words back into one filename.
+        short_title: Subatomic Particles
+        aliases: [particles in the atom, subatomic particles, structure of the atom]
+        # No bare "proton"/"neutron"/"electron" here: 1.2 says all three in
+        # every sentence, so they cannot separate the two lectures. The
+        # discriminator is the deflection demonstration.
+        #
+        # The list below was written from the syllabus wording and missed the
+        # words this teacher actually uses. Both real recordings of this
+        # subtopic ARE the deflection demonstration, and they say it two
+        # different ways: on 11 Aug "deflection" and "deflected" occur ZERO
+        # times and "deviation"/"deviate"/"deviated"/"undeviated" occur 29,
+        # while on 13 Aug it is the other way round - "deflect*" 43 times and
+        # "deviat*" once. One lesson, two vocabularies, and the node only had
+        # one of them. "charge to mass ratio" (said 30 times on 13 Aug) and
+        # "angle of deflection" (21 times) were on neither list.
+        #
+        # "charge to mass ratio" can only live here now that 22.2 no longer
+        # carries "mass to charge ratio" - see the note there.
+        #
+        # "hydride" and the plate terms are not stray organic/physics words:
+        # the demonstration fires beams of proton, hydride and deuterium
+        # between charged plates and compares how far each one bends.
+        keywords:
+          - nucleus
+          - empty space
+          - dense nucleus
+          - relative charge
+          - relative mass
+          - nucleon
+          - nucleons
+          - nucleon number
+          - proton number
+          - mass number
+          - atomic number
+          - electric field
+          - deflection
+          - deflected
+          - angle of deflection
+          - deviation
+          - deviate
+          - deviated
+          - undeviated
+          - charge to mass ratio
+          - elementary charge
+          - negative plate
+          - positive plate
+          - hydride
+          - oppositely charged plates
+          - atomic radius
+          - ionic radius
+          - across a period
+          - down a group
+
+      - code: "1.2"
+        short_title: Isotopes
+        aliases: [isotopes of an element]
+        # The nuclide names and the abundance vocabulary have moved to 2.1.
+        # They are not what you say when you teach what an isotope IS - they
+        # are what you say when you teach RELATIVE ATOMIC MASS, and this node
+        # having them is what sent the 16 Aug lecture to the wrong subtopic
+        # AND the wrong Drive folder. On that recording "abundance" occurs 16
+        # times, "carbon-12" 6 and "relative atomic mass" 11: it is a chapter-4
+        # lecture, and this chapter-1 node was quoting its vocabulary back at
+        # it. Every spelling still exists, on 2.1, for the reason the old
+        # comment gave - "carbon-12", "carbon 12" and "carbon twelve" tokenise
+        # three different ways and Whisper writes whichever it hears.
+        #
+        # What is left here is the definition itself, which 2.1 never states.
+        #
+        # "deuterium" and "tritium" stay, but they are weak: the 1.1
+        # deflection demonstration fires proton, hydride and DEUTERIUM beams
+        # between charged plates, so they fire on 1.1's lectures too. They are
+        # left because a real isotopes lecture does say them, and 1.1 now
+        # outscores this node on those windows by its own vocabulary rather
+        # than by taking these away.
+        #
+        # No ASR mis-spellings ("dutrium") here: on 11 Aug that would
+        # strengthen exactly the wrong node. Decoder priming is what
+        # subject_vocabulary is for.
+        #
+        # Bare "isotope"/"isotopes" are gone for the reason the chapter header
+        # gives about "alkene" on 14.2: a subtopic's own name is not a keyword
+        # when a sibling teaches the same thing. Relative atomic mass is
+        # DEFINED as a weighted mean over isotopes, so 2.1's lecture says the
+        # word constantly - on 16 Aug it says "isotope" 45 times, more often
+        # than the isotopes lecture would. With these two keys in place that
+        # lecture still gave six windows to this node and tied 40%-40% with
+        # the node that was actually being taught. The word is already in this
+        # node's title, short_title and outcome text, all of which
+        # search_document indexes, so dropping it costs the score nothing and
+        # only stops it winning windows it cannot discriminate.
+        keywords:
+          - same chemical properties
+          - different physical properties
+          - same number of protons
+          - different number of neutrons
+          - same element different mass
+          - deuterium
+          - tritium
+
+  # ── 2. Electrons in Atoms (Chapter 2) ───────────────────────────────────────
+  # The other half of topic 1: 1.3 and 1.4.
+  - id: electrons_in_atoms
+    title: Electrons in Atoms
+    teaching_order: 2
+    coursebook_chapter: 2
+    drive_folder_name: "2. Electrons in Atoms (Chapter 2)"
+    aliases: [electron structure, electronic structure, chapter 2, electrons in atoms]
+    keywords:
+      - subshell
+      - orbital
+      - electronic configuration
+      - ionisation energy
+      - shielding
+      - principal quantum number
+    subtopics:
+      - code: "1.3"
+        short_title: Atomic Orbitals & Configuration
+        aliases: [atomic orbitals, energy levels, subshells]
+        keywords:
+          - subshell
+          - sub-shell
+          - orbital
+          - s orbital
+          - p orbital
+          - d orbital
+          - principal quantum number
+          - ground state
+          - electronic configuration
+          - electrons in boxes
+          - aufbau
+          - Hund
+          - Pauli
+          - degenerate
+          - spherical
+          - dumbbell
+          - unpaired electron
+          - free radical
+          - inter-electron repulsion
+
+      - code: "1.4"
+        short_title: Ionisation Energy
+        aliases: [IE, ionization energy]
+        keywords:
+          - ionisation energy
+          - first ionisation energy
+          - second ionisation energy
+          - successive ionisation energies
+          - gaseous atoms
+          - endothermic
+          - big jump
+          - large jump
+          - shielding
+          - nuclear charge
+          - nuclear attraction
+          - spin-pair repulsion
+          - log graph
+          - deduce the group
+
+  # ── 3. Chemical Bonding (Chapter 4) ─────────────────────────────────────────
+  # Taught third, coursebook chapter four. Transposed with the next folder; the
+  # two numbers are stored independently and neither is derived from the other.
+  - id: chemical_bonding
+    title: Chemical Bonding
+    teaching_order: 3
+    coursebook_chapter: 4
+    drive_folder_name: "3. Chemical Bonding (Chapter 4)"
+    aliases: [bonding, chemical bonds, structure and bonding, chapter 4]
+    keywords:
+      - ionic bond
+      - covalent bond
+      - metallic bond
+      - lone pair
+      - electronegativity
+      - VSEPR
+      - hydrogen bonding
+      - van der Waals
+      - dipole
+    subtopics:
+      - code: "3.1"
+        short_title: Electronegativity
+        aliases: [electronegativity trend]
+        # "electronegativity" is deliberately assigned to 3.1 alone. It appears
+        # in the title of 3.6 as well, but as a keyword on both it fires on
+        # every window of either lecture and separates neither.
+        keywords:
+          - electronegativity
+          - Pauling
+          - Pauling scale
+          - attract electrons
+          - power of an atom
+          - most electronegative
+          - fluorine
+          - electronegativity difference
+          - nuclear charge
+          - shielding by inner shells
+          - across a period
+          - down a group
+
+      - code: "3.2"
+        short_title: Ionic Bonding
+        aliases: [ionic bond]
+        # "electrostatic attraction" is the defining phrase for 3.2 AND 3.3, so
+        # it is on neither; each keeps only the vocabulary the other lacks.
+        keywords:
+          - ionic bonding
+          - cation
+          - anion
+          - oppositely charged ions
+          - transfer of electrons
+          - sodium chloride
+          - magnesium oxide
+          - calcium fluoride
+          - giant ionic lattice
+          - charge density
+          - full outer shell
+
+      - code: "3.3"
+        short_title: Metallic Bonding
+        aliases: [metallic bond]
+        keywords:
+          - metallic bonding
+          - delocalised electrons
+          - sea of electrons
+          - positive metal ions
+          - metal cations
+          - malleable
+          - ductile
+          - lattice of metal ions
+
+      - code: "3.4"
+        short_title: Covalent & Dative Bonding
+        # "pie bond" is not a typo: it is how Whisper renders "pi bond", and it
+        # also matches the user's own "Sigma and Pie Bonds" recording.
+        aliases: [coordinate bonding, sigma and pi bonds, sigma and pie bonds]
+        keywords:
+          - covalent bonding
+          - shared pair
+          - dative covalent
+          - coordinate bond
+          - lone pair donated
+          - ammonium ion
+          - sigma bond
+          - pi bond
+          - pie bond
+          - orbital overlap
+          - sideways overlap
+          - head-on overlap
+          - hybridisation
+          - sp2
+          - sp3
+          - bond energy
+          - bond length
+          - expanded octet
+          - triple bond
+
+      - code: "3.5"
+        short_title: Shapes of Molecules
+        aliases: [shapes of molecules, bond angles, molecular shape]
+        keywords:
+          - VSEPR
+          - bond angle
+          - tetrahedral
+          - trigonal planar
+          - trigonal bipyramidal
+          - octahedral
+          - pyramidal
+          - non-linear
+          - bent
+          - linear
+          - lone pair repulsion
+          - electron pair repulsion
+          - repel each other
+          - as far apart as possible
+          # Anchored on "degrees": bare "109.5" tokenises to {109, 5} and fires
+          # on any window that happens to contain both numbers.
+          - "109.5 degrees"
+          - "104.5 degrees"
+
+      - code: "3.6"
+        short_title: Intermolecular Forces
+        aliases: [induced dipoles, London forces]
+        keywords:
+          - intermolecular forces
+          - hydrogen bonding
+          - hydrogen bond
+          - van der Waals
+          - London dispersion
+          - instantaneous dipole
+          - induced dipole
+          - id-id
+          - permanent dipole
+          - pd-pd
+          - dipole moment
+          - bond polarity
+          - polar molecule
+          - nonpolar
+          - surface tension
+          - ice is less dense
+          - anomalous
+          - boiling point of water
+          - solubility in water
+
+      - code: "3.7"
+        short_title: Dot & Cross Diagrams
+        aliases: [dot-and-cross diagram, dot and cross diagrams]
+        keywords:
+          - dot-and-cross
+          - dot and cross
+          - crosses
+          - dots
+          - outer shell electrons
+          - overlapping circles
+          - odd number of electrons
+          - draw the diagram
+          - square brackets
+
+  # ── 4. Moles and Stoichiometry (Chapter 3) ──────────────────────────────────
+  - id: moles_stoichiometry
+    title: Moles and Stoichiometry
+    teaching_order: 4
+    coursebook_chapter: 3
+    drive_folder_name: "4. Moles and Stoichiometry (Chapter 3)"
+    aliases: [moles, stoichiometry, mole concept, calculations,
+              amount of substance, chapter 3]
+    keywords:
+      - mole
+      - Avogadro constant
+      - empirical formula
+      - balanced equation
+      - percentage yield
+      - titration
+      - molar volume
+    subtopics:
+      - code: "2.1"
+        short_title: Relative Atomic Mass
+        # "Mr" removed as an alias: it tokenises to 'mr' and fires on any
+        # teacher addressed as "Mr". It hit two windows of a maths lecture.
+        # "Ar" is kept - it is not an English word.
+        #
+        # "unified atomic mass unit" replaced by the three-token form: the
+        # teacher says "unified atomic mass" 6 times on 16 Aug and the
+        # four-token version not once, and with adjacency matching the longer
+        # key can never fire on the shorter phrase.
+        #
+        # The abundance and averaging vocabulary below is what this teacher
+        # actually says while deriving Ar - "simple average" 8 times, "weight
+        # average" 6, "weightage" 4, "abundance" 16. It used to sit on 1.2
+        # Isotopes, which is why a Moles-and-Stoichiometry lecture was filed
+        # under Atomic Structure.
+        aliases: [Ar]
+        keywords:
+          - relative atomic mass
+          - relative isotopic mass
+          - relative molecular mass
+          - relative formula mass
+          - unified atomic mass
+          - one twelfth
+          - carbon-12
+          - carbon 12
+          - carbon twelve
+          - chlorine-35
+          - chlorine thirty five
+          - chlorine-37
+          - chlorine thirty seven
+          - abundance
+          - abundances
+          - percentage abundance
+          - simple average
+          - weight average
+          - weighed average
+          - weightage
+          - weighted mean
+          - weighted average
+
+      - code: "2.2"
+        short_title: Moles & Avogadro Constant
+        # Bare "mole" is not a keyword anywhere in this chapter: 2.3 and 2.4 say
+        # it constantly, so it fires on all three lectures and ranks none.
+        aliases: [Avogadro number, moles and the Avogadro constant]
+        # "6.02" on its own tokenises to {6, 02} and fires on any window with a
+        # stray 6 and a stray 02. The spoken forms carry a content token each.
+        keywords:
+          - Avogadro
+          - Avogadro constant
+          - Avogadro's number
+          - "6.02 times ten to the 23"
+          - amount of substance
+          - number of particles
+          - molar mass
+          - one mole of atoms
+          - grams per mole
+
+      - code: "2.3"
+        short_title: Formulae & Equations
+        aliases: [balancing equations, ionic equations, writing formulae,
+                  empirical and molecular formulae]
+        keywords:
+          - empirical formula
+          - molecular formula
+          - balanced equation
+          - ionic equation
+          - spectator ions
+          - state symbols
+          - water of crystallisation
+          - hydrated
+          - anhydrous
+          - Roman numeral
+          - ionic charge
+          - percentage composition
+          - nitrate ion
+          - carbonate ion
+          - sulfate ion
+          - ammonium ion
+
+      - code: "2.4"
+        short_title: Reacting Masses & Volumes
+        aliases: [volumes of gases, titration calculations, concentration of a solution]
+        # Printed units are not spoken units. "mol dm-3" tokenises to
+        # {mol, dm-3} and Whisper never writes "dm-3"; the teacher says "moles
+        # per decimetre cubed". Same for "24 dm3" -> {24, dm3}. Both replaced
+        # by what is actually said, in the two spellings ASR alternates
+        # between.
+        keywords:
+          - reacting masses
+          - percentage yield
+          - limiting reagent
+          - excess reagent
+          - molar volume
+          - 24 decimetres cubed
+          - moles per decimetre cubed
+          - moles per cubic decimetre
+          - concentration
+          - titration
+          - burette
+          - pipette
+          - standard solution
+          - stoichiometric ratio
+          - volume of gas produced
+
+  # ── 5. States of Matter (Chapter 5) ─────────────────────────────────────────
+  - id: states_of_matter
+    title: States of Matter
+    teaching_order: 5
+    coursebook_chapter: 5
+    drive_folder_name: "5. States of Matter (Chapter 5)"
+    aliases: [states of matter, gases liquids solids, chapter 5]
+    keywords:
+      - ideal gas
+      - kinetic theory
+      - lattice
+      - giant covalent
+      - simple molecular
+      - melting point
+    subtopics:
+      - code: "4.1"
+        short_title: Ideal & Real Gases
+        aliases: [gas laws, kinetic theory of gases]
+        keywords:
+          - ideal gas
+          - real gas
+          - ideal gas equation
+          - nRT
+          - gas constant
+          - kinetic theory
+          - collisions with the wall
+          - origin of pressure
+          - zero particle volume
+          - kelvin
+          - pascals
+          - deviation from ideal behaviour
+          - high pressure and low temperature
+
+      - code: "4.2"
+        short_title: Lattice Structures
+        aliases: [lattice structures, structure and physical properties]
+        keywords:
+          - giant ionic
+          - simple molecular
+          - giant molecular
+          - giant covalent
+          - giant metallic
+          - lattice
+          - crystalline solid
+          - iodine
+          - buckminsterfullerene
+          - graphite
+          - diamond
+          - silicon dioxide
+          - layers slide
+          - electrical conductivity
+          - solubility
+          - high melting point
+
+  # ── 6. Intro to Organic Chemistry (Chapter 14) ──────────────────────────────
+  - id: intro_organic
+    title: Intro to Organic Chemistry
+    teaching_order: 6
+    coursebook_chapter: 14
+    drive_folder_name: "6. Intro to Organic Chemistry (Chapter 14)"
+    aliases: [introduction to organic, organic basics, organic chemistry, chapter 14]
+    keywords:
+      - functional group
+      - homologous series
+      - nomenclature
+      - isomerism
+      - nucleophile
+      - electrophile
+      - curly arrow
+    subtopics:
+      - code: "13.1"
+        short_title: Functional Groups & Naming
+        aliases: [naming organic compounds, functional groups, IUPAC naming,
+                  formulae of organic compounds]
+        keywords:
+          - functional group
+          - homologous series
+          - nomenclature
+          - IUPAC
+          - systematic name
+          - displayed formula
+          - skeletal formula
+          - structural formula
+          - general formula
+          - longest chain
+          - parent chain
+          - prefix
+          - suffix
+          - numbering the carbons
+          - hydrocarbon
+
+      - code: "13.2"
+        short_title: Reaction Types & Mechanisms
+        aliases: [organic reaction types, mechanisms, homolytic and heterolytic fission]
+        keywords:
+          - homolytic
+          - heterolytic
+          - fission
+          - free radical
+          - initiation
+          - propagation
+          - termination
+          - nucleophile
+          - electrophile
+          - nucleophilic substitution
+          - electrophilic addition
+          - nucleophilic addition
+          - curly arrow
+          - curly arrows
+          - movement of electron pairs
+          - condensation
+          - hydrolysis
+
+      - code: "13.3"
+        short_title: Sigma & Pi Bonds
+        aliases: [sigma and pi bonds, sigma and pie bonds, hybridisation,
+                  shapes of organic molecules]
+        keywords:
+          - sigma bond
+          - pi bond
+          - pie bond
+          - hybridised
+          - sp hybridisation
+          - sp2
+          - sp3
+          - planar
+          - straight-chained
+          - branched
+          - ring structure
+          - sideways overlap
+          - p orbitals overlap
+          - no rotation about the pi bond
+
+      - code: "13.4"
+        short_title: Structural & Stereoisomerism
+        aliases: [isomerism, chirality]
+        keywords:
+          - structural isomerism
+          - chain isomerism
+          - positional isomerism
+          - functional group isomerism
+          - stereoisomerism
+          - geometrical isomerism
+          - cis
+          - trans
+          - cis-trans
+          - optical isomerism
+          - enantiomer
+          - chiral
+          - chiral centre
+          - four different groups
+          - mirror image
+          - non-superimposable
+          - plane-polarised
+
+  # ── 7. Hydrocarbons (Chapter 15) ────────────────────────────────────────────
+  # 20.1 Addition polymerisation lives here rather than in a chapter of its own.
+  # Cambridge lists it as topic 20, but it is taught as the last lesson of
+  # alkenes and there is no polymerisation folder in Drive. Placing it in the
+  # chapter that teaches it keeps rule 4 — one recording, one chapter — intact.
+  - id: hydrocarbons
+    title: Hydrocarbons
+    teaching_order: 7
+    coursebook_chapter: 15
+    drive_folder_name: "7. Hydrocarbons (Chapter 15)"
+    aliases: [alkanes and alkenes, hydrocarbons, chapter 15]
+    keywords:
+      - alkane
+      - alkene
+      - saturated
+      - unsaturated
+      - free-radical substitution
+      - electrophilic addition
+      - cracking
+    subtopics:
+      - code: "14.1"
+        short_title: Alkanes
+        aliases: [alkanes, free radical substitution, combustion]
+        keywords:
+          - alkane
+          - saturated
+          - free-radical substitution
+          - initiation
+          - propagation
+          - termination
+          - ultraviolet
+          - UV light
+          - chlorine radical
+          - cracking
+          - catalytic cracking
+          - crude oil fractions
+          - complete combustion
+          - incomplete combustion
+          - carbon monoxide
+          - unburnt hydrocarbons
+          - catalytic converter
+          - generally unreactive
+
+      - code: "14.2"
+        short_title: Alkenes
+        # "alkene" was on this node and fired on BOTH siblings: 14.1 states
+        # alkenes as the product of cracking, and 20.1 is *addition
+        # polymerisation of alkenes* - a pure polymerisation lecture says the
+        # word all hour. That produced "Alkenes + Addition Polymerisation",
+        # a two-subtopic filename where one subtopic is right. The word is
+        # still in this node's title, short_title and outcome text, so BM25
+        # keeps it; what is left below is the chemistry only an alkenes
+        # lecture performs. "hydrogenation" went for the same reason - it is
+        # inside 14.1's own outcome text - and "nickel catalyst" carries it.
+        aliases: [unsaturated hydrocarbons, carbon to carbon double bond,
+                  addition reactions of alkenes]
+        keywords:
+          - unsaturated
+          - double bond
+          - electrophilic addition
+          - bromine water
+          - decolourised
+          - test for unsaturation
+          - Markovnikov
+          - major product
+          - carbocation
+          - inductive effect
+          - nickel catalyst
+          - hydrogen halide
+          - steam and phosphoric acid
+          - acidified potassium manganate
+          - dehydration of an alcohol
+
+      - code: "20.1"
+        short_title: Addition Polymerisation
+        aliases: [polymers, monomers]
+        # Bare "ethene" is not here on purpose — it belongs to 14.2 and would
+        # pull every alkene window onto this node.
+        keywords:
+          - addition polymerisation
+          - polymer
+          - monomer
+          - repeat unit
+          - repeating unit
+          - polyethene
+          - poly ethene
+          - chloroethene
+          - PVC
+          - long chain molecule
+          - non-biodegradable
+          - biodegradability
+          - disposal of plastics
+          - harmful combustion products
+
+  # ── 8. Alcohols (Chapter 17) ────────────────────────────────────────────────
+  # Note the coursebook-chapter collision: the Drive listing puts both Alcohols
+  # and Carboxylic Acids & Esters in "(Chapter 17)". That is what the folder
+  # names say, so it is reproduced. The two are separated by drive_folder_name
+  # and teaching_order, never by chapter number.
+  - id: alcohols
+    title: Alcohols
+    teaching_order: 8
+    coursebook_chapter: 17
+    drive_folder_name: "8. Alcohols (Chapter 17)"
+    aliases: [alcohols, hydroxy compounds, chapter 17]
+    keywords:
+      - alcohol
+      - hydroxyl
+      - primary alcohol
+      - secondary alcohol
+      - tertiary alcohol
+      - acidified potassium dichromate
+      - reflux
+    subtopics:
+      # Topic 16 has a single subtopic, so every recording in this folder is
+      # named "Alcohols" and repeats collide into "- Part 2". That is the
+      # correct behaviour under the naming rules, not a gap in the overlay.
+      - code: "16.1"
+        short_title: Alcohols
+        aliases: [alcohols, hydroxy compounds, oxidation of alcohols,
+                  tri-iodomethane test, iodoform test]
+        keywords:
+          - alcohol
+          - hydroxyl group
+          - primary alcohol
+          - secondary alcohol
+          - tertiary alcohol
+          - acidified potassium dichromate
+          - orange to green
+          - distillation
+          - reflux
+          - refluxing
+          - esterification
+          - dehydration
+          - tri-iodomethane
+          - iodoform
+          - alkaline iodine
+          - yellow precipitate
+          - sodium metal
+          - effervescence
+          - misty fumes
+          - phosphorus pentachloride
+          - propan-2-ol
+
+  # ── 9. Halogenoalkanes (Chapter 16) ─────────────────────────────────────────
+  # 19.1 Primary amines is placed here. Cambridge lists it as topic 19, but the
+  # only AS route to an amine is the halogenoalkane + ammonia reaction that is
+  # already learning outcome 15.1.3(c), and there is no amines folder in Drive.
+  # It is a subtopic of this chapter rather than a chapter of its own so that a
+  # lecture spending forty minutes on nucleophilic substitution and ten on
+  # amines still lands in exactly one folder.
+  - id: halogenoalkanes
+    title: Halogenoalkanes
+    teaching_order: 9
+    coursebook_chapter: 16
+    drive_folder_name: "9. Halogenoalkanes (Chapter 16)"
+    aliases: [haloalkanes, halogen compounds, alkyl halides, chapter 16]
+    keywords:
+      - halogenoalkane
+      - nucleophilic substitution
+      - SN1
+      - SN2
+      - leaving group
+      - silver nitrate
+    subtopics:
+      - code: "15.1"
+        short_title: Halogenoalkanes
+        aliases: [halogenoalkanes, haloalkanes, elimination]
+        # "ammonia" is deliberately absent: it is what separates 19.1 from this
+        # node, and the two share learning outcome 15.1.3(c).
+        keywords:
+          - halogenoalkane
+          - nucleophilic substitution
+          - SN1
+          - SN2
+          - primary halogenoalkane
+          - tertiary halogenoalkane
+          - leaving group
+          - carbon-halogen bond
+          - silver nitrate
+          - cream precipitate
+          - silver bromide
+          - aqueous ethanol
+          - rate of hydrolysis
+          - aqueous sodium hydroxide
+          - ethanolic sodium hydroxide
+          - elimination reaction
+          - bromoethane
+          - transition state
+          - carbocation intermediate
+
+      - code: "19.1"
+        short_title: Primary Amines
+        aliases: [amines, primary amines, ammonia with halogenoalkanes]
+        keywords:
+          - amine
+          - primary amine
+          - ammonia
+          - excess ammonia
+          - ammonia in ethanol
+          - heated under pressure
+          - sealed tube
+          - amino group
+          - ethylamine
+          - further substitution
+          - lone pair on nitrogen
+
+  # ── 10. Carboxylic Acids & Esters (Chapter 17) ──────────────────────────────
+  - id: carboxylic_acids_esters
+    title: Carboxylic Acids & Esters
+    teaching_order: 10
+    coursebook_chapter: 17
+    drive_folder_name: "10. Carboxylic Acids & Esters (Chapter 17)"
+    aliases: [carboxylic acids, esters, acids and esters]
+    keywords:
+      - carboxylic acid
+      - carboxyl
+      - ester
+      - esterification
+      - hydrolysis
+    subtopics:
+      - code: "18.1"
+        short_title: Carboxylic Acids
+        aliases: [carboxylic acids]
+        # "esterification" is assigned to 18.2, not here: both lectures mention
+        # it and only one of them is about it.
+        keywords:
+          - carboxylic acid
+          - carboxyl group
+          - ethanoic acid
+          - methanoic acid
+          - weak acid
+          - reactive metal
+          - fizzing with carbonate
+          - sodium carbonate
+          - carbon dioxide given off
+          - salt and water
+          - lithium aluminium hydride
+          - reduced to a primary alcohol
+          - hydrolysis of nitriles
+          - acidification
+
+      - code: "18.2"
+        short_title: Esters
+        aliases: [esters, ester hydrolysis]
+        keywords:
+          - ester
+          - esterification
+          - condensation reaction
+          - concentrated sulfuric acid catalyst
+          - ethyl ethanoate
+          - sweet smell
+          - fruity smell
+          - flavouring
+          - perfume
+          - alkaline hydrolysis
+          - saponification
+          - naming esters
+          - alcohol and carboxylic acid
+
+  # ── 11. Redox Reactions (Chapter 7) ─────────────────────────────────────────
+  - id: redox_reactions
+    title: Redox Reactions
+    teaching_order: 11
+    coursebook_chapter: 7
+    drive_folder_name: "11. Redox Reactions (Chapter 7)"
+    aliases: [electrochemistry, oxidation numbers, oxidation states, chapter 7]
+    keywords:
+      - redox
+      - oxidation number
+      - oxidising agent
+      - reducing agent
+      - disproportionation
+    subtopics:
+      - code: "6.1"
+        short_title: Redox & Oxidation Numbers
+        aliases: [half equations]
+        keywords:
+          - oxidation number
+          - oxidation state
+          - redox
+          - oxidising agent
+          - reducing agent
+          - disproportionation
+          - half equation
+          - electron transfer
+          - loss of electrons
+          - gain of electrons
+          - OIL RIG
+          - Roman numeral
+          - change in oxidation number
+          - balancing redox equations
+          - manganate
+          - dichromate
+
+  # ── 12. Carbonyl Compounds (Chapater 18) ────────────────────────────────────
+  # "Chapater" is the real folder name. Reproduced verbatim because placement
+  # matches on this exact string; fixing the typo here breaks the match.
+  #
+  # 19.2 Nitriles and hydroxynitriles is placed here rather than with the
+  # halogenoalkanes. Two of its three learning outcomes are the reaction of
+  # aldehydes and ketones with HCN/KCN and the hydrolysis of the product, so the
+  # transcript weight sits in this chapter even though a nitrile can also be
+  # made from a halogenoalkane.
+  - id: carbonyl_compounds
+    title: Carbonyl Compounds
+    teaching_order: 12
+    coursebook_chapter: 18
+    drive_folder_name: "12. Carbonyl Compounds (Chapater 18)"
+    aliases: [carbonyls, aldehydes and ketones, chapter 18]
+    keywords:
+      - carbonyl
+      - aldehyde
+      - ketone
+      - nucleophilic addition
+      - Tollens
+      - Fehling
+      - nitrile
+    subtopics:
+      - code: "17.1"
+        short_title: Aldehydes & Ketones
+        aliases: [aldehydes, ketones, carbonyl compounds]
+        # The HCN/KCN addition is shared with 19.2 below and is given to 19.2.
+        # This node keeps the detection tests and the reduction, which 19.2
+        # never mentions. "2,4-DNPH" is listed as the single token "DNPH"
+        # because the printed form tokenises to "2" + "4-dnph".
+        keywords:
+          - aldehyde
+          - ketone
+          - carbonyl group
+          - nucleophilic addition
+          - DNPH
+          - dinitrophenylhydrazine
+          - orange precipitate
+          - Tollens
+          - silver mirror
+          - Fehling
+          - brick red precipitate
+          - ethanal
+          - propanone
+          - sodium borohydride
+          - sodium tetrahydridoborate
+          - reduced to an alcohol
+          - ease of oxidation
+          - tri-iodomethane
+          - methyl ketone
+
+      - code: "19.2"
+        short_title: Nitriles & Hydroxynitriles
+        aliases: [nitriles, hydroxynitriles, cyanide, hydrolysis of nitriles]
+        keywords:
+          - nitrile
+          - hydroxynitrile
+          - potassium cyanide
+          - hydrogen cyanide
+          - cyanide ion
+          - KCN
+          - HCN
+          - hydrolysis of a nitrile
+          - dilute acid
+          - dilute alkali
+          - extends the carbon chain
+          - one more carbon
+          - propanenitrile
+
+  # ── 12. Midterm Review ──────────────────────────────────────────────────────
+  # Revision, not teaching. Excluded for the same reason as the Introduction: a
+  # review session touches every chapter it revises and would otherwise beat the
+  # lecture that first taught the material.
+  - id: midterm_review
+    title: Midterm Review
+    teaching_order: 12
+    coursebook_chapter: null
+    drive_folder_name: "12. Midterm Review"
+    exclude_from_classification: true
+    aliases: [review session, past papers]
+    keywords:
+      - midterm
+      - revision
+      - recap
+      - past paper
+      - mark scheme
+      - exam technique
+      - question practice
+
+  # ── 13. Periodicity (Chapter 10) ────────────────────────────────────────────
+  - id: periodicity
+    title: Periodicity
+    teaching_order: 13
+    coursebook_chapter: 10
+    drive_folder_name: "13. Periodicity (Chapter 10)"
+    aliases: [chemical periodicity, periodic table, chapter 10]
+    keywords:
+      - period 3
+      - periodicity
+      - oxides
+      - chlorides
+      - amphoteric
+      - trend across the period
+    subtopics:
+      - code: "9.1"
+        short_title: Period 3 Physical Properties
+        aliases: [physical properties of period 3, melting points of period 3,
+                  conductivity trend]
+        keywords:
+          - period 3
+          - atomic radius
+          - ionic radius
+          - melting point
+          - electrical conductivity
+          - giant metallic
+          - giant covalent silicon
+          - simple molecular sulfur
+          - phosphorus
+          - argon
+          - sharp drop
+          - delocalised electrons
+          - same shielding
+
+      - code: "9.2"
+        short_title: Period 3 Oxides & Chlorides
+        aliases: [oxides and chlorides, reactions of period 3, amphoteric oxides]
+        keywords:
+          - sodium oxide
+          - magnesium oxide
+          - aluminium oxide
+          - silicon dioxide
+          - phosphorus oxide
+          - sulfur dioxide
+          - sodium chloride
+          - magnesium chloride
+          - aluminium chloride
+          - silicon tetrachloride
+          - phosphorus pentachloride
+          - amphoteric
+          - acidic oxide
+          - basic oxide
+          - hydrolysed by water
+          - misty fumes
+          - reacts with acid and alkali
+
+      - code: "9.3"
+        short_title: Predicting Group Properties
+        # Deliberately the thinnest keyword list in the chapter. This subtopic
+        # has two learning outcomes and no vocabulary of its own; padding it out
+        # with periodic-table terms would let it steal windows from 9.1 and 9.2,
+        # which is worse than it losing a lecture it rarely gets.
+        aliases: [predicting properties, chemical periodicity of other elements]
+        keywords:
+          - predict the properties
+          - unknown element
+          - deduce the identity
+          - position in the Periodic Table
+          - characteristic properties
+          - extrapolate
+
+  # ── 14. Group 17 (Chapter 12) ───────────────────────────────────────────────
+  # Taught before Group 2 in this course: teaching_order 14, coursebook 12.
+  - id: group_17
+    title: Group 17
+    teaching_order: 14
+    coursebook_chapter: 12
+    drive_folder_name: "14. Group 17 (Chapter 12)"
+    aliases: [group 17, halogens, group seven, chapter 12]
+    keywords:
+      - halogen
+      - chlorine
+      - bromine
+      - iodine
+      - halide ion
+      - disproportionation
+    subtopics:
+      - code: "11.1"
+        short_title: Halogen Physical Properties
+        aliases: [physical properties of the halogens, colours of the halogens]
+        keywords:
+          - volatility
+          - pale green gas
+          - red-brown liquid
+          - grey-black solid
+          - purple vapour
+          - sublimes
+          - boiling point increases
+          - instantaneous dipole
+          - induced dipole
+          # "more electrons" has no token this syllabus does not use everywhere.
+          - larger electron cloud
+          - bond strength decreases
+
+      - code: "11.2"
+        short_title: Halogens & Hydrogen Halides
+        aliases: [chemical properties of the halogens, hydrogen halides,
+                  displacement reactions]
+        keywords:
+          - oxidising agent
+          - relative reactivity
+          - displacement reaction
+          - chlorine displaces bromine
+          - reaction with hydrogen
+          - hydrogen halide
+          - hydrogen chloride
+          - hydrogen iodide
+          - thermal stability
+          - decomposes on heating
+          - explosive in sunlight
+          - bond strength
+
+      - code: "11.3"
+        short_title: Halide Ion Reactions
+        aliases: [reactions of halide ions, silver nitrate test, halide tests]
+        keywords:
+          - halide ion
+          - reducing agent
+          - silver nitrate
+          - white precipitate
+          - cream precipitate
+          - yellow precipitate
+          - dilute ammonia
+          - concentrated ammonia
+          - soluble in ammonia
+          - concentrated sulfuric acid
+          - hydrogen sulfide
+          - rotten eggs
+          - iodine vapour
+
+      - code: "11.4"
+        short_title: Chlorine & Disproportionation
+        aliases: [reactions of chlorine]
+        keywords:
+          - disproportionation
+          - cold dilute sodium hydroxide
+          - hot concentrated sodium hydroxide
+          - chlorate
+          - bleach
+          - water purification
+          - chloric acid
+          - kills bacteria
+          - sterilise
+          - two oxidation numbers
+
+  # ── 15. Group 2 (Chapter 11) ────────────────────────────────────────────────
+  - id: group_2
+    title: Group 2
+    teaching_order: 15
+    coursebook_chapter: 11
+    drive_folder_name: "15. Group 2 (Chapter 11)"
+    aliases: [alkaline earth metals, group two, chapter 11]
+    keywords:
+      - group 2
+      - magnesium
+      - calcium
+      - barium
+      - thermal decomposition
+      - solubility trend
+    subtopics:
+      - code: "10.1"
+        short_title: Group 2 Trends & Reactions
+        aliases: [group 2 trends, alkaline earth metals,
+                  solubility of hydroxides and sulfates]
+        keywords:
+          - group 2
+          - magnesium
+          - calcium
+          - strontium
+          - barium
+          - alkaline earth
+          - thermal decomposition
+          - thermal stability increases
+          - nitrates decompose
+          - carbonates decompose
+          - hydroxide solubility increases
+          - sulfate solubility decreases
+          - limewater
+          - burns with a bright flame
+          - polarising power
+          - down the group
+
+  # ── 16. Infra-red spectroscopy and Mass Spectrometry ────────────────────────
+  # Topic 22 (Analytical techniques). No coursebook chapter is named in the
+  # folder, so coursebook_chapter stays null rather than being guessed.
+  - id: spectroscopy
+    title: Infra-red Spectroscopy and Mass Spectrometry
+    teaching_order: 16
+    coursebook_chapter: null
+    drive_folder_name: "16. Infra-red spectroscopy and Mass Spectrometry"
+    aliases: [analytical techniques, spectroscopy, IR and mass spec,
+              instrumental analysis]
+    keywords:
+      - infrared
+      - spectrum
+      - wavenumber
+      - mass spectrum
+      - molecular ion
+      - fragmentation
+    subtopics:
+      - code: "22.1"
+        short_title: Infrared Spectroscopy
+        aliases: [IR spectroscopy, IR spectrum]
+        keywords:
+          - infrared
+          - infra-red
+          - wavenumber
+          - absorption
+          - transmittance
+          - fingerprint region
+          - broad peak
+          - carbonyl peak
+          - identify the functional group
+          - bond vibration
+          - stretching
+          # "data booklet" removed: every subtopic in the syllabus is looked up
+          # in the data booklet, so it says nothing about infrared.
+
+      # A keyword is matched as a BAG OF TOKENS anywhere in a 4-minute window,
+      # not as an adjacent phrase (see retriever._keyword_hits), and keywords
+      # are weighted double in the BM25 document. So a two-word keyword whose
+      # tokens are separately common nearby is not a keyword for this node —
+      # it is a keyword for its neighbours.
+      #
+      # This chapter is taught 16th; relative atomic mass is taught 4th, and
+      # Cambridge puts "calculate the relative atomic mass ... from its mass
+      # spectrum" in outcome 22.2.2. That verbatim overlap is unavoidable. What
+      # is avoidable is amplifying it: "relative abundance" ({relative,
+      # abundance}), "chlorine isotopes" and "bromine isotopes" ({chlorine |
+      # bromine, isotopes}) all fire on the Cl-35/Cl-37 worked example that
+      # *defines* Ar in chapter 4, and "M+1"/"M+2"/"3:1 ratio" tokenise to bare
+      # digits plus "m". With those in place a focused relative-atomic-mass
+      # lecture was filed under Spectroscopy — the wrong Drive folder.
+      #
+      # Replaced with terms that are said out loud and belong to nothing else.
+      - code: "22.2"
+        short_title: Mass Spectrometry
+        aliases: [mass spec, spectrum of the compound]
+        # "M+1 peak" tokenises to {m, 1, peak}: it cannot fire on a teacher
+        # who says "the M plus one peak", and where it does fire it is
+        # carrying a bare "m" and a bare "1". The spoken form is used instead.
+        # Nothing about isotopic abundance is on this node on purpose - see
+        # the note above; that vocabulary belongs to 2.1 and 1.2.
+        keywords:
+        # "mass to charge ratio" removed. Spoken, it is the same four tokens
+        # as "charge to mass ratio" - which the AS deflection lecture of
+        # 13 Aug says 30 times while teaching atomic structure. Under the old
+        # bag-of-tokens gate that one key took four windows of that lecture and
+        # made Mass Spectrometry a 36% chapter runner-up in a folder it has no
+        # business in. Adjacency matching now separates the two orderings, but
+        # the key is still wrong on its own terms: 22.2.1 writes the axis as
+        # m/z, and a key that differs from a neighbouring chapter's dominant
+        # phrase only by word order is one paraphrase away from colliding
+        # again.
+        #
+        # The syllabus wording cannot replace it: 22.2.1 writes the axis as
+        # "m/z" / "m/e", and the tokeniser is [a-z0-9][a-z0-9\-']* - the slash
+        # is a separator, so both collapse to the single characters 'm' and
+        # 'z'. They are unusable as keywords and the ingest linter rejects
+        # them. Nothing needs to replace them either: outcome 22.2.1 already
+        # contains "m/e values" verbatim and search_document indexes outcome
+        # text, so the node carries that vocabulary for BM25 regardless.
+        # "parent ion" is added as the spoken synonym for the molecular ion.
+          - mass spectrum
+          - mass spectrometer
+          - mass spectrometry
+          - parent ion
+          - molecular ion
+          - molecular ion peak
+          - base peak
+          - tallest peak
+          - fragmentation
+          - fragment
+          - fragment ion
+          - M plus one peak
+          - M plus two peak
+
+  # ── 17. Enthalpy Changes (Chapter 6) ────────────────────────────────────────
+  - id: enthalpy_changes
+    title: Enthalpy Changes
+    teaching_order: 17
+    coursebook_chapter: 6
+    drive_folder_name: "17. Enthalpy Changes (Chapter 6)"
+    aliases: [chemical energetics, energetics, enthalpy, thermochemistry,
+              chapter 6]
+    keywords:
+      - enthalpy change
+      - exothermic
+      - endothermic
+      - bond energy
+      - Hess
+      - calorimetry
+    subtopics:
+      - code: "5.1"
+        short_title: Enthalpy & Bond Energy
+        # Bare "activation energy" is left to the Rate of Reaction chapter even
+        # though reaction pathway diagrams show it here; "reaction pathway
+        # diagram" carries this node without tugging on kinetics lectures.
+        aliases: [exothermic and endothermic, bond energies, calorimetry]
+        keywords:
+          - enthalpy change
+          - exothermic
+          - endothermic
+          - delta H
+          - standard conditions
+          - enthalpy of formation
+          - enthalpy of combustion
+          - enthalpy of neutralisation
+          - reaction pathway diagram
+          - energy profile
+          - bond breaking
+          - bond making
+          - bond energy
+          - average bond energy
+          - specific heat capacity
+          - temperature rise
+          - calorimeter
+          - polystyrene cup
+
+      - code: "5.2"
+        short_title: Hess's Law
+        aliases: [energy cycles, enthalpy cycles]
+        keywords:
+          - Hess
+          - Hess's law
+          - energy cycle
+          - enthalpy cycle
+          - indirect route
+          - alternative route
+          - direction of the arrows
+          - cannot be measured directly
+          - sum of the enthalpy changes
+          - combustion route
+          - formation route
+
+  # ── 18. Equilibria (Chapter 8) ──────────────────────────────────────────────
+  - id: equilibria
+    title: Equilibria
+    teaching_order: 18
+    coursebook_chapter: 8
+    drive_folder_name: "18. Equilibria (Chapter 8)"
+    aliases: [equilibrium, equilibria, acids and bases, chapter 8]
+    keywords:
+      - dynamic equilibrium
+      - Le Chatelier
+      - Kc
+      - Kp
+      - strong acid
+      - weak acid
+      - pH
+    subtopics:
+      - code: "7.1"
+        short_title: Equilibrium & Le Chatelier
+        aliases: [reversible reactions]
+        keywords:
+          - reversible reaction
+          - dynamic equilibrium
+          - closed system
+          - position of equilibrium
+          - Le Chatelier
+          - shifts to the right
+          - forward reaction
+          - backward reaction
+          - Kc
+          - Kp
+          - equilibrium constant
+          - partial pressure
+          - mole fraction
+          - Haber process
+          - Contact process
+          - iron catalyst
+          - compromise conditions
+
+      - code: "7.2"
+        short_title: Acids, Bases & pH
+        aliases: [acids and bases, strong and weak acids, pH curves, titration curves,
+                  indicators]
+        keywords:
+          - Bronsted
+          - Bronsted-Lowry
+          - proton donor
+          - proton acceptor
+          - conjugate acid
+          - conjugate base
+          - strong acid
+          - weak acid
+          - fully dissociated
+          - partially dissociated
+          - pH
+          - universal indicator
+          - pH meter
+          - titration curve
+          - equivalence point
+          - phenolphthalein
+          - methyl orange
+          - ethanoic acid
+          - hydrochloric acid
+
+  # ── 19. Nitrogen (Chapter 13) ───────────────────────────────────────────────
+  # The folder is named "Nitrogen" but the syllabus subtopic is "Nitrogen and
+  # sulfur" and covers both, hence sulfur vocabulary on a nitrogen folder.
+  - id: nitrogen
+    title: Nitrogen
+    teaching_order: 19
+    coursebook_chapter: 13
+    drive_folder_name: "19. Nitrogen (Chapter 13)"
+    aliases: [nitrogen and sulfur, sulfur, chapter 13]
+    keywords:
+      - nitrogen
+      - ammonia
+      - oxides of nitrogen
+      - acid rain
+      - sulfur dioxide
+    subtopics:
+      - code: "12.1"
+        short_title: Nitrogen & Sulfur
+        aliases: [nitrogen and sulfur]
+        keywords:
+          - unreactive nitrogen
+          - triple bond
+          - lack of polarity
+          - basicity of ammonia
+          - ammonia
+          - ammonium ion
+          - ammonium salts
+          - displacement of ammonia
+          - oxides of nitrogen
+          - internal combustion engine
+          - catalytic removal
+          - photochemical smog
+          - peroxyacetyl nitrate
+          - PAN
+          - acid rain
+          - sulfur dioxide
+          - lightning
+
+  # ── 19. Rate of Reaction (Chapter 9) ────────────────────────────────────────
+  # The second folder numbered "19." in Drive. The duplicate teaching_order is
+  # intentional; placement matches on drive_folder_name.
+  - id: rate_of_reaction
+    title: Rate of Reaction
+    teaching_order: 19
+    coursebook_chapter: 9
+    drive_folder_name: "19. Rate of Reaction (Chapter 9)"
+    aliases: [reaction kinetics, kinetics, rates of reaction, chapter 9]
+    keywords:
+      - rate of reaction
+      - collision
+      - activation energy
+      - Boltzmann
+      - catalyst
+    subtopics:
+      - code: "8.1"
+        short_title: Collision Theory & Rate
+        aliases: [measuring rate, how fast the reaction goes, rate experiments]
+        keywords:
+          - frequency of collisions
+          - effective collisions
+          - non-effective collisions
+          - collision theory
+          - concentration increases
+          - pressure increases
+          - more particles per unit volume
+          - initial rate
+          - gradient of the graph
+          - tangent
+          - volume of gas collected
+          - loss of mass
+
+      - code: "8.2"
+        short_title: Activation Energy & Boltzmann
+        aliases: [effect of temperature, energy distribution]
+        keywords:
+          - activation energy
+          - Boltzmann
+          - Boltzmann distribution
+          - distribution curve
+          - minimum energy
+          - area under the curve
+          - exceed the activation energy
+          - average kinetic energy
+          - temperature increase
+          - curve flattens
+
+      - code: "8.3"
+        short_title: Catalysts
+        # "activation energy" is 8.2's discriminator, so this node describes the
+        # same idea using only the words that are unique to it.
+        aliases: [catalysts, homogeneous catalyst, heterogeneous catalyst]
+        keywords:
+          - catalyst
+          - catalysis
+          - homogeneous
+          - heterogeneous
+          - alternative pathway
+          - different mechanism
+          - not used up
+          - adsorption
+          - active site
+          - surface of the catalyst
+          - vanadium oxide
+          - same phase
+
+  # ── 20. Practical P3 ────────────────────────────────────────────────────────
+  # Practical skills, not syllabus content. Excluded so a lab-technique session
+  # cannot absorb the theory lecture it is practising.
+  - id: practical_p3
+    title: Practical P3
+    teaching_order: 20
+    coursebook_chapter: null
+    drive_folder_name: "20. Practical P3"
+    exclude_from_classification: true
+    aliases: [P3, lab skills, advanced practical skills]
+    keywords:
+      - practical
+      - paper 3
+      - apparatus
+      - uncertainty
+      - percentage error
+      - table of results
+      - plotting the graph
+      - qualitative analysis
+      - safety precautions
+
+  # ── No folder in Drive yet ──────────────────────────────────────────────────
+  # 21.1 Organic synthesis is the one code with no home in the current listing.
+  # It gets its own chapter with drive_folder_name: null rather than being
+  # folded into an organic chapter, because it is not taught inside any single
+  # one of them — it is the chapter that strings all of them together, and
+  # attaching it to, say, Carbonyl Compounds would let any multi-step synthesis
+  # lecture drag a whole recording into the wrong folder. With a null folder the
+  # classifier still recognises the topic and routes the file to review, which
+  # is the right outcome for a recording that has nowhere to go.
+  - id: organic_synthesis
+    title: Organic Synthesis
+    teaching_order: null
+    coursebook_chapter: null
+    drive_folder_name: null
+    aliases: [organic synthesis, synthetic routes, reaction pathways,
+              multi-step synthesis]
+    keywords:
+      - synthetic route
+      - multi-step
+      - reagents and conditions
+      - functional group interconversion
+    subtopics:
+      - code: "21.1"
+        short_title: Organic Synthesis Routes
+        aliases: [organic synthesis, multi-step synthesis, reaction routes]
+        keywords:
+          - synthetic route
+          - multi-step
+          - two-step synthesis
+          - reagents and conditions
+          - starting material
+          - target molecule
+          - by-product
+          - functional group interconversion
+          - identify the functional groups
+          - devise a route

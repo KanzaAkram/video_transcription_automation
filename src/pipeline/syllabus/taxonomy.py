@@ -36,7 +36,17 @@ class LearningOutcome(BaseModel):
 
 class SyllabusNode(BaseModel):
     id: str
+    #: Verbatim from the syllabus. Cambridge writes these as whole sentences —
+    #: "Intermolecular forces, electronegativity and bond properties".
     title: str
+
+    #: The keywords-only form that goes in a filename: "Shapes of Molecules".
+    #: A separate field rather than a shortened `title` because the two are
+    #: used for different things and must both stay true. `title` has to match
+    #: the syllabus so a human can find the subtopic in the PDF; a filename has
+    #: to be scannable in a folder listing, which a syllabus sentence is not.
+    #: Deriving one from the other by truncation gets both wrong.
+    short_title: str | None = None
 
     # Three numbering systems, none derived from another. See module docstring.
     teaching_order: int | None = None
@@ -66,17 +76,27 @@ class SyllabusNode(BaseModel):
     path: list[str] = Field(default_factory=list)
 
     @property
+    def label(self) -> str:
+        """What a filename should call this node."""
+        return self.short_title or self.title
+
+    @property
     def title_path(self) -> str:
         return " > ".join([*self.path, self.title])
 
     def search_document(self) -> str:
         """Text used for lexical retrieval.
 
-        Title, aliases, keywords and outcome text concatenated. Keywords are
-        repeated because rare domain terms should dominate the BM25 score —
-        "halogenoalkane" appearing at all is close to conclusive.
+        Title, short title, aliases, keywords and outcome text concatenated.
+        Keywords are repeated because rare domain terms should dominate the
+        BM25 score — "halogenoalkane" appearing at all is close to conclusive.
+
+        `short_title` is indexed, not merely displayed: it is the phrase a
+        teacher actually says out loud ("shapes of molecules"), which the
+        syllabus sentence around it often never contains.
         """
-        parts = [self.title, *self.aliases, *self.keywords, *self.keywords]
+        parts = [self.title, *([self.short_title] if self.short_title else [])]
+        parts += [*self.aliases, *self.keywords, *self.keywords]
         parts += [o.text for o in self.learning_outcomes]
         return " ".join(parts)
 
@@ -157,20 +177,37 @@ class Taxonomy(BaseModel):
     def vocabulary(self, limit: int = 60) -> list[str]:
         """Terms to prime the ASR decoder with.
 
-        Subject-level vocabulary first, then per-node keywords by frequency.
-        These are precisely the words generic speech recognition mangles, and
-        precisely the words classification then depends on — so getting them
-        right compounds.
+        Subject-level vocabulary first **in the order the overlay lists it**,
+        then per-node keywords by frequency. These are precisely the words
+        generic speech recognition mangles, and precisely the words
+        classification then depends on — so getting them right compounds.
+
+        The curated order is load-bearing because `limit` truncates. An earlier
+        version scored subject terms at 10 and node keywords at 1 and then
+        sorted by score, which put every subject term in one tie broken
+        alphabetically — so which of them survived the cut was decided by
+        spelling, and by capitalisation before that (`Fehling` sorts above
+        `stoichiometry`). With a 50-term subject list and `initial_prompt`'s
+        limit of 40, the chemistry prompt lost "stoichiometry" and
+        "halogenoalkane" — the first two terms the overlay author chose — while
+        keeping four reagent surnames. Ranking by score also let a subject term
+        drift upward merely because several nodes happened to repeat it, which
+        is noise: the overlays deliberately keep node keywords non-overlapping.
         """
-        seen: dict[str, int] = {}
-        for term in self.subject_vocabulary:
-            seen[term] = seen.get(term, 0) + 10  # subject terms outrank node terms
+        ranked: list[str] = []
+        seen: set[str] = set()
+        for term in self.subject_vocabulary:  # curated priority order, verbatim
+            if term not in seen:
+                seen.add(term)
+                ranked.append(term)
+
+        counts: dict[str, int] = {}
         for node in self.all_nodes():
             for term in node.keywords + node.aliases:
-                if len(term.split()) <= 3:  # single tokens and short phrases only
-                    seen[term] = seen.get(term, 0) + 1
-        ranked = sorted(seen.items(), key=lambda kv: (-kv[1], kv[0]))
-        return [term for term, _ in ranked[:limit]]
+                if len(term.split()) <= 3 and term not in seen:  # short phrases only
+                    counts[term] = counts.get(term, 0) + 1
+        ranked += [term for term, _ in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))]
+        return ranked[:limit]
 
     def initial_prompt(self, limit: int = 40) -> str:
         """A sentence of context for the ASR decoder.

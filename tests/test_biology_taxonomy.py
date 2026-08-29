@@ -116,9 +116,9 @@ def test_chapter_twelve_can_name_six_distinct_lectures(bio):
 
 
 def test_lesson_keywords_are_terms_not_prose(bio):
-    """A keyword counts only when *every* token is in the same window.
+    """A keyword counts only when *every* token is in the same window, in order.
 
-    See `HybridRetriever._keyword_hits`. Real technical terms survive that
+    See `_WindowVocabulary.hits`. Real technical terms survive that
     happily — a teacher saying "proximal convoluted tubule" puts all three
     tokens in one window — but a descriptive gloss written by whoever filled in
     the overlay ("explain why the energy yield is much greater in aerobic")

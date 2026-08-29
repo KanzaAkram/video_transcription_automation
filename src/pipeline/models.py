@@ -11,7 +11,7 @@ from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 def utcnow() -> datetime:
@@ -181,9 +181,38 @@ class TopicMatch(BaseModel):
     evidence: list[Evidence] = Field(default_factory=list)
 
 
+#: A filename may name at most this many syllabus subtopics. Stated once, here,
+#: because it has to hold for every path that can build a Classification — the
+#: keyword classifier, an LLM reply, a hand-written fixture — and a rule that
+#: lives in only one of those is not a rule.
+MAX_SUBTOPICS_IN_NAME = 2
+
+
 class Classification(BaseModel):
+    #: Validated on assignment, not only on construction. The one code path
+    #: that writes `topic_node_ids` writes it by assignment — `classify/
+    #: service.py` builds the object first and fills the field afterwards —
+    #: and pydantic v2 skips validators on assignment unless asked, so without
+    #: this the never-three rule was enforced everywhere except where the code
+    #: actually goes.
+    model_config = ConfigDict(validate_assignment=True)
+
     primary: TopicMatch | None = None
     secondary: list[TopicMatch] = Field(default_factory=list)
+
+    #: The one Drive folder this recording belongs in, as a depth-0 node id.
+    #: A recording is never split across two chapters: it is one lesson, it
+    #: goes in one place, and a shortcut in a second chapter would make the
+    #: archive look larger than it is.
+    chapter_node_id: str | None = None
+    #: chapter node id -> share of the lecture, summing to 1. Kept even when
+    #: the winner is obvious, because a near-tie here is the signature of a
+    #: misfiling and is invisible in the final answer.
+    chapter_weights: dict[str, float] = Field(default_factory=dict)
+    #: The one or two subtopics that name the file, in coverage order. Empty
+    #: for callers that only set `primary` — see naming.template.
+    topic_node_ids: list[str] = Field(default_factory=list)
+
     #: True when this looks like the continuation of the previous lecture —
     #: drives "Part 2" naming rather than a duplicate-name collision.
     is_continuation: bool = False
@@ -196,6 +225,22 @@ class Classification(BaseModel):
     method: str = "hybrid+llm"
     model: str | None = None
     created_at: datetime = Field(default_factory=utcnow)
+
+    @field_validator("topic_node_ids")
+    @classmethod
+    def _at_most_two_subtopics(cls, v: list[str]) -> list[str]:
+        """Refuse a third subtopic at the type boundary.
+
+        Truncating silently would be friendlier and worse: the caller that
+        supplied three — most likely a model reply — would keep supplying
+        three, and nobody would ever see it.
+        """
+        if len(v) > MAX_SUBTOPICS_IN_NAME:
+            raise ValueError(
+                f"a filename may name at most {MAX_SUBTOPICS_IN_NAME} subtopics; "
+                f"got {len(v)}: {v}"
+            )
+        return v
 
     def needs_review(self, threshold: float, coverage_floor: float) -> bool:
         """Whether this result must go to a human rather than being filed.

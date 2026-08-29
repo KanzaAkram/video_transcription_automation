@@ -1,499 +1,2665 @@
-# Cambridge International AS Level Chemistry 9701
+# AS Chemistry 9701 (2025-2027)
 #
-# ⚠️  THIS IS A WORKING TEMPLATE, NOT A VERIFIED SYLLABUS.
+# GENERATED — do not edit by hand. Regenerate with:
+#   python scripts/ingest_syllabus_json.py \
+#       --json C:/Users/kanza/Downloads/prompt.py \
+#       --overlay config/syllabi/overlays/as-chemistry-9701.yaml \
+#       --out config/syllabi/as-chemistry-9701.yaml
 #
-# The chapter structure and Drive folder names below were derived from the
-# folder listing you provided, which follows the Cambridge International AS &
-# A Level Chemistry Coursebook chapter numbering. Titles, keywords and aliases
-# are reliable. Learning-outcome codes and text are NOT — they are marked
-# `verified: false` and must be checked against your actual syllabus PDF
-# (`Data Section 9701-2025-2027-syllabus.pdf`, in your "2. Syllabus" folder)
-# before production use. The loader warns loudly about unverified nodes.
+# Syllabus revision: The syllabus has been updated. This is version 1, published September 2022.
 #
-#   python scripts/ingest_syllabus.py --pdf <path> --out <this file>
+# Depth 0 is a CHAPTER — one Drive folder, and the unit a recording is filed
+# into. Depth 1 is a SYLLABUS SUBTOPIC — the unit a filename is built from.
+# They are not the same thing: one syllabus topic can be split across two of
+# the chapters below.
 #
-# ── On the three numbering systems ────────────────────────────────────────────
-# Your folders carry two different numbers, and neither is the syllabus topic:
-#
-#   "3. Chemical Bonding (Chapter 4)"      → 3rd in teaching order, coursebook ch.4
-#   "4. Moles and Stoichiometry (Chapter 3)" → 4th in teaching order, coursebook ch.3
-#
-# They are transposed relative to each other. So all three are stored as
-# independent fields and none is ever derived from another. See
-# docs/DECISIONS.md ADR-013.
+# Subtopic titles and learning outcomes are verbatim from the syllabus export
+# and are marked verified. short_title (what goes in the filename), keywords,
+# aliases, Drive folder names and the chapter grouping come from the overlay:
+# edit those there, not here.
 
 version: 1
 subject_id: as_chemistry
 subject_name: AS Chemistry
-syllabus_code: "9701"
-syllabus_years: "2025-2027"
+syllabus_code: '9701'
+syllabus_years: 2025-2027
 awarding_body: Cambridge International
-source: "Derived from observed Drive folder structure; outcomes pending verification"
-
-# Vocabulary primed into the ASR decoder for every lecture in this subject, in
-# addition to per-node keywords. These are the terms generic speech recognition
-# reliably mangles.
+source: Subtopic codes, verbatim subtopic titles and learning-outcome text extracted from the official
+  Cambridge International AS Level Chemistry 9701 syllabus for 2025, 2026 and 2027. The chapter grouping,
+  Drive folder names, teaching order, coursebook chapter numbers, short filename titles, keywords and
+  aliases are hand-curated here. Drive folder names were transcribed from the live folder listing and
+  are reproduced exactly, typos included.
 subject_vocabulary:
-  - stoichiometry
-  - Avogadro
-  - electronegativity
-  - halogenoalkane
-  - nucleophilic
-  - electrophilic
-  - enthalpy
-  - Le Chatelier
-  - equilibrium
-  - isotope
-  - orbital
-  - covalent
-  - ionic
-  - dative
-  - hybridisation
-  - homologous
-  - isomerism
-  - titration
-  - molarity
-  - oxidation
-
+- stoichiometry
+- Avogadro
+- electronegativity
+- Pauling
+- halogenoalkane
+- nucleophilic
+- electrophilic
+- enthalpy
+- Hess
+- calorimetry
+- Le Chatelier
+- equilibrium
+- Bronsted-Lowry
+- Boltzmann
+- isotope
+- orbital
+- subshell
+- covalent
+- ionic
+- dative
+- VSEPR
+- hybridisation
+- allotrope
+- buckminsterfullerene
+- van der Waals
+- homologous
+- isomerism
+- enantiomer
+- chiral
+- Markovnikov
+- carbocation
+- disproportionation
+- amphoteric
+- dichromate
+- manganate
+- Tollens
+- Fehling
+- dinitrophenylhydrazine
+- tri-iodomethane
+- hydroxynitrile
+- nitrile
+- aldehyde
+- ketone
+- carboxylic
+- esterification
+- titration
+- molarity
+- wavenumber
+- spectrometry
+- delocalised
 nodes:
-  # ── Introduction ────────────────────────────────────────────────────────────
-  - id: chem.introduction
-    title: Introduction
-    teaching_order: 0
-    coursebook_chapter: null
-    syllabus_topic: null
-    drive_folder_name: "0. Introduction"
+- id: chem.introduction
+  title: Introduction
+  teaching_order: 0
+  drive_folder_name: 0. Introduction
+  verified: true
+  exclude_from_classification: true
+  aliases:
+  - orientation
+  - course intro
+  - first class
+  - welcome
+  - induction
+  keywords:
+  - syllabus
+  - assessment
+  - exam structure
+  - paper 1
+  - paper 2
+  - paper 3
+  - grade boundaries
+  - course outline
+  - data booklet
+- id: chem.atomic_structure
+  title: Atomic Structure
+  teaching_order: 1
+  coursebook_chapter: 1
+  syllabus_topic: '1'
+  drive_folder_name: 1. Atomic Structure (Chapter 1)
+  verified: true
+  aliases:
+  - structure of the atom
+  - subatomic particles
+  - chapter 1
+  - AOD
+  - atomic orbital diagram
+  keywords:
+  - nucleus
+  - proton
+  - neutron
+  - nucleon number
+  - proton number
+  - isotope
+  - atomic radius
+  children:
+  - id: chem.1_1
+    title: Particles in the atom and atomic radius
+    short_title: Subatomic Particles
+    syllabus_topic: '1.1'
     verified: true
-    aliases: [orientation, course intro, first class, welcome]
-    keywords: [syllabus, assessment, exam structure, paper 1, paper 2, grading]
-    # Admin sessions rather than teaching. Excluded from classification so an
-    # intro lecture doesn't absorb genuine content.
-    exclude_from_classification: true
-
-  # ── Chapter 1 ───────────────────────────────────────────────────────────────
-  - id: chem.atomic_structure
-    title: Atomic Structure
-    teaching_order: 1
-    coursebook_chapter: 1
-    syllabus_topic: "1"
-    drive_folder_name: "1. Atomic Structure (Chapter 1)"
-    verified: false
     aliases:
-      - structure of the atom
-      - AOD                       # teacher shorthand seen in your own filenames
-      - atomic orbital diagram
-      - subatomic particles
+    - particles in the atom
+    - subatomic particles
+    - structure of the atom
     keywords:
-      - proton
-      - neutron
-      - electron
-      - nucleus
-      - nucleon number
-      - proton number
-      - mass number
-      - atomic number
-      - isotope
-      - relative charge
-      - relative mass
-      - behaviour in an electric field
+    - nucleus
+    - empty space
+    - dense nucleus
+    - relative charge
+    - relative mass
+    - nucleon
+    - nucleons
+    - nucleon number
+    - proton number
+    - mass number
+    - atomic number
+    - electric field
+    - deflection
+    - deflected
+    - angle of deflection
+    - deviation
+    - deviate
+    - deviated
+    - undeviated
+    - charge to mass ratio
+    - elementary charge
+    - negative plate
+    - positive plate
+    - hydride
+    - oppositely charged plates
+    - atomic radius
+    - ionic radius
+    - across a period
+    - down a group
     learning_outcomes:
-      - code: "1.1"
-        text: "Identify and describe protons, neutrons and electrons in terms of their relative charges and relative masses"
-        verified: false
-      - code: "1.2"
-        text: "Deduce the behaviour of beams of protons, neutrons and electrons in electric fields"
-        verified: false
-      - code: "1.3"
-        text: "Describe the distribution of mass and charge within an atom"
-        verified: false
-    children:
-      - id: chem.atomic_structure.rel_atomic_mass
-        title: Relative Atomic Mass
-        verified: false
-        aliases: [RAM, Ar, relative masses, average atomic mass]
-        keywords:
-          - relative atomic mass
-          - relative isotopic mass
-          - carbon-12
-          - weighted average
-          - weighted mean
-          - abundance
-          - mass spectrum
-          - mass spectrometer
-        learning_outcomes:
-          - code: "1.4"
-            text: "Define and use relative atomic mass and relative isotopic mass, based on the 12C scale"
-            verified: false
-
-      - id: chem.atomic_structure.isotopes
-        title: Isotopes
-        verified: false
-        aliases: [isotopic]
-        keywords: [isotope, same proton number, different neutron number,
-                   chemical properties identical, physical properties differ]
-
-  # ── Chapter 2 ───────────────────────────────────────────────────────────────
-  - id: chem.electrons_in_atoms
-    title: Electrons in Atoms
-    teaching_order: 2
-    coursebook_chapter: 2
-    syllabus_topic: "1"
-    drive_folder_name: "2. Electrons in Atoms (Chapter 2)"
-    verified: false
-    aliases: [electronic configuration, electron structure, electronic structure]
+    - code: 1.1.1
+      text: understand that atoms are mostly empty space surrounding a very small, dense nucleus that
+        contains protons and neutrons; electrons are found in shells in the empty space around the nucleus
+      verified: true
+    - code: 1.1.2
+      text: identify and describe protons, neutrons and electrons in terms of their relative charges and
+        relative masses
+      verified: true
+    - code: 1.1.3
+      text: understand the terms atomic and proton number; mass and nucleon number
+      verified: true
+    - code: 1.1.4
+      text: describe the distribution of mass and charge within an atom
+      verified: true
+    - code: 1.1.5
+      text: describe the behaviour of beams of protons, neutrons and electrons moving at the same velocity
+        in an electric field
+      verified: true
+    - code: 1.1.6
+      text: determine the numbers of protons, neutrons and electrons present in both atoms and ions given
+        atomic or proton number, mass or nucleon number and charge
+      verified: true
+    - code: 1.1.7
+      text: state and explain qualitatively the variations in atomic radius and ionic radius across a
+        period and down a group
+      verified: true
+  - id: chem.1_2
+    title: Isotopes
+    short_title: Isotopes
+    syllabus_topic: '1.2'
+    verified: true
+    aliases:
+    - isotopes of an element
     keywords:
-      - electronic configuration
-      - shell
-      - subshell
-      - orbital
-      - s orbital
-      - p orbital
-      - d orbital
-      - principal quantum number
-      - ionisation energy
-      - first ionisation energy
-      - successive ionisation energies
-      - shielding
-      - nuclear attraction
-      - Hund
-      - Pauli
-      - aufbau
+    - same chemical properties
+    - different physical properties
+    - same number of protons
+    - different number of neutrons
+    - same element different mass
+    - deuterium
+    - tritium
     learning_outcomes:
-      - code: "1.5"
-        text: "Describe the number and relative energies of the s, p and d orbitals"
-        verified: false
-      - code: "1.6"
-        text: "Describe and sketch the shapes of s and p orbitals"
-        verified: false
-      - code: "1.7"
-        text: "Define and explain trends in first ionisation energy"
-        verified: false
-    children:
-      - id: chem.electrons_in_atoms.ionisation_energy
-        title: Ionisation Energy
-        verified: false
-        aliases: [IE, ionization energy]
-        keywords: [first ionisation energy, successive ionisation energy,
-                   evidence for shells, big jump, gaseous atoms, endothermic]
-
-  # ── Chapter 3 (taught 4th) ──────────────────────────────────────────────────
-  - id: chem.moles_stoichiometry
-    title: Moles and Stoichiometry
-    teaching_order: 4
-    coursebook_chapter: 3
-    syllabus_topic: "2"
-    drive_folder_name: "4. Moles and Stoichiometry (Chapter 3)"
-    verified: false
-    aliases: [moles, stoichiometry, calculations, mole concept, amount of substance]
+    - code: 1.2.1
+      text: define the term isotope in terms of numbers of protons and neutrons
+      verified: true
+    - code: 1.2.2
+      text: understand the notation xyA for isotopes, where x is the mass or nucleon number and y is the
+        atomic or proton number
+      verified: true
+    - code: 1.2.3
+      text: state that and explain why isotopes of the same element have the same chemical properties
+      verified: true
+    - code: 1.2.4
+      text: state that and explain why isotopes of the same element have different physical properties,
+        limited to mass and density
+      verified: true
+- id: chem.electrons_in_atoms
+  title: Electrons in Atoms
+  teaching_order: 2
+  coursebook_chapter: 2
+  syllabus_topic: '1'
+  drive_folder_name: 2. Electrons in Atoms (Chapter 2)
+  verified: true
+  aliases:
+  - electron structure
+  - electronic structure
+  - chapter 2
+  - electrons in atoms
+  keywords:
+  - subshell
+  - orbital
+  - electronic configuration
+  - ionisation energy
+  - shielding
+  - principal quantum number
+  children:
+  - id: chem.1_3
+    title: Electrons, energy levels and atomic orbitals
+    short_title: Atomic Orbitals & Configuration
+    syllabus_topic: '1.3'
+    verified: true
+    aliases:
+    - atomic orbitals
+    - energy levels
+    - subshells
     keywords:
-      - mole
-      - Avogadro constant
-      - molar mass
-      - empirical formula
-      - molecular formula
-      - percentage yield
-      - limiting reagent
-      - concentration
-      - molar volume
-      - ideal gas equation
-      - titration
-      - molarity
-      - balanced equation
-      - relative molecular mass
+    - subshell
+    - sub-shell
+    - orbital
+    - s orbital
+    - p orbital
+    - d orbital
+    - principal quantum number
+    - ground state
+    - electronic configuration
+    - electrons in boxes
+    - aufbau
+    - Hund
+    - Pauli
+    - degenerate
+    - spherical
+    - dumbbell
+    - unpaired electron
+    - free radical
+    - inter-electron repulsion
     learning_outcomes:
-      - code: "2.1"
-        text: "Define and use the terms relative formula mass, mole and the Avogadro constant"
-        verified: false
-      - code: "2.2"
-        text: "Write and construct balanced equations, including ionic equations"
-        verified: false
-      - code: "2.3"
-        text: "Perform calculations involving reacting masses, volumes of gases and solutions"
-        verified: false
-
-  # ── Chapter 4 (taught 3rd) ──────────────────────────────────────────────────
-  - id: chem.chemical_bonding
-    title: Chemical Bonding
-    teaching_order: 3
-    coursebook_chapter: 4
-    syllabus_topic: "3"
-    drive_folder_name: "3. Chemical Bonding (Chapter 4)"
-    verified: false
-    aliases: [bonding, chemical bonds, structure and bonding]
+    - code: 1.3.1
+      text: 'understand the terms: shells, sub-shells and orbitals; principal quantum number (n); ground
+        state, limited to electronic configuration'
+      verified: true
+    - code: 1.3.2
+      text: describe the number of orbitals making up s, p and d sub-shells, and the number of electrons
+        that can fill s, p and d sub-shells
+      verified: true
+    - code: 1.3.3
+      text: describe the order of increasing energy of the sub-shells within the first three shells and
+        the 4s and 4p sub-shells
+      verified: true
+    - code: 1.3.4
+      text: describe the electronic configurations to include the number of electrons in each shell, sub-shell
+        and orbital
+      verified: true
+    - code: 1.3.5
+      text: explain the electronic configurations in terms of energy of the electrons and inter-electron
+        repulsion
+      verified: true
+    - code: 1.3.6
+      text: 'determine the electronic configuration of atoms and ions given the atomic or proton number
+        and charge, using either of the following conventions: e.g. for Fe: 1s2 2s2 2p6 3s2 3p6 3d6 4s2
+        (full electronic configuration) or [Ar] 3d6 4s2 (shorthand electronic configuration)'
+      verified: true
+    - code: 1.3.7
+      text: understand and use the electrons in boxes notation
+      verified: true
+    - code: 1.3.8
+      text: describe and sketch the shapes of s and p orbitals
+      verified: true
+    - code: 1.3.9
+      text: describe a free radical as a species with one or more unpaired electrons
+      verified: true
+  - id: chem.1_4
+    title: Ionisation energy
+    short_title: Ionisation Energy
+    syllabus_topic: '1.4'
+    verified: true
+    aliases:
+    - IE
+    - ionization energy
     keywords:
-      - ionic bond
-      - covalent bond
-      - dative covalent
-      - coordinate bond
-      - metallic bond
-      - lone pair
-      - bond pair
-      - electronegativity
-      - polarity
-      - dipole
-      - intermolecular force
-      - van der Waals
-      - hydrogen bonding
-      - VSEPR
-      - bond angle
-      - shape of molecules
-      - sigma bond
-      - pi bond
-      - hybridisation
+    - ionisation energy
+    - first ionisation energy
+    - second ionisation energy
+    - successive ionisation energies
+    - gaseous atoms
+    - endothermic
+    - big jump
+    - large jump
+    - shielding
+    - nuclear charge
+    - nuclear attraction
+    - spin-pair repulsion
+    - log graph
+    - deduce the group
     learning_outcomes:
-      - code: "3.1"
-        text: "Describe ionic bonding as the electrostatic attraction between oppositely charged ions"
-        verified: false
-      - code: "3.2"
-        text: "Describe covalent bonding, including dative covalent (coordinate) bonding"
-        verified: false
-      - code: "3.3"
-        text: "Use VSEPR theory to predict and explain the shapes of and bond angles in molecules"
-        verified: false
-
-  # ── Chapter 5 ───────────────────────────────────────────────────────────────
-  - id: chem.states_of_matter
-    title: States of Matter
-    teaching_order: 5
-    coursebook_chapter: 5
-    syllabus_topic: "4"
-    drive_folder_name: "5. States of Matter (Chapter 5)"
-    verified: false
-    aliases: [states, gases liquids solids, kinetic theory]
+    - code: 1.4.1
+      text: define and use the term first ionisation energy, IE
+      verified: true
+    - code: 1.4.2
+      text: construct equations to represent first, second and subsequent ionisation energies
+      verified: true
+    - code: 1.4.3
+      text: identify and explain the trends in ionisation energies across a period and down a group of
+        the Periodic Table
+      verified: true
+    - code: 1.4.4
+      text: identify and explain the variation in successive ionisation energies of an element
+      verified: true
+    - code: 1.4.5
+      text: understand that ionisation energies are due to the attraction between the nucleus and the
+        outer electron
+      verified: true
+    - code: 1.4.6
+      text: explain the factors influencing the ionisation energies of elements in terms of nuclear charge,
+        atomic/ionic radius, shielding by inner shells and sub-shells and spin-pair repulsion
+      verified: true
+    - code: 1.4.7
+      text: deduce the electronic configurations of elements using successive ionisation energy data
+      verified: true
+    - code: 1.4.8
+      text: deduce the position of an element in the Periodic Table using successive ionisation energy
+        data
+      verified: true
+- id: chem.chemical_bonding
+  title: Chemical Bonding
+  teaching_order: 3
+  coursebook_chapter: 4
+  syllabus_topic: '3'
+  drive_folder_name: 3. Chemical Bonding (Chapter 4)
+  verified: true
+  aliases:
+  - bonding
+  - chemical bonds
+  - structure and bonding
+  - chapter 4
+  keywords:
+  - ionic bond
+  - covalent bond
+  - metallic bond
+  - lone pair
+  - electronegativity
+  - VSEPR
+  - hydrogen bonding
+  - van der Waals
+  - dipole
+  children:
+  - id: chem.3_1
+    title: Electronegativity and bonding
+    short_title: Electronegativity
+    syllabus_topic: '3.1'
+    verified: true
+    aliases:
+    - electronegativity trend
     keywords:
-      - ideal gas
-      - real gas
-      - kinetic theory
-      - pV = nRT
-      - lattice
-      - giant ionic
-      - simple molecular
-      - giant covalent
-      - metallic lattice
-      - graphite
-      - diamond
-      - melting point
-      - boiling point
+    - electronegativity
+    - Pauling
+    - Pauling scale
+    - attract electrons
+    - power of an atom
+    - most electronegative
+    - fluorine
+    - electronegativity difference
+    - nuclear charge
+    - shielding by inner shells
+    - across a period
+    - down a group
     learning_outcomes:
-      - code: "4.1"
-        text: "State the basic assumptions of the kinetic theory as applied to an ideal gas"
-        verified: false
-      - code: "4.2"
-        text: "Describe, in simple terms, the lattice structures of ionic, simple molecular, giant covalent and metallic solids"
-        verified: false
-
-  # ── Chapter 14 ──────────────────────────────────────────────────────────────
-  - id: chem.intro_organic
-    title: Intro to Organic Chemistry
-    teaching_order: 6
-    coursebook_chapter: 14
-    syllabus_topic: "13"
-    drive_folder_name: "6. Intro to Organic Chemistry (Chapter 14)"
-    verified: false
-    aliases: [organic chemistry basics, introduction to organic, nomenclature]
+    - code: 3.1.1
+      text: define electronegativity as the power of an atom to attract electrons to itself
+      verified: true
+    - code: 3.1.2
+      text: explain the factors influencing the electronegativities of the elements in terms of nuclear
+        charge, atomic radius and shielding by inner shells and sub-shells
+      verified: true
+    - code: 3.1.3
+      text: state and explain the trends in electronegativity across a period and down a group of the
+        Periodic Table
+      verified: true
+    - code: 3.1.4
+      text: use the differences in Pauling electronegativity values to predict the formation of ionic
+        and covalent bonds
+      verified: true
+  - id: chem.3_2
+    title: Ionic bonding
+    short_title: Ionic Bonding
+    syllabus_topic: '3.2'
+    verified: true
+    aliases:
+    - ionic bond
     keywords:
-      - homologous series
-      - functional group
-      - nomenclature
-      - IUPAC
-      - structural formula
-      - displayed formula
-      - skeletal formula
-      - general formula
-      - isomerism
-      - structural isomerism
-      - stereoisomerism
-      - cis-trans
-      - optical isomerism
-      - chiral
-      - free radical
-      - nucleophile
-      - electrophile
-      - homolytic
-      - heterolytic
-      - curly arrow
+    - ionic bonding
+    - cation
+    - anion
+    - oppositely charged ions
+    - transfer of electrons
+    - sodium chloride
+    - magnesium oxide
+    - calcium fluoride
+    - giant ionic lattice
+    - charge density
+    - full outer shell
     learning_outcomes:
-      - code: "13.1"
-        text: "Interpret and use the general, structural, displayed and skeletal formulae of organic molecules"
-        verified: false
-      - code: "13.2"
-        text: "Understand and use systematic nomenclature of simple organic compounds"
-        verified: false
-
-  # ── Chapter 15 ──────────────────────────────────────────────────────────────
-  - id: chem.hydrocarbons
-    title: Hydrocarbons
-    teaching_order: 7
-    coursebook_chapter: 15
-    syllabus_topic: "14"
-    drive_folder_name: "7. Hydrocarbons (Chapter 15)"
-    verified: false
-    aliases: [alkanes and alkenes, alkanes, alkenes]
+    - code: 3.2.1
+      text: define ionic bonding as the electrostatic attraction between oppositely charged ions (positively
+        charged cations and negatively charged anions)
+      verified: true
+    - code: 3.2.2
+      text: describe ionic bonding including the examples of sodium chloride, magnesium oxide and calcium
+        fluoride
+      verified: true
+  - id: chem.3_3
+    title: Metallic bonding
+    short_title: Metallic Bonding
+    syllabus_topic: '3.3'
+    verified: true
+    aliases:
+    - metallic bond
     keywords:
-      - alkane
-      - alkene
-      - saturated
-      - unsaturated
-      - free radical substitution
-      - electrophilic addition
-      - Markovnikov
-      - bromine water
-      - cracking
-      - combustion
-      - polymerisation
-      - addition polymer
-      - double bond
-      - carbocation
-    children:
-      - id: chem.hydrocarbons.alkanes
-        title: Alkanes
-        verified: false
-        keywords: [alkane, free radical substitution, initiation, propagation,
-                   termination, UV light, cracking, combustion]
-      - id: chem.hydrocarbons.alkenes
-        title: Alkenes
-        verified: false
-        keywords: [alkene, electrophilic addition, Markovnikov, carbocation
-                   stability, bromine water, addition polymerisation]
-
-  # ── Chapter 16 (taught 9th) ─────────────────────────────────────────────────
-  - id: chem.halogenoalkanes
-    title: Halogenoalkanes
-    teaching_order: 9
-    coursebook_chapter: 16
-    syllabus_topic: "15"
-    drive_folder_name: "9. Halogenoalkanes (Chapter 16)"
-    verified: false
-    aliases: [haloalkanes, halogen compounds, alkyl halides]
+    - metallic bonding
+    - delocalised electrons
+    - sea of electrons
+    - positive metal ions
+    - metal cations
+    - malleable
+    - ductile
+    - lattice of metal ions
+    learning_outcomes:
+    - code: 3.3.1
+      text: define metallic bonding as the electrostatic attraction between positive metal ions and delocalised
+        electrons
+      verified: true
+  - id: chem.3_4
+    title: Covalent bonding and coordinate (dative covalent) bonding
+    short_title: Covalent & Dative Bonding
+    syllabus_topic: '3.4'
+    verified: true
+    aliases:
+    - coordinate bonding
+    - sigma and pi bonds
+    - sigma and pie bonds
     keywords:
-      - halogenoalkane
-      - nucleophilic substitution
-      - SN1
-      - SN2
-      - elimination
-      - primary halogenoalkane
-      - secondary halogenoalkane
-      - tertiary halogenoalkane
-      - hydrolysis
-      - silver nitrate
-      - leaving group
-      - carbon-halogen bond strength
-
-  # ── Chapter 17 (taught 8th) ─────────────────────────────────────────────────
-  - id: chem.alcohols
+    - covalent bonding
+    - shared pair
+    - dative covalent
+    - coordinate bond
+    - lone pair donated
+    - ammonium ion
+    - sigma bond
+    - pi bond
+    - pie bond
+    - orbital overlap
+    - sideways overlap
+    - head-on overlap
+    - hybridisation
+    - sp2
+    - sp3
+    - bond energy
+    - bond length
+    - expanded octet
+    - triple bond
+    learning_outcomes:
+    - code: 3.4.1
+      text: 'define covalent bonding as electrostatic attraction between the nuclei of two atoms and a
+        shared pair of electrons (a) describe covalent bonding in molecules including: hydrogen, H2; oxygen,
+        O2; nitrogen, N2; chlorine, Cl2; hydrogen chloride, HCl; carbon dioxide, CO2; ammonia, NH3; methane,
+        CH4; ethane, C2H6; ethene, C2H4 (b) understand that elements in period 3 can expand their octet
+        including in the compounds sulfur dioxide, SO2, phosphorus pentachloride, PCl5, and sulfur hexafluoride,
+        SF6 (c) describe coordinate (dative covalent) bonding, including in the reaction between ammonia
+        and hydrogen chloride gases to form the ammonium ion, NH4+, and in the Al2Cl6 molecule'
+      verified: true
+    - code: 3.4.2
+      text: '(a) describe covalent bonds in terms of orbital overlap giving σ and π bonds: σ bonds are
+        formed by direct overlap of orbitals between the bonding atoms; π bonds are formed by the sideways
+        overlap of adjacent p orbitals above and below the σ bond (b) describe how the σ and π bonds form
+        in molecules including H2, C2H6, C2H4, HCN and N2 (c) use the concept of hybridisation to describe
+        sp, sp2 and sp3 orbitals'
+      verified: true
+    - code: 3.4.3
+      text: '(a) define the terms: bond energy as the energy required to break one mole of a particular
+        covalent bond in the gaseous state; bond length as the internuclear distance of two covalently
+        bonded atoms (b) use bond energy values and the concept of bond length to compare the reactivity
+        of covalent molecules'
+      verified: true
+  - id: chem.3_5
+    title: Shapes of molecules
+    short_title: Shapes of Molecules
+    syllabus_topic: '3.5'
+    verified: true
+    aliases:
+    - shapes of molecules
+    - bond angles
+    - molecular shape
+    keywords:
+    - VSEPR
+    - bond angle
+    - tetrahedral
+    - trigonal planar
+    - trigonal bipyramidal
+    - octahedral
+    - pyramidal
+    - non-linear
+    - bent
+    - linear
+    - lone pair repulsion
+    - electron pair repulsion
+    - repel each other
+    - as far apart as possible
+    - 109.5 degrees
+    - 104.5 degrees
+    learning_outcomes:
+    - code: 3.5.1
+      text: 'state and explain the shapes of, and bond angles in, molecules by using VSEPR theory, including
+        as simple examples: BF3 (trigonal planar, 120°); CO2 (linear, 180°); CH4 (tetrahedral, 109.5°);
+        NH3 (pyramidal, 107°); H2O (non-linear, 104.5°); SF6 (octahedral, 90°); PF5 (trigonal bipyramidal,
+        120° and 90°)'
+      verified: true
+    - code: 3.5.2
+      text: predict the shapes of, and bond angles in, molecules and ions analogous to those specified
+        in 3.5.1
+      verified: true
+  - id: chem.3_6
+    title: Intermolecular forces, electronegativity and bond properties
+    short_title: Intermolecular Forces
+    syllabus_topic: '3.6'
+    verified: true
+    aliases:
+    - induced dipoles
+    - London forces
+    keywords:
+    - intermolecular forces
+    - hydrogen bonding
+    - hydrogen bond
+    - van der Waals
+    - London dispersion
+    - instantaneous dipole
+    - induced dipole
+    - id-id
+    - permanent dipole
+    - pd-pd
+    - dipole moment
+    - bond polarity
+    - polar molecule
+    - nonpolar
+    - surface tension
+    - ice is less dense
+    - anomalous
+    - boiling point of water
+    - solubility in water
+    learning_outcomes:
+    - code: 3.6.1
+      text: '(a) describe hydrogen bonding, limited to molecules containing N–H and O–H groups, including
+        ammonia and water as simple examples (b) use the concept of hydrogen bonding to explain the anomalous
+        properties of H2O (ice and water): its relatively high melting and boiling points; its relatively
+        high surface tension; the density of the solid ice compared with the liquid water'
+      verified: true
+    - code: 3.6.2
+      text: use the concept of electronegativity to explain bond polarity and dipole moments of molecules
+      verified: true
+    - code: 3.6.3
+      text: '(a) describe van der Waals’ forces as the intermolecular forces between molecular entities
+        other than those due to bond formation, and use the term van der Waals’ forces as a generic term
+        to describe all intermolecular forces (b) describe the types of van der Waals’ forces: instantaneous
+        dipole–induced dipole (id-id) forces, also called London dispersion forces; permanent dipole–permanent
+        dipole (pd-pd) forces, including hydrogen bonding (c) describe hydrogen bonding and understand
+        that hydrogen bonding is a special case of permanent dipole–permanent dipole forces between molecules
+        where hydrogen is bonded to a highly electronegative atom'
+      verified: true
+    - code: 3.6.4
+      text: state that, in general, ionic, covalent and metallic bonding are stronger than intermolecular
+        forces
+      verified: true
+  - id: chem.3_7
+    title: Dot-and-cross diagrams
+    short_title: Dot & Cross Diagrams
+    syllabus_topic: '3.7'
+    verified: true
+    aliases:
+    - dot-and-cross diagram
+    - dot and cross diagrams
+    keywords:
+    - dot-and-cross
+    - dot and cross
+    - crosses
+    - dots
+    - outer shell electrons
+    - overlapping circles
+    - odd number of electrons
+    - draw the diagram
+    - square brackets
+    learning_outcomes:
+    - code: 3.7.1
+      text: use dot-and-cross diagrams to illustrate ionic, covalent and coordinate bonding including
+        the representation of any compounds stated in 3.4 and 3.5 (dot-and-cross diagrams may include
+        species with atoms which have an expanded octet or species with an odd number of electrons)
+      verified: true
+- id: chem.moles_stoichiometry
+  title: Moles and Stoichiometry
+  teaching_order: 4
+  coursebook_chapter: 3
+  syllabus_topic: '2'
+  drive_folder_name: 4. Moles and Stoichiometry (Chapter 3)
+  verified: true
+  aliases:
+  - moles
+  - stoichiometry
+  - mole concept
+  - calculations
+  - amount of substance
+  - chapter 3
+  keywords:
+  - mole
+  - Avogadro constant
+  - empirical formula
+  - balanced equation
+  - percentage yield
+  - titration
+  - molar volume
+  children:
+  - id: chem.2_1
+    title: Relative masses of atoms and molecules
+    short_title: Relative Atomic Mass
+    syllabus_topic: '2.1'
+    verified: true
+    aliases:
+    - Ar
+    keywords:
+    - relative atomic mass
+    - relative isotopic mass
+    - relative molecular mass
+    - relative formula mass
+    - unified atomic mass
+    - one twelfth
+    - carbon-12
+    - carbon 12
+    - carbon twelve
+    - chlorine-35
+    - chlorine thirty five
+    - chlorine-37
+    - chlorine thirty seven
+    - abundance
+    - abundances
+    - percentage abundance
+    - simple average
+    - weight average
+    - weighed average
+    - weightage
+    - weighted mean
+    - weighted average
+    learning_outcomes:
+    - code: 2.1.1
+      text: define the unified atomic mass unit as one twelfth of the mass of a carbon-12 atom
+      verified: true
+    - code: 2.1.2
+      text: define relative atomic mass, Ar, relative isotopic mass, relative molecular mass, Mr, and
+        relative formula mass in terms of the unified atomic mass unit
+      verified: true
+  - id: chem.2_2
+    title: The mole and the Avogadro constant
+    short_title: Moles & Avogadro Constant
+    syllabus_topic: '2.2'
+    verified: true
+    aliases:
+    - Avogadro number
+    - moles and the Avogadro constant
+    keywords:
+    - Avogadro
+    - Avogadro constant
+    - Avogadro's number
+    - 6.02 times ten to the 23
+    - amount of substance
+    - number of particles
+    - molar mass
+    - one mole of atoms
+    - grams per mole
+    learning_outcomes:
+    - code: 2.2.1
+      text: define and use the term mole in terms of the Avogadro constant
+      verified: true
+  - id: chem.2_3
+    title: Formulas
+    short_title: Formulae & Equations
+    syllabus_topic: '2.3'
+    verified: true
+    aliases:
+    - balancing equations
+    - ionic equations
+    - writing formulae
+    - empirical and molecular formulae
+    keywords:
+    - empirical formula
+    - molecular formula
+    - balanced equation
+    - ionic equation
+    - spectator ions
+    - state symbols
+    - water of crystallisation
+    - hydrated
+    - anhydrous
+    - Roman numeral
+    - ionic charge
+    - percentage composition
+    - nitrate ion
+    - carbonate ion
+    - sulfate ion
+    - ammonium ion
+    learning_outcomes:
+    - code: 2.3.1
+      text: 'write formulas of ionic compounds from ionic charges and oxidation numbers (shown by a Roman
+        numeral), including: (a) the prediction of ionic charge from the position of an element in the
+        Periodic Table (b) recall of the names and formulas for the following ions: NO3–, CO32–, SO42–,
+        OH–, NH4+, Zn2+, Ag+, HCO3–, PO43–'
+      verified: true
+    - code: 2.3.2
+      text: (a) write and construct equations (which should be balanced), including ionic equations (which
+        should not include spectator ions) (b) use appropriate state symbols in equations
+      verified: true
+    - code: 2.3.3
+      text: define and use the terms empirical and molecular formula
+      verified: true
+    - code: 2.3.4
+      text: understand and use the terms anhydrous, hydrated and water of crystallisation
+      verified: true
+    - code: 2.3.5
+      text: calculate empirical and molecular formulas, using given data
+      verified: true
+  - id: chem.2_4
+    title: Reacting masses and volumes (of solutions and gases)
+    short_title: Reacting Masses & Volumes
+    syllabus_topic: '2.4'
+    verified: true
+    aliases:
+    - volumes of gases
+    - titration calculations
+    - concentration of a solution
+    keywords:
+    - reacting masses
+    - percentage yield
+    - limiting reagent
+    - excess reagent
+    - molar volume
+    - 24 decimetres cubed
+    - moles per decimetre cubed
+    - moles per cubic decimetre
+    - concentration
+    - titration
+    - burette
+    - pipette
+    - standard solution
+    - stoichiometric ratio
+    - volume of gas produced
+    learning_outcomes:
+    - code: 2.4.1
+      text: 'perform calculations including use of the mole concept, involving: (a) reacting masses (from
+        formulas and equations) including percentage yield calculations (b) volumes of gases (e.g. in
+        the burning of hydrocarbons) (c) volumes and concentrations of solutions (d) limiting reagent
+        and excess reagent (e) deduce stoichiometric relationships from calculations such as those in
+        2.4.1(a)–(d)'
+      verified: true
+- id: chem.states_of_matter
+  title: States of Matter
+  teaching_order: 5
+  coursebook_chapter: 5
+  syllabus_topic: '4'
+  drive_folder_name: 5. States of Matter (Chapter 5)
+  verified: true
+  aliases:
+  - states of matter
+  - gases liquids solids
+  - chapter 5
+  keywords:
+  - ideal gas
+  - kinetic theory
+  - lattice
+  - giant covalent
+  - simple molecular
+  - melting point
+  children:
+  - id: chem.4_1
+    title: 'The gaseous state: ideal and real gases and pV = nRT'
+    short_title: Ideal & Real Gases
+    syllabus_topic: '4.1'
+    verified: true
+    aliases:
+    - gas laws
+    - kinetic theory of gases
+    keywords:
+    - ideal gas
+    - real gas
+    - ideal gas equation
+    - nRT
+    - gas constant
+    - kinetic theory
+    - collisions with the wall
+    - origin of pressure
+    - zero particle volume
+    - kelvin
+    - pascals
+    - deviation from ideal behaviour
+    - high pressure and low temperature
+    learning_outcomes:
+    - code: 4.1.1
+      text: explain the origin of pressure in a gas in terms of collisions between gas molecules and the
+        wall of the container
+      verified: true
+    - code: 4.1.2
+      text: understand that ideal gases have zero particle volume and no intermolecular forces of attraction
+      verified: true
+    - code: 4.1.3
+      text: state and use the ideal gas equation pV = nRT in calculations, including in the determination
+        of Mr
+      verified: true
+  - id: chem.4_2
+    title: Bonding and structure
+    short_title: Lattice Structures
+    syllabus_topic: '4.2'
+    verified: true
+    aliases:
+    - lattice structures
+    - structure and physical properties
+    keywords:
+    - giant ionic
+    - simple molecular
+    - giant molecular
+    - giant covalent
+    - giant metallic
+    - lattice
+    - crystalline solid
+    - iodine
+    - buckminsterfullerene
+    - graphite
+    - diamond
+    - silicon dioxide
+    - layers slide
+    - electrical conductivity
+    - solubility
+    - high melting point
+    learning_outcomes:
+    - code: 4.2.1
+      text: 'describe, in simple terms, the lattice structure of a crystalline solid which is: (a) giant
+        ionic, including sodium chloride and magnesium oxide (b) simple molecular, including iodine, buckminsterfullerene
+        C60 and ice (c) giant molecular, including silicon(IV) oxide, graphite and diamond (d) giant metallic,
+        including copper'
+      verified: true
+    - code: 4.2.2
+      text: describe, interpret and predict the effect of different types of structure and bonding on
+        the physical properties of substances, including melting point, boiling point, electrical conductivity
+        and solubility
+      verified: true
+    - code: 4.2.3
+      text: deduce the type of structure and bonding present in a substance from given information
+      verified: true
+- id: chem.intro_organic
+  title: Intro to Organic Chemistry
+  teaching_order: 6
+  coursebook_chapter: 14
+  syllabus_topic: '13'
+  drive_folder_name: 6. Intro to Organic Chemistry (Chapter 14)
+  verified: true
+  aliases:
+  - introduction to organic
+  - organic basics
+  - organic chemistry
+  - chapter 14
+  keywords:
+  - functional group
+  - homologous series
+  - nomenclature
+  - isomerism
+  - nucleophile
+  - electrophile
+  - curly arrow
+  children:
+  - id: chem.13_1
+    title: Formulas, functional groups and the naming of organic compounds
+    short_title: Functional Groups & Naming
+    syllabus_topic: '13.1'
+    verified: true
+    aliases:
+    - naming organic compounds
+    - functional groups
+    - IUPAC naming
+    - formulae of organic compounds
+    keywords:
+    - functional group
+    - homologous series
+    - nomenclature
+    - IUPAC
+    - systematic name
+    - displayed formula
+    - skeletal formula
+    - structural formula
+    - general formula
+    - longest chain
+    - parent chain
+    - prefix
+    - suffix
+    - numbering the carbons
+    - hydrocarbon
+    learning_outcomes:
+    - code: 13.1.1
+      text: define the term hydrocarbon as a compound made up of C and H atoms only
+      verified: true
+    - code: 13.1.2
+      text: understand that alkanes are simple hydrocarbons with no functional group
+      verified: true
+    - code: 13.1.3
+      text: understand that the compounds in the table on pages 29 and 30 contain a functional group which
+        dictates their physical and chemical properties
+      verified: true
+    - code: 13.1.4
+      text: interpret and use the general, structural, displayed and skeletal formulas of the classes
+        of compound stated in the table on pages 29 and 30
+      verified: true
+    - code: 13.1.5
+      text: understand and use systematic nomenclature of simple aliphatic organic molecules with functional
+        groups detailed in the table on pages 29 and 30, up to six carbon atoms (six plus six for esters,
+        straight chains only for esters and nitriles)
+      verified: true
+    - code: 13.1.6
+      text: deduce the molecular and/or empirical formula of a compound, given its structural, displayed
+        or skeletal formula
+      verified: true
+  - id: chem.13_2
+    title: Characteristic organic reactions
+    short_title: Reaction Types & Mechanisms
+    syllabus_topic: '13.2'
+    verified: true
+    aliases:
+    - organic reaction types
+    - mechanisms
+    - homolytic and heterolytic fission
+    keywords:
+    - homolytic
+    - heterolytic
+    - fission
+    - free radical
+    - initiation
+    - propagation
+    - termination
+    - nucleophile
+    - electrophile
+    - nucleophilic substitution
+    - electrophilic addition
+    - nucleophilic addition
+    - curly arrow
+    - curly arrows
+    - movement of electron pairs
+    - condensation
+    - hydrolysis
+    learning_outcomes:
+    - code: 13.2.1
+      text: 'interpret and use the following terminology associated with types of organic compounds and
+        reactions: (a) homologous series (b) saturated and unsaturated (c) homolytic and heterolytic fission
+        (d) free radical, initiation, propagation, termination (e) nucleophile, electrophile, nucleophilic,
+        electrophilic (f) addition, substitution, elimination, hydrolysis, condensation (g) oxidation
+        and reduction (in equations for organic redox reactions, the symbol [O] can be used to represent
+        one atom of oxygen from an oxidising agent and the symbol [H] to represent one atom of hydrogen
+        from a reducing agent)'
+      verified: true
+    - code: 13.2.2
+      text: 'understand and use the following terminology associated with types of organic mechanisms:
+        (a) free-radical substitution (b) electrophilic addition (c) nucleophilic substitution (d) nucleophilic
+        addition (in organic reaction mechanisms, the use of curly arrows to represent movement of electron
+        pairs is expected; the arrow should begin at a bond or a lone pair of electrons)'
+      verified: true
+  - id: chem.13_3
+    title: Shapes of organic molecules; σ and π bonds
+    short_title: Sigma & Pi Bonds
+    syllabus_topic: '13.3'
+    verified: true
+    aliases:
+    - sigma and pi bonds
+    - sigma and pie bonds
+    - hybridisation
+    - shapes of organic molecules
+    keywords:
+    - sigma bond
+    - pi bond
+    - pie bond
+    - hybridised
+    - sp hybridisation
+    - sp2
+    - sp3
+    - planar
+    - straight-chained
+    - branched
+    - ring structure
+    - sideways overlap
+    - p orbitals overlap
+    - no rotation about the pi bond
+    learning_outcomes:
+    - code: 13.3.1
+      text: describe organic molecules as either straight-chained, branched or cyclic
+      verified: true
+    - code: 13.3.2
+      text: describe and explain the shape of, and bond angles in, molecules containing sp, sp2 and sp3
+        hybridised atoms
+      verified: true
+    - code: 13.3.3
+      text: describe the arrangement of σ and π bonds in molecules containing sp, sp2 and sp3 hybridised
+        atoms
+      verified: true
+    - code: 13.3.4
+      text: understand and use the term planar when describing the arrangement of atoms in organic molecules,
+        for example ethene
+      verified: true
+  - id: chem.13_4
+    title: 'Isomerism: structural isomerism and stereoisomerism'
+    short_title: Structural & Stereoisomerism
+    syllabus_topic: '13.4'
+    verified: true
+    aliases:
+    - isomerism
+    - chirality
+    keywords:
+    - structural isomerism
+    - chain isomerism
+    - positional isomerism
+    - functional group isomerism
+    - stereoisomerism
+    - geometrical isomerism
+    - cis
+    - trans
+    - cis-trans
+    - optical isomerism
+    - enantiomer
+    - chiral
+    - chiral centre
+    - four different groups
+    - mirror image
+    - non-superimposable
+    - plane-polarised
+    learning_outcomes:
+    - code: 13.4.1
+      text: describe structural isomerism and its division into chain, positional and functional group
+        isomerism
+      verified: true
+    - code: 13.4.2
+      text: describe stereoisomerism and its division into geometrical (cis/trans) and optical isomerism
+        (use of E/Z nomenclature is acceptable but is not required)
+      verified: true
+    - code: 13.4.3
+      text: describe geometrical (cis/trans) isomerism in alkenes, and explain its origin in terms of
+        restricted rotation due to the presence of π bonds
+      verified: true
+    - code: 13.4.4
+      text: explain what is meant by a chiral centre and that such a centre gives rise to two optical
+        isomers (enantiomers) (Candidates should appreciate that compounds can contain more than one chiral
+        centre, but knowledge of meso compounds, or nomenclature such as diastereoisomers is not required.)
+      verified: true
+    - code: 13.4.5
+      text: identify chiral centres and geometrical (cis/trans) isomerism in a molecule of given structural
+        formula including cyclic compounds
+      verified: true
+    - code: 13.4.6
+      text: deduce the possible isomers for an organic molecule of known molecular formula
+      verified: true
+- id: chem.hydrocarbons
+  title: Hydrocarbons
+  teaching_order: 7
+  coursebook_chapter: 15
+  drive_folder_name: 7. Hydrocarbons (Chapter 15)
+  verified: true
+  aliases:
+  - alkanes and alkenes
+  - hydrocarbons
+  - chapter 15
+  keywords:
+  - alkane
+  - alkene
+  - saturated
+  - unsaturated
+  - free-radical substitution
+  - electrophilic addition
+  - cracking
+  children:
+  - id: chem.14_1
+    title: Alkanes
+    short_title: Alkanes
+    syllabus_topic: '14.1'
+    verified: true
+    aliases:
+    - alkanes
+    - free radical substitution
+    - combustion
+    keywords:
+    - alkane
+    - saturated
+    - free-radical substitution
+    - initiation
+    - propagation
+    - termination
+    - ultraviolet
+    - UV light
+    - chlorine radical
+    - cracking
+    - catalytic cracking
+    - crude oil fractions
+    - complete combustion
+    - incomplete combustion
+    - carbon monoxide
+    - unburnt hydrocarbons
+    - catalytic converter
+    - generally unreactive
+    learning_outcomes:
+    - code: 14.1.1
+      text: 'recall the reactions (reagents and conditions) by which alkanes can be produced: (a) addition
+        of hydrogen to an alkene in a hydrogenation reaction, H2(g) and Pt/Ni catalyst and heat (b) cracking
+        of a longer chain alkane, heat with Al2O3'
+      verified: true
+    - code: 14.1.2
+      text: 'describe: (a) the complete and incomplete combustion of alkanes (b) the free-radical substitution
+        of alkanes by Cl2 or Br2 in the presence of ultraviolet light, as exemplified by the reactions
+        of ethane'
+      verified: true
+    - code: 14.1.3
+      text: describe the mechanism of free-radical substitution with reference to the initiation, propagation
+        and termination steps
+      verified: true
+    - code: 14.1.4
+      text: suggest how cracking can be used to obtain more useful alkanes and alkenes of lower Mr from
+        heavier crude oil fractions
+      verified: true
+    - code: 14.1.5
+      text: understand the general unreactivity of alkanes, including towards polar reagents in terms
+        of the strength of the C–H bonds and their relative lack of polarity
+      verified: true
+    - code: 14.1.6
+      text: recognise the environmental consequences of carbon monoxide, oxides of nitrogen and unburnt
+        hydrocarbons arising from the combustion of alkanes in the internal combustion engine and of their
+        catalytic removal
+      verified: true
+  - id: chem.14_2
+    title: Alkenes
+    short_title: Alkenes
+    syllabus_topic: '14.2'
+    verified: true
+    aliases:
+    - unsaturated hydrocarbons
+    - carbon to carbon double bond
+    - addition reactions of alkenes
+    keywords:
+    - unsaturated
+    - double bond
+    - electrophilic addition
+    - bromine water
+    - decolourised
+    - test for unsaturation
+    - Markovnikov
+    - major product
+    - carbocation
+    - inductive effect
+    - nickel catalyst
+    - hydrogen halide
+    - steam and phosphoric acid
+    - acidified potassium manganate
+    - dehydration of an alcohol
+    learning_outcomes:
+    - code: 14.2.1
+      text: 'recall the reactions (including reagents and conditions) by which alkenes can be produced:
+        (a) elimination of HX from a halogenoalkane by ethanolic NaOH and heat (b) dehydration of an alcohol,
+        by using a heated catalyst (e.g. Al2O3) or a concentrated acid (e.g. concentrated H2SO4) (c) cracking
+        of a longer chain alkane'
+      verified: true
+    - code: 14.2.2
+      text: 'describe the following reactions of alkenes: (a) the electrophilic addition of (i) hydrogen
+        in a hydrogenation reaction, H2(g) and Pt/Ni catalyst and heat (ii) steam, H2O(g) and H3PO4 catalyst
+        (iii) a hydrogen halide, HX(g), at room temperature (iv) a halogen, X2 (b) the oxidation by cold
+        dilute acidified KMnO4 to form the diol (c) the oxidation by hot concentrated acidified KMnO4
+        leading to the rupture of the carbon–carbon double bond and the identities of the subsequent products
+        to determine the position of alkene linkages in larger molecules (d) addition polymerisation exemplified
+        by the reactions of ethene and propene'
+      verified: true
+    - code: 14.2.3
+      text: describe the use of aqueous bromine to show the presence of a C=C bond
+      verified: true
+    - code: 14.2.4
+      text: describe the mechanism of electrophilic addition in alkenes, using bromine/ethene and hydrogen
+        bromide/propene as examples
+      verified: true
+    - code: 14.2.5
+      text: describe and explain the inductive effects of alkyl groups on the stability of primary, secondary
+        and tertiary cations formed during electrophilic addition (this should be used to explain Markovnikov
+        addition)
+      verified: true
+  - id: chem.20_1
+    title: Addition polymerisation
+    short_title: Addition Polymerisation
+    syllabus_topic: '20.1'
+    verified: true
+    aliases:
+    - polymers
+    - monomers
+    keywords:
+    - addition polymerisation
+    - polymer
+    - monomer
+    - repeat unit
+    - repeating unit
+    - polyethene
+    - poly ethene
+    - chloroethene
+    - PVC
+    - long chain molecule
+    - non-biodegradable
+    - biodegradability
+    - disposal of plastics
+    - harmful combustion products
+    learning_outcomes:
+    - code: 20.1.1
+      text: describe addition polymerisation as exemplified by poly(ethene) and poly(chloroethene), PVC
+      verified: true
+    - code: 20.1.2
+      text: deduce the repeat unit of an addition polymer obtained from a given monomer
+      verified: true
+    - code: 20.1.3
+      text: identify the monomer(s) present in a given section of an addition polymer molecule
+      verified: true
+    - code: 20.1.4
+      text: recognise the difficulty of the disposal of poly(alkene)s, i.e. non-biodegradability and harmful
+        combustion products
+      verified: true
+- id: chem.alcohols
+  title: Alcohols
+  teaching_order: 8
+  coursebook_chapter: 17
+  syllabus_topic: '16'
+  drive_folder_name: 8. Alcohols (Chapter 17)
+  verified: true
+  aliases:
+  - alcohols
+  - hydroxy compounds
+  - chapter 17
+  keywords:
+  - alcohol
+  - hydroxyl
+  - primary alcohol
+  - secondary alcohol
+  - tertiary alcohol
+  - acidified potassium dichromate
+  - reflux
+  children:
+  - id: chem.16_1
     title: Alcohols
-    teaching_order: 8
-    coursebook_chapter: 17
-    syllabus_topic: "16"
-    drive_folder_name: "8. Alcohols (Chapter 17)"
-    verified: false
-    aliases: [hydroxy compounds, alcohol]
+    short_title: Alcohols
+    syllabus_topic: '16.1'
+    verified: true
+    aliases:
+    - alcohols
+    - hydroxy compounds
+    - oxidation of alcohols
+    - tri-iodomethane test
+    - iodoform test
     keywords:
-      - alcohol
-      - hydroxyl
-      - primary alcohol
-      - secondary alcohol
-      - tertiary alcohol
-      - oxidation
-      - acidified potassium dichromate
-      - distillation
-      - reflux
-      - esterification
-      - dehydration
-      - tri-iodomethane test
-
-  - id: chem.carboxylic_acids_esters
-    title: Carboxylic Acids & Esters
-    teaching_order: 10
-    coursebook_chapter: 17
-    syllabus_topic: "18"
-    drive_folder_name: "10. Carboxylic Acids & Esters (Chapter 17)"
-    verified: false
-    aliases: [carboxylic acids, esters, acids and esters]
+    - alcohol
+    - hydroxyl group
+    - primary alcohol
+    - secondary alcohol
+    - tertiary alcohol
+    - acidified potassium dichromate
+    - orange to green
+    - distillation
+    - reflux
+    - refluxing
+    - esterification
+    - dehydration
+    - tri-iodomethane
+    - iodoform
+    - alkaline iodine
+    - yellow precipitate
+    - sodium metal
+    - effervescence
+    - misty fumes
+    - phosphorus pentachloride
+    - propan-2-ol
+    learning_outcomes:
+    - code: 16.1.1
+      text: 'recall the reactions (reagents and conditions) by which alcohols can be produced: (a) electrophilic
+        addition of steam to an alkene, H2O(g) and H3PO4 catalyst (b) reaction of alkenes with cold dilute
+        acidified potassium manganate(VII) to form a diol (c) substitution of a halogenoalkane using NaOH(aq)
+        and heat (d) reduction of an aldehyde or ketone using NaBH4 or LiAlH4 (e) reduction of a carboxylic
+        acid using LiAlH4 (f) hydrolysis of an ester using dilute acid or dilute alkali and heat'
+      verified: true
+    - code: 16.1.2
+      text: 'describe: (a) the reaction with oxygen (combustion) (b) substitution to form halogenoalkanes,
+        e.g. by reaction with HX(g); or with KCl and concentrated H2SO4 or concentrated H3PO4; or with
+        PCl3 and heat; or with PCl5; or with SOCl2 (c) the reaction with Na(s) (d) oxidation with acidified
+        K2Cr2O7 or acidified KMnO4 to: (i) carbonyl compounds by distillation (ii) carboxylic acids by
+        refluxing (primary alcohols give aldehydes which can be further oxidised to carboxylic acids,
+        secondary alcohols give ketones, tertiary alcohols cannot be oxidised) (e) dehydration to an alkene,
+        by using a heated catalyst, e.g. Al2O3 or a concentrated acid (f) formation of esters by reaction
+        with carboxylic acids and concentrated H2SO4 as catalyst as exemplified by ethanol'
+      verified: true
+    - code: 16.1.3
+      text: (a) classify alcohols as primary, secondary and tertiary alcohols, to include examples with
+        more than one alcohol group (b) state characteristic distinguishing reactions, e.g. mild oxidation
+        with acidified K2Cr2O7, colour change from orange to green
+      verified: true
+    - code: 16.1.4
+      text: deduce the presence of a CH3CH(OH)– group in an alcohol, CH3CH(OH)–R, from its reaction with
+        alkaline I2(aq) to form a yellow precipitate of tri-iodomethane and an ion, RCO2–
+      verified: true
+    - code: 16.1.5
+      text: explain the acidity of alcohols compared with water
+      verified: true
+- id: chem.halogenoalkanes
+  title: Halogenoalkanes
+  teaching_order: 9
+  coursebook_chapter: 16
+  drive_folder_name: 9. Halogenoalkanes (Chapter 16)
+  verified: true
+  aliases:
+  - haloalkanes
+  - halogen compounds
+  - alkyl halides
+  - chapter 16
+  keywords:
+  - halogenoalkane
+  - nucleophilic substitution
+  - SN1
+  - SN2
+  - leaving group
+  - silver nitrate
+  children:
+  - id: chem.15_1
+    title: Halogenoalkanes
+    short_title: Halogenoalkanes
+    syllabus_topic: '15.1'
+    verified: true
+    aliases:
+    - halogenoalkanes
+    - haloalkanes
+    - elimination
     keywords:
-      - carboxylic acid
-      - carboxyl group
-      - ester
-      - esterification
-      - hydrolysis of esters
-      - acyl chloride
-      - saponification
-      - acid strength
-      - COOH
-
-# ── Not yet taught / not yet foldered ─────────────────────────────────────────
-# These 9701 topics have no folder in your Drive yet. They are listed so the
-# classifier can recognise them and route to review rather than force a wrong
-# match. `drive_folder_name: null` means "no destination yet".
+    - halogenoalkane
+    - nucleophilic substitution
+    - SN1
+    - SN2
+    - primary halogenoalkane
+    - tertiary halogenoalkane
+    - leaving group
+    - carbon-halogen bond
+    - silver nitrate
+    - cream precipitate
+    - silver bromide
+    - aqueous ethanol
+    - rate of hydrolysis
+    - aqueous sodium hydroxide
+    - ethanolic sodium hydroxide
+    - elimination reaction
+    - bromoethane
+    - transition state
+    - carbocation intermediate
+    learning_outcomes:
+    - code: 15.1.1
+      text: 'recall the reactions (reagents and conditions) by which halogenoalkanes can be produced:
+        (a) the free-radical substitution of alkanes by Cl2 or Br2 in the presence of ultraviolet light,
+        as exemplified by the reactions of ethane (b) electrophilic addition of an alkene with a halogen,
+        X2, or hydrogen halide, HX(g), at room temperature (c) substitution of an alcohol, e.g. by reaction
+        with HX(g); or with KCl and concentrated H2SO4 or concentrated H3PO4; or with PCl3 and heat; or
+        with PCl5; or with SOCl2'
+      verified: true
+    - code: 15.1.2
+      text: classify halogenoalkanes into primary, secondary and tertiary
+      verified: true
+    - code: 15.1.3
+      text: 'describe the following nucleophilic substitution reactions: (a) the reaction with NaOH(aq)
+        and heat to produce an alcohol (b) the reaction with KCN in ethanol and heat to produce a nitrile
+        (c) the reaction with NH3 in ethanol heated under pressure to produce an amine (d) the reaction
+        with aqueous silver nitrate in ethanol as a method of identifying the halogen present as exemplified
+        by bromoethane'
+      verified: true
+    - code: 15.1.4
+      text: describe the elimination reaction with NaOH in ethanol and heat to produce an alkene as exemplified
+        by bromoethane
+      verified: true
+    - code: 15.1.5
+      text: describe the SN1 and SN2 mechanisms of nucleophilic substitution in halogenoalkanes including
+        the inductive effects of alkyl groups
+      verified: true
+    - code: 15.1.6
+      text: recall that primary halogenoalkanes tend to react via the SN2 mechanism; tertiary halogenoalkanes
+        via the SN1 mechanism; and secondary halogenoalkanes by a mixture of the two, depending on structure
+      verified: true
+    - code: 15.1.7
+      text: describe and explain the different reactivities of halogenoalkanes (with particular reference
+        to the relative strengths of the C–X bonds as exemplified by the reactions of halogenoalkanes
+        with aqueous silver nitrates)
+      verified: true
+  - id: chem.19_1
+    title: Primary amines
+    short_title: Primary Amines
+    syllabus_topic: '19.1'
+    verified: true
+    aliases:
+    - amines
+    - primary amines
+    - ammonia with halogenoalkanes
+    keywords:
+    - amine
+    - primary amine
+    - ammonia
+    - excess ammonia
+    - ammonia in ethanol
+    - heated under pressure
+    - sealed tube
+    - amino group
+    - ethylamine
+    - further substitution
+    - lone pair on nitrogen
+    learning_outcomes:
+    - code: 19.1.1
+      text: 'recall the reactions by which amines can be produced: (a) reaction of a halogenoalkane with
+        NH3 in ethanol heated under pressure. Classification of amines will not be tested at AS Level.'
+      verified: true
+- id: chem.carboxylic_acids_esters
+  title: Carboxylic Acids & Esters
+  teaching_order: 10
+  coursebook_chapter: 17
+  syllabus_topic: '18'
+  drive_folder_name: 10. Carboxylic Acids & Esters (Chapter 17)
+  verified: true
+  aliases:
+  - carboxylic acids
+  - esters
+  - acids and esters
+  keywords:
+  - carboxylic acid
+  - carboxyl
+  - ester
+  - esterification
+  - hydrolysis
+  children:
+  - id: chem.18_1
+    title: Carboxylic acids
+    short_title: Carboxylic Acids
+    syllabus_topic: '18.1'
+    verified: true
+    aliases:
+    - carboxylic acids
+    keywords:
+    - carboxylic acid
+    - carboxyl group
+    - ethanoic acid
+    - methanoic acid
+    - weak acid
+    - reactive metal
+    - fizzing with carbonate
+    - sodium carbonate
+    - carbon dioxide given off
+    - salt and water
+    - lithium aluminium hydride
+    - reduced to a primary alcohol
+    - hydrolysis of nitriles
+    - acidification
+    learning_outcomes:
+    - code: 18.1.1
+      text: 'recall the reactions by which carboxylic acids can be produced: (a) oxidation of primary
+        alcohols and aldehydes with acidified K2Cr2O7 or acidified KMnO4 and refluxing (b) hydrolysis
+        of nitriles with dilute acid or dilute alkali followed by acidification (c) hydrolysis of esters
+        with dilute acid or dilute alkali and heat followed by acidification'
+      verified: true
+    - code: 18.1.2
+      text: 'describe: (a) the redox reaction with reactive metals to produce a salt and H2(g) (b) the
+        neutralisation reaction with alkalis to produce a salt and H2O(l) (c) the acid–base reaction with
+        carbonates to produce a salt and H2O(l) and CO2(g) (d) esterification with alcohols with concentrated
+        H2SO4 as catalyst (e) reduction by LiAlH4 to form a primary alcohol'
+      verified: true
+  - id: chem.18_2
+    title: Esters
+    short_title: Esters
+    syllabus_topic: '18.2'
+    verified: true
+    aliases:
+    - esters
+    - ester hydrolysis
+    keywords:
+    - ester
+    - esterification
+    - condensation reaction
+    - concentrated sulfuric acid catalyst
+    - ethyl ethanoate
+    - sweet smell
+    - fruity smell
+    - flavouring
+    - perfume
+    - alkaline hydrolysis
+    - saponification
+    - naming esters
+    - alcohol and carboxylic acid
+    learning_outcomes:
+    - code: 18.2.1
+      text: 'recall the reaction (reagents and conditions) by which esters can be produced: (a) the condensation
+        reaction between an alcohol and a carboxylic acid with concentrated H2SO4 as catalyst'
+      verified: true
+    - code: 18.2.2
+      text: describe the hydrolysis of esters by dilute acid and by dilute alkali and heat
+      verified: true
+- id: chem.redox_reactions
+  title: Redox Reactions
+  teaching_order: 11
+  coursebook_chapter: 7
+  syllabus_topic: '6'
+  drive_folder_name: 11. Redox Reactions (Chapter 7)
+  verified: true
+  aliases:
+  - electrochemistry
+  - oxidation numbers
+  - oxidation states
+  - chapter 7
+  keywords:
+  - redox
+  - oxidation number
+  - oxidising agent
+  - reducing agent
+  - disproportionation
+  children:
+  - id: chem.6_1
+    title: 'Redox processes: electron transfer and changes in oxidation number (oxidation state)'
+    short_title: Redox & Oxidation Numbers
+    syllabus_topic: '6.1'
+    verified: true
+    aliases:
+    - half equations
+    keywords:
+    - oxidation number
+    - oxidation state
+    - redox
+    - oxidising agent
+    - reducing agent
+    - disproportionation
+    - half equation
+    - electron transfer
+    - loss of electrons
+    - gain of electrons
+    - OIL RIG
+    - Roman numeral
+    - change in oxidation number
+    - balancing redox equations
+    - manganate
+    - dichromate
+    learning_outcomes:
+    - code: 6.1.1
+      text: calculate oxidation numbers of elements in compounds and ions
+      verified: true
+    - code: 6.1.2
+      text: use changes in oxidation numbers to help balance chemical equations
+      verified: true
+    - code: 6.1.3
+      text: explain and use the terms redox, oxidation, reduction and disproportionation in terms of electron
+        transfer and changes in oxidation number
+      verified: true
+    - code: 6.1.4
+      text: explain and use the terms oxidising agent and reducing agent
+      verified: true
+    - code: 6.1.5
+      text: use a Roman numeral to indicate the magnitude of the oxidation number of an element
+      verified: true
+- id: chem.carbonyl_compounds
+  title: Carbonyl Compounds
+  teaching_order: 12
+  coursebook_chapter: 18
+  drive_folder_name: 12. Carbonyl Compounds (Chapater 18)
+  verified: true
+  aliases:
+  - carbonyls
+  - aldehydes and ketones
+  - chapter 18
+  keywords:
+  - carbonyl
+  - aldehyde
+  - ketone
+  - nucleophilic addition
+  - Tollens
+  - Fehling
+  - nitrile
+  children:
+  - id: chem.17_1
+    title: Aldehydes and ketones
+    short_title: Aldehydes & Ketones
+    syllabus_topic: '17.1'
+    verified: true
+    aliases:
+    - aldehydes
+    - ketones
+    - carbonyl compounds
+    keywords:
+    - aldehyde
+    - ketone
+    - carbonyl group
+    - nucleophilic addition
+    - DNPH
+    - dinitrophenylhydrazine
+    - orange precipitate
+    - Tollens
+    - silver mirror
+    - Fehling
+    - brick red precipitate
+    - ethanal
+    - propanone
+    - sodium borohydride
+    - sodium tetrahydridoborate
+    - reduced to an alcohol
+    - ease of oxidation
+    - tri-iodomethane
+    - methyl ketone
+    learning_outcomes:
+    - code: 17.1.1
+      text: 'recall the reactions (reagents and conditions) by which aldehydes and ketones can be produced:
+        (a) the oxidation of primary alcohols using acidified K2Cr2O7 or acidified KMnO4 and distillation
+        to produce aldehydes (b) the oxidation of secondary alcohols using acidified K2Cr2O7 or acidified
+        KMnO4 and distillation to produce ketones'
+      verified: true
+    - code: 17.1.2
+      text: 'describe: (a) the reduction of aldehydes and ketones using NaBH4 or LiAlH4 to produce alcohols
+        (b) the reaction of aldehydes and ketones with HCN, KCN as catalyst, and heat to produce hydroxynitriles
+        as exemplified by ethanal and propanone'
+      verified: true
+    - code: 17.1.3
+      text: describe the mechanism of the nucleophilic addition reactions of hydrogen cyanide with aldehydes
+        and ketones in 17.1.2(b)
+      verified: true
+    - code: 17.1.4
+      text: describe the use of 2,4-dinitrophenylhydrazine (2,4-DNPH reagent) to detect the presence of
+        carbonyl compounds
+      verified: true
+    - code: 17.1.5
+      text: deduce the nature (aldehyde or ketone) of an unknown carbonyl compound from the results of
+        simple tests (Fehling’s and Tollens’ reagents; ease of oxidation)
+      verified: true
+    - code: 17.1.6
+      text: deduce the presence of a CH3CO– group in an aldehyde or ketone, CH3CO–R, from its reaction
+        with alkaline I2(aq) to form a yellow precipitate of tri-iodomethane and an ion, RCO2–
+      verified: true
+  - id: chem.19_2
+    title: Nitriles and hydroxynitriles
+    short_title: Nitriles & Hydroxynitriles
+    syllabus_topic: '19.2'
+    verified: true
+    aliases:
+    - nitriles
+    - hydroxynitriles
+    - cyanide
+    - hydrolysis of nitriles
+    keywords:
+    - nitrile
+    - hydroxynitrile
+    - potassium cyanide
+    - hydrogen cyanide
+    - cyanide ion
+    - KCN
+    - HCN
+    - hydrolysis of a nitrile
+    - dilute acid
+    - dilute alkali
+    - extends the carbon chain
+    - one more carbon
+    - propanenitrile
+    learning_outcomes:
+    - code: 19.2.1
+      text: 'recall the reactions by which nitriles can be produced: (a) reaction of a halogenoalkane
+        with KCN in ethanol and heat'
+      verified: true
+    - code: 19.2.2
+      text: 'recall the reactions by which hydroxynitriles can be produced: (a) the reaction of aldehydes
+        and ketones with HCN, KCN as catalyst, and heat'
+      verified: true
+    - code: 19.2.3
+      text: describe the hydrolysis of nitriles with dilute acid or dilute alkali followed by acidification
+        to produce a carboxylic acid
+      verified: true
+- id: chem.midterm_review
+  title: Midterm Review
+  teaching_order: 12
+  drive_folder_name: 12. Midterm Review
+  verified: true
+  exclude_from_classification: true
+  aliases:
+  - review session
+  - past papers
+  keywords:
+  - midterm
+  - revision
+  - recap
+  - past paper
+  - mark scheme
+  - exam technique
+  - question practice
+- id: chem.periodicity
+  title: Periodicity
+  teaching_order: 13
+  coursebook_chapter: 10
+  syllabus_topic: '9'
+  drive_folder_name: 13. Periodicity (Chapter 10)
+  verified: true
+  aliases:
+  - chemical periodicity
+  - periodic table
+  - chapter 10
+  keywords:
+  - period 3
+  - periodicity
+  - oxides
+  - chlorides
+  - amphoteric
+  - trend across the period
+  children:
+  - id: chem.9_1
+    title: Periodicity of physical properties of the elements in Period 3
+    short_title: Period 3 Physical Properties
+    syllabus_topic: '9.1'
+    verified: true
+    aliases:
+    - physical properties of period 3
+    - melting points of period 3
+    - conductivity trend
+    keywords:
+    - period 3
+    - atomic radius
+    - ionic radius
+    - melting point
+    - electrical conductivity
+    - giant metallic
+    - giant covalent silicon
+    - simple molecular sulfur
+    - phosphorus
+    - argon
+    - sharp drop
+    - delocalised electrons
+    - same shielding
+    learning_outcomes:
+    - code: 9.1.1
+      text: describe qualitatively (and indicate the periodicity in) the variations in atomic radius,
+        ionic radius, melting point and electrical conductivity of the elements
+      verified: true
+    - code: 9.1.2
+      text: explain the variation in melting point and electrical conductivity in terms of the structure
+        and bonding of the elements
+      verified: true
+  - id: chem.9_2
+    title: Periodicity of chemical properties of the elements in Period 3
+    short_title: Period 3 Oxides & Chlorides
+    syllabus_topic: '9.2'
+    verified: true
+    aliases:
+    - oxides and chlorides
+    - reactions of period 3
+    - amphoteric oxides
+    keywords:
+    - sodium oxide
+    - magnesium oxide
+    - aluminium oxide
+    - silicon dioxide
+    - phosphorus oxide
+    - sulfur dioxide
+    - sodium chloride
+    - magnesium chloride
+    - aluminium chloride
+    - silicon tetrachloride
+    - phosphorus pentachloride
+    - amphoteric
+    - acidic oxide
+    - basic oxide
+    - hydrolysed by water
+    - misty fumes
+    - reacts with acid and alkali
+    learning_outcomes:
+    - code: 9.2.1
+      text: describe, and write equations for, the reactions of the elements with oxygen (to give Na2O,
+        MgO, Al2O3, P4O10, SO2), chlorine (to give NaCl, MgCl2, AlCl3, SiCl4, PCl5) and water (Na and
+        Mg only)
+      verified: true
+    - code: 9.2.2
+      text: state and explain the variation in the oxidation number of the oxides (Na2O, MgO, Al2O3, P4O10,
+        SO2 and SO3 only) and chlorides (NaCl, MgCl2, AlCl3, SiCl4, PCl5 only) in terms of their outer
+        shell (valence shell) electrons
+      verified: true
+    - code: 9.2.3
+      text: describe, and write equations for, the reactions, if any, of the oxides Na2O, MgO, Al2O3,
+        SiO2, P4O10, SO2 and SO3 with water including the likely pHs of the solutions obtained
+      verified: true
+    - code: 9.2.4
+      text: describe, explain, and write equations for, the acid/base behaviour of the oxides Na2O, MgO,
+        Al2O3, P4O10, SO2 and SO3 and the hydroxides NaOH, Mg(OH)2 and Al(OH)3 including, where relevant,
+        amphoteric behaviour in reactions with acids and bases (sodium hydroxide only)
+      verified: true
+    - code: 9.2.5
+      text: describe, explain, and write equations for, the reactions of the chlorides NaCl, MgCl2, AlCl3,
+        SiCl4, PCl5 with water including the likely pHs of the solutions obtained
+      verified: true
+    - code: 9.2.6
+      text: explain the variations and trends in 9.2.2, 9.2.3, 9.2.4 and 9.2.5 in terms of bonding and
+        electronegativity
+      verified: true
+    - code: 9.2.7
+      text: suggest the types of chemical bonding present in the chlorides and oxides from observations
+        of their chemical and physical properties
+      verified: true
+  - id: chem.9_3
+    title: Chemical periodicity of other elements
+    short_title: Predicting Group Properties
+    syllabus_topic: '9.3'
+    verified: true
+    aliases:
+    - predicting properties
+    - chemical periodicity of other elements
+    keywords:
+    - predict the properties
+    - unknown element
+    - deduce the identity
+    - position in the Periodic Table
+    - characteristic properties
+    - extrapolate
+    learning_outcomes:
+    - code: 9.3.1
+      text: predict the characteristic properties of an element in a given group by using knowledge of
+        chemical periodicity
+      verified: true
+    - code: 9.3.2
+      text: deduce the nature, possible position in the Periodic Table and identity of unknown elements
+        from given information about physical and chemical properties
+      verified: true
+- id: chem.group_17
+  title: Group 17
+  teaching_order: 14
+  coursebook_chapter: 12
+  syllabus_topic: '11'
+  drive_folder_name: 14. Group 17 (Chapter 12)
+  verified: true
+  aliases:
+  - group 17
+  - halogens
+  - group seven
+  - chapter 12
+  keywords:
+  - halogen
+  - chlorine
+  - bromine
+  - iodine
+  - halide ion
+  - disproportionation
+  children:
+  - id: chem.11_1
+    title: Physical properties of the Group 17 elements
+    short_title: Halogen Physical Properties
+    syllabus_topic: '11.1'
+    verified: true
+    aliases:
+    - physical properties of the halogens
+    - colours of the halogens
+    keywords:
+    - volatility
+    - pale green gas
+    - red-brown liquid
+    - grey-black solid
+    - purple vapour
+    - sublimes
+    - boiling point increases
+    - instantaneous dipole
+    - induced dipole
+    - larger electron cloud
+    - bond strength decreases
+    learning_outcomes:
+    - code: 11.1.1
+      text: describe the colours and the trend in volatility of chlorine, bromine and iodine
+      verified: true
+    - code: 11.1.2
+      text: describe and explain the trend in the bond strength of the halogen molecules
+      verified: true
+    - code: 11.1.3
+      text: interpret the volatility of the elements in terms of instantaneous dipole–induced dipole forces
+      verified: true
+  - id: chem.11_2
+    title: The chemical properties of the halogen elements and the hydrogen halides
+    short_title: Halogens & Hydrogen Halides
+    syllabus_topic: '11.2'
+    verified: true
+    aliases:
+    - chemical properties of the halogens
+    - hydrogen halides
+    - displacement reactions
+    keywords:
+    - oxidising agent
+    - relative reactivity
+    - displacement reaction
+    - chlorine displaces bromine
+    - reaction with hydrogen
+    - hydrogen halide
+    - hydrogen chloride
+    - hydrogen iodide
+    - thermal stability
+    - decomposes on heating
+    - explosive in sunlight
+    - bond strength
+    learning_outcomes:
+    - code: 11.2.1
+      text: describe the relative reactivity of the elements as oxidising agents
+      verified: true
+    - code: 11.2.2
+      text: describe the reactions of the elements with hydrogen and explain their relative reactivity
+        in these reactions
+      verified: true
+    - code: 11.2.3
+      text: describe the relative thermal stabilities of the hydrogen halides and explain these in terms
+        of bond strengths
+      verified: true
+  - id: chem.11_3
+    title: Some reactions of the halide ions
+    short_title: Halide Ion Reactions
+    syllabus_topic: '11.3'
+    verified: true
+    aliases:
+    - reactions of halide ions
+    - silver nitrate test
+    - halide tests
+    keywords:
+    - halide ion
+    - reducing agent
+    - silver nitrate
+    - white precipitate
+    - cream precipitate
+    - yellow precipitate
+    - dilute ammonia
+    - concentrated ammonia
+    - soluble in ammonia
+    - concentrated sulfuric acid
+    - hydrogen sulfide
+    - rotten eggs
+    - iodine vapour
+    learning_outcomes:
+    - code: 11.3.1
+      text: describe the relative reactivity of halide ions as reducing agents
+      verified: true
+    - code: 11.3.2
+      text: 'describe and explain the reactions of halide ions with: (a) aqueous silver ions followed
+        by aqueous ammonia (the formation and formula of the [Ag(NH3)2]+ complex is not required) (b)
+        concentrated sulfuric acid, to include balanced chemical equations'
+      verified: true
+  - id: chem.11_4
+    title: The reactions of chlorine
+    short_title: Chlorine & Disproportionation
+    syllabus_topic: '11.4'
+    verified: true
+    aliases:
+    - reactions of chlorine
+    keywords:
+    - disproportionation
+    - cold dilute sodium hydroxide
+    - hot concentrated sodium hydroxide
+    - chlorate
+    - bleach
+    - water purification
+    - chloric acid
+    - kills bacteria
+    - sterilise
+    - two oxidation numbers
+    learning_outcomes:
+    - code: 11.4.1
+      text: describe and interpret, in terms of changes in oxidation number, the reaction of chlorine
+        with cold and with hot aqueous sodium hydroxide and recognise these as disproportionation reactions
+      verified: true
+    - code: 11.4.2
+      text: explain, including by use of an equation, the use of chlorine in water purification to include
+        the production of the active species HOCl and ClO– which kill bacteria
+      verified: true
+- id: chem.group_2
+  title: Group 2
+  teaching_order: 15
+  coursebook_chapter: 11
+  syllabus_topic: '10'
+  drive_folder_name: 15. Group 2 (Chapter 11)
+  verified: true
+  aliases:
+  - alkaline earth metals
+  - group two
+  - chapter 11
+  keywords:
+  - group 2
+  - magnesium
+  - calcium
+  - barium
+  - thermal decomposition
+  - solubility trend
+  children:
+  - id: chem.10_1
+    title: Similarities and trends in the properties of the Group 2 metals, magnesium to barium, and their
+      compounds
+    short_title: Group 2 Trends & Reactions
+    syllabus_topic: '10.1'
+    verified: true
+    aliases:
+    - group 2 trends
+    - alkaline earth metals
+    - solubility of hydroxides and sulfates
+    keywords:
+    - group 2
+    - magnesium
+    - calcium
+    - strontium
+    - barium
+    - alkaline earth
+    - thermal decomposition
+    - thermal stability increases
+    - nitrates decompose
+    - carbonates decompose
+    - hydroxide solubility increases
+    - sulfate solubility decreases
+    - limewater
+    - burns with a bright flame
+    - polarising power
+    - down the group
+    learning_outcomes:
+    - code: 10.1.1
+      text: describe, and write equations for, the reactions of the elements with oxygen, water and dilute
+        hydrochloric and sulfuric acids
+      verified: true
+    - code: 10.1.2
+      text: describe, and write equations for, the reactions of the oxides, hydroxides and carbonates
+        with water and dilute hydrochloric and sulfuric acids
+      verified: true
+    - code: 10.1.3
+      text: describe, and write equations for, the thermal decomposition of the nitrates and carbonates,
+        to include the trend in thermal stabilities
+      verified: true
+    - code: 10.1.4
+      text: describe, and make predictions from, the trends in physical and chemical properties of the
+        elements involved in the reactions in 10.1.1 and the compounds involved in 10.1.2, 10.1.3 and
+        10.1.5
+      verified: true
+    - code: 10.1.5
+      text: state the variation in the solubilities of the hydroxides and sulfates
+      verified: true
+- id: chem.spectroscopy
+  title: Infra-red Spectroscopy and Mass Spectrometry
+  teaching_order: 16
+  syllabus_topic: '22'
+  drive_folder_name: 16. Infra-red spectroscopy and Mass Spectrometry
+  verified: true
+  aliases:
+  - analytical techniques
+  - spectroscopy
+  - IR and mass spec
+  - instrumental analysis
+  keywords:
+  - infrared
+  - spectrum
+  - wavenumber
+  - mass spectrum
+  - molecular ion
+  - fragmentation
+  children:
+  - id: chem.22_1
+    title: Infrared spectroscopy
+    short_title: Infrared Spectroscopy
+    syllabus_topic: '22.1'
+    verified: true
+    aliases:
+    - IR spectroscopy
+    - IR spectrum
+    keywords:
+    - infrared
+    - infra-red
+    - wavenumber
+    - absorption
+    - transmittance
+    - fingerprint region
+    - broad peak
+    - carbonyl peak
+    - identify the functional group
+    - bond vibration
+    - stretching
+    learning_outcomes:
+    - code: 22.1.1
+      text: analyse an infrared spectrum of a simple molecule to identify functional groups (see the Data
+        section for the functional groups required)
+      verified: true
+  - id: chem.22_2
+    title: Mass spectrometry
+    short_title: Mass Spectrometry
+    syllabus_topic: '22.2'
+    verified: true
+    aliases:
+    - mass spec
+    - spectrum of the compound
+    keywords:
+    - mass spectrum
+    - mass spectrometer
+    - mass spectrometry
+    - parent ion
+    - molecular ion
+    - molecular ion peak
+    - base peak
+    - tallest peak
+    - fragmentation
+    - fragment
+    - fragment ion
+    - M plus one peak
+    - M plus two peak
+    learning_outcomes:
+    - code: 22.2.1
+      text: analyse mass spectra in terms of m/e values and isotopic abundances (knowledge of the working
+        of the mass spectrometer is not required)
+      verified: true
+    - code: 22.2.2
+      text: calculate the relative atomic mass of an element given the relative abundances of its isotopes,
+        or its mass spectrum
+      verified: true
+    - code: 22.2.3
+      text: deduce the molecular mass of an organic molecule from the molecular ion peak in a mass spectrum
+      verified: true
+    - code: 22.2.4
+      text: suggest the identity of molecules formed by simple fragmentation in a given mass spectrum
+      verified: true
+    - code: 22.2.5
+      text: deduce the number of carbon atoms, n, in a compound using the [M + 1]+ peak and the formula
+        n = (100 × abundance of [M + 1]+ ion) / (1.1 × abundance of M+ ion)
+      verified: true
+    - code: 22.2.6
+      text: deduce the presence of bromine and chlorine atoms in a compound using the [M + 2]+ peak
+      verified: true
+- id: chem.enthalpy_changes
+  title: Enthalpy Changes
+  teaching_order: 17
+  coursebook_chapter: 6
+  syllabus_topic: '5'
+  drive_folder_name: 17. Enthalpy Changes (Chapter 6)
+  verified: true
+  aliases:
+  - chemical energetics
+  - energetics
+  - enthalpy
+  - thermochemistry
+  - chapter 6
+  keywords:
+  - enthalpy change
+  - exothermic
+  - endothermic
+  - bond energy
+  - Hess
+  - calorimetry
+  children:
+  - id: chem.5_1
+    title: Enthalpy change, ΔH
+    short_title: Enthalpy & Bond Energy
+    syllabus_topic: '5.1'
+    verified: true
+    aliases:
+    - exothermic and endothermic
+    - bond energies
+    - calorimetry
+    keywords:
+    - enthalpy change
+    - exothermic
+    - endothermic
+    - delta H
+    - standard conditions
+    - enthalpy of formation
+    - enthalpy of combustion
+    - enthalpy of neutralisation
+    - reaction pathway diagram
+    - energy profile
+    - bond breaking
+    - bond making
+    - bond energy
+    - average bond energy
+    - specific heat capacity
+    - temperature rise
+    - calorimeter
+    - polystyrene cup
+    learning_outcomes:
+    - code: 5.1.1
+      text: understand that chemical reactions are accompanied by enthalpy changes and these changes can
+        be exothermic (ΔH is negative) or endothermic (ΔH is positive)
+      verified: true
+    - code: 5.1.2
+      text: construct and interpret a reaction pathway diagram, in terms of the enthalpy change of the
+        reaction and of the activation energy
+      verified: true
+    - code: 5.1.3
+      text: 'define and use the terms: (a) standard conditions (this syllabus assumes that these are 298K
+        and 101kPa) shown by ⦵ (b) enthalpy change with particular reference to: reaction, ΔHr, formation,
+        ΔHf, combustion, ΔHc, neutralisation, ΔHneut'
+      verified: true
+    - code: 5.1.4
+      text: understand that energy transfers occur during chemical reactions because of the breaking and
+        making of chemical bonds
+      verified: true
+    - code: 5.1.5
+      text: use bond energies (ΔH positive, i.e. bond breaking) to calculate enthalpy change of reaction,
+        ΔHr
+      verified: true
+    - code: 5.1.6
+      text: understand that some bond energies are exact and some bond energies are averages
+      verified: true
+    - code: 5.1.7
+      text: calculate enthalpy changes from appropriate experimental results, including the use of the
+        relationships q = mcΔT and ΔH = –mcΔT/n
+      verified: true
+  - id: chem.5_2
+    title: Hess’s law
+    short_title: Hess's Law
+    syllabus_topic: '5.2'
+    verified: true
+    aliases:
+    - energy cycles
+    - enthalpy cycles
+    keywords:
+    - Hess
+    - Hess's law
+    - energy cycle
+    - enthalpy cycle
+    - indirect route
+    - alternative route
+    - direction of the arrows
+    - cannot be measured directly
+    - sum of the enthalpy changes
+    - combustion route
+    - formation route
+    learning_outcomes:
+    - code: 5.2.1
+      text: apply Hess’s law to construct simple energy cycles
+      verified: true
+    - code: 5.2.2
+      text: 'carry out calculations using cycles and relevant energy terms, including: (a) determining
+        enthalpy changes that cannot be found by direct experiment (b) use of bond energy data'
+      verified: true
+- id: chem.equilibria
+  title: Equilibria
+  teaching_order: 18
+  coursebook_chapter: 8
+  syllabus_topic: '7'
+  drive_folder_name: 18. Equilibria (Chapter 8)
+  verified: true
+  aliases:
+  - equilibrium
+  - equilibria
+  - acids and bases
+  - chapter 8
+  keywords:
+  - dynamic equilibrium
+  - Le Chatelier
+  - Kc
+  - Kp
+  - strong acid
+  - weak acid
+  - pH
+  children:
+  - id: chem.7_1
+    title: 'Chemical equilibria: reversible reactions, dynamic equilibrium'
+    short_title: Equilibrium & Le Chatelier
+    syllabus_topic: '7.1'
+    verified: true
+    aliases:
+    - reversible reactions
+    keywords:
+    - reversible reaction
+    - dynamic equilibrium
+    - closed system
+    - position of equilibrium
+    - Le Chatelier
+    - shifts to the right
+    - forward reaction
+    - backward reaction
+    - Kc
+    - Kp
+    - equilibrium constant
+    - partial pressure
+    - mole fraction
+    - Haber process
+    - Contact process
+    - iron catalyst
+    - compromise conditions
+    learning_outcomes:
+    - code: 7.1.1
+      text: (a) understand what is meant by a reversible reaction (b) understand what is meant by dynamic
+        equilibrium in terms of the rate of forward and reverse reactions being equal and the concentration
+        of reactants and products remaining constant (c) understand the need for a closed system in order
+        to establish dynamic equilibrium
+      verified: true
+    - code: 7.1.2
+      text: 'define Le Chatelier’s principle as: if a change is made to a system at dynamic equilibrium,
+        the position of equilibrium moves to minimise this change'
+      verified: true
+    - code: 7.1.3
+      text: use Le Chatelier’s principle to deduce qualitatively (from appropriate information) the effects
+        of changes in temperature, concentration, pressure or presence of a catalyst on a system at equilibrium
+      verified: true
+    - code: 7.1.4
+      text: deduce expressions for equilibrium constants in terms of concentrations, Kc
+      verified: true
+    - code: 7.1.5
+      text: use the terms mole fraction and partial pressure
+      verified: true
+    - code: 7.1.6
+      text: deduce expressions for equilibrium constants in terms of partial pressures, Kp (use of the
+        relationship between Kp and Kc is not required)
+      verified: true
+    - code: 7.1.7
+      text: use the Kc and Kp expressions to carry out calculations (such calculations will not require
+        the solving of quadratic equations)
+      verified: true
+    - code: 7.1.8
+      text: calculate the quantities present at equilibrium, given appropriate data
+      verified: true
+    - code: 7.1.9
+      text: state whether changes in temperature, concentration or pressure or the presence of a catalyst
+        affect the value of the equilibrium constant for a reaction
+      verified: true
+    - code: 7.1.10
+      text: describe and explain the conditions used in the Haber process and the Contact process, as
+        examples of the importance of an understanding of dynamic equilibrium in the chemical industry
+        and the application of Le Chatelier’s principle
+      verified: true
+  - id: chem.7_2
+    title: Brønsted–Lowry theory of acids and bases
+    short_title: Acids, Bases & pH
+    syllabus_topic: '7.2'
+    verified: true
+    aliases:
+    - acids and bases
+    - strong and weak acids
+    - pH curves
+    - titration curves
+    - indicators
+    keywords:
+    - Bronsted
+    - Bronsted-Lowry
+    - proton donor
+    - proton acceptor
+    - conjugate acid
+    - conjugate base
+    - strong acid
+    - weak acid
+    - fully dissociated
+    - partially dissociated
+    - pH
+    - universal indicator
+    - pH meter
+    - titration curve
+    - equivalence point
+    - phenolphthalein
+    - methyl orange
+    - ethanoic acid
+    - hydrochloric acid
+    learning_outcomes:
+    - code: 7.2.1
+      text: state the names and formulas of the common acids, limited to hydrochloric acid, HCl, sulfuric
+        acid, H2SO4, nitric acid, HNO3, ethanoic acid, CH3COOH
+      verified: true
+    - code: 7.2.2
+      text: state the names and formulas of the common alkalis, limited to sodium hydroxide, NaOH, potassium
+        hydroxide, KOH, ammonia, NH3
+      verified: true
+    - code: 7.2.3
+      text: describe the Brønsted–Lowry theory of acids and bases
+      verified: true
+    - code: 7.2.4
+      text: describe strong acids and strong bases as fully dissociated in aqueous solution and weak acids
+        and weak bases as partially dissociated in aqueous solution
+      verified: true
+    - code: 7.2.5
+      text: appreciate that water has pH of 7, acid solutions pH of below 7 and alkaline solutions pH
+        of above 7
+      verified: true
+    - code: 7.2.6
+      text: explain qualitatively the differences in behaviour between strong and weak acids including
+        the reaction with a reactive metal and difference in pH values by use of a pH meter, universal
+        indicator or conductivity
+      verified: true
+    - code: 7.2.7
+      text: understand that neutralisation reactions occur when H+(aq) and OH–(aq) form H2O(l)
+      verified: true
+    - code: 7.2.8
+      text: understand that salts are formed in neutralisation reactions
+      verified: true
+    - code: 7.2.9
+      text: sketch the pH titration curves of titrations using combinations of strong and weak acids with
+        strong and weak alkalis
+      verified: true
+    - code: 7.2.10
+      text: select suitable indicators for acid-alkali titrations, given appropriate data (pKa values
+        will not be used)
+      verified: true
+- id: chem.nitrogen
+  title: Nitrogen
+  teaching_order: 19
+  coursebook_chapter: 13
+  syllabus_topic: '12'
+  drive_folder_name: 19. Nitrogen (Chapter 13)
+  verified: true
+  aliases:
+  - nitrogen and sulfur
+  - sulfur
+  - chapter 13
+  keywords:
+  - nitrogen
+  - ammonia
+  - oxides of nitrogen
+  - acid rain
+  - sulfur dioxide
+  children:
+  - id: chem.12_1
+    title: Nitrogen and sulfur
+    short_title: Nitrogen & Sulfur
+    syllabus_topic: '12.1'
+    verified: true
+    aliases:
+    - nitrogen and sulfur
+    keywords:
+    - unreactive nitrogen
+    - triple bond
+    - lack of polarity
+    - basicity of ammonia
+    - ammonia
+    - ammonium ion
+    - ammonium salts
+    - displacement of ammonia
+    - oxides of nitrogen
+    - internal combustion engine
+    - catalytic removal
+    - photochemical smog
+    - peroxyacetyl nitrate
+    - PAN
+    - acid rain
+    - sulfur dioxide
+    - lightning
+    learning_outcomes:
+    - code: 12.1.1
+      text: explain the lack of reactivity of nitrogen, with reference to triple bond strength and lack
+        of polarity
+      verified: true
+    - code: 12.1.2
+      text: 'describe and explain: (a) the basicity of ammonia, using the Brønsted–Lowry theory (b) the
+        structure of the ammonium ion and its formation by an acid–base reaction (c) the displacement
+        of ammonia from ammonium salts by an acid–base reaction'
+      verified: true
+    - code: 12.1.3
+      text: state and explain the natural and man-made occurrences of oxides of nitrogen and their catalytic
+        removal from the exhaust gases of internal combustion engines
+      verified: true
+    - code: 12.1.4
+      text: understand that atmospheric oxides of nitrogen (NO and NO2) can react with unburned hydrocarbons
+        to form peroxyacetyl nitrate, PAN, which is a component of photochemical smog
+      verified: true
+    - code: 12.1.5
+      text: describe the role of NO and NO2 in the formation of acid rain both directly and in their catalytic
+        role in the oxidation of atmospheric sulfur dioxide
+      verified: true
+- id: chem.rate_of_reaction
+  title: Rate of Reaction
+  teaching_order: 19
+  coursebook_chapter: 9
+  syllabus_topic: '8'
+  drive_folder_name: 19. Rate of Reaction (Chapter 9)
+  verified: true
+  aliases:
+  - reaction kinetics
+  - kinetics
+  - rates of reaction
+  - chapter 9
+  keywords:
+  - rate of reaction
+  - collision
+  - activation energy
+  - Boltzmann
+  - catalyst
+  children:
+  - id: chem.8_1
+    title: Rate of reaction
+    short_title: Collision Theory & Rate
+    syllabus_topic: '8.1'
+    verified: true
+    aliases:
+    - measuring rate
+    - how fast the reaction goes
+    - rate experiments
+    keywords:
+    - frequency of collisions
+    - effective collisions
+    - non-effective collisions
+    - collision theory
+    - concentration increases
+    - pressure increases
+    - more particles per unit volume
+    - initial rate
+    - gradient of the graph
+    - tangent
+    - volume of gas collected
+    - loss of mass
+    learning_outcomes:
+    - code: 8.1.1
+      text: explain and use the term rate of reaction, frequency of collisions, effective collisions and
+        non-effective collisions
+      verified: true
+    - code: 8.1.2
+      text: explain qualitatively, in terms of frequency of effective collisions, the effect of concentration
+        and pressure changes on the rate of a reaction
+      verified: true
+    - code: 8.1.3
+      text: use experimental data to calculate the rate of a reaction
+      verified: true
+  - id: chem.8_2
+    title: Effect of temperature on reaction rates and the concept of activation energy
+    short_title: Activation Energy & Boltzmann
+    syllabus_topic: '8.2'
+    verified: true
+    aliases:
+    - effect of temperature
+    - energy distribution
+    keywords:
+    - activation energy
+    - Boltzmann
+    - Boltzmann distribution
+    - distribution curve
+    - minimum energy
+    - area under the curve
+    - exceed the activation energy
+    - average kinetic energy
+    - temperature increase
+    - curve flattens
+    learning_outcomes:
+    - code: 8.2.1
+      text: define activation energy, EA, as the minimum energy required for a collision to be effective
+      verified: true
+    - code: 8.2.2
+      text: sketch and use the Boltzmann distribution to explain the significance of activation energy
+      verified: true
+    - code: 8.2.3
+      text: explain qualitatively, in terms both of the Boltzmann distribution and of frequency of effective
+        collisions, the effect of temperature change on the rate of a reaction
+      verified: true
+  - id: chem.8_3
+    title: Homogeneous and heterogeneous catalysts
+    short_title: Catalysts
+    syllabus_topic: '8.3'
+    verified: true
+    aliases:
+    - catalysts
+    - homogeneous catalyst
+    - heterogeneous catalyst
+    keywords:
+    - catalyst
+    - catalysis
+    - homogeneous
+    - heterogeneous
+    - alternative pathway
+    - different mechanism
+    - not used up
+    - adsorption
+    - active site
+    - surface of the catalyst
+    - vanadium oxide
+    - same phase
+    learning_outcomes:
+    - code: 8.3.1
+      text: 'explain and use the terms catalyst and catalysis: (a) explain that, in the presence of a
+        catalyst, a reaction has a different mechanism, i.e. one of lower activation energy (b) explain
+        this catalytic effect in terms of the Boltzmann distribution (c) construct and interpret a reaction
+        pathway diagram, for a reaction in the presence and absence of an effective catalyst'
+      verified: true
+- id: chem.practical_p3
+  title: Practical P3
+  teaching_order: 20
+  drive_folder_name: 20. Practical P3
+  verified: true
+  exclude_from_classification: true
+  aliases:
+  - P3
+  - lab skills
+  - advanced practical skills
+  keywords:
+  - practical
+  - paper 3
+  - apparatus
+  - uncertainty
+  - percentage error
+  - table of results
+  - plotting the graph
+  - qualitative analysis
+  - safety precautions
 pending_nodes:
-  - id: chem.energetics
-    title: Chemical Energetics
-    coursebook_chapter: 6
-    syllabus_topic: "5"
-    drive_folder_name: null
-    verified: false
-    keywords: [enthalpy, exothermic, endothermic, Hess, bond energy,
-               calorimetry, standard enthalpy change]
-
-  - id: chem.electrochemistry
-    title: Electrochemistry
-    coursebook_chapter: 7
-    syllabus_topic: "6"
-    drive_folder_name: null
-    verified: false
-    keywords: [oxidation number, redox, half equation, electrolysis,
-               oxidising agent, reducing agent]
-
-  - id: chem.equilibria
-    title: Equilibria
-    coursebook_chapter: 8
-    syllabus_topic: "7"
-    drive_folder_name: null
-    verified: false
-    keywords: [dynamic equilibrium, Le Chatelier, Kc, Kp, reversible reaction,
-               acid, base, pH, Bronsted, buffer]
-
-  - id: chem.reaction_kinetics
-    title: Reaction Kinetics
-    coursebook_chapter: 9
-    syllabus_topic: "8"
-    drive_folder_name: null
-    verified: false
-    keywords: [rate of reaction, activation energy, catalyst, Boltzmann
-               distribution, collision theory]
-
-  - id: chem.periodicity
-    title: The Periodic Table - Chemical Periodicity
-    coursebook_chapter: 10
-    syllabus_topic: "9"
-    drive_folder_name: null
-    verified: false
-    keywords: [periodicity, period 3, atomic radius, ionic radius, oxide,
-               chloride, trends across a period]
-
-  - id: chem.group_2
-    title: Group 2
-    coursebook_chapter: 11
-    syllabus_topic: "10"
-    drive_folder_name: null
-    verified: false
-    keywords: [group 2, alkaline earth, thermal decomposition, solubility trend,
-               magnesium, calcium, barium]
-
-  - id: chem.group_17
-    title: Group 17
-    coursebook_chapter: 12
-    syllabus_topic: "11"
-    drive_folder_name: null
-    verified: false
-    keywords: [group 17, halogens, chlorine, bromine, iodine, disproportionation,
-               displacement reaction]
-
-  - id: chem.nitrogen_sulfur
-    title: Nitrogen and Sulfur
-    coursebook_chapter: 13
-    syllabus_topic: "12"
-    drive_folder_name: null
-    verified: false
-    keywords: [ammonia, Haber process, nitrogen oxides, sulfur dioxide,
-               Contact process, acid rain]
+- id: chem.organic_synthesis
+  title: Organic Synthesis
+  syllabus_topic: '21'
+  verified: true
+  aliases:
+  - organic synthesis
+  - synthetic routes
+  - reaction pathways
+  - multi-step synthesis
+  keywords:
+  - synthetic route
+  - multi-step
+  - reagents and conditions
+  - functional group interconversion
+  children:
+  - id: chem.21_1
+    title: Organic synthesis
+    short_title: Organic Synthesis Routes
+    syllabus_topic: '21.1'
+    verified: true
+    aliases:
+    - organic synthesis
+    - multi-step synthesis
+    - reaction routes
+    keywords:
+    - synthetic route
+    - multi-step
+    - two-step synthesis
+    - reagents and conditions
+    - starting material
+    - target molecule
+    - by-product
+    - functional group interconversion
+    - identify the functional groups
+    - devise a route
+    learning_outcomes:
+    - code: 21.1.1
+      text: 'for an organic molecule containing several functional groups: (a) identify organic functional
+        groups using the reactions in the syllabus (b) predict properties and reactions'
+      verified: true
+    - code: 21.1.2
+      text: devise multi-step synthetic routes for preparing organic molecules using the reactions in
+        the syllabus
+      verified: true
+    - code: 21.1.3
+      text: analyse a given synthetic route in terms of type of reaction and reagents used for each step
+        of it, and possible by-products
+      verified: true

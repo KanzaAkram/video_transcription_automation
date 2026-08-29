@@ -1,0 +1,2902 @@
+# IGCSE Mathematics 0580 (2025-2027)
+#
+# GENERATED — do not edit by hand. Regenerate with:
+#   python scripts/ingest_syllabus_json.py \
+#       --json C:/Users/kanza/Downloads/prompt (1).py \
+#       --overlay config/syllabi/overlays/igcse-maths-0580.yaml \
+#       --out config/syllabi/igcse-maths-0580.yaml
+#
+# Syllabus revision: version 3, May 2024
+#
+# Depth 0 is a CHAPTER — one Drive folder, and the unit a recording is filed
+# into. Depth 1 is a SYLLABUS SUBTOPIC — the unit a filename is built from.
+# They are not the same thing: one syllabus topic can be split across two of
+# the chapters below.
+#
+# Subtopic titles and learning outcomes are verbatim from the syllabus export
+# and are marked verified. short_title (what goes in the filename), keywords,
+# aliases, Drive folder names and the chapter grouping come from the overlay:
+# edit those there, not here.
+
+version: 1
+subject_id: igcse_maths
+subject_name: IGCSE Mathematics
+syllabus_code: 0580
+syllabus_years: 2025-2027
+awarding_body: Cambridge International
+source: Topic numbers, subtopic codes, subtopic titles and learning-objective text taken verbatim from
+  the official Cambridge IGCSE Mathematics 0580 syllabus for 2025, 2026 and 2027, including the interleaved
+  Core and Extended statements and the "Notes and examples" entries. Chapter grouping, teaching order,
+  short titles, keywords, aliases and subject vocabulary are hand-curated. No Drive folder names are known
+  for this subject yet, so every chapter is pending.
+subject_vocabulary:
+- surd
+- rationalise
+- reciprocal
+- quadratic
+- cubic
+- coefficient
+- indices
+- HCF
+- LCM
+- highest common factor
+- lowest common multiple
+- recurring decimal
+- upper bound
+- lower bound
+- simultaneous equations
+- factorise
+- completing the square
+- nth term
+- stationary point
+- asymptote
+- exponential
+- depreciation
+- perpendicular bisector
+- collinear
+- Cartesian
+- hypotenuse
+- Pythagoras
+- isosceles
+- scalene
+- congruent
+- rhombus
+- trapezium
+- parallelogram
+- decagon
+- tessellation
+- locus
+- radii
+- frustum
+- hemisphere
+- sine rule
+- cosine rule
+- SOHCAHTOA
+- theta
+- sigma
+- modulus
+- Venn diagram
+- quartile
+- interquartile range
+- cumulative frequency
+- frequency density
+pending_nodes:
+- id: math.number
+  title: Number
+  teaching_order: 1
+  syllabus_topic: '1'
+  verified: true
+  aliases:
+  - topic 1
+  - chapter 1
+  - arithmetic
+  keywords:
+  - prime factors
+  - HCF
+  - LCM
+  - standard form
+  - percentage increase
+  - ratio of two quantities
+  - surd
+  - significant figures
+  - upper bound
+  children:
+  - id: math.1_1
+    title: Types of number
+    short_title: Types of Number
+    syllabus_topic: '1.1'
+    verified: true
+    aliases:
+    - prime factors
+    - HCF and LCM
+    - factors and multiples
+    keywords:
+    - natural numbers
+    - prime number
+    - square number
+    - cube number
+    - common factor
+    - common multiple
+    - rational
+    - irrational
+    - reciprocal
+    - highest common factor
+    - lowest common multiple
+    - HCF
+    - LCM
+    - product of prime factors
+    - factor tree
+    learning_outcomes:
+    - code: 1.1.1
+      text: 'Identify and use: natural numbers; integers (positive, zero and negative); prime numbers;
+        square numbers; cube numbers; common factors; common multiples; rational and irrational numbers;
+        reciprocals.'
+      verified: true
+    - code: 1.1.2
+      text: 'Notes and examples: Example tasks include: convert between numbers and words, e.g. six billion
+        is 6000000000, 10007 is ten thousand and seven; express 72 as a product of its prime factors;
+        find the highest common factor (HCF) of two numbers; find the lowest common multiple (LCM) of
+        two numbers.'
+      verified: true
+  - id: math.1_2
+    title: Sets
+    short_title: Sets & Venn Diagrams
+    syllabus_topic: '1.2'
+    verified: true
+    aliases:
+    - Venn diagrams
+    - set language
+    - sets and Venn diagrams
+    - shading sets
+    keywords:
+    - Venn diagram
+    - universal set
+    - complement
+    - union
+    - intersection
+    - subset
+    - empty set
+    - element of
+    - set notation
+    - number of elements
+    - two sets
+    - three sets
+    - shade the region
+    - curly brackets
+    learning_outcomes:
+    - code: 1.2.1
+      text: Understand and use set language, notation and Venn diagrams to describe sets.
+      verified: true
+    - code: 1.2.2
+      text: 'Notes and examples: Venn diagrams are limited to two sets. The following set notation will
+        be used: n(A) Number of elements in set A; A′ Complement of set A; ξ Universal set; A ∪ B Union
+        of A and B; A ∩ B Intersection of A and B. Example definition of sets: A = {x: x is a natural
+        number}; B = {a, b, c, …}; C = {x: a ⩽ x ⩽ b}.'
+      verified: true
+    - code: 1.2.3
+      text: Understand and use set language, notation and Venn diagrams to describe sets and represent
+        relationships between sets.
+      verified: true
+    - code: 1.2.4
+      text: 'Notes and examples: Venn diagrams are limited to two or three sets. The following set notation
+        will be used: n(A) Number of elements in set A; ∈ “… is an element of …”; ∉ “… is not an element
+        of …”; A′ Complement of set A; ∅ The empty set; ξ Universal set; A ⊆ B A is a subset of B; A ⊈
+        B A is not a subset of B; A ∪ B Union of A and B; A ∩ B Intersection of A and B. Example definition
+        of sets: A = {x: x is a natural number}; B = {(x, y): y = mx + c}; C = {x: a ⩽ x ⩽ b}; D = {a,
+        b, c, …}.'
+      verified: true
+  - id: math.1_3
+    title: Powers and roots
+    short_title: Powers & Roots
+    syllabus_topic: '1.3'
+    verified: true
+    aliases:
+    - powers and roots
+    - square roots
+    - cube roots
+    keywords:
+    - square root
+    - cube root
+    - fourth root
+    - squared
+    - cubed
+    - recall of squares
+    - corresponding roots
+    - root sign
+    - work out the root
+    - perfect square
+    learning_outcomes:
+    - code: 1.3.1
+      text: 'Calculate with the following: squares; square roots; cubes; cube roots; other powers and
+        roots of numbers.'
+      verified: true
+    - code: 1.3.2
+      text: 'Notes and examples: Includes recall of squares and their corresponding roots from 1 to 15,
+        and recall of cubes and their corresponding roots of 1, 2, 3, 4, 5 and 10, e.g.: Write down the
+        value of √169; Work out 5^2 × ∛8.'
+      verified: true
+  - id: math.1_4
+    title: Fractions, decimals and percentages
+    short_title: Fractions & Decimals
+    syllabus_topic: '1.4'
+    verified: true
+    aliases:
+    - fractions decimals and percentages
+    - converting fractions
+    - recurring decimals
+    keywords:
+    - proper fraction
+    - improper fraction
+    - mixed number
+    - lowest terms
+    - equivalent fractions
+    - recurring decimal
+    - terminating decimal
+    - dot notation
+    - numerator and denominator
+    - convert to a decimal
+    - fraction to a percentage
+    - decimal to a fraction
+    - cancel down
+    learning_outcomes:
+    - code: 1.4.1
+      text: 'Use the language and notation of the following in appropriate contexts: proper fractions;
+        improper fractions; mixed numbers; decimals; percentages.'
+      verified: true
+    - code: 1.4.2
+      text: Recognise equivalence and convert between these forms.
+      verified: true
+    - code: 1.4.3
+      text: 'Notes and examples: Candidates are expected to be able to write fractions in their simplest
+        form. Candidates are not expected to use recurring decimal notation. Candidates are not expected
+        to demonstrate the conversion of a recurring decimal to a fraction and vice versa.'
+      verified: true
+    - code: 1.4.4
+      text: 'Notes and examples: Candidates are expected to be able to write fractions in their simplest
+        form. Recurring decimal notation is required, e.g. 0.17̇ = 0.1777...; 0.1̇23̇ = 0.1232323...;
+        0.1̇23̇ = 0.123123... Includes converting between recurring decimals and fractions and vice versa,
+        e.g. write 0.1̇7̇ as a fraction.'
+      verified: true
+  - id: math.1_5
+    title: Ordering
+    short_title: Ordering & Inequality Signs
+    syllabus_topic: '1.5'
+    verified: true
+    aliases:
+    - ordering quantities
+    - inequality symbols
+    - putting in order
+    - greater than and less than
+    keywords:
+    - order by magnitude
+    - greater than or equal
+    - less than or equal
+    - not equal to
+    - ascending order
+    - descending order
+    - smallest to largest
+    - largest to smallest
+    - order of size
+    learning_outcomes:
+    - code: 1.5.1
+      text: Order quantities by magnitude and demonstrate familiarity with the symbols =, ≠, >, < , ⩾
+        and ⩽.
+      verified: true
+  - id: math.1_6
+    title: The four operations
+    short_title: Four Operations
+    syllabus_topic: '1.6'
+    verified: true
+    aliases:
+    - the four operations
+    keywords:
+    - order of operations
+    - BIDMAS
+    - BODMAS
+    - use of brackets
+    - negative times a negative
+    - adding fractions
+    - multiplying fractions
+    - dividing fractions
+    - common denominator
+    - temperature change
+    - long multiplication
+    - long division
+    learning_outcomes:
+    - code: 1.6.1
+      text: Use the four operations for calculations with integers, fractions and decimals, including
+        correct ordering of operations and use of brackets.
+      verified: true
+    - code: 1.6.2
+      text: 'Notes and examples: Includes: negative numbers; improper fractions; mixed numbers; practical
+        situations, e.g. temperature changes.'
+      verified: true
+  - id: math.1_7
+    title: Indices I
+    short_title: Indices I
+    syllabus_topic: '1.7'
+    verified: true
+    aliases:
+    - indices
+    - indices one
+    - numerical indices
+    keywords:
+    - rules of indices
+    - index laws
+    - properties of indices
+    - zero index
+    - fractional index
+    - fractional powers
+    - anything to the power zero
+    - negative power
+    - add the powers
+    - subtract the powers
+    - multiply the powers
+    - powers are added
+    - powers are subtracted
+    - same base
+    - base is the same
+    - goes to the denominator
+    - base
+    learning_outcomes:
+    - code: 1.7.1
+      text: Understand and use indices (positive, zero and negative integers).
+      verified: true
+    - code: 1.7.2
+      text: Understand and use the rules of indices.
+      verified: true
+    - code: 1.7.3
+      text: 'Notes and examples: e.g. find the value of 7^–2; e.g. find the value of 2^–3 × 2^4, (2^3)^2,
+        2^3 ÷ 2^4.'
+      verified: true
+    - code: 1.7.4
+      text: Understand and use indices (positive, zero, negative, and fractional).
+      verified: true
+    - code: 1.7.5
+      text: 'Notes and examples: Examples include: 6^(1/2) = √6; 16^(1/4) = ∜16; find the value of 7^–2,
+        81^(1/2), 8^(–2/3). e.g. find the value of 2^–3 × 2^4, (2^3)^2, 2^3 ÷ 2^4.'
+      verified: true
+  - id: math.1_8
+    title: Standard form
+    short_title: Standard Form
+    syllabus_topic: '1.8'
+    verified: true
+    aliases:
+    - standard index form
+    keywords:
+    - standard form
+    - scientific notation
+    - times ten to the power
+    - ordinary number
+    - very large numbers
+    - very small numbers
+    - decimal point moves
+    - one non-zero digit before the decimal point
+    - positive power of ten
+    - negative power of ten
+    - out of standard form
+    - calculate in standard form
+    learning_outcomes:
+    - code: 1.8.1
+      text: Use the standard form A × 10^n where n is a positive or negative integer and 1 ⩽ A < 10.
+      verified: true
+    - code: 1.8.2
+      text: Convert numbers into and out of standard form.
+      verified: true
+    - code: 1.8.3
+      text: Calculate with values in standard form.
+      verified: true
+    - code: 1.8.4
+      text: 'Notes and examples: Core candidates are expected to calculate with standard form only on
+        Paper 3.'
+      verified: true
+  - id: math.1_9
+    title: Estimation
+    short_title: Estimation & Rounding
+    syllabus_topic: '1.9'
+    verified: true
+    aliases:
+    - estimation
+    - rounding
+    keywords:
+    - significant figures
+    - decimal places
+    - round to the nearest
+    - nearest thousand
+    - nearest whole number
+    - one significant figure
+    - estimate the value
+    - degree of accuracy
+    - reasonable degree of accuracy
+    - rounding up
+    - rounding down
+    - approximate
+    learning_outcomes:
+    - code: 1.9.1
+      text: Round values to a specified degree of accuracy.
+      verified: true
+    - code: 1.9.2
+      text: Make estimates for calculations involving numbers, quantities and measurements.
+      verified: true
+    - code: 1.9.3
+      text: Round answers to a reasonable degree of accuracy in the context of a given problem.
+      verified: true
+    - code: 1.9.4
+      text: 'Notes and examples: Includes decimal places and significant figures. e.g. write 5764 correct
+        to the nearest thousand. e.g. by writing each number correct to 1 significant figure, estimate
+        the value of 41.3 / (9.79 × 0.765).'
+      verified: true
+  - id: math.1_10
+    title: Limits of accuracy
+    short_title: Upper & Lower Bounds
+    syllabus_topic: '1.10'
+    verified: true
+    aliases:
+    - bounds
+    - upper and lower bounds
+    - error interval
+    keywords:
+    - upper bound
+    - lower bound
+    - limits of accuracy
+    - measured correct to
+    - nearest centimetre
+    - nearest metre
+    - half a unit
+    - maximum value
+    - minimum value
+    - bounds of the perimeter
+    - bounds of the area
+    - largest possible
+    - smallest possible
+    learning_outcomes:
+    - code: 1.10.1
+      text: Give upper and lower bounds for data rounded to a specified accuracy.
+      verified: true
+    - code: 1.10.2
+      text: 'Notes and examples: e.g. write down the upper bound of a length measured correct to the nearest
+        metre. Candidates are not expected to find the bounds of the results of calculations which have
+        used data rounded to a specified accuracy.'
+      verified: true
+    - code: 1.10.3
+      text: Find upper and lower bounds of the results of calculations which have used data rounded to
+        a specified accuracy.
+      verified: true
+    - code: 1.10.4
+      text: 'Notes and examples: e.g. write down the upper bound of a length measured correct to the nearest
+        metre. Example calculations include: calculate the upper bound of the perimeter or the area of
+        a rectangle given dimensions measured to the nearest centimetre; find the lower bound of the speed
+        given rounded values of distance and time.'
+      verified: true
+  - id: math.1_11
+    title: Ratio and proportion
+    short_title: Ratio & Proportion
+    syllabus_topic: '1.11'
+    verified: true
+    aliases:
+    - ratio and proportion
+    - sharing in a ratio
+    - simplifying ratios
+    - dividing in a ratio
+    keywords:
+    - simplify the ratio
+    - divide in a given ratio
+    - share in the ratio
+    - total number of parts
+    - one part is worth
+    - proportional reasoning
+    - unitary method
+    - map scale
+    - best value
+    - adapt a recipe
+    - equivalent ratio
+    - ratio in its simplest form
+    learning_outcomes:
+    - code: 1.11.1
+      text: 'Understand and use ratio and proportion to: give ratios in their simplest form; divide a
+        quantity in a given ratio; use proportional reasoning and ratios in context.'
+      verified: true
+    - code: 1.11.2
+      text: 'Notes and examples: e.g. 20:30:40 in its simplest form is 2:3:4. e.g. adapt recipes; use
+        map scales; determine best value.'
+      verified: true
+  - id: math.1_12
+    title: Rates
+    short_title: Rates & Average Speed
+    syllabus_topic: '1.12'
+    verified: true
+    aliases:
+    - compound measures
+    - density and pressure
+    - rate per unit time
+    keywords:
+    - average speed
+    - speed distance time
+    - distance divided by time
+    - metres per second
+    - kilometres per hour
+    - density
+    - population density
+    - pressure
+    - flow rate
+    - fuel consumption
+    - hourly rate of pay
+    - grams per cubic centimetre
+    learning_outcomes:
+    - code: 1.12.1
+      text: Use common measures of rate.
+      verified: true
+    - code: 1.12.2
+      text: Apply other measures of rate.
+      verified: true
+    - code: 1.12.3
+      text: Solve problems involving average speed.
+      verified: true
+    - code: 1.12.4
+      text: 'Notes and examples: e.g. calculate with: hourly rates of pay; exchange rates between currencies;
+        flow rates; fuel consumption. e.g. calculate with: pressure; density; population density. Required
+        formulas will be given in the question. Knowledge of speed/distance/time formula is required.
+        e.g. A cyclist travels 45km in 3 hours 45 minutes. What is their average speed? Notation used
+        will be, e.g. m/s (metres per second), g/cm^3 (grams per cubic centimetre).'
+      verified: true
+  - id: math.1_13
+    title: Percentages
+    short_title: Percentages
+    syllabus_topic: '1.13'
+    verified: true
+    aliases:
+    - percentage change
+    - percentage calculations
+    - reverse percentages
+    keywords:
+    - percentage of a quantity
+    - percentage increase
+    - percentage decrease
+    - simple interest
+    - compound interest
+    - reverse percentage
+    - multiplier
+    - percentage profit
+    - profit and loss
+    - discount
+    - deposit
+    - cost price
+    - selling price
+    - repeated percentage change
+    learning_outcomes:
+    - code: 1.13.1
+      text: Calculate a given percentage of a quantity.
+      verified: true
+    - code: 1.13.2
+      text: Express one quantity as a percentage of another.
+      verified: true
+    - code: 1.13.3
+      text: Calculate percentage increase or decrease.
+      verified: true
+    - code: 1.13.4
+      text: Calculate with simple and compound interest.
+      verified: true
+    - code: 1.13.5
+      text: 'Notes and examples: Formulas are not given. Percentage calculations may include: deposit;
+        discount; profit and loss (as an amount or a percentage); earnings; percentages over 100%.'
+      verified: true
+    - code: 1.13.6
+      text: Calculate using reverse percentages.
+      verified: true
+    - code: 1.13.7
+      text: 'Notes and examples: Problems may include repeated percentage change. Formulas are not given.
+        e.g. find the cost price given the selling price and the percentage profit. Percentage calculations
+        may include: deposit; discount; profit and loss (as an amount or a percentage); earnings; percentages
+        over 100%.'
+      verified: true
+  - id: math.1_14
+    title: Using a calculator
+    short_title: Using a Calculator
+    syllabus_topic: '1.14'
+    verified: true
+    aliases:
+    - using a calculator
+    - calculator skills
+    keywords:
+    - calculator display
+    - do not round early
+    - round the final answer
+    - brackets on the calculator
+    - fraction key
+    - degrees minutes seconds
+    - enter the value
+    - interpret the display
+    - memory button
+    - calculator efficiently
+    - standard form on the calculator
+    learning_outcomes:
+    - code: 1.14.1
+      text: Use a calculator efficiently.
+      verified: true
+    - code: 1.14.2
+      text: Enter values appropriately on a calculator.
+      verified: true
+    - code: 1.14.3
+      text: Interpret the calculator display appropriately.
+      verified: true
+    - code: 1.14.4
+      text: 'Notes and examples: e.g. know not to round values within a calculation and to only round
+        the final answer. e.g. enter 2 hours 30 minutes as 2.5 hours or 2° 30’ 0’’. e.g. in money 4.8
+        means $4.80; in time 3.25 means 3 hours 15 minutes.'
+      verified: true
+  - id: math.1_15
+    title: Time
+    short_title: Time & Timetables
+    syllabus_topic: '1.15'
+    verified: true
+    aliases:
+    - timetables
+    - clock times
+    - journey duration
+    keywords:
+    - 24-hour clock
+    - 12-hour clock
+    - timetable
+    - read the timetable
+    - train timetable
+    - time zone
+    - local time
+    - time difference
+    - departure time
+    - arrival time
+    - am and pm
+    - days weeks months
+    - duration of the journey
+    learning_outcomes:
+    - code: 1.15.1
+      text: 'Calculate with time: seconds (s), minutes (min), hours (h), days, weeks, months, years, including
+        the relationship between units.'
+      verified: true
+    - code: 1.15.2
+      text: Calculate times in terms of the 24-hour and 12-hour clock.
+      verified: true
+    - code: 1.15.3
+      text: Read clocks and timetables.
+      verified: true
+    - code: 1.15.4
+      text: 'Notes and examples: 1 year = 365 days. In the 24-hour clock, for example, 3.15 a.m. will
+        be denoted by 0315 and 3.15 p.m. by 1515. Includes problems involving time zones, local times
+        and time differences.'
+      verified: true
+  - id: math.1_16
+    title: Money
+    short_title: Money & Currency
+    syllabus_topic: '1.16'
+    verified: true
+    aliases:
+    - money problems
+    - currency conversion
+    - exchange rates
+    keywords:
+    - exchange rate
+    - convert currency
+    - one currency to another
+    - dollars
+    - pounds
+    - euros
+    - rupees
+    - cents
+    - wages
+    - bill
+    - work out the change
+    - cost in dollars
+    learning_outcomes:
+    - code: 1.16.1
+      text: Calculate with money.
+      verified: true
+    - code: 1.16.2
+      text: Convert from one currency to another.
+      verified: true
+  - id: math.1_17
+    title: Exponential growth and decay
+    short_title: Exponential Growth & Decay
+    syllabus_topic: '1.17'
+    verified: true
+    aliases:
+    - exponential growth and decay
+    - population growth
+    keywords:
+    - exponential growth
+    - exponential decay
+    - depreciation
+    - population change
+    - growth factor
+    - decay factor
+    - initial amount
+    - number of years
+    - value after n years
+    - halves each year
+    - doubles each year
+    - raised to the power n
+    learning_outcomes:
+    - code: 1.17.1
+      text: Use exponential growth and decay.
+      verified: true
+    - code: 1.17.2
+      text: 'Notes and examples: e.g. depreciation, population change. Knowledge of e is not required.'
+      verified: true
+  - id: math.1_18
+    title: Surds
+    short_title: Surds
+    syllabus_topic: '1.18'
+    verified: true
+    aliases:
+    - surds
+    - rationalising the denominator
+    - exact form
+    keywords:
+    - surd
+    - surd form
+    - rationalise the denominator
+    - simplify the surd
+    - leave in exact form
+    - multiply the surds
+    - exact answer
+    - exact answers
+    - in terms of pi
+    - fractional power
+    - cube root of minus
+    - root two
+    - root three
+    - root five
+    - conjugate
+    - outside the root
+    learning_outcomes:
+    - code: 1.18.1
+      text: Understand and use surds, including simplifying expressions.
+      verified: true
+    - code: 1.18.2
+      text: Rationalise the denominator.
+      verified: true
+    - code: 1.18.3
+      text: 'Notes and examples: Examples include: √20 = 2√5; √200 − √32 = 6√2. Examples include: 10/√5
+        = 2√5; 1/(−1 + √3) = (1 + √3)/2.'
+      verified: true
+- id: math.algebra_and_graphs
+  title: Algebra and Graphs
+  teaching_order: 2
+  syllabus_topic: '2'
+  verified: true
+  aliases:
+  - algebra
+  - algebra and graphs
+  - topic 2
+  - chapter 2
+  - graphs
+  keywords:
+  - expand the brackets
+  - factorise
+  - simultaneous equations
+  - nth term
+  - quadratic formula
+  - differentiate
+  - function notation
+  - table of values
+  children:
+  - id: math.2_1
+    title: Introduction to algebra
+    short_title: Introduction to Algebra
+    syllabus_topic: '2.1'
+    verified: true
+    aliases:
+    - introduction to algebra
+    - substitution
+    - substituting into formulas
+    keywords:
+    - letters represent numbers
+    - substitute into the expression
+    - substitute into the formula
+    - generalised numbers
+    - work out the value when x is
+    - replace the letter
+    - unknown quantity
+    - algebraic expression
+    - the letter stands for a number
+    - using letters for numbers
+    - value of the expression
+    learning_outcomes:
+    - code: 2.1.1
+      text: Know that letters can be used to represent generalised numbers.
+      verified: true
+    - code: 2.1.2
+      text: Substitute numbers into expressions and formulas.
+      verified: true
+  - id: math.2_2
+    title: Algebraic manipulation
+    short_title: Expanding & Factorising
+    syllabus_topic: '2.2'
+    verified: true
+    aliases:
+    - algebraic manipulation
+    - expanding brackets
+    - factorising
+    - collecting like terms
+    keywords:
+    - collect like terms
+    - expand the brackets
+    - double brackets
+    - three brackets
+    - factorise fully
+    - common factor
+    - difference of two squares
+    - factorise by grouping
+    - completing the square
+    - completed square form
+    - perfect square
+    - simplify the expression
+    - FOIL
+    learning_outcomes:
+    - code: 2.2.1
+      text: Simplify expressions by collecting like terms.
+      verified: true
+    - code: 2.2.2
+      text: Expand products of algebraic expressions.
+      verified: true
+    - code: 2.2.3
+      text: Factorise by extracting common factors.
+      verified: true
+    - code: 2.2.4
+      text: 'Notes and examples: Simplify means give the answer in its simplest form, e.g. 2a + 3b + 5a
+        – 9b = 7a – 6b. e.g. expand 3x(2x – 4y). Includes products of two brackets involving one variable,
+        e.g. expand (2x + 1)(x – 4). Factorise means factorise fully, e.g. 9x^2 + 15xy = 3x(3x + 5y).'
+      verified: true
+    - code: 2.2.5
+      text: 'Factorise expressions of the form: ax + bx + kay + kby; a^2x^2 − b^2y^2; a^2 + 2ab + b^2;
+        ax^2 + bx + c; ax^3 + bx^2 + cx.'
+      verified: true
+    - code: 2.2.6
+      text: Complete the square for expressions in the form ax^2 + bx + c.
+      verified: true
+    - code: 2.2.7
+      text: 'Notes and examples: Simplify means give the answer in its simplest form, e.g. 2a^2 + 3ab
+        – 1 + 5a^2 – 9ab + 4 = 7a^2 – 6ab + 3. e.g. expand 3x(2x – 4y), (3x + y)(x – 4y). Includes products
+        of more than two brackets, e.g. expand (x – 2)(x + 3)(2x + 1). Factorise means factorise fully,
+        e.g. 9x^2 + 15xy = 3x(3x + 5y).'
+      verified: true
+  - id: math.2_3
+    title: Algebraic fractions
+    short_title: Algebraic Fractions
+    syllabus_topic: '2.3'
+    verified: true
+    aliases:
+    - algebraic fractions
+    - rational expressions
+    - simplifying fractions
+    keywords:
+    - algebraic fraction
+    - rational expression
+    - common denominator
+    - single fraction
+    - cancel the common factor
+    - factorise the numerator
+    - factorise the denominator
+    - numerator
+    - denominator
+    - multiply by the reciprocal
+    learning_outcomes:
+    - code: 2.3.1
+      text: Manipulate algebraic fractions.
+      verified: true
+    - code: 2.3.2
+      text: Factorise and simplify rational expressions.
+      verified: true
+    - code: 2.3.3
+      text: 'Notes and examples: Examples include: x/3 + (x – 4)/2; 2x/3 – 3(x – 5)/2; 3a/4 × 9a/10; 3a/4
+        ÷ 9a/10; 1/(x – 2) + (x + 1)/(x – 3). e.g. (x^2 – 2x) / (x^2 – 5x + 6).'
+      verified: true
+  - id: math.2_4
+    title: Indices II
+    short_title: Indices II
+    syllabus_topic: '2.4'
+    verified: true
+    aliases:
+    - indices two
+    - laws of indices
+    - index equations
+    keywords:
+    - simplify the indices
+    - algebraic indices
+    - coefficient
+    - power of a power
+    - fractional index
+    - negative index
+    - equate the powers
+    - solve for the index
+    - two to the power x
+    - x to the power
+    - rules of indices
+    - logarithms are not required
+    learning_outcomes:
+    - code: 2.4.1
+      text: Understand and use indices (positive, zero and negative).
+      verified: true
+    - code: 2.4.2
+      text: Understand and use the rules of indices.
+      verified: true
+    - code: 2.4.3
+      text: 'Notes and examples: e.g. 2^x = 32. Find the value of x. e.g. simplify: (5x^3)^2; 12a^5 ÷
+        3a^–2; 6x^7y^4 × 5x^–5y. Knowledge of logarithms is not required.'
+      verified: true
+    - code: 2.4.4
+      text: Understand and use indices (positive, zero, negative and fractional).
+      verified: true
+    - code: 2.4.5
+      text: 'Notes and examples: e.g. solve: 32^x = 2; 5^(x + 1) = 25^x. e.g. simplify: 3x^–4 × (2/3)x^(1/2);
+        (2/5)x^(1/2) ÷ 2x^–2; [(2x^5)/3]^3. Knowledge of logarithms is not required.'
+      verified: true
+  - id: math.2_5
+    title: Equations
+    short_title: Solving Equations
+    syllabus_topic: '2.5'
+    verified: true
+    aliases:
+    - solving equations
+    - changing the subject
+    - quadratic equations
+    - solve for the unknown
+    keywords:
+    - linear equation
+    - simultaneous equations
+    - solve by elimination
+    - solve by substitution
+    - change the subject
+    - rearrange the formula
+    - quadratic formula
+    - solve by factorisation
+    - fractional equation
+    - one linear one non-linear
+    - both sides of the equation
+    - two solutions
+    - construct an equation
+    - subject appears twice
+    learning_outcomes:
+    - code: 2.5.1
+      text: Construct simple expressions, equations and formulas.
+      verified: true
+    - code: 2.5.2
+      text: Solve linear equations in one unknown.
+      verified: true
+    - code: 2.5.3
+      text: Solve simultaneous linear equations in two unknowns.
+      verified: true
+    - code: 2.5.4
+      text: Change the subject of simple formulas.
+      verified: true
+    - code: 2.5.5
+      text: 'Notes and examples: e.g. write an expression for a number that is 2 more than n. Includes
+        constructing linear simultaneous equations. Examples include: 3x + 4 = 10; 5 – 2x = 3(x + 7).
+        e.g. change the subject of formulas where: the subject only appears once; there is not a power
+        or root of the subject.'
+      verified: true
+    - code: 2.5.6
+      text: Construct expressions, equations and formulas.
+      verified: true
+    - code: 2.5.7
+      text: Solve fractional equations with numerical and linear algebraic denominators.
+      verified: true
+    - code: 2.5.8
+      text: Solve simultaneous equations, involving one linear and one non-linear.
+      verified: true
+    - code: 2.5.9
+      text: Solve quadratic equations by factorisation, completing the square and by use of the quadratic
+        formula.
+      verified: true
+    - code: 2.5.10
+      text: Change the subject of formulas.
+      verified: true
+    - code: 2.5.11
+      text: 'Notes and examples: e.g. write an expression for the product of two consecutive even numbers.
+        Includes constructing simultaneous equations. Examples include: 3x + 4 = 10; 5 – 2x = 3(x + 7).
+        Examples include: x/(2x + 1) = 4; 2/(x + 2) + 3/(2x – 1) = 1; x/(x + 2) = 3/(x – 6). With powers
+        no higher than two. Includes writing a quadratic expression in completed square form. Candidates
+        may be expected to give solutions in surd form. The quadratic formula is given in the List of
+        formulas. e.g. change the subject of a formula where: the subject appears twice; there is a power
+        or root of the subject.'
+      verified: true
+  - id: math.2_6
+    title: Inequalities
+    short_title: Inequalities
+    syllabus_topic: '2.6'
+    verified: true
+    aliases:
+    - inequalities
+    - regions
+    - shading regions
+    keywords:
+    - inequality
+    - open circle
+    - closed circle
+    - strict inequality
+    - shade the region
+    - unwanted region
+    - broken line
+    - solid line
+    - list the inequalities
+    - solve the inequality
+    - region defined by
+    - two variables
+    learning_outcomes:
+    - code: 2.6.1
+      text: Represent and interpret inequalities, including on a number line.
+      verified: true
+    - code: 2.6.2
+      text: 'Notes and examples: When representing and interpreting inequalities on a number line: open
+        circles should be used to represent strict inequalities (<, >); closed circles should be used
+        to represent inclusive inequalities (⩽, ⩾). e.g. – 3 ⩽ x < 1.'
+      verified: true
+    - code: 2.6.3
+      text: Construct, solve and interpret linear inequalities.
+      verified: true
+    - code: 2.6.4
+      text: Represent and interpret linear inequalities in two variables graphically.
+      verified: true
+    - code: 2.6.5
+      text: List inequalities that define a given region.
+      verified: true
+    - code: 2.6.6
+      text: 'Notes and examples: When representing and interpreting inequalities on a number line: open
+        circles should be used to represent strict inequalities (<, >); closed circles should be used
+        to represent inclusive inequalities (⩽, ⩾). e.g. – 3 ⩽ x < 1. Examples include: 3x < 2x + 4; –3
+        ⩽ 3x – 2 < 7. The following conventions should be used: broken lines should be used to represent
+        strict inequalities (<, >); solid lines should be used to represent inclusive inequalities (⩽,
+        ⩾); shading should be used to represent unwanted regions (unless otherwise directed in the question).
+        Linear programming problems are not included.'
+      verified: true
+  - id: math.2_7
+    title: Sequences
+    short_title: Sequences & nth Term
+    syllabus_topic: '2.7'
+    verified: true
+    aliases:
+    - sequences
+    - term to term rule
+    - patterns
+    keywords:
+    - nth term
+    - term-to-term rule
+    - linear sequence
+    - quadratic sequence
+    - cubic sequence
+    - exponential sequence
+    - common difference
+    - second difference
+    - next two terms
+    - position of the term
+    - subscript notation
+    - continue the pattern
+    learning_outcomes:
+    - code: 2.7.1
+      text: Continue a given number sequence or pattern.
+      verified: true
+    - code: 2.7.2
+      text: Recognise patterns in sequences, including the term-to-term rule, and relationships between
+        different sequences.
+      verified: true
+    - code: 2.7.3
+      text: 'Find and use the nth term of the following sequences: (a) linear; (b) simple quadratic; (c)
+        simple cubic.'
+      verified: true
+    - code: 2.7.4
+      text: 'Notes and examples: e.g. write the next two terms in this sequence: 1, 3, 6, 10, 15, … ,
+        … e.g. find the nth term of 2, 5, 10, 17.'
+      verified: true
+    - code: 2.7.5
+      text: Find and use the nth term of sequences.
+      verified: true
+    - code: 2.7.6
+      text: 'Notes and examples: Subscript notation may be used, e.g. Tn is the nth term of sequence T.
+        Includes linear, quadratic, cubic and exponential sequences and simple combinations of these.'
+      verified: true
+  - id: math.2_8
+    title: Proportion
+    short_title: Direct & Inverse Proportion
+    syllabus_topic: '2.8'
+    verified: true
+    aliases:
+    - proportion
+    - direct proportion
+    - inverse proportion
+    - proportionality
+    keywords:
+    - directly proportional
+    - inversely proportional
+    - constant of proportionality
+    - proportional symbol
+    - varies as
+    - find the constant k
+    - square root proportion
+    - inverse square
+    - proportional to the cube
+    - y is proportional to x
+    learning_outcomes:
+    - code: 2.8.1
+      text: Express direct and inverse proportion in algebraic terms and use this form of expression to
+        find unknown quantities.
+      verified: true
+    - code: 2.8.2
+      text: 'Notes and examples: Includes linear, square, square root, cube and cube root proportion.
+        Knowledge of proportional symbol (∝) is required.'
+      verified: true
+  - id: math.2_9
+    title: Graphs in practical situations
+    short_title: Travel & Speed-Time Graphs
+    syllabus_topic: '2.9'
+    verified: true
+    aliases:
+    - graphs in practical situations
+    - travel graphs
+    - distance time graphs
+    - speed time graphs
+    - conversion graphs
+    keywords:
+    - distance-time graph
+    - speed-time graph
+    - travel graph
+    - conversion graph
+    - acceleration
+    - deceleration
+    - area under the graph
+    - distance travelled
+    - rate of change
+    - gradient of the tangent
+    - stationary part of the journey
+    - kinematics
+    learning_outcomes:
+    - code: 2.9.1
+      text: Use and interpret graphs in practical situations including travel graphs and conversion graphs.
+      verified: true
+    - code: 2.9.2
+      text: Draw graphs from given data.
+      verified: true
+    - code: 2.9.3
+      text: 'Notes and examples: e.g. interpret the gradient of a straight-line graph as a rate of change.
+        e.g. draw a distance–time graph to represent a journey.'
+      verified: true
+    - code: 2.9.4
+      text: Apply the idea of rate of change to simple kinematics involving distance–time and speed–time
+        graphs, acceleration and deceleration.
+      verified: true
+    - code: 2.9.5
+      text: Calculate distance travelled as area under a speed–time graph.
+      verified: true
+    - code: 2.9.6
+      text: 'Notes and examples: Includes estimation and interpretation of the gradient of a tangent at
+        a point. Areas will involve linear sections of the graph only.'
+      verified: true
+  - id: math.2_10
+    title: Graphs of functions
+    short_title: Graphs of Functions
+    syllabus_topic: '2.10'
+    verified: true
+    aliases:
+    - graphs of functions
+    - plotting graphs
+    - solving graphically
+    keywords:
+    - table of values
+    - plot the points
+    - draw a smooth curve
+    - join the points
+    - reciprocal graph
+    - cubic graph
+    - exponential graph
+    - intersection of a line and a curve
+    - solve graphically
+    - read off the graph
+    - roots from the graph
+    - y equals a over x
+    learning_outcomes:
+    - code: 2.10.1
+      text: 'Construct tables of values, and draw, recognise and interpret graphs for functions of the
+        following forms: ax + b; ± x^2 + ax + b; a/x (x ≠ 0) where a and b are integer constants.'
+      verified: true
+    - code: 2.10.2
+      text: Solve associated equations graphically, including finding and interpreting roots by graphical
+        methods.
+      verified: true
+    - code: 2.10.3
+      text: 'Notes and examples: e.g. find the intersection of a line and a curve.'
+      verified: true
+    - code: 2.10.4
+      text: 'Construct tables of values, and draw, recognise and interpret graphs for functions of the
+        following forms: ax^n (includes sums of no more than three of these); ab^x + c where n = –2, –1,
+        –1/2, 0, 1/2, 1, 2, 3; a and c are rational numbers; and b is a positive integer.'
+      verified: true
+    - code: 2.10.5
+      text: Draw and interpret graphs representing exponential growth and decay problems.
+      verified: true
+    - code: 2.10.6
+      text: 'Notes and examples: Examples include: y = x^3 + x – 4; y = 2x + 3/x^2; y = 1/4 × 2^x. e.g.
+        finding the intersection of a line and a curve.'
+      verified: true
+  - id: math.2_11
+    title: Sketching curves
+    short_title: Sketching Curves
+    syllabus_topic: '2.11'
+    verified: true
+    aliases:
+    - sketching curves
+    - recognising graphs
+    - shapes of graphs
+    keywords:
+    - sketch the graph
+    - shape of the curve
+    - recognise the graph
+    - parabola
+    - cubic curve
+    - reciprocal curve
+    - exponential curve
+    - asymptote
+    - vertical asymptote
+    - horizontal asymptote
+    - line of symmetry
+    - where it crosses the axes
+    learning_outcomes:
+    - code: 2.11.1
+      text: 'Recognise, sketch and interpret graphs of the following functions: (a) linear; (b) quadratic.'
+      verified: true
+    - code: 2.11.2
+      text: 'Notes and examples: Knowledge of symmetry and roots is required. Knowledge of turning points
+        is not required.'
+      verified: true
+    - code: 2.11.3
+      text: 'Recognise, sketch and interpret graphs of the following functions: (a) linear; (b) quadratic;
+        (c) cubic; (d) reciprocal; (e) exponential.'
+      verified: true
+    - code: 2.11.4
+      text: 'Notes and examples: Functions will be equivalent to: ax + by = c; y = ax^2 + bx + c; y =
+        ax^3 + b; y = ax^3 + bx^2 + cx; y = a/x + b; y = ar^x + b where a, b and c are rational numbers
+        and r is a rational, positive number. Knowledge of turning points, roots and symmetry is required.
+        Knowledge of vertical and horizontal asymptotes is required. Finding turning points of quadratics
+        by completing the square is required.'
+      verified: true
+  - id: math.2_12
+    title: Differentiation
+    short_title: Differentiation
+    syllabus_topic: '2.12'
+    verified: true
+    aliases:
+    - differentiation
+    - calculus
+    - stationary points
+    - derivatives
+    keywords:
+    - differentiate
+    - derivative
+    - dy by dx
+    - gradient function
+    - stationary point
+    - turning point
+    - maximum point
+    - minimum point
+    - second differential
+    - multiply by the power
+    - reduce the power by one
+    - draw a tangent
+    - estimate the gradient
+    learning_outcomes:
+    - code: 2.12.1
+      text: Estimate gradients of curves by drawing tangents.
+      verified: true
+    - code: 2.12.2
+      text: Use the derivatives of functions of the form ax^n, where a is a rational constant and n is
+        a positive integer or zero, and simple sums of not more than three of these.
+      verified: true
+    - code: 2.12.3
+      text: Apply differentiation to gradients and stationary points (turning points).
+      verified: true
+    - code: 2.12.4
+      text: Discriminate between maxima and minima by any method.
+      verified: true
+    - code: 2.12.5
+      text: 'Notes and examples: dy/dx notation will be expected. Maximum and minimum points may be identified
+        by: an accurate sketch; use of the second differential; inspecting the gradient either side of
+        a turning point. Candidates are not expected to identify points of inflection.'
+      verified: true
+  - id: math.2_13
+    title: Functions
+    short_title: Functions & Inverses
+    syllabus_topic: '2.13'
+    verified: true
+    aliases:
+    - inverse functions
+    - composite functions
+    - domain and range
+    keywords:
+    - function notation
+    - function machine
+    - input and output
+    - domain
+    - range
+    - inverse function
+    - f inverse
+    - composite function
+    - gf of x
+    - mapping diagram
+    - make x the subject
+    - substitute into the function
+    - reverse the operations
+    learning_outcomes:
+    - code: 2.13.1
+      text: Understand functions, domain and range and use function notation.
+      verified: true
+    - code: 2.13.2
+      text: Understand and find inverse functions f^–1(x).
+      verified: true
+    - code: 2.13.3
+      text: Form composite functions as defined by gf(x) = g(f(x)).
+      verified: true
+    - code: 2.13.4
+      text: 'Notes and examples: Examples include: f(x) = 3x – 5; g(x) = 3(x + 4)/5; h(x) = 2x^2 + 3.
+        e.g. f(x) = 3/(x + 2) and g(x) = (3x + 5)^2. Find fg(x). Give your answer as a fraction in its
+        simplest form. Candidates are not expected to find the domains and ranges of composite functions.
+        This topic may include mapping diagrams.'
+      verified: true
+- id: math.coordinate_geometry
+  title: Coordinate Geometry
+  teaching_order: 3
+  syllabus_topic: '3'
+  verified: true
+  aliases:
+  - coordinate geometry
+  - topic 3
+  - chapter 3
+  - straight line graphs
+  keywords:
+  - gradient
+  - y-intercept
+  - straight line
+  - midpoint
+  - perpendicular
+  - parallel
+  - coordinates
+  children:
+  - id: math.3_1
+    title: Coordinates
+    short_title: Coordinates
+    syllabus_topic: '3.1'
+    verified: true
+    aliases:
+    - coordinate grid
+    - plotting points
+    - reading off a grid
+    keywords:
+    - Cartesian coordinates
+    - x-coordinate
+    - y-coordinate
+    - ordered pair
+    - plot the point
+    - origin
+    - quadrant
+    - x-axis
+    - y-axis
+    - along the corridor and up the stairs
+    - read off the coordinates
+    learning_outcomes:
+    - code: 3.1.1
+      text: Use and interpret Cartesian coordinates in two dimensions.
+      verified: true
+  - id: math.3_2
+    title: Drawing linear graphs
+    short_title: Drawing Linear Graphs
+    syllabus_topic: '3.2'
+    verified: true
+    aliases:
+    - drawing linear graphs
+    - straight line graphs
+    - plotting lines
+    keywords:
+    - straight-line graph
+    - table of values
+    - plot the points
+    - use a ruler
+    - extend the line
+    - substitute x values
+    - x equals k
+    - three points is enough
+    learning_outcomes:
+    - code: 3.2.1
+      text: Draw straight-line graphs for linear equations.
+      verified: true
+    - code: 3.2.2
+      text: 'Notes and examples: Equations will be given in the form y = mx + c (e.g. y = –2x + 5), unless
+        a table of values is given.'
+      verified: true
+    - code: 3.2.3
+      text: 'Notes and examples: Examples include: y = –2x + 5; y = 7 – 4x; 3x + 2y = 5.'
+      verified: true
+  - id: math.3_3
+    title: Gradient of linear graphs
+    short_title: Gradient of a Line
+    syllabus_topic: '3.3'
+    verified: true
+    aliases:
+    - slope
+    - how steep the line is
+    - rise and run
+    keywords:
+    - rise over run
+    - vertical over horizontal
+    - change in y over change in x
+    - steepness
+    - gradient triangle
+    - negative gradient
+    - positive gradient
+    - gradient from two points
+    - y two minus y one
+    - x two minus x one
+    - count the squares
+    - gradient from a grid
+    learning_outcomes:
+    - code: 3.3.1
+      text: Find the gradient of a straight line.
+      verified: true
+    - code: 3.3.2
+      text: 'Notes and examples: From a grid only.'
+      verified: true
+    - code: 3.3.3
+      text: Calculate the gradient of a straight line from the coordinates of two points on it.
+      verified: true
+  - id: math.3_4
+    title: Length and midpoint
+    short_title: Length & Midpoint
+    syllabus_topic: '3.4'
+    verified: true
+    aliases:
+    - length and midpoint
+    keywords:
+    - length of a line segment
+    - midpoint
+    - midpoint of the line
+    - average of the coordinates
+    - distance between two points
+    - end points
+    - add and halve
+    - Pythagoras to find the length
+    learning_outcomes:
+    - code: 3.4.1
+      text: Calculate the length of a line segment.
+      verified: true
+    - code: 3.4.2
+      text: Find the coordinates of the midpoint of a line segment.
+      verified: true
+  - id: math.3_5
+    title: Equations of linear graphs
+    short_title: Equation of a Straight Line
+    syllabus_topic: '3.5'
+    verified: true
+    aliases:
+    - equations of linear graphs
+    - finding the equation
+    keywords:
+    - y equals mx plus c
+    - y-intercept
+    - gradient and intercept
+    - find the equation of the line
+    - ax plus by equals c
+    - rearrange into the form
+    - fully simplified form
+    - substitute to find c
+    - where it crosses the y-axis
+    learning_outcomes:
+    - code: 3.5.1
+      text: Interpret and obtain the equation of a straight-line graph in the form y = mx + c.
+      verified: true
+    - code: 3.5.2
+      text: 'Notes and examples: Questions may: use and request lines in the forms y = mx + c, x = k;
+        involve finding the equation when the graph is given; ask for the gradient or y-intercept of a
+        graph from an equation, e.g. find the gradient and y-intercept of the graph with the equation
+        y = 6x + 3. Candidates are expected to give equations of a line in a fully simplified form.'
+      verified: true
+    - code: 3.5.3
+      text: Interpret and obtain the equation of a straight-line graph.
+      verified: true
+    - code: 3.5.4
+      text: 'Notes and examples: Questions may: use and request lines in different forms, e.g. ax + by
+        = c, y = mx + c, x = k; involve finding the equation when the graph is given; ask for the gradient
+        or y-intercept of a graph from an equation, e.g. find the gradient and y-intercept of the graph
+        with the equation 5x + 4y = 8. Candidates are expected to give equations of a line in a fully
+        simplified form.'
+      verified: true
+  - id: math.3_6
+    title: Parallel lines
+    short_title: Parallel Lines
+    syllabus_topic: '3.6'
+    verified: true
+    aliases:
+    - parallel lines
+    keywords:
+    - same gradient
+    - parallel to the line
+    - parallel gradients
+    - gradient stays the same
+    - find the new intercept
+    - passes through the point
+    - equation of the parallel line
+    - never meet
+    learning_outcomes:
+    - code: 3.6.1
+      text: Find the gradient and equation of a straight line parallel to a given line.
+      verified: true
+    - code: 3.6.2
+      text: 'Notes and examples: e.g. find the equation of the line parallel to y = 4x – 1 that passes
+        through (1, –3).'
+      verified: true
+  - id: math.3_7
+    title: Perpendicular lines
+    short_title: Perpendicular Lines
+    syllabus_topic: '3.7'
+    verified: true
+    aliases:
+    - perpendicular lines
+    - perpendicular gradients
+    keywords:
+    - perpendicular
+    - negative reciprocal
+    - product of the gradients
+    - m one times m two is minus one
+    - minus one over m
+    - perpendicular bisector
+    - at right angles to the line
+    - flip and change the sign
+    - midpoint of the line joining
+    learning_outcomes:
+    - code: 3.7.1
+      text: Find the gradient and equation of a straight line perpendicular to a given line.
+      verified: true
+    - code: 3.7.2
+      text: 'Notes and examples: Examples include: find the gradient of a line perpendicular to 2y = 3x
+        + 1; find the equation of the perpendicular bisector of the line joining the points (–3, 8) and
+        (9, –2).'
+      verified: true
+- id: math.geometry
+  title: Geometry
+  teaching_order: 4
+  syllabus_topic: '4'
+  verified: true
+  aliases:
+  - geometry
+  - topic 4
+  - chapter 4
+  - shape and space
+  keywords:
+  - interior angle
+  - exterior angle
+  - polygon
+  - circle theorem
+  - congruent
+  - similar
+  - bearing
+  - line of symmetry
+  children:
+  - id: math.4_1
+    title: Geometrical terms
+    short_title: Geometrical Terms
+    syllabus_topic: '4.1'
+    verified: true
+    aliases:
+    - geometrical terms
+    - geometrical vocabulary
+    - naming shapes
+    keywords:
+    - reflex angle
+    - vertex
+    - scalene
+    - kite
+    - rhombus
+    - trapezium
+    - parallelogram
+    - hexagon
+    - octagon
+    - decagon
+    - equilateral
+    - cuboid
+    - frustum
+    - hemisphere
+    - face edge vertex
+    learning_outcomes:
+    - code: 4.1.1
+      text: 'Use and interpret the following geometrical terms: point; vertex; line; parallel; perpendicular;
+        bearing; right angle; acute, obtuse and reflex angles; interior and exterior angles; similar;
+        congruent; scale factor.'
+      verified: true
+    - code: 4.1.2
+      text: 'Use and interpret the vocabulary of: triangles; special quadrilaterals; polygons; nets; simple
+        solids.'
+      verified: true
+    - code: 4.1.3
+      text: Use and interpret the vocabulary of a circle.
+      verified: true
+    - code: 4.1.4
+      text: 'Notes and examples: Candidates are not expected to show that two shapes are congruent. Includes
+        the following terms: Triangles: equilateral, isosceles, scalene, right-angled. Quadrilaterals:
+        square, rectangle, kite, rhombus, parallelogram, trapezium. Polygons: regular and irregular polygons,
+        pentagon, hexagon, octagon, decagon. Simple solids: cube, cuboid, prism, cylinder, pyramid, cone,
+        sphere (term ‘hemisphere’ not required), face, surface, edge. Includes the following terms: centre,
+        radius (plural radii), diameter, circumference, semicircle, chord, tangent, arc, sector, segment.'
+      verified: true
+    - code: 4.1.5
+      text: 'Use and interpret the following geometrical terms: point; vertex; line; plane; parallel;
+        perpendicular; perpendicular bisector; bearing; right angle; acute, obtuse and reflex angles;
+        interior and exterior angles; similar; congruent; scale factor.'
+      verified: true
+    - code: 4.1.6
+      text: 'Use and interpret the vocabulary of: triangles; special quadrilaterals; polygons; nets; solids.'
+      verified: true
+    - code: 4.1.7
+      text: 'Notes and examples: Candidates are not expected to show that two shapes are congruent. Includes
+        the following terms. Triangles: equilateral, isosceles, scalene, right-angled. Quadrilaterals:
+        square, rectangle, kite, rhombus, parallelogram, trapezium. Polygons: regular and irregular polygons,
+        pentagon, hexagon, octagon, decagon. Solids: cube, cuboid, prism, cylinder, pyramid, cone, sphere,
+        hemisphere, frustum, face, surface, edge. Includes the following terms: centre, radius (plural
+        radii), diameter, circumference, semicircle, chord, tangent, major and minor arc, sector, segment.'
+      verified: true
+  - id: math.4_2
+    title: Geometrical constructions
+    short_title: Constructions & Nets
+    syllabus_topic: '4.2'
+    verified: true
+    aliases:
+    - geometrical constructions
+    - constructions
+    - drawing nets
+    keywords:
+    - pair of compasses
+    - construction arcs
+    - construct the triangle
+    - ruler and compasses
+    - draw the net
+    - net of a cube
+    - net of a prism
+    - net of a pyramid
+    - measure the angle
+    - protractor
+    - arcs must be shown
+    - fold up the net
+    learning_outcomes:
+    - code: 4.2.1
+      text: Measure and draw lines and angles.
+      verified: true
+    - code: 4.2.2
+      text: Construct a triangle, given the lengths of all sides, using a ruler and pair of compasses
+        only.
+      verified: true
+    - code: 4.2.3
+      text: Draw, use and interpret nets.
+      verified: true
+    - code: 4.2.4
+      text: 'Notes and examples: A ruler should be used for all straight edges. Constructions of perpendicular
+        bisectors and angle bisectors are not required. e.g. construct a rhombus by drawing two triangles.
+        Construction arcs must be shown. Examples include: draw nets of cubes, cuboids, prisms and pyramids;
+        use measurements from nets to calculate volumes and surface areas.'
+      verified: true
+  - id: math.4_3
+    title: Scale drawings
+    short_title: Scale Drawings & Bearings
+    syllabus_topic: '4.3'
+    verified: true
+    aliases:
+    - scale drawings
+    - bearings
+    - three-figure bearings
+    - compass directions
+    keywords:
+    - three-figure bearing
+    - bearing of A from B
+    - clockwise from north
+    - due east
+    - due north
+    - due south
+    - due west
+    - back bearing
+    - scale drawing
+    - one centimetre represents
+    - measure the bearing
+    learning_outcomes:
+    - code: 4.3.1
+      text: Draw and interpret scale drawings.
+      verified: true
+    - code: 4.3.2
+      text: Use and interpret three-figure bearings.
+      verified: true
+    - code: 4.3.3
+      text: 'Notes and examples: A ruler must be used for all straight edges. Bearings are measured clockwise
+        from north (000° to 360°). e.g. find the bearing of A from B if the bearing of B from A is 025°.
+        Includes an understanding of the terms north, east, south and west. e.g. point D is due east of
+        point C.'
+      verified: true
+  - id: math.4_4
+    title: Similarity
+    short_title: Similar Shapes & Solids
+    syllabus_topic: '4.4'
+    verified: true
+    aliases:
+    - similarity
+    - similar shapes
+    - area and volume scale factors
+    keywords:
+    - similar triangles
+    - corresponding sides
+    - similar solids
+    - linear scale factor
+    - area scale factor
+    - volume scale factor
+    - square the scale factor
+    - cube the scale factor
+    - ratio of the lengths
+    - show that they are similar
+    - geometric reasons
+    learning_outcomes:
+    - code: 4.4.1
+      text: Calculate lengths of similar shapes.
+      verified: true
+    - code: 4.4.2
+      text: Use the relationships between lengths and areas of similar shapes and lengths, surface areas
+        and volumes of similar solids.
+      verified: true
+    - code: 4.4.3
+      text: Solve problems and give simple explanations involving similarity.
+      verified: true
+    - code: 4.4.4
+      text: 'Notes and examples: Includes use of scale factor, e.g. Volume of A / Volume of B = (Length
+        of A / Length of B)^3. Includes showing that two triangles are similar using geometric reasons.'
+      verified: true
+  - id: math.4_5
+    title: Symmetry
+    short_title: Symmetry
+    syllabus_topic: '4.5'
+    verified: true
+    aliases:
+    - line symmetry
+    - planes of symmetry
+    - orders of symmetry
+    keywords:
+    - line of symmetry
+    - rotational symmetry
+    - order of rotational symmetry
+    - plane of symmetry
+    - axis of symmetry
+    - mirror line
+    - order two
+    - order three
+    - symmetry of a prism
+    - symmetry of a cone
+    - symmetrical shape
+    learning_outcomes:
+    - code: 4.5.1
+      text: Recognise line symmetry and order of rotational symmetry in two dimensions.
+      verified: true
+    - code: 4.5.2
+      text: 'Notes and examples: Includes properties of triangles, quadrilaterals and polygons directly
+        related to their symmetries.'
+      verified: true
+    - code: 4.5.3
+      text: Recognise symmetry properties of prisms, cylinders, pyramids and cones.
+      verified: true
+    - code: 4.5.4
+      text: 'Notes and examples: Includes properties of triangles, quadrilaterals and polygons directly
+        related to their symmetries. e.g. identify planes and axes of symmetry.'
+      verified: true
+  - id: math.4_6
+    title: Angles
+    short_title: Angles & Polygons
+    syllabus_topic: '4.6'
+    verified: true
+    aliases:
+    - angle facts
+    - angles in parallel lines
+    - polygon angle sum
+    keywords:
+    - angles on a straight line
+    - angles at a point
+    - vertically opposite
+    - corresponding angles
+    - alternate angles
+    - co-interior angles
+    - allied angles
+    - sum of the interior angles
+    - angle sum of a triangle
+    - interior angle of a polygon
+    - exterior angle
+    - regular polygon
+    - three-letter notation
+    - sum to 360 degrees
+    learning_outcomes:
+    - code: 4.6.1
+      text: 'Calculate unknown angles and give simple explanations using the following geometrical properties:
+        sum of angles at a point = 360°; sum of angles at a point on a straight line = 180°; vertically
+        opposite angles are equal; angle sum of a triangle = 180° and angle sum of a quadrilateral = 360°.'
+      verified: true
+    - code: 4.6.2
+      text: 'Calculate unknown angles and give geometric explanations for angles formed within parallel
+        lines: corresponding angles are equal; alternate angles are equal; co-interior angles sum to 180°
+        (supplementary).'
+      verified: true
+    - code: 4.6.3
+      text: Know and use angle properties of regular polygons.
+      verified: true
+    - code: 4.6.4
+      text: 'Notes and examples: Knowledge of three-letter notation for angles is required, e.g. angle
+        ABC. Candidates are expected to use the correct geometrical terminology when giving reasons for
+        answers. Includes exterior and interior angles, and angle sum.'
+      verified: true
+    - code: 4.6.5
+      text: Know and use angle properties of regular and irregular polygons.
+      verified: true
+    - code: 4.6.6
+      text: 'Notes and examples: Knowledge of 3-letter notation for angles is required, e.g. angle ABC.
+        Candidates are expected to use the correct geometrical terminology when giving reasons for answers.
+        Includes exterior and interior angles, and angle sum.'
+      verified: true
+  - id: math.4_7
+    title: Circle theorems I
+    short_title: Circle Theorems I
+    syllabus_topic: '4.7'
+    verified: true
+    aliases:
+    - circle theorems one
+    - angles in a circle
+    - alternate segment
+    keywords:
+    - angle in a semicircle
+    - angle between tangent and radius
+    - angle at the centre is twice
+    - angles in the same segment
+    - cyclic quadrilateral
+    - opposite angles add to 180
+    - alternate segment theorem
+    - subtended by the same arc
+    - at the circumference
+    - give a reason
+    learning_outcomes:
+    - code: 4.7.1
+      text: 'Calculate unknown angles and give explanations using the following geometrical properties
+        of circles: angle in a semicircle = 90°; angle between tangent and radius = 90°.'
+      verified: true
+    - code: 4.7.2
+      text: 'Notes and examples: Candidates will be expected to use the geometrical properties listed
+        in the syllabus when giving reasons for answers.'
+      verified: true
+    - code: 4.7.3
+      text: 'Calculate unknown angles and give explanations using the following geometrical properties
+        of circles: angle in a semicircle = 90°; angle between tangent and radius = 90°; angle at the
+        centre is twice the angle at the circumference; angles in the same segment are equal; opposite
+        angles of a cyclic quadrilateral sum to 180° (supplementary); alternate segment theorem.'
+      verified: true
+    - code: 4.7.4
+      text: 'Notes and examples: Candidates are expected to use the geometrical properties listed in the
+        syllabus when giving reasons for answers.'
+      verified: true
+  - id: math.4_8
+    title: Circle theorems II
+    short_title: Circle Theorems II
+    syllabus_topic: '4.8'
+    verified: true
+    aliases:
+    - circle theorems two
+    - chords and tangents
+    keywords:
+    - equal chords
+    - equidistant from the centre
+    - perpendicular bisector of a chord
+    - passes through the centre
+    - tangents from an external point
+    - equal in length
+    - two tangents
+    - symmetry properties of circles
+    - isosceles triangle formed
+    - bisects the chord
+    learning_outcomes:
+    - code: 4.8.1
+      text: 'Use the following symmetry properties of circles: equal chords are equidistant from the centre;
+        the perpendicular bisector of a chord passes through the centre; tangents from an external point
+        are equal in length.'
+      verified: true
+    - code: 4.8.2
+      text: 'Notes and examples: Candidates are expected to use the geometrical properties listed in the
+        syllabus when giving reasons for answers.'
+      verified: true
+- id: math.mensuration
+  title: Mensuration
+  teaching_order: 5
+  syllabus_topic: '5'
+  verified: true
+  aliases:
+  - mensuration
+  - topic 5
+  - chapter 5
+  - area and volume
+  - measures
+  keywords:
+  - perimeter
+  - area of a circle
+  - arc length
+  - surface area
+  - volume of a prism
+  - cylinder
+  - cone
+  - sphere
+  children:
+  - id: math.5_1
+    title: Units of measure
+    short_title: Units & Conversions
+    syllabus_topic: '5.1'
+    verified: true
+    aliases:
+    - units of measure
+    - converting units
+    keywords:
+    - metric units
+    - convert the units
+    - square centimetres
+    - square metres
+    - cubic centimetres
+    - cubic metres
+    - millilitres
+    - litres
+    - capacity
+    - kilograms
+    - larger or smaller units
+    - multiply by 100
+    - multiply by 1000
+    learning_outcomes:
+    - code: 5.1.1
+      text: Use metric units of mass, length, area, volume and capacity in practical situations and convert
+        quantities into larger or smaller units.
+      verified: true
+    - code: 5.1.2
+      text: 'Notes and examples: Units include: mm, cm, m, km; mm^2, cm^2, m^2, km^2; mm^3, cm^3, m^3;
+        ml, l; g, kg. Conversion between units includes: between different units of area, e.g. cm^2 ↔
+        m^2; between units of volume and capacity, e.g. m^3 ↔ litres.'
+      verified: true
+  - id: math.5_2
+    title: Area and perimeter
+    short_title: Area & Perimeter
+    syllabus_topic: '5.2'
+    verified: true
+    aliases:
+    - area and perimeter
+    keywords:
+    - perimeter
+    - area of a rectangle
+    - area of a triangle
+    - area of a parallelogram
+    - area of a trapezium
+    - base times height
+    - half base times height
+    - parallel sides
+    - perpendicular height
+    - add up all the sides
+    - length times width
+    learning_outcomes:
+    - code: 5.2.1
+      text: Carry out calculations involving the perimeter and area of a rectangle, triangle, parallelogram
+        and trapezium.
+      verified: true
+    - code: 5.2.2
+      text: 'Notes and examples: Except for area of a triangle, formulas are not given.'
+      verified: true
+    - code: 5.2.3
+      text: 'Notes and examples: Except for the area of a triangle, formulas are not given.'
+      verified: true
+  - id: math.5_3
+    title: Circles, arcs and sectors
+    short_title: Circles, Arcs & Sectors
+    syllabus_topic: '5.3'
+    verified: true
+    aliases:
+    - circles arcs and sectors
+    keywords:
+    - circumference
+    - area of a circle
+    - pi r squared
+    - two pi r
+    - arc length
+    - sector area
+    - sector angle
+    - minor sector
+    - major sector
+    - fraction of 360
+    - in terms of pi
+    - perimeter of the sector
+    - radius
+    learning_outcomes:
+    - code: 5.3.1
+      text: Carry out calculations involving the circumference and area of a circle.
+      verified: true
+    - code: 5.3.2
+      text: Carry out calculations involving arc length and sector area as fractions of the circumference
+        and area of a circle, where the sector angle is a factor of 360°.
+      verified: true
+    - code: 5.3.3
+      text: 'Notes and examples: Answers may be asked for in terms of π. Formulas are given in the List
+        of formulas.'
+      verified: true
+    - code: 5.3.4
+      text: Carry out calculations involving arc length and sector area as fractions of the circumference
+        and area of a circle.
+      verified: true
+    - code: 5.3.5
+      text: 'Notes and examples: Answers may be asked for in terms of π. Formulas are given in the List
+        of formulas. Includes minor and major sectors.'
+      verified: true
+  - id: math.5_4
+    title: Surface area and volume
+    short_title: Surface Area & Volume
+    syllabus_topic: '5.4'
+    verified: true
+    aliases:
+    - surface area of a solid
+    keywords:
+    - volume of a prism
+    - volume of a cylinder
+    - volume of a cone
+    - volume of a sphere
+    - volume of a pyramid
+    - curved surface area
+    - surface area of a sphere
+    - uniform cross-section
+    - slant height
+    - one third pi r squared h
+    - four thirds
+    - height of the solid
+    learning_outcomes:
+    - code: 5.4.1
+      text: 'Carry out calculations and solve problems involving the surface area and volume of a: cuboid;
+        prism; cylinder; sphere; pyramid; cone.'
+      verified: true
+    - code: 5.4.2
+      text: 'Notes and examples: Answers may be asked for in terms of π. The following formulas are given
+        in the List of formulas: curved surface area of a cylinder; curved surface area of a cone; surface
+        area of a sphere; volume of a prism; volume of a pyramid; volume of a cylinder; volume of a cone;
+        volume of a sphere. The term prism refers to any solid with a uniform cross-section, e.g. a cylindrical
+        sector.'
+      verified: true
+  - id: math.5_5
+    title: Compound shapes and parts of shapes
+    short_title: Compound Shapes & Solids
+    syllabus_topic: '5.5'
+    verified: true
+    aliases:
+    - compound shapes
+    - parts of shapes
+    - compound solids
+    keywords:
+    - compound shape
+    - compound solid
+    - part of a shape
+    - half of a sphere
+    - hemisphere
+    - frustum
+    - split the shape up
+    - subtract the area
+    - shaded region
+    - remaining area
+    - add the volumes together
+    - cut off the top
+    learning_outcomes:
+    - code: 5.5.1
+      text: 'Carry out calculations and solve problems involving perimeters and areas of: compound shapes;
+        parts of shapes.'
+      verified: true
+    - code: 5.5.2
+      text: 'Carry out calculations and solve problems involving surface areas and volumes of: compound
+        solids; parts of solids.'
+      verified: true
+    - code: 5.5.3
+      text: 'Notes and examples: Answers may be asked for in terms of π. e.g. find the volume of half
+        of a sphere.'
+      verified: true
+    - code: 5.5.4
+      text: 'Notes and examples: Answers may be asked for in terms of π. e.g. find the surface area and
+        volume of a frustum.'
+      verified: true
+- id: math.trigonometry
+  title: Trigonometry
+  teaching_order: 6
+  syllabus_topic: '6'
+  verified: true
+  aliases:
+  - trigonometry
+  - trig
+  - topic 6
+  - chapter 6
+  keywords:
+  - Pythagoras
+  - hypotenuse
+  - sine
+  - cosine
+  - tangent
+  - sine rule
+  - cosine rule
+  - angle of elevation
+  children:
+  - id: math.6_1
+    title: Pythagoras’ theorem
+    short_title: Pythagoras' Theorem
+    syllabus_topic: '6.1'
+    verified: true
+    aliases:
+    - missing side
+    - third side of a triangle
+    - sum of the two squares
+    keywords:
+    - hypotenuse
+    - a squared plus b squared
+    - c squared
+    - square the sides
+    - square the two shorter sides
+    - longest side
+    - shorter side
+    - add the squares
+    - subtract the squares
+    - square root the answer
+    - find the missing side
+    - Pythagorean triple
+    - three four five triangle
+    learning_outcomes:
+    - code: 6.1.1
+      text: Know and use Pythagoras’ theorem.
+      verified: true
+  - id: math.6_2
+    title: Right-angled triangles
+    short_title: Right-Angled Trigonometry
+    syllabus_topic: '6.2'
+    verified: true
+    aliases:
+    - right-angled triangles
+    - sine cosine tangent
+    - angles of elevation and depression
+    keywords:
+    - SOHCAHTOA
+    - sine ratio
+    - cosine ratio
+    - tangent ratio
+    - opposite and adjacent
+    - inverse sine
+    - inverse cosine
+    - inverse tan
+    - angle of elevation
+    - angle of depression
+    - shortest distance to the line
+    - label the sides
+    - one decimal place
+    learning_outcomes:
+    - code: 6.2.1
+      text: Know and use the sine, cosine and tangent ratios for acute angles in calculations involving
+        sides and angles of a right-angled triangle.
+      verified: true
+    - code: 6.2.2
+      text: Solve problems in two dimensions using Pythagoras’ theorem and trigonometry.
+      verified: true
+    - code: 6.2.3
+      text: 'Notes and examples: Angles will be given in degrees and answers should be written in degrees,
+        with decimals correct to one decimal place. Knowledge of bearings may be required.'
+      verified: true
+    - code: 6.2.4
+      text: Know that the perpendicular distance from a point to a line is the shortest distance to the
+        line.
+      verified: true
+    - code: 6.2.5
+      text: Carry out calculations involving angles of elevation and depression.
+      verified: true
+  - id: math.6_3
+    title: Exact trigonometric values
+    short_title: Exact Trig Values
+    syllabus_topic: '6.3'
+    verified: true
+    aliases:
+    - exact trigonometric values
+    - exact values
+    - special angles
+    keywords:
+    - exact value of sin
+    - exact value of cos
+    - exact value of tan
+    - thirty degrees
+    - forty-five degrees
+    - sixty degrees
+    - root three over two
+    - one over root two
+    - a half
+    - without a calculator
+    - special triangles
+    - leave in surd form
+    learning_outcomes:
+    - code: 6.3.1
+      text: 'Know the exact values of: sin x and cos x for x = 0°, 30°, 45°, 60° and 90°.'
+      verified: true
+    - code: 6.3.2
+      text: 'Know the exact values of: tan x for x = 0°, 30°, 45° and 60°.'
+      verified: true
+  - id: math.6_4
+    title: Trigonometric functions
+    short_title: Trig Graphs & Equations
+    syllabus_topic: '6.4'
+    verified: true
+    aliases:
+    - trigonometric functions
+    - solving trig equations
+    keywords:
+    - graph of sin x
+    - graph of cos x
+    - graph of tan x
+    - sine curve
+    - cosine curve
+    - asymptote of tan
+    - second solution
+    - between 0 and 360
+    - symmetry of the curve
+    - repeats every 360
+    - solve the trig equation
+    - sketch the curve
+    learning_outcomes:
+    - code: 6.4.1
+      text: 'Recognise, sketch and interpret the following graphs for 0° ⩽ x ⩽ 360°: y = sin x; y = cos
+        x; y = tan x.'
+      verified: true
+    - code: 6.4.2
+      text: Solve trigonometric equations involving sin x, cos x or tan x, for 0° ⩽ x ⩽ 360°.
+      verified: true
+    - code: 6.4.3
+      text: 'Notes and examples: e.g. solve: sin x = √3/2 for 0° ⩽ x ⩽ 360°; 2 cos x + 1 = 0 for 0° ⩽
+        x ⩽ 360°.'
+      verified: true
+  - id: math.6_5
+    title: Non-right-angled triangles
+    short_title: Sine & Cosine Rules
+    syllabus_topic: '6.5'
+    verified: true
+    aliases:
+    - non-right-angled triangles
+    - area of a triangle
+    keywords:
+    - sine rule
+    - cosine rule
+    - ambiguous case
+    - obtuse angle
+    - half ab sin C
+    - area of any triangle
+    - two sides and the included angle
+    - side opposite the angle
+    - rearrange the cosine rule
+    - all three sides
+    - list of formulas
+    learning_outcomes:
+    - code: 6.5.1
+      text: Use the sine and cosine rules in calculations involving lengths and angles for any triangle.
+      verified: true
+    - code: 6.5.2
+      text: Use the formula area of triangle = 1/2 ab sin C.
+      verified: true
+    - code: 6.5.3
+      text: 'Notes and examples: Includes problems involving obtuse angles and the ambiguous case. The
+        sine and cosine rules and the formula for area of a triangle are given in the List of formulas.'
+      verified: true
+  - id: math.6_6
+    title: Pythagoras’ theorem and trigonometry in 3D
+    short_title: Pythagoras & Trig in 3D
+    syllabus_topic: '6.6'
+    verified: true
+    aliases:
+    - trigonometry in 3D
+    keywords:
+    - three dimensions
+    - angle between a line and a plane
+    - diagonal of a cuboid
+    - space diagonal
+    - base diagonal
+    - vertical height
+    - triangle inside the solid
+    - sketch the triangle
+    - two-stage Pythagoras
+    - foot of the perpendicular
+    learning_outcomes:
+    - code: 6.6.1
+      text: Carry out calculations and solve problems in three dimensions using Pythagoras’ theorem and
+        trigonometry, including calculating the angle between a line and a plane.
+      verified: true
+- id: math.transformations_and_vectors
+  title: Transformations and Vectors
+  teaching_order: 7
+  syllabus_topic: '7'
+  verified: true
+  aliases:
+  - transformations and vectors
+  - transformations
+  - vectors
+  - topic 7
+  - chapter 7
+  keywords:
+  - reflection
+  - rotation
+  - enlargement
+  - translation
+  - column vector
+  - position vector
+  - magnitude
+  - scale factor
+  children:
+  - id: math.7_1
+    title: Transformations
+    short_title: Transformations
+    syllabus_topic: '7.1'
+    verified: true
+    aliases:
+    - transformations
+    - describing transformations
+    keywords:
+    - reflection
+    - rotation
+    - enlargement
+    - translation
+    - mirror line
+    - centre of rotation
+    - centre of enlargement
+    - scale factor
+    - clockwise
+    - anticlockwise
+    - describe the transformation
+    - negative scale factor
+    - fractional scale factor
+    - object and image
+    - combinations of transformations
+    learning_outcomes:
+    - code: 7.1.1
+      text: 'Recognise, describe and draw the following transformations: 1 Reflection of a shape in a
+        vertical or horizontal line; 2 Rotation of a shape about the origin, vertices or midpoints of
+        edges of the shape, through multiples of 90°; 3 Enlargement of a shape from a centre by a scale
+        factor; 4 Translation of a shape by a vector (x/y).'
+      verified: true
+    - code: 7.1.2
+      text: 'Notes and examples: Questions will not involve combinations of transformations. A ruler must
+        be used for all straight edges. Positive and fractional scale factors only.'
+      verified: true
+    - code: 7.1.3
+      text: 'Recognise, describe and draw the following transformations: 1 Reflection of a shape in a
+        straight line; 2 Rotation of a shape about a centre through multiples of 90°; 3 Enlargement of
+        a shape from a centre by a scale factor; 4 Translation of a shape by a vector (x/y).'
+      verified: true
+    - code: 7.1.4
+      text: 'Notes and examples: Questions may involve combinations of transformations. A ruler must be
+        used for all straight edges. Positive, fractional and negative scale factors may be used.'
+      verified: true
+  - id: math.7_2
+    title: Vectors in two dimensions
+    short_title: Column Vectors
+    syllabus_topic: '7.2'
+    verified: true
+    aliases:
+    - vectors in two dimensions
+    - column vectors
+    - adding vectors
+    - multiplying by a scalar
+    keywords:
+    - column vector
+    - add the vectors
+    - subtract the vectors
+    - multiply by a scalar
+    - scalar
+    - top number and bottom number
+    - translation vector
+    - written in column form
+    - vector AB
+    - resultant vector
+    - components
+    learning_outcomes:
+    - code: 7.2.1
+      text: Describe a translation using a vector represented by (x/y), AB or a.
+      verified: true
+    - code: 7.2.2
+      text: Add and subtract vectors.
+      verified: true
+    - code: 7.2.3
+      text: Multiply a vector by a scalar.
+      verified: true
+    - code: 7.2.4
+      text: 'Notes and examples: Vectors will be printed as AB or a.'
+      verified: true
+  - id: math.7_3
+    title: Magnitude of a vector
+    short_title: Magnitude of a Vector
+    syllabus_topic: '7.3'
+    verified: true
+    aliases:
+    - magnitude of a vector
+    - modulus of a vector
+    - length of a vector
+    keywords:
+    - magnitude
+    - modulus signs
+    - length of the vector
+    - square root of x squared plus y squared
+    - magnitude of AB
+    - modulus of a
+    - size of the vector
+    - Pythagoras on the components
+    learning_outcomes:
+    - code: 7.3.1
+      text: Calculate the magnitude of a vector (x/y) as √(x^2 + y^2).
+      verified: true
+    - code: 7.3.2
+      text: 'Notes and examples: The magnitudes of vectors will be denoted by modulus signs, e.g. |a|
+        is the magnitude of a; |AB| is the magnitude of AB.'
+      verified: true
+  - id: math.7_4
+    title: Vector geometry
+    short_title: Vector Geometry
+    syllabus_topic: '7.4'
+    verified: true
+    aliases:
+    - vector geometry
+    - position vectors
+    - collinear points
+    keywords:
+    - position vector
+    - directed line segment
+    - collinear
+    - parallel vectors
+    - coplanar vectors
+    - express in terms of
+    - multiple of the vector
+    - route from O
+    - OA plus AB
+    - show that the points are collinear
+    - vector proof
+    - ratio along the line
+    learning_outcomes:
+    - code: 7.4.1
+      text: Represent vectors by directed line segments.
+      verified: true
+    - code: 7.4.2
+      text: Use position vectors.
+      verified: true
+    - code: 7.4.3
+      text: Use the sum and difference of two or more vectors to express given vectors in terms of two
+        coplanar vectors.
+      verified: true
+    - code: 7.4.4
+      text: Use vectors to reason and to solve geometric problems.
+      verified: true
+    - code: 7.4.5
+      text: 'Notes and examples: Examples include: show that vectors are parallel; show that 3 points
+        are collinear; solve vector problems involving ratio and similarity.'
+      verified: true
+- id: math.probability
+  title: Probability
+  teaching_order: 8
+  syllabus_topic: '8'
+  verified: true
+  aliases:
+  - probability
+  - topic 8
+  - chapter 8
+  - chance
+  keywords:
+  - probability scale
+  - relative frequency
+  - tree diagram
+  - without replacement
+  - conditional probability
+  - expected frequency
+  children:
+  - id: math.8_1
+    title: Introduction to probability
+    short_title: Introduction to Probability
+    syllabus_topic: '8.1'
+    verified: true
+    aliases:
+    - introduction to probability
+    - likelihood
+    - chance of an event
+    keywords:
+    - probability scale
+    - impossible
+    - certain event
+    - even chance
+    - equally likely
+    - single event
+    - the event not happening
+    - one minus the probability
+    - the probabilities add to one
+    - complement
+    - as a fraction or a decimal
+    - number of outcomes
+    - out of the total number of outcomes
+    learning_outcomes:
+    - code: 8.1.1
+      text: Understand and use the probability scale from 0 to 1.
+      verified: true
+    - code: 8.1.2
+      text: Calculate the probability of a single event.
+      verified: true
+    - code: 8.1.3
+      text: Understand that the probability of an event not occurring = 1 – the probability of the event
+        occurring.
+      verified: true
+    - code: 8.1.4
+      text: 'Notes and examples: Probability notation is not required. Probabilities should be given as
+        a fraction, decimal or percentage. Problems may require using information from tables, graphs
+        or Venn diagrams (limited to two sets). e.g. The probability that a counter is blue is 0.8. What
+        is the probability that it is not blue?'
+      verified: true
+    - code: 8.1.5
+      text: Understand and use probability notation.
+      verified: true
+    - code: 8.1.6
+      text: 'Notes and examples: P(A) is the probability of A; P(A′) is the probability of not A. Probabilities
+        should be given as a fraction, decimal or percentage. Problems may require using information from
+        tables, graphs or Venn diagrams. e.g. P(B) = 0.8, find P(B′).'
+      verified: true
+  - id: math.8_2
+    title: Relative and expected frequencies
+    short_title: Relative & Expected Frequency
+    syllabus_topic: '8.2'
+    verified: true
+    aliases:
+    - bias and fairness
+    keywords:
+    - relative frequency
+    - expected frequency
+    - estimate of probability
+    - experimental probability
+    - spinner
+    - trials
+    - fair
+    - biased
+    - random
+    - number of trials
+    - expected number of successes
+    - multiply by the number of trials
+    - long run
+    learning_outcomes:
+    - code: 8.2.1
+      text: Understand relative frequency as an estimate of probability.
+      verified: true
+    - code: 8.2.2
+      text: Calculate expected frequencies.
+      verified: true
+    - code: 8.2.3
+      text: 'Notes and examples: e.g. use results of experiments with a spinner to estimate the probability
+        of a given outcome. e.g. use probability to estimate an expected value from a population. Includes
+        understanding what is meant by fair, bias and random.'
+      verified: true
+  - id: math.8_3
+    title: Probability of combined events
+    short_title: Combined Events & Tree Diagrams
+    syllabus_topic: '8.3'
+    verified: true
+    aliases:
+    - probability of combined events
+    - tree diagrams
+    - sample space diagrams
+    - with and without replacement
+    keywords:
+    - tree diagram
+    - sample space diagram
+    - with replacement
+    - without replacement
+    - branches
+    - multiply along the branches
+    - add the outcomes
+    - independent events
+    - mutually exclusive
+    - two events
+    - probability of at least one
+    - Venn diagram probability
+    - possibility space
+    learning_outcomes:
+    - code: 8.3.1
+      text: 'Calculate the probability of combined events using, where appropriate: sample space diagrams;
+        Venn diagrams; tree diagrams.'
+      verified: true
+    - code: 8.3.2
+      text: 'Notes and examples: Combined events will only be with replacement. Venn diagrams will be
+        limited to two sets. In tree diagrams, outcomes will be written at the end of the branches and
+        probabilities by the side of the branches.'
+      verified: true
+    - code: 8.3.3
+      text: 'Notes and examples: Combined events could be with or without replacement. The notation P(A
+        ∩ B) and P(A ∪ B) may be used in the context of Venn diagrams. On tree diagrams outcomes will
+        be written at the end of branches and probabilities by the side of the branches.'
+      verified: true
+  - id: math.8_4
+    title: Conditional probability
+    short_title: Conditional Probability
+    syllabus_topic: '8.4'
+    verified: true
+    aliases:
+    - probability of one event given another
+    - second selection
+    - dependent probability
+    keywords:
+    - conditional probability
+    - dependent events
+    - reduced sample space
+    - two-way table
+    - not replaced
+    - without replacing
+    - second pick
+    - depends on the first
+    learning_outcomes:
+    - code: 8.4.1
+      text: Calculate conditional probability using Venn diagrams, tree diagrams and tables.
+      verified: true
+    - code: 8.4.2
+      text: 'Notes and examples: Knowledge of notation, P(A|B), and formulas relating to conditional probability
+        is not required.'
+      verified: true
+- id: math.statistics
+  title: Statistics
+  teaching_order: 9
+  syllabus_topic: '9'
+  verified: true
+  aliases:
+  - statistics
+  - stats
+  - topic 9
+  - chapter 9
+  - data handling
+  keywords:
+  - the mean
+  - median
+  - modal value
+  - range
+  - quartile
+  - cumulative frequency
+  - histogram
+  - scatter diagram
+  children:
+  - id: math.9_1
+    title: Classifying statistical data
+    short_title: Tally & Two-Way Tables
+    syllabus_topic: '9.1'
+    verified: true
+    aliases:
+    - classifying statistical data
+    - tally charts
+    - two-way tables
+    - tabulating data
+    keywords:
+    - tally chart
+    - tally marks
+    - two-way table
+    - tabulate the data
+    - classify the data
+    - categories
+    - discrete data
+    - continuous data
+    - qualitative
+    - quantitative
+    - class interval
+    - grouped data
+    - fill in the table
+    learning_outcomes:
+    - code: 9.1.1
+      text: Classify and tabulate statistical data.
+      verified: true
+    - code: 9.1.2
+      text: 'Notes and examples: e.g. tally tables, two-way tables.'
+      verified: true
+  - id: math.9_2
+    title: Interpreting statistical data
+    short_title: Comparing Data Sets
+    syllabus_topic: '9.2'
+    verified: true
+    aliases:
+    - interpreting statistical data
+    - comparing data
+    - drawing conclusions
+    - inferences
+    keywords:
+    - compare the averages
+    - compare the ranges
+    - two data sets
+    - on average higher
+    - more consistent
+    - less spread out
+    - draw a conclusion
+    - draw inferences
+    - restrictions on the conclusion
+    - misleading
+    - sample size
+    - interpret the diagram
+    learning_outcomes:
+    - code: 9.2.1
+      text: Read, interpret and draw inferences from tables and statistical diagrams.
+      verified: true
+    - code: 9.2.2
+      text: Compare sets of data using tables, graphs and statistical measures.
+      verified: true
+    - code: 9.2.3
+      text: Appreciate restrictions on drawing conclusions from given data.
+      verified: true
+    - code: 9.2.4
+      text: 'Notes and examples: e.g. compare averages and ranges between two data sets.'
+      verified: true
+    - code: 9.2.5
+      text: 'Notes and examples: e.g. compare averages and measures of spread between two data sets.'
+      verified: true
+  - id: math.9_3
+    title: Averages and measures of spread
+    short_title: Averages & Spread
+    syllabus_topic: '9.3'
+    verified: true
+    aliases:
+    - mean median mode
+    - estimated mean
+    - working out the average
+    keywords:
+    - the mean
+    - find the mean
+    - mean of the data
+    - arithmetic mean
+    - median
+    - modal value
+    - most common value
+    - range
+    - lower quartile
+    - upper quartile
+    - interquartile range
+    - modal class
+    - estimate of the mean
+    - midpoint of the class
+    - sum of fx
+    - middle value
+    - divide by the total frequency
+    - grouped frequency
+    learning_outcomes:
+    - code: 9.3.1
+      text: Calculate the mean, median, mode and range for individual data and distinguish between the
+        purposes for which these are used.
+      verified: true
+    - code: 9.3.2
+      text: 'Notes and examples: Data may be in a list or frequency table, but will not be grouped.'
+      verified: true
+    - code: 9.3.3
+      text: Calculate the mean, median, mode, quartiles, range and interquartile range for individual
+        data and distinguish between the purposes for which these are used.
+      verified: true
+    - code: 9.3.4
+      text: Calculate an estimate of the mean for grouped discrete or grouped continuous data.
+      verified: true
+    - code: 9.3.5
+      text: Identify the modal class from a grouped frequency distribution.
+      verified: true
+  - id: math.9_4
+    title: Statistical charts and diagrams
+    short_title: Statistical Charts
+    syllabus_topic: '9.4'
+    verified: true
+    aliases:
+    - statistical charts and diagrams
+    - bar charts
+    - pie charts
+    - pictograms
+    - stem-and-leaf diagrams
+    keywords:
+    - bar chart
+    - pie chart
+    - pictogram
+    - stem-and-leaf diagram
+    - read the key
+    - sector angle
+    - degrees in a pie chart
+    - composite bar chart
+    - dual bar chart
+    - stacked bar chart
+    - ordered data
+    - leaves
+    learning_outcomes:
+    - code: 9.4.1
+      text: 'Draw and interpret: (a) bar charts; (b) pie charts; (c) pictograms; (d) stem-and-leaf diagrams;
+        (e) simple frequency distributions.'
+      verified: true
+    - code: 9.4.2
+      text: 'Notes and examples: Includes composite (stacked) and dual (side-by side) bar charts. Stem-and-leaf
+        diagrams should have ordered data with a key.'
+      verified: true
+  - id: math.9_5
+    title: Scatter diagrams
+    short_title: Scatter Diagrams
+    syllabus_topic: '9.5'
+    verified: true
+    aliases:
+    - scatter diagrams
+    - scatter graphs
+    keywords:
+    - scatter diagram
+    - scatter graph
+    - correlation
+    - positive correlation
+    - negative correlation
+    - zero correlation
+    - line of best fit
+    - drawn by eye
+    - strong correlation
+    - weak correlation
+    - relationship between the two
+    - outlier
+    learning_outcomes:
+    - code: 9.5.1
+      text: Draw and interpret scatter diagrams.
+      verified: true
+    - code: 9.5.2
+      text: Understand what is meant by positive, negative and zero correlation.
+      verified: true
+    - code: 9.5.3
+      text: Draw by eye, interpret and use a straight line of best fit.
+      verified: true
+    - code: 9.5.4
+      text: 'Notes and examples: Plotted points should be clearly marked, for example as small crosses
+        (×). A line of best fit: should be a single ruled line drawn by inspection; should extend across
+        the full data set; does not need to coincide exactly with any of the points but there should be
+        a roughly even distribution of points either side of the line over its entire length.'
+      verified: true
+  - id: math.9_6
+    title: Cumulative frequency diagrams
+    short_title: Cumulative Frequency
+    syllabus_topic: '9.6'
+    verified: true
+    aliases:
+    - cumulative frequency diagrams
+    - percentiles
+    - reading off quartiles
+    keywords:
+    - cumulative frequency
+    - cumulative frequency curve
+    - cumulative frequency table
+    - running total
+    - percentile
+    - upper class boundary
+    - read off the median
+    - smooth curve
+    - S-shaped curve
+    - halfway up the axis
+    - estimate from the graph
+    learning_outcomes:
+    - code: 9.6.1
+      text: Draw and interpret cumulative frequency tables and diagrams.
+      verified: true
+    - code: 9.6.2
+      text: Estimate and interpret the median, percentiles, quartiles and interquartile range from cumulative
+        frequency diagrams.
+      verified: true
+    - code: 9.6.3
+      text: 'Notes and examples: Plotted points on a cumulative frequency diagram should be clearly marked,
+        for example as small crosses (×), and be joined with a smooth curve.'
+      verified: true
+  - id: math.9_7
+    title: Histograms
+    short_title: Histograms
+    syllabus_topic: '9.7'
+    verified: true
+    aliases:
+    - histograms
+    keywords:
+    - histogram
+    - frequency density
+    - class width
+    - unequal class widths
+    - frequency divided by class width
+    - area of the bar
+    - vertical axis is frequency density
+    - bars touch
+    - work out the frequency
+    - height of the bar
+    learning_outcomes:
+    - code: 9.7.1
+      text: Draw and interpret histograms.
+      verified: true
+    - code: 9.7.2
+      text: Calculate with frequency density.
+      verified: true
+    - code: 9.7.3
+      text: 'Notes and examples: On histograms, the vertical axis is labelled ‘Frequency density’. Frequency
+        density is defined as frequency density = frequency ÷ class width.'
+      verified: true
