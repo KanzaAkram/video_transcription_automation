@@ -1,21 +1,27 @@
 """Turning a transcript into a syllabus location.
 
-Two implementations behind one interface:
+Three implementations behind one interface, selected by
+`ClassifySettings.provider`:
 
-  * ``LLMClassifier``     retrieval + Claude. The production path.
+  * ``OpenAIClassifier``  ChatGPT reads the whole transcript against the whole
+    syllabus. The production path — it lives in `classify.openai_classifier`
+    because it shares none of the retrieval machinery below.
+  * ``LLMClassifier``     retrieval + Claude. The earlier production path,
+    kept working.
   * ``KeywordClassifier`` retrieval only. Used by the dry run so the pipeline
     is demonstrable with no API key, and useful as a baseline to measure the
-    LLM against.
+    others against.
 
-Both answer the same two questions in the same order — which chapter, then
-which subtopics inside it — and both hand the result to
-`assign_chapter_and_topics`, which is where the one-chapter and two-subtopic
+The two in this module answer the same two questions in the same order — which
+chapter, then which subtopics inside it — and both hand the result to
+`assign_chapter_and_topics`, which is where the one-chapter and subtopic-cap
 rules are actually enforced rather than merely requested. The order is not
 cosmetic: choosing the best subtopic first and inheriting its chapter lets a
 single strong subtopic drag a recording into a folder the lecture barely
 visited. See `classify.chapters`.
 
-`ClassificationService` picks between them and applies the confidence gate.
+`build_classifier` picks between the three; `ClassificationService` runs
+retrieval around whichever it got and applies the confidence gate.
 """
 
 from __future__ import annotations
@@ -66,12 +72,12 @@ time in, counting all of that chapter's subtopics together. Never split a \
 recording across two chapters. A lecture that spends five minutes recapping \
 the previous chapter and fifty minutes on a new one belongs to the new one.
 - Choose the primary subtopic from inside that chapter.
-- Report at most ONE further subtopic, also from inside that chapter, and only \
-when the lecture genuinely taught it: at least a fifth of the lecture, and at \
+- Report further subtopics, also from inside that chapter, only where the \
+lecture genuinely taught them: at least a fifth of the lecture each, and at \
 least 45% of what the primary got. A subtopic trailing the primary \
 four-to-one was mentioned, not taught.
-- NEVER more than two subtopics. A filename naming three is unreadable, and an \
-unread filename is no better than the one it replaced.
+- NEVER more than three subtopics in total. A filename naming four is a table \
+of contents, and an unread filename is no better than the one it replaced.
 - Cite at least two verbatim quotes with their timestamps. Quotes must appear \
 in the transcript you were given. This is what makes the decision auditable.
 - Set is_continuation when the lecture opens mid-topic and continues the \
@@ -81,11 +87,9 @@ KEYWORDS ONLY and short — a handful of words, under about 60 characters: \
 "Shapes of Molecules", "Sigma and Pie Bonds", "Solubility in Solvents & \
 Induced Dipoles". Never a syllabus sentence such as "Intermolecular forces, \
 electronegativity and bond properties".
-- The label names ONE subtopic, or TWO joined with " & " when a second one \
-genuinely qualifies. Never three. "Enthalpy Change & Hess's Law & Bond \
-Energies" is not a filename anyone reads, and the two-subtopic cap binds the \
-label exactly as it binds the node list — naming three there is the same \
-mistake, just spelled differently.
+- The label names the same subtopics as the node list and no more, joined \
+with " & ". The cap binds the label exactly as it binds the node list — \
+naming a fourth there is the same mistake, just spelled differently.
 - Abstain if none of the candidates fits — a revision session, an exam \
 debrief, or a topic absent from the syllabus. Abstaining sends the lecture to \
 a human, which is the correct outcome. Do not force a match: misfiling is \
@@ -104,22 +108,48 @@ recording, the second only misnames it.
 # ── Shared post-processing ────────────────────────────────────────────────────
 
 
+#: How many subtopics the keyword path may name, whatever `max_subtopics`
+#: allows. Two, and this is not a tuning knob.
+#:
+#: The cap in `NamingSettings` is three because a classifier that has *read* a
+#: lecture can say it taught three subtopics. Coverage counting cannot: it
+#: ranks subtopics by how much of their vocabulary was spoken, and a ranking
+#: with three entries is not evidence that three things were taught. Naming the
+#: third asserts something the measurement does not support, in the one place
+#: nobody would ever check it.
+#:
+#: Stated here rather than left to `select_subtopics` stopping at two on its
+#: own, because it does not hold on its own: `assign_chapter_and_topics` refills
+#: the list from `secondary`, which carries reporting-only candidates, and
+#: raising `max_subtopics` to 3 duly produced three-part keyword filenames.
+KEYWORD_SUBTOPIC_CAP = 2
+
+
 def assign_chapter_and_topics(
     classification: Classification,
     taxonomy: Taxonomy,
     weights: dict[str, float],
     settings: ClassifySettings,
     naming: NamingSettings,
+    *,
+    max_subtopics: int | None = None,
 ) -> Classification:
     """Derive the chapter and the filename subtopics from an already-chosen primary.
 
-    Shared by both classifiers, so the rules hold whoever made the choice. The
-    LLM is *told* them and mostly obeys; this is what makes them true. A reply
-    naming three plausible subtopics has not misbehaved badly enough to throw
-    away, but it has not earned a three-part filename either.
+    Shared by the two classifiers in this module, so the rules hold whoever
+    made the choice. The LLM is *told* them and mostly obeys; this is what
+    makes them true. A reply naming a fourth plausible subtopic has not
+    misbehaved badly enough to throw away, but it has not earned a four-part
+    filename either.
 
     Works from `primary` and `secondary` rather than from the candidate set,
     because that is all the LLM path has to work with.
+
+    Not used by `classify.openai_classifier`. That path chooses the chapter
+    first and the subtopics inside it second, so there is no primary for a
+    chapter to be inherited from, and its subtopic list is a judgement about
+    what was taught rather than a coverage ranking waiting to be re-filtered
+    by coverage thresholds.
     """
     classification.chapter_weights = weights
     if classification.primary is None:
@@ -134,9 +164,12 @@ def assign_chapter_and_topics(
     chapter_id = chapter_of(taxonomy, classification.primary.node_id)
     classification.chapter_node_id = chapter_id
 
+    # Never above the configured cap, and below it when the caller knows its
+    # own evidence does not support that many. See `KEYWORD_SUBTOPIC_CAP`.
+    limit = min(naming.max_subtopics, max_subtopics or naming.max_subtopics)
     chosen = [classification.primary.node_id]
     for match in sorted(classification.secondary, key=lambda m: (-m.coverage, m.node_id)):
-        if len(chosen) >= naming.max_subtopics:
+        if len(chosen) >= limit:
             break
         if match.node_id in chosen:
             continue
@@ -357,7 +390,7 @@ class KeywordClassifier:
             self.taxonomy,
             chapter.chapter_id,
             self.settings,
-            max_subtopics=self.naming.max_subtopics,
+            max_subtopics=KEYWORD_SUBTOPIC_CAP,
         )
         if not picked:
             return Classification(
@@ -450,6 +483,7 @@ class KeywordClassifier:
             weights,
             self.settings,
             self.naming,
+            max_subtopics=KEYWORD_SUBTOPIC_CAP,
         )
 
     def _promote_announced(
@@ -669,11 +703,53 @@ class LLMClassifier:
         )
 
 
+# ── Choosing one ──────────────────────────────────────────────────────────────
+
+
+def build_classifier(
+    taxonomy: Taxonomy,
+    settings: ClassifySettings,
+    naming: NamingSettings,
+    *,
+    provider: str,
+    api_key: str | None = None,
+    allowed_ids: set[str] | None = None,
+) -> Classifier:
+    """The one place a provider name turns into a classifier.
+
+    Shared by `ClassificationService` and by `scripts/rename_folder.py` so the
+    unattended pipeline and the folder tool cannot drift into classifying the
+    same recording two different ways.
+    """
+    if provider == "keyword":
+        return KeywordClassifier(taxonomy, settings, naming)
+    if provider == "anthropic":
+        return LLMClassifier(taxonomy, settings, api_key, naming)
+    if provider == "openai":
+        # Imported here rather than at module scope: the openai package is an
+        # optional extra, and the keyword path has to keep working without it.
+        from pipeline.classify.openai_classifier import OpenAIClassifier
+
+        return OpenAIClassifier(
+            taxonomy, settings, naming, api_key=api_key, allowed_ids=allowed_ids
+        )
+    raise ValueError(
+        f"unknown classifier provider {provider!r}; expected 'openai', 'anthropic' or 'keyword'"
+    )
+
+
 # ── Service ───────────────────────────────────────────────────────────────────
 
 
 class ClassificationService:
-    """Retrieval + classifier + the confidence gate."""
+    """Retrieval + classifier + the confidence gate.
+
+    Which classifier comes from `ClassifySettings.provider`, defaulting to
+    ChatGPT. Retrieval still runs on every path — the OpenAI classifier ignores
+    the shortlist and reads the whole syllabus, but the candidate set is what
+    the console line, `rename_plan.json` and the sidecar report as the keyword
+    evidence, and being able to see the two disagree is worth the BM25 pass.
+    """
 
     def __init__(
         self,
@@ -684,15 +760,22 @@ class ClassificationService:
         use_llm: bool = True,
         api_key: str | None = None,
         naming: NamingSettings | None = None,
+        allowed_ids: set[str] | None = None,
     ) -> None:
         self.taxonomy = taxonomy
         self.settings = settings
         self.retriever = HybridRetriever(taxonomy, settings, retrieval)
         self.naming = naming or NamingSettings()
-        self.classifier: Classifier = (
-            LLMClassifier(taxonomy, settings, api_key, self.naming)
-            if use_llm
-            else KeywordClassifier(taxonomy, settings, self.naming)
+        self.classifier = build_classifier(
+            taxonomy,
+            settings,
+            self.naming,
+            # `use_llm=False` still means "no network", whatever the provider
+            # says. The dry run and the tests pass it, and a default that
+            # reached for an API key would break both on a fresh clone.
+            provider=settings.provider if use_llm else "keyword",
+            api_key=api_key,
+            allowed_ids=allowed_ids,
         )
 
     def run(

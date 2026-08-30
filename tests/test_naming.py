@@ -92,16 +92,22 @@ def test_unknown_topic_node_ids_fall_back_to_the_label(recording_factory, taxono
     assert plan.filename == "Aug, 5 - Atomic Structure.mp4"
 
 
-def test_default_length_cap_rejects_a_syllabus_sentence(recording_factory, taxonomy):
-    """80, not 120. A cap generous enough to admit a Cambridge sentence is a
-    cap that lets one through."""
-    assert NamingSettings().max_length == 80
+def test_default_length_cap_holds_a_three_subtopic_name(recording_factory, taxonomy):
+    """120, sized for three real subtopic labels joined by " + ".
+
+    The cap no longer has to keep syllabus prose out — that is now structural,
+    because a label is rendered from each node's `short_title` and the
+    classifier returns node ids rather than writing a name. So the number is
+    sized for the longest thing it now legitimately has to hold, and anything
+    longer still fits inside it.
+    """
+    assert NamingSettings().max_length == 120
     recording = recording_factory("raw.mp4", recorded_at=datetime(2026, 8, 5, 14, 0))
     verbose = "Intermolecular forces, electronegativity and bond properties in simple molecules"
     plan = build_name(
         recording, _classification("chem.chemical_bonding", verbose), taxonomy, NamingSettings()
     )
-    assert len(plan.filename) <= 80
+    assert len(plan.filename) <= 120
     assert plan.filename.startswith("Aug, 5 - ")
 
 

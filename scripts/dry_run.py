@@ -10,7 +10,7 @@ account is connected. Everything you see it do here is what it will do to real
 Drive folders, through the same code path — only the storage adapter differs.
 
     python scripts/dry_run.py            keyword classifier, no API key needed
-    python scripts/dry_run.py --llm      real Claude classifier
+    python scripts/dry_run.py --ai       the configured provider (ChatGPT by default)
     python scripts/dry_run.py --keep     leave .dryrun/ in place afterwards
 """
 
@@ -27,9 +27,18 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
+# The Windows console is cp1252, and this script prints box-drawing rules. The
+# first thing it printed was therefore a UnicodeEncodeError traceback, which is
+# a poor first impression from the command whose whole job is to show that the
+# pipeline works. Elsewhere the convention is to keep console output ASCII —
+# see `scripts/rename_folder.py` — and only this script needs the exception.
+for stream in (sys.stdout, sys.stderr):
+    if hasattr(stream, "reconfigure"):
+        stream.reconfigure(encoding="utf-8", errors="replace")
+
 from pipeline.asr.stub import StubProvider  # noqa: E402
 from pipeline.classify import ClassificationService  # noqa: E402
-from pipeline.config import Settings, load_settings  # noqa: E402
+from pipeline.config import Settings, load_secrets, load_settings  # noqa: E402
 from pipeline.models import Recording, Source, Stage  # noqa: E402
 from pipeline.orchestration import PipelineRunner  # noqa: E402
 from pipeline.placement import FolderResolver  # noqa: E402
@@ -125,7 +134,14 @@ def print_tree(drive: LocalDriveAdapter, title: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--llm", action="store_true", help="use the real Claude classifier")
+    parser.add_argument(
+        "--ai",
+        "--llm",
+        dest="ai",
+        action="store_true",
+        help="classify with the provider in settings (classify.provider, ChatGPT by "
+        "default) instead of the keyword baseline. Needs that provider's API key.",
+    )
     parser.add_argument("--keep", action="store_true", help="keep .dryrun/ afterwards")
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
@@ -159,17 +175,27 @@ def main() -> int:
     resolver = FolderResolver(
         drive, taxonomy, subject.placement, recordings_root_id=RECORDINGS_ROOT
     )
+    secrets = load_secrets()
     classifier = ClassificationService(
         taxonomy,
         settings.classify,
         subject.retrieval,
-        use_llm=args.llm,
+        use_llm=args.ai,
+        api_key=(
+            secrets.openai_api_key
+            if settings.classify.provider == "openai"
+            else secrets.anthropic_api_key
+        ),
     )
 
     threshold = settings.classify.review_threshold
+    models = {
+        "openai": settings.classify.openai_model,
+        "anthropic": settings.classify.model,
+    }
     which = (
-        f"Claude ({settings.classify.model})"
-        if args.llm
+        f"{settings.classify.provider} ({models.get(settings.classify.provider, '-')})"
+        if args.ai
         else "keyword baseline (no API key needed)"
     )
     print(f"\nClassifier: {which}")
@@ -258,7 +284,7 @@ def main() -> int:
             "  failure: a misfiled lecture is worse than an unfiled one, because it\n"
             "  is invisible. To resolve it, a teacher moves the file into the right\n"
             "  chapter folder in Drive and the pipeline learns from the correction.\n"
-            "  The keyword baseline is deliberately conservative — run with --llm\n"
+            "  The keyword baseline is deliberately conservative — run with --ai\n"
             "  for the production classifier."
         )
 

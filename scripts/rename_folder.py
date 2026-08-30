@@ -8,6 +8,12 @@
     python scripts/rename_folder.py --folder "D:/chap 12-Respiration" \
         --syllabus config/syllabi/a2-biology-9700.yaml --scope bio.topic_12 --apply
 
+Two stages: Whisper transcribes each recording, then ChatGPT reads the whole
+transcript against the whole syllabus and returns the chapter and the one to
+three subtopics the lecture actually taught. The filename is then built from
+the syllabus' own titles for those ids — the model returns ids, never names,
+so nothing invented can reach a filename. Set `OPENAI_API_KEY` in `.env`.
+
 Deliberately narrower than the full pipeline: this **only renames**. Nothing
 moves, no folder is created, no transcript is published. It exists for the case
 where the recordings are already sitting in the right chapter folder and the
@@ -46,6 +52,27 @@ So: `lesson` where a lesson layer exists, `subtopic` where it does not. Which
 one was chosen, and why, is logged on every run. An explicit `--level`
 overrides it, and `lesson` still falls back to `subtopic` where a syllabus has
 no lesson layer.
+
+--classifier
+------------
+Who decides. `openai` is the default: the transcript and the syllabus subtree
+go to ChatGPT in one call, and what comes back is a chapter id and one to three
+subtopic ids drawn from an enumeration of that subtree — a reply naming
+something the syllabus does not contain is not a legal reply, and every id is
+re-checked against the taxonomy afterwards anyway.
+
+`keyword` is the earlier behaviour and needs no API key: it counts syllabus
+vocabulary per four-minute window and files the recording where the counting
+points. That is why it is no longer the default. Counting cannot distinguish a
+topic the teacher taught for fifty minutes from one they named twice, so a
+lecture that explains glycolysis without ever saying "glycolysis" is filed
+under whichever neighbouring chapter happened to share its words, and a lecture
+that opens on a recap is named after the recap. Both failures produce a
+confident-looking filename. It stays for offline runs, for measuring the model
+against, and for a folder where an API call is not wanted.
+
+`anthropic` is the same idea through Claude, over a retrieved shortlist rather
+than the whole syllabus.
 
 --language
 ----------
@@ -92,6 +119,7 @@ import gc
 import hashlib
 import json
 import logging
+import os
 import re
 import sys
 from datetime import datetime
@@ -102,8 +130,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from pipeline.asr.chunked import transcribe_long  # noqa: E402
 from pipeline.asr.language import DecodeChoice, choose_decode  # noqa: E402
 from pipeline.classify.retriever import HybridRetriever  # noqa: E402
-from pipeline.classify.service import KeywordClassifier, LLMClassifier  # noqa: E402
-from pipeline.config import ClassifySettings, NamingSettings, RetrievalSettings  # noqa: E402
+from pipeline.classify.service import build_classifier  # noqa: E402
+from pipeline.config import (  # noqa: E402
+    ClassifySettings,
+    NamingSettings,
+    RetrievalSettings,
+    load_secrets,
+)
 from pipeline.models import (  # noqa: E402
     Classification,
     Recording,
@@ -765,11 +798,21 @@ def sort_into_chapters(
 ) -> list[dict]:
     """Move each renamed recording into its chapter's folder.
 
-    Skips anything still flagged for review unless asked otherwise. The
-    asymmetry is deliberate: a badly *named* file in the right folder is still
-    findable by browsing, whereas a well-named file in the wrong folder is not.
-    So an uncertain classification is allowed to propose a name but not to
-    choose a destination.
+    Everything is filed, including recordings that came in below the
+    confidence threshold, unless `include_reviewed` says otherwise.
+
+    That is the opposite of the original rule, and the reason is that the two
+    decisions are not equally uncertain. Confidence is reported for the
+    *subtopic* — the name — while the chapter is a much easier call and the one
+    the model has been most consistent about: the 10 August maths lecture moved
+    between three different subtopic names across runs and never once left
+    Number. Holding a file out of its chapter because its name is uncertain
+    withholds the reliable half of the answer on account of the unreliable
+    half, and leaves the recording in a folder root where nothing is going to
+    find it either.
+
+    A recording with no chapter at all is still left alone; there is nowhere to
+    put it. `--hold-review` restores the old behaviour.
     """
     moves: list[dict] = []
     for row in rows:
@@ -880,11 +923,25 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--classifier",
-        choices=["keyword", "llm"],
-        default="keyword",
-        help="'keyword' is retrieval only and needs no API key. 'llm' adds the "
-        "Claude call that reads the transcript and picks among the retrieved "
-        "candidates; needs ANTHROPIC_API_KEY (default: keyword)",
+        choices=["openai", "keyword", "anthropic"],
+        default="openai",
+        help="Who decides which chapter and subtopics a recording is named "
+        "for. 'openai' sends the whole transcript and the whole (scoped) "
+        "syllabus to ChatGPT, which reads the lecture and returns syllabus "
+        "node ids; needs OPENAI_API_KEY. 'keyword' is retrieval only and "
+        "needs no API key - it counts syllabus vocabulary per window, which "
+        "cannot tell a topic that was taught from one that was named, and is "
+        "kept as an offline baseline rather than as a recommendation. "
+        "'anthropic' is the earlier Claude path, over a retrieved shortlist; "
+        "needs ANTHROPIC_API_KEY (default: openai)",
+    )
+    parser.add_argument(
+        "--ai-model",
+        default=None,
+        help="Override the ChatGPT model, e.g. gpt-5.1 or gpt-5-mini. The "
+        f"default is {ClassifySettings().openai_model}, which every account "
+        "with API access has; newer siblings are better and not universally "
+        "available. Ignored unless --classifier openai.",
     )
     parser.add_argument(
         "--transcribe-only",
@@ -917,12 +974,24 @@ def build_parser() -> argparse.ArgumentParser:
         "chapter it was classified into, creating it if needed. Files still "
         "marked '(review)' are LEFT IN PLACE - a misfiled recording is harder "
         "to find than a misnamed one, so an uncertain classification does not "
-        "get to choose a folder. Pass --sort-reviewed to override.",
+        "get a folder like any other. Pass --hold-review to keep them out.",
     )
     parser.add_argument(
-        "--sort-reviewed",
+        "--hold-review",
         action="store_true",
-        help="Also sort the low-confidence files. Only with --sort-into-chapters.",
+        help="With --sort-into-chapters, leave low-confidence recordings in the "
+        "folder root instead of filing them, so a human sees them before they "
+        "disappear into a chapter. Off by default: the chapter is the part the "
+        "classifier is most reliable about, and an unfiled recording in the "
+        "root is not more findable than a filed one.",
+    )
+    parser.add_argument(
+        "--review-marker",
+        action="store_true",
+        help="Append ' (review)' to the name of any recording that came in "
+        "below the confidence threshold. Off by default - the flag is still "
+        "recorded in rename_plan.json under 'low_confidence', which is where "
+        "it can be read without it being carried in the filename forever.",
     )
     parser.add_argument(
         "--apply", action="store_true", help="Actually rename. Default is a dry run."
@@ -976,8 +1045,17 @@ def main() -> int:
 
     allowed = nodes_at_level(taxonomy, level)
 
-    classify_settings = ClassifySettings()
-    naming = NamingSettings()
+    classify_settings = ClassifySettings(
+        **({"openai_model": args.ai_model} if args.ai_model else {})
+    )
+    # No review marker by default. The confidence flag still exists and is
+    # still written to rename_plan.json; what changed is that it stops being
+    # carried in the filename, where it is permanent, visible to students, and
+    # says nothing about the recording - only about how sure a classifier was
+    # on the day it ran. Pass --review-marker to put it back.
+    naming = NamingSettings(
+        low_confidence_marker=" (review)" if args.review_marker else ""
+    )
     cache_dir = args.cache or (args.folder / ".transcripts")
 
     files = discover_media(args.folder)
@@ -1029,18 +1107,48 @@ def main() -> int:
         return _report_unreadable(unreadable, len(files))
 
     # Constructed only past this point: --transcribe-only must not need an API
-    # key, and LLMClassifier resolves credentials as soon as it is asked to
-    # classify.
+    # key, and every model-backed classifier resolves credentials as soon as it
+    # is asked to classify.
     retriever = HybridRetriever(taxonomy, classify_settings, RetrievalSettings())
-    classifier = (
-        LLMClassifier(taxonomy, classify_settings, naming=naming)
-        if args.classifier == "llm"
-        else KeywordClassifier(taxonomy, classify_settings, naming)
+    # .env is read into a Secrets object rather than into os.environ, so a key
+    # that lives only in .env is invisible to a client that reads the
+    # environment for itself. Passed explicitly for that reason; a key already
+    # exported in the environment still works, because None means "look it up".
+    secrets = load_secrets()
+    api_key = (
+        secrets.openai_api_key if args.classifier == "openai" else secrets.anthropic_api_key
+    )
+    # Checked here, before the first lecture is transcribed. Discovering a
+    # missing key after forty minutes of Whisper is a bad way to find out, and
+    # the transcript cache means the retry is instant either way — but the
+    # operator should not have to know that to trust the tool.
+    if args.classifier == "openai" and not (api_key or os.environ.get("OPENAI_API_KEY")):
+        raise SystemExit(
+            "--classifier openai needs an OpenAI API key. Put OPENAI_API_KEY=sk-... "
+            "in .env at the repo root, or export it in this shell. Pass "
+            "--classifier keyword to run offline on keyword matching instead."
+        )
+    if args.classifier == "anthropic" and not (api_key or os.environ.get("ANTHROPIC_API_KEY")):
+        raise SystemExit(
+            "--classifier anthropic needs ANTHROPIC_API_KEY in .env or in this shell."
+        )
+    classifier = build_classifier(
+        taxonomy,
+        classify_settings,
+        naming,
+        provider=args.classifier,
+        api_key=api_key,
+        # The naming level, handed to the classifier rather than applied to its
+        # output. Asking ChatGPT to choose among the lessons and then silently
+        # substituting their subtopic would report a confidence in a decision
+        # that was not the one taken.
+        allowed_ids=allowed,
     )
 
     log.info("%d file(s) in %s", len(files), args.folder)
-    log.info("syllabus: %s  |  %d candidate nodes at level '%s'  |  classifier: %s\n",
-             taxonomy.subject_name, len(allowed), level, classifier.name)
+    log.info("syllabus: %s  |  %d candidate nodes at level '%s'  |  classifier: %s%s\n",
+             taxonomy.subject_name, len(allowed), level, classifier.name,
+             f" ({classify_settings.openai_model})" if args.classifier == "openai" else "")
 
     taken: set[str] = set()
     plan: list[dict] = []
@@ -1076,7 +1184,27 @@ def main() -> int:
         # Drop candidates deeper than the requested naming level *before*
         # classifying, so confidence reflects the choice actually being made.
         candidates.candidates = [c for c in candidates.candidates if c.node.id in allowed]
-        classification = classifier.classify(recording, transcript, candidates)
+        try:
+            classification = classifier.classify(recording, transcript, candidates)
+        except Exception as error:  # noqa: BLE001 - one bad call, not a bad batch
+            # Same reasoning as UnreadableMedia above: a folder is a term of
+            # lectures, and a single failed API call should not cost the
+            # nineteen after it. The credential and model checks that would
+            # fail on *every* file already ran before transcription started, so
+            # what reaches here is the transient kind - a malformed reply, a
+            # timeout that outlasted the SDK's retries.
+            #
+            # The recording is not skipped: it gets a classification that
+            # abstains, which routes it to review with the reason attached. A
+            # file the tool could not think about must not be quietly left
+            # looking like one it considered and had no opinion on.
+            log.error("  classifier failed: %s: %s", type(error).__name__, error)
+            classification = Classification(
+                abstain=True,
+                abstain_reason=f"{classifier.name} classifier failed: "
+                f"{type(error).__name__}: {error}",
+                method=classifier.name,
+            )
 
         # Delegate to the model rather than restating the rule. This block used
         # to reimplement it and dropped the coverage floor, which is the gate
@@ -1112,8 +1240,32 @@ def main() -> int:
             log.info("  chapter   %s %s%s", chapter["title"],
                      f"{chapter['weight']:.0%}" if chapter["weight"] is not None else "",
                      f"   runner-up: {chapter['runner_up']}" if chapter["runner_up"] else "")
-        log.info("  ranking   %s", "  |  ".join(
+        # Named "keywords", not "ranking", because on the AI path it is not the
+        # ranking anything was decided by - it is the keyword evidence, printed
+        # so the two can be seen to disagree. That disagreement is the whole
+        # reason the AI classifier exists, and hiding it would make the tool
+        # harder to trust rather than easier.
+        log.info("  keywords  %s", "  |  ".join(
             f"{c.node.label} {c.coverage:.0%}" for c in top) or "nothing matched")
+        if classification.topic_node_ids:
+            # Exactly the subtopics that end up in the filename, in order, with
+            # the coverage each was credited with. `secondary` also carries
+            # reporting-only matches on the keyword path, so it is the wrong
+            # list to print here.
+            covered = {
+                m.node_id: m.coverage
+                for m in [classification.primary, *classification.secondary]
+                if m is not None
+            }
+            log.info("  subtopics %s", "  |  ".join(
+                f"{node.label} {covered.get(node_id, 0.0):.0%}"
+                for node_id in classification.topic_node_ids
+                if (node := taxonomy.get(node_id)) is not None
+            ))
+        if classification.reasoning:
+            log.info("  why       %s", classification.reasoning.replace("\n", " ")[:300])
+        if classification.abstain_reason:
+            log.info("  abstained %s", classification.abstain_reason)
         # ASCII only: the Windows console is cp1252 and mangles arrows/dashes.
         log.info("  ->  %s   (confidence %.2f%s)", name_plan.filename, conf,
                  ", REVIEW" if low else "")
@@ -1192,10 +1344,22 @@ def main() -> int:
 
     flagged = [row for row in plan if row["low_confidence"]]
     if flagged:
-        log.info(
-            "%d of %d below the review threshold - marked '%s' in the new name",
-            len(flagged), len(plan), naming.low_confidence_marker.strip(),
-        )
+        if naming.low_confidence_marker:
+            log.info(
+                "%d of %d below the review threshold - marked '%s' in the new name",
+                len(flagged), len(plan), naming.low_confidence_marker.strip(),
+            )
+        else:
+            # Said out loud even though nothing in the folder will show it.
+            # A confidence flag that is recorded and never surfaced is the same
+            # as one that was not recorded.
+            log.info(
+                "%d of %d below the review threshold - filed anyway, unmarked. "
+                "They are the rows with \"low_confidence\": true in %s:",
+                len(flagged), len(plan), plan_path.name,
+            )
+            for row in flagged:
+                log.info("    %.2f  %s", row["confidence"], row["to"])
 
     if not args.apply:
         log.info("\nDry run. Nothing renamed. Re-run with --apply to perform these renames.")
@@ -1243,7 +1407,7 @@ def main() -> int:
         log.info("")
         log.info("sorting into chapter folders:")
         moves = sort_into_chapters(
-            args.folder, plan, include_reviewed=args.sort_reviewed,
+            args.folder, plan, include_reviewed=not args.hold_review,
             strip=naming.strip_characters, placed=placed,
             current={row['to']: placed[row['to']] / row['to'] for row in plan},
         )

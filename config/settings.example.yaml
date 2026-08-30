@@ -88,9 +88,30 @@ asr:
 
 # ── Classification ────────────────────────────────────────────────────────────
 classify:
+  # openai    ChatGPT reads the whole transcript against the whole syllabus and
+  #           returns syllabus node ids. Needs OPENAI_API_KEY.
+  # keyword   retrieval only, no API key. Counts syllabus vocabulary per
+  #           window, which cannot tell a topic that was taught from one that
+  #           was named twice. A baseline and an offline fallback.
+  # anthropic the earlier Claude path, over a retrieved shortlist.
+  provider: openai
+
+  # gpt-5 because every account with API access has it. gpt-5.1 / gpt-5.2 /
+  # gpt-5.4 are better where the account has them; nothing in the call is
+  # model-specific, so changing this line is the whole switch.
+  openai_model: gpt-5
+  # minimal | low | medium | high, or omit to leave the model's own default.
+  # openai_reasoning_effort: medium
+  openai_max_output_tokens: 16000
+  openai_timeout_s: 300
+  # openai_base_url: https://...   # Azure or a proxy; omit for api.openai.com
+
+  # Only read when provider is `anthropic`.
   model: claude-opus-5
   effort: high                   # low | medium | high | xhigh | max
 
+  # Windowing and retrieval. Used by the keyword and anthropic providers; the
+  # openai provider sends the transcript whole and the syllabus whole.
   window_seconds: 240            # ~4 minutes per window
   window_overlap_seconds: 30
   top_k_candidates: 8
@@ -121,17 +142,18 @@ naming:
   # Alternative with more identifiers, if you want them:
   # template: "{date} - {chapter} - {topic} [{teacher}]{ext}"
 
-  # 80, not 120. Filenames carry keywords, not syllabus prose. A cap generous
-  # enough to admit "Intermolecular forces, electronegativity and bond
-  # properties" is a cap that will eventually admit it.
-  max_length: 80
+  # Sized for three real subtopic labels joined. What keeps a syllabus
+  # sentence out of a filename is not this number - it is that labels are
+  # rendered from each node's short_title and the classifier is never asked to
+  # write one. A name over the cap drops a whole subtopic rather than cutting
+  # one in half.
+  max_length: 120
 
-  # At most two subtopics in a name. Never three - see
-  # src/pipeline/classify/chapters.py. The separator is " + " rather than
-  # " & " because 25 of 51 chemistry short titles already contain "&"
-  # ("Chlorine & Disproportionation"), so joining two of them with "&"
-  # renders a two-subtopic name as four.
-  max_subtopics: 2
+  # At most three subtopics in a name; a fourth fails to load. The separator
+  # is " + " rather than " & " because 25 of 51 chemistry short titles already
+  # contain "&" ("Chlorine & Disproportionation"), so joining two of them with
+  # "&" renders a two-subtopic name as four.
+  max_subtopics: 3
   subtopic_separator: " + "
 
   # Characters that break Drive, Windows sync clients, and shell scripts.

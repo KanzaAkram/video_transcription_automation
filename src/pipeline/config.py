@@ -54,6 +54,12 @@ class Secrets(BaseSettings):
     zoom_webhook_secret_token: str | None = None
 
     anthropic_api_key: str | None = None
+    #: The classifier's key. Read by the OpenAI client from the environment as
+    #: well, so setting it here is for the .env path — pydantic-settings loads
+    #: .env into this object, not into os.environ, and the SDK only sees the
+    #: latter. `OpenAIClassifier` is handed this value explicitly for that
+    #: reason; see `ClassificationService`.
+    openai_api_key: str | None = None
 
     database_url: str = "sqlite+aiosqlite:///data/pipeline.db"
     redis_url: str = "redis://localhost:6379/0"
@@ -135,6 +141,34 @@ class ASRSettings(BaseModel):
 
 
 class ClassifySettings(BaseModel):
+    #: Which classifier decides where a recording goes.
+    #:
+    #: ``openai``   ChatGPT reads the whole transcript against the whole
+    #:              syllabus. The default, because the alternative is keyword
+    #:              overlap and keyword overlap cannot tell "taught this" from
+    #:              "said this word" — see `classify.openai_classifier`.
+    #: ``anthropic`` the same shape through Claude, over a retrieval shortlist.
+    #: ``keyword``  retrieval only, no API key. A baseline and an offline
+    #:              fallback, not a production path.
+    provider: Literal["openai", "anthropic", "keyword"] = "openai"
+
+    #: gpt-5 rather than a newer sibling because every account with API access
+    #: has it, and a default that 404s means the feature does not work at all
+    #: on first run. Set gpt-5.1 / gpt-5.2 / gpt-5.4 here if your account has
+    #: them; the call sends nothing model-specific.
+    openai_model: str = "gpt-5"
+    #: Sent only when set, so the same code reaches reasoning and non-reasoning
+    #: models. "medium" is the models' own default.
+    openai_reasoning_effort: Literal["minimal", "low", "medium", "high"] | None = None
+    #: Generous, because reasoning tokens are counted against it and the JSON
+    #: is emitted last: a limit hit mid-reasoning yields no parseable reply at
+    #: all, which is why `_ask` raises rather than salvaging one.
+    openai_max_output_tokens: int = 16000
+    #: A 90-minute transcript is a large prompt and reasoning is not fast.
+    openai_timeout_s: float = 300.0
+    #: For an Azure or proxy endpoint. None means api.openai.com.
+    openai_base_url: str | None = None
+
     model: str = "claude-opus-5"
     effort: Literal["low", "medium", "high", "xhigh", "max"] = "high"
     window_seconds: int = 240
@@ -163,19 +197,39 @@ class ClassifySettings(BaseModel):
 class NamingSettings(BaseModel):
     # Reproduces the existing convention: "Aug, 5 - Atomic Structure.mp4"
     template: str = "{month_abbr}, {day} - {topic}{part_suffix}{ext}"
-    # 80, not 120. The names being reproduced are "Sep, 4 - Sigma and Pie
-    # Bonds.mp4" — keywords, not sentences. A cap generous enough to admit a
-    # syllabus sentence is a cap that lets one through.
-    max_length: int = 80
+    #: What keeps a syllabus sentence out of a filename is no longer this
+    #: number — it is that labels are rendered from each node's `short_title`
+    #: and the classifier is never asked to write one. So the cap is sized for
+    #: what it now actually governs: three real subtopic labels joined. The
+    #: longest triple in the shipped syllabi is 155 characters (three A2
+    #: Biology lessons), and `naming.template` drops a whole subtopic rather
+    #: than cutting one in half, so 120 renders every two-subtopic name in
+    #: these syllabi intact and degrades the worst three-subtopic name to two
+    #: whole ones instead of "... + Muscle Structure and the Neuro".
+    max_length: int = 120
 
     #: How many syllabus subtopics may appear in one filename.
     #:
-    #: `le=2` is a hard rule, not a tuning knob, which is why it is expressed
-    #: as a validation bound rather than as a comment: a filename naming three
-    #: subtopics is unreadable, and every mechanism that could produce one —
-    #: config, an LLM reply, a hand-built Classification — has to be closed off
-    #: for the rule to hold. Setting 3 in settings.yaml fails to load.
-    max_subtopics: int = Field(default=2, ge=1, le=2)
+    #: `le=3` is a bound rather than a comment because every mechanism that
+    #: could produce a fourth — config, a model reply, a hand-built
+    #: Classification — has to be closed off for the rule to hold. Three is
+    #: where a lecture that genuinely worked through three subtopics stops
+    #: being describable and a filename stops being readable; setting 4 in
+    #: settings.yaml fails to load.
+    max_subtopics: int = Field(default=3, ge=1, le=3)
+    #: What a course-orientation session is called: the first class of a
+    #: course, the year plan, the exam timetable, the calculator policy. No
+    #: syllabus contains a subtopic for "the teacher read out the term dates",
+    #: so this is the one label that does not come from the taxonomy — and it
+    #: is a fixed configured string rather than anything a model wrote.
+    #:
+    #: It doubles as the lookup: a depth-0 node with this title is where such a
+    #: session is filed, which is how AS Chemistry's "0. Introduction" folder
+    #: gets used. One string for both, so the name and the folder cannot drift
+    #: apart. A syllabus with no such node still gets the name, and the
+    #: recording still goes to review, because there is nowhere to put it.
+    orientation_label: str = "Introduction"
+
     #: Joins the two: "Solubility in Solvents + Induced Dipoles".
     #:
     #: " + " rather than " & " because the titles being joined contain "&"

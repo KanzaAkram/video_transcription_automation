@@ -57,8 +57,11 @@ syllabus = [
     "pymupdf>=1.24",
 ]
 
-# Classification. Lightweight on purpose: BM25 retrieval plus the Claude call.
+# Classification. Lightweight on purpose: one API call plus BM25 retrieval.
+# `openai` is the default provider; `anthropic` is the earlier path and is kept
+# here so switching `classify.provider` never needs a second install.
 classify = [
+    "openai>=1.50",
     "anthropic>=0.40",
     "rank-bm25>=0.2.2",
 ]

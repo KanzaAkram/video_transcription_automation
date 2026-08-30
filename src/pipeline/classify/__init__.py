@@ -6,7 +6,7 @@ from pipeline.classify.chapters import (
 )
 from pipeline.classify.intent import IntentReader, IntentSettings, IntentSignal
 from pipeline.classify.retriever import CandidateSet, HybridRetriever
-from pipeline.classify.service import ClassificationService
+from pipeline.classify.service import ClassificationService, build_classifier
 
 __all__ = [
     "CandidateSet",
@@ -16,6 +16,7 @@ __all__ = [
     "IntentReader",
     "IntentSettings",
     "IntentSignal",
+    "build_classifier",
     "chapter_weights",
     "select_chapter",
     "select_subtopics",

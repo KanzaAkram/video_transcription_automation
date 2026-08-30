@@ -104,14 +104,25 @@ Zoom needs to POST to you over HTTPS. For development, a tunnel (`ngrok`, `cloud
 
 ---
 
-## 3. Anthropic API key
+## 3. OpenAI API key
 
-For classification.
+For classification — the step that decides which chapter a recording belongs to
+and which subtopics name it.
 
-1. <https://console.anthropic.com> → API keys → create one.
-2. `ANTHROPIC_API_KEY=sk-ant-...` in `.env`.
+1. <https://platform.openai.com/api-keys> → create one.
+2. `OPENAI_API_KEY=sk-...` in `.env`.
 
-Cost is a few cents per lecture. Set a spend limit in the console for peace of mind.
+Cost is a few cents per lecture unscoped, well under one with `--scope`. Set a
+spend limit in the console for peace of mind.
+
+The model is `classify.openai_model` in `config/settings.yaml`, default `gpt-5`
+because every account with API access has it. `gpt-5.1` and later are better
+where the account has them, and nothing in the call is model-specific.
+
+To use Claude instead, set `classify.provider: anthropic` and put
+`ANTHROPIC_API_KEY=sk-ant-...` in `.env`. To run with no API key at all, set
+`classify.provider: keyword` — see [CLASSIFICATION.md](CLASSIFICATION.md) for
+what that costs you in accuracy.
 
 ---
 
@@ -172,7 +183,7 @@ Then start the services and let the webhook drive it.
 - [ ] `.env` and `credentials/` are gitignored — verify with `git status` before your first commit
 - [ ] Service account key stored with restrictive file permissions
 - [ ] Zoom app scopes limited to the two listed above
-- [ ] Anthropic key has a spend limit set
+- [ ] OpenAI key has a spend limit set
 - [ ] `GOOGLE_DRIVE_ROOT_FOLDER_ID` is as narrow as possible — the pipeline cannot touch anything outside it
 - [ ] Production secrets in a secret manager, not a `.env` file on disk
 - [ ] A retention and access policy decided for transcripts — they contain student voices and names, and are more easily read than the video they came from

@@ -71,6 +71,11 @@ The cost is one cron task and one Drive `list` call every ten minutes. The alter
 
 ## ADR-005 — Hybrid retrieval before LLM classification
 
+> **Superseded by ADR-017.** Retrieval no longer narrows the field before the
+> model sees it; it runs alongside and is reported. The reasoning below is kept
+> because two of its three objections turned out to be right, and the third is
+> what changed.
+
 **Decision.** Narrow to ~8 candidate syllabus nodes with BM25 + embeddings, then have Claude choose among them with structured output.
 
 **Alternatives.**
@@ -137,6 +142,11 @@ The cost is one cron task and one Drive `list` call every ten minutes. The alter
 
 ## ADR-010 — Claude for classification
 
+> **Superseded by ADR-017.** The default provider is now OpenAI. The reasoning
+> below — that this is an evidence-weighing task where a strong model earns its
+> cost, and that structured output is what makes the reply safe to consume — is
+> unchanged and is why the classifier sits behind an interface at all.
+
 **Decision.** `claude-opus-5` with adaptive thinking and structured outputs.
 
 **Why.** The task is evidence-weighing, not pattern-matching: deciding whether a lecture that mentions isotopes throughout is *about* relative atomic mass or *about* atomic structure requires judgement, and this is where a strong model earns its cost. Structured outputs mean the response is schema-validated at the API layer — the pipeline never parses free text and cannot receive a malformed reply. The cost is a few cents per lecture, negligible against the GPU time already spent transcribing it.
@@ -200,3 +210,45 @@ Keeping the two sources separate is what makes the split safe. The syllabus half
 **Why.** The lesson layer (ADR-015) is unverified by design and permanent. Counting it would print "89 of 117 nodes unverified" on every single load — an expected, unfixable warning, which is the fastest way to teach an operator to ignore warnings. The actual risk being tracked is outcome text that was typed rather than extracted, because that is the text retrieval scores against.
 
 **Consequences.** The generated Biology taxonomy loads clean; the hand-written Chemistry one still warns, correctly, until its outcomes are regenerated from the 9701 PDF.
+
+---
+
+## ADR-017 — ChatGPT reads the whole lecture against the whole syllabus
+
+**Decision.** `classify.provider` defaults to `openai`. One call per lecture carries the entire syllabus subtree and the entire transcript, and returns one chapter id and one to three subtopic ids. Retrieval still runs, but only to report; it no longer narrows what the model may choose from. Supersedes ADR-005 and ADR-010.
+
+**Why.** Keyword coverage decides from vocabulary overlap, and vocabulary overlap cannot express two distinctions the task depends on.
+
+*Taught versus mentioned.* A teacher who explains glycolysis for fifty minutes without saying "glycolysis" loses to a chapter whose keywords happen to be spoken. Counting terms answers "which topic's words appear most", which is a different question from "what was this lecture about" and only usually has the same answer.
+
+*Content versus recap.* Every chapter-12 recording after the first opens with five to fifteen minutes revising the previous lesson. Those windows are real syllabus content and score exactly like it. On 11 August the recap won: the link reaction owns its own ten-minute window 51 terms to 9, but glycolysis leads across the file 69 to 85, and the lecture was proposed as *Glycolysis* — the name of the **previous** lesson. The confidence gate caught it at 0.46, so it routed to review rather than being misfiled. The gate working is not the same as the answer being right.
+
+Neither failure is visible in the filename it produces, which is what makes them worth paying to remove.
+
+**Why the whole syllabus and not a shortlist.** ADR-005's three objections, revisited:
+
+| Objection | Now |
+|---|---|
+| Expensive per lecture | 15,000–19,000 tokens for a full syllabus, 2,700 scoped to one chapter. A few cents unscoped. |
+| Slow | One call, no longer in a per-window loop. |
+| Long-context discrimination across similar topics is where models blur | **Still true**, and answered directly: the tree is nested so sibling subtopics are adjacent, each node carries its verbatim learning outcomes, and the reply must cite timestamped quotes. |
+
+Against that, narrowing has a cost that is not recoverable: a keyword shortlist can drop the right answer before anything has read the lecture, and no amount of downstream judgement gets it back. That is the same failure as above, moved one step earlier and made harder to see.
+
+**Why the model returns ids and never names.** The reply schema declares the legal node ids as a JSON Schema `enum` and is sent with `strict: true`, so a conforming reply cannot contain an id the syllabus does not have; the filename is then rendered from the taxonomy's own `short_title`. There is no field a made-up name could travel in. Every id is re-checked against the taxonomy anyway, because the enum is dropped for a syllabus too large to enumerate and because a schema constrains the reply and not the world.
+
+The alternative — a free-text `suggested_topic_label`, which the Claude path has — buys precision the taxonomy cannot express and costs a field with nothing behind it. It is also where the subtopic cap gets quietly lost: an abstaining reply still carries a label, because the schema marks every property required.
+
+**Consequences.** The renamer needs `OPENAI_API_KEY` to do its main job; `--classifier keyword` still runs offline and is what the tests and the dry run use, so nothing about the build depends on a key. The keyword path stays as the baseline the model is measured against — and printing its top three next to every decision, as the `keywords` line, is how the two are compared on real folders rather than in principle.
+
+---
+
+## ADR-018 — Three subtopics in a filename, not two
+
+**Decision.** `MAX_SUBTOPICS_IN_NAME` is 3. `naming.max_length` rises from 80 to 120, and a name over the cap drops a whole subtopic rather than cutting one in half.
+
+**Why.** The two-subtopic cap was the right bound for a classifier that ranked by coverage. Ranking can order subtopics; it cannot say a third was taught, so a third name would have been a guess presented as a fact — and `select_subtopics` still stops at two for exactly that reason. A model that has read the lecture can make that judgement, and lectures that genuinely work through three subtopics of one chapter exist.
+
+The length cap moves because its job changed. It was sized to keep a Cambridge syllabus sentence out of a filename; that is now structural — labels are rendered from each node's `short_title` and the classifier is never asked to write one — so the number is sized for what it now governs: three real labels joined. The longest such triple in the shipped syllabi is 155 characters, and dropping a whole subtopic to fit is what keeps "A + B" true where "A + B + Muscle Structure and the Neuro" would not be.
+
+**Consequences.** A fourth subtopic still raises rather than truncating, at the `Classification` boundary, so a model that stops following the instruction is visible instead of silently trimmed. Three-part filenames are longer than the archive's existing convention; that is the cost of naming a lecture accurately, and the two-part and one-part names are unchanged.

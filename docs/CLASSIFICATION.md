@@ -6,9 +6,18 @@ The requirement: **classify on content, not on title.** A Zoom meeting called "C
 
 ---
 
-## The pipeline
+## Two designs, and why the second replaced the first
 
 ```
+                          the default: classify.provider = openai
+transcript ──┬─► the whole transcript, timestamped ──┐
+             │                                       ├─► one ChatGPT call
+whole syllabus subtree, chapter → subtopic → lesson ─┘   (ids enumerated in
+             │                                            the reply schema)
+             └─► chapter id + 1–3 subtopic ids ──► confidence gate
+                                                   ──► file | review
+
+                          the baseline: classify.provider = keyword
 transcript
    │
    ├─► window into ~4-minute chunks with overlap
@@ -18,10 +27,37 @@ transcript
    │
    ├─► aggregate across windows ──► coverage profile + top-K candidates
    │
-   ├─► Claude: choose among candidates, cite evidence, or abstain
+   ├─► take the top node (or, with provider `anthropic`, hand the shortlist
+   │   to Claude to choose among and cite evidence for)
    │
    └─► confidence gate ──► file  |  review  |  leave alone
 ```
+
+The retrieval design below is sound and its coverage profile is genuinely
+useful, but it decides from **vocabulary overlap**, and vocabulary overlap
+cannot distinguish two things that matter:
+
+- **Taught from mentioned.** A teacher who explains glycolysis for fifty
+  minutes without saying "glycolysis" loses to a chapter whose keywords happen
+  to be said out loud.
+- **Content from recap.** Every lecture after the first opens with five to
+  fifteen minutes revising the previous one. Those windows are real syllabus
+  content and score exactly like it, so the recap competes with the subject —
+  and sometimes wins. See [RENAMING.md](RENAMING.md) for the 11 August
+  measurement where it did.
+
+Neither failure is visible in the filename it produces. So the default is now
+the model reading the lecture, and **the candidate list is the whole syllabus
+rather than a retrieval shortlist**: narrowing the options by keyword score
+before anything has read the transcript puts both failures back, one step
+earlier and harder to see.
+
+Retrieval still runs on the model path. Its coverage profile is reported —
+printed on every `rename_folder.py` line, stored in `rename_plan.json` and the
+sidecar — as the keyword evidence, so the two can be seen to disagree. Nothing
+is decided by it.
+
+Stages 1–3 below describe the retrieval path. Stage 4 describes both decisions.
 
 ---
 
@@ -71,7 +107,7 @@ chem.2_2    Moles & Avogadro         coverage 0.04   peak 0.21   windows  1/18
 
 Nodes here are **subtopics** (depth 1). Their **chapters** (depth 0) are what
 the file is placed into, and coverage is rolled up per chapter to decide that —
-see "One chapter, at most two subtopics" below.
+see "One chapter, one to three subtopics" below.
 
 `coverage` is the share of the lecture attributable to a node. This is the number that makes multi-topic lectures work:
 
@@ -85,65 +121,95 @@ It also detects **continuation lectures**: high coverage on a node that the prev
 
 ## Stage 4 — The decision
 
-One call to Claude with structured output. The model receives:
+### The default: ChatGPT (`src/pipeline/classify/openai_classifier.py`)
 
-1. **Candidate nodes** — top ~8 by fused score, each with full title path, learning-outcome text, keywords, and aliases
-2. **A window digest** — representative text per window with timestamps, not the whole transcript
-3. **The coverage profile** from stage 3
-4. **Weak signals** — date, teacher, Zoom meeting topic, the previous lecture's classification for this subject
+One call per lecture. The model receives:
 
-Weak signals are explicitly labelled as weak in the prompt. They are useful tie-breakers — a lecture the day after atomic structure is more likely to be relative atomic mass than organic chemistry — but the instruction is unambiguous that transcript evidence overrides them. This is what prevents drift back into title-based classification.
+1. **The whole syllabus subtree** — every chapter, subtopic and lesson, nested,
+   each with its id, verbatim title, filename label, aliases, keywords and
+   learning outcomes. Grouping nodes are shown and marked *do not return this
+   id*: the tree is what makes "one chapter" a decision the model can take, but
+   a lecture named after the chapter it is already filed in says nothing twice.
+2. **The whole transcript**, one timestamped line per 45 seconds. Not a window
+   digest — what a lecture is about is a fact about all of it, and the
+   timestamps are what let the model tell an opening recap from the subject.
+3. **Weak signals** — date, teacher, Zoom meeting topic, original filename,
+   labelled as weak and explicitly not to be classified from. These filenames
+   are `class 4 (9 aug).mp4`; they are evidence of nothing.
 
-### The response schema
+It also gets told the audio is code-switched Urdu and English with English
+technical terms, sometimes transcribed phonetically, and to read through the
+transcription errors rather than looking for exact syllabus wording.
 
 ```json
 {
-  "primary": {
-    "node_id": "string",
-    "confidence": 0.0,
-    "coverage": 0.0,
-    "evidence": [{"quote": "string", "start_s": 0.0}]
-  },
-  "secondary": [{"node_id": "string", "coverage": 0.0}],
-  "chapter_node_id": "string|null",
-  "chapter_weights": {"chem.moles_stoichiometry": 0.0},
-  "topic_node_ids": ["string"],
-  "is_continuation": false,
-  "suggested_topic_label": "string",
+  "chapter_id": "bio.topic_12",
+  "subtopics": [{"node_id": "bio.12_2.glycolysis", "coverage": 0.7}],
+  "confidence": 0.9,
+  "evidence": [{"quote": "string", "start_s": 0.0}],
   "reasoning": "string",
   "abstain": false,
-  "abstain_reason": "string|null"
+  "abstain_reason": "string"
 }
 ```
 
-`chapter_node_id` is the placement answer and `topic_node_ids` the naming one.
-They are separate fields rather than one because they answer different
-questions and can legitimately disagree in shape: one chapter, one *or two*
-subtopics. `topic_node_ids` is validated to at most two — the model is asked
-for at most two and the field **raises** rather than truncating if more arrive,
-because silently dropping the third would hide a model that had stopped
-following the instruction.
+**There is no field a filename could come from.** That is the design, not an
+omission. `chapter_id` and every `node_id` are declared in the schema as a JSON
+Schema `enum` of the actual syllabus ids and sent with `strict: true`, so a
+conforming reply *cannot* name something the syllabus does not have; the name
+is then rendered from the taxonomy's own `short_title` for those ids. A model
+that invents a subtopic has no way to spell it.
 
-## One chapter, at most two subtopics
+Three checks sit behind that, because a schema constrains the reply and not the
+world — the enum is dropped for a syllabus too large to enumerate, and a stale
+schema is always possible:
 
-Four rules, in `src/pipeline/classify/chapters.py`:
+- an id the taxonomy does not know is dropped;
+- an id belonging to a different chapter than the one just chosen is dropped,
+  because a name that disagrees with the folder misleads and only one of the
+  two is visible in a listing;
+- if nothing survives, the result is an **abstain** naming the ids that were
+  rejected — never a fallback guess.
+
+### The baseline, and the Claude path
+
+`provider: keyword` takes the top node off the coverage profile.
+`provider: anthropic` hands the top ~8 candidates, a window digest and the
+coverage profile to Claude, which chooses among them — the design the OpenAI
+path replaces. Its reply carries a `suggested_topic_label`, a free-text field
+that becomes a filename, which is exactly where "never more than three
+subtopics" gets quietly lost; `naming/template.py` caps and shortens it for
+that reason.
+
+## One chapter, one to three subtopics
+
+Four rules, in `src/pipeline/classify/chapters.py` and enforced wherever a
+`Classification` is built:
 
 1. A recording belongs to **exactly one chapter**. Chapters are Drive folders,
-   and a lecture is one lesson; it goes in one folder. Each subtopic's coverage
-   is attributed to its chapter, the totals are normalised, and the heaviest
-   wins — so four subtopics at 15% beat one at 50%, which is the right answer
-   when the lecture worked through most of a chapter.
+   and a lecture is one lesson; it goes in one folder. On the model path the
+   chapter is chosen first and the subtopics are constrained to it. On the
+   keyword path each subtopic's coverage is attributed to its chapter, the
+   totals are normalised, and the heaviest wins — so four subtopics at 15% beat
+   one at 50%, which is the right answer when the lecture worked through most
+   of a chapter.
 2. Most recordings cover **one subtopic**, and the filename is that subtopic's
    `short_title`.
-3. A recording that genuinely straddles two gets both, joined by `" & "`. The
-   second must clear an absolute coverage bar *and* a ratio of the first: the
-   two bars fail differently, and one alone lets through either a four-minute
-   aside or a weak runner-up to a weak winner.
-4. **Never three.** Capped in three places — `NamingSettings.max_subtopics`
-   (`le=2`), `Classification`'s validator, and `HARD_SUBTOPIC_CAP` in
-   `chapters.py` — because by three the filename is wider than the folder
-   listing and a name nobody reads is worse than a short name that is only
-   mostly right.
+3. A recording that genuinely straddles two or three gets each of them, joined
+   by `naming.subtopic_separator`. On the model path that judgement is the
+   model's, made from having read the lecture. On the keyword path a second
+   subtopic must clear an absolute coverage bar *and* a ratio of the first —
+   the two bars fail differently, and one alone lets through either a
+   four-minute aside or a weak runner-up to a weak winner — and a **third is
+   never selected at all**, whatever the cap allows. Coverage counting can rank
+   subtopics; it cannot say a third one was taught, and a name that asserts it
+   was would be a guess dressed as a fact.
+4. **Never four.** Capped in three places — `NamingSettings.max_subtopics`
+   (`le=3`), `Classification`'s validator, and `HARD_SUBTOPIC_CAP` in
+   `chapters.py`, which is imported from `models.MAX_SUBTOPICS_IN_NAME` so the
+   cap cannot half-move — because by four the filename is a table of contents,
+   and a name nobody reads is worse than a short name that is only mostly
+   right.
 
 The chapter's own node is never chosen as the second subtopic. Without that,
 the recap minutes at the start of a lecture produced
@@ -158,7 +224,18 @@ Schema-validated at the API layer, so a malformed response is impossible rather 
 - Makes failures diagnosable — wrong quote means retrieval failed; right quote with wrong conclusion means the taxonomy is ambiguous
 - Empirically improves accuracy, because a model that must ground its answer commits less to a plausible-sounding wrong one
 
-**`suggested_topic_label`** is what goes in the filename. Usually it's the node title, but for a lecture covering a specific slice it may be more precise — this is how you get `Aug, 10 - Relative Atomic Mass.mp4` rather than the blunter `Aug, 10 - Atomic Structure.mp4`.
+**`suggested_topic_label`** is a free-text name, and only the `anthropic` path
+produces one. It exists because a lecture covering a specific slice of a node
+can be named more precisely than the node — `Aug, 10 - Relative Atomic Mass.mp4`
+rather than the blunter `Aug, 10 - Atomic Structure.mp4`.
+
+The OpenAI path does not have this field and does not want it. It is the one
+place a name reaches a filename with no taxonomy behind it, which is why
+`naming/template.py` caps and shortens whatever arrives there: an abstaining
+reply still carries a label, because the schema marks every property required,
+and the unknown-node-id path clears the ids without clearing the label. Getting
+the same precision from node ids alone is what the hand-curated lesson layer is
+for — see [RENAMING.md](RENAMING.md).
 
 **`abstain`** exists so the model has an honest way out. Without it, a model asked to choose from a list will choose from the list, even when the right answer is "this is an exam debrief and belongs in none of these".
 

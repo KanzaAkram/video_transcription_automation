@@ -125,12 +125,26 @@ reached by a fallback on every other subject.
 An explicit `--level` still wins, and `lesson` falls back to `subtopic` where a
 syllabus has no lesson layer, so it is safe to pass against any subject.
 
-### Never more than two subtopics
+### One to three subtopics, never four
 
-A recording that genuinely straddles two subtopics is named for both, joined by
-` & ` — `Sep, 23 - Solubility in Solvents & Induced Dipoles.mp4`. Three is
-never produced: the cap is enforced in configuration (`max_subtopics`, bounded
-at 2), in the `Classification` model, and again in `chapters.py`.
+A recording that genuinely straddles more than one subtopic is named for each of
+them, joined by ` + ` — `Sep, 23 - Solubility in Solvents + Induced Dipoles.mp4`.
+A fourth is never produced: the cap is enforced in configuration
+(`max_subtopics`, bounded at 3), in the `Classification` model, and again in
+`chapters.py`, which imports the number from `models.MAX_SUBTOPICS_IN_NAME` so
+it cannot half-move.
+
+Three is reachable only on the model path. `--classifier keyword` stops at two
+however the cap is set, because it works from coverage counts: counting can rank
+subtopics but cannot say a third one was *taught*, and a name asserting it was
+would be a guess wearing the same clothes as a fact.
+
+A name that would run past `max_length` drops a whole subtopic rather than
+cutting one in half. "A + B + Muscle Structure and the Neuro" reads as a third
+subtopic whose name is wrong; "A + B" is a true, shorter statement about the
+same lecture. Only the pathological triples reach this — the longest
+three-subtopic label in the shipped syllabi is 155 characters against a
+120-character cap.
 
 A recording is also never split across two chapter folders. When a lecture
 touches several chapters, the transcript is weighted per chapter and the
@@ -178,16 +192,31 @@ and a taxonomy full of phantom topics numbered 38 and 40.
 
 ## What the classifier actually does
 
-Full detail is in [CLASSIFICATION.md](CLASSIFICATION.md). In short, per lecture:
+Full detail is in [CLASSIFICATION.md](CLASSIFICATION.md). The default path
+(`--classifier openai`) is short, because the decision is not decomposed:
+
+1. Send ChatGPT the **whole syllabus subtree** and the **whole transcript**, in
+   one call.
+2. Get back one chapter id and one to three subtopic ids, drawn from an
+   enumeration of that subtree, with coverage, confidence and quoted evidence.
+3. Render the filename from the syllabus' own titles for those ids. The model
+   never writes a name, so it cannot invent one.
+4. Anything under the confidence threshold gets ` (review)` appended to the
+   proposed name rather than being filed silently.
+
+The keyword path (`--classifier keyword`) is the older behaviour, kept for
+offline runs and as the baseline the model is measured against:
 
 1. Split the transcript into ~4-minute overlapping windows.
 2. Score every window against every candidate node (BM25, plus embeddings when
    `sentence-transformers` is installed).
 3. Aggregate into a **coverage profile** — "55% ATP, 18% Respiration, 9% Energy".
-4. Take the top node, or hand off to Claude to choose among the top candidates
-   and cite evidence.
-5. Anything under the confidence threshold gets ` (review)` appended to the
-   proposed name rather than being filed silently.
+4. Take the top node.
+5. Same review threshold.
+
+Retrieval still runs on the ChatGPT path, and its top three are printed on the
+`keywords` line of every run. Nothing is decided by them; they are there so the
+two can be seen to disagree, which is the whole reason the model path exists.
 
 ### Writing keywords that actually work
 
@@ -254,7 +283,8 @@ tuned as though they were will be wrong.
 ## Keyword-only or an LLM?
 
 Both are implemented, behind one interface, and `--classifier` switches between
-them. They are not equivalent, and the difference is not subtle.
+them. They are not equivalent, and the difference is not subtle. **The model is
+the default**; the evidence below is why.
 
 **Keyword retrieval gets most of the way there for free.** On the chapter-12
 recordings it names the right lesson on five of six, with no API key and no
@@ -307,36 +337,68 @@ Three specific things go wrong:
    read them — and over-fitting a baseline classifier to six recordings buys
    nothing that the LLM step does not buy properly.
 
-3. **The label is only ever a node title.** The keyword path can return
-   "The Krebs Cycle" because that node exists. It cannot notice that a lesson
-   covered the link reaction *and* the Krebs cycle and propose a name saying
-   so. `suggested_topic_label` from the LLM path is what produces a filename
-   more precise than the taxonomy.
+3. **It can only ever name one or two subtopics, and only by ranking them.**
+   The keyword path returns "The Krebs Cycle" because that node outscored the
+   others. It cannot notice that a lesson covered the link reaction *and* the
+   Krebs cycle *and* oxidative phosphorylation and say so, because a ranking
+   is not a judgement about what was taught — the third name would be a guess
+   wearing the same clothes as a fact. `select_subtopics` therefore stops at
+   two however high the cap is set, and that restraint is correct for what it
+   is working from.
 
-   That label is also the one field with no taxonomy behind it, so the rules
-   are applied to it twice. The structured-output schema makes every property
-   required, which means the model emits a label even on the reply that says it
-   could *not* place the lecture — so the label is dropped whenever there is no
-   primary node, and the naming layer caps and shortens whatever survives. A
-   free-text field that becomes a filename is exactly where "never three
-   subtopics" gets quietly lost.
+So the recommendation is now the opposite of what it once was: **run the model
+path**, and reach for `--classifier keyword` when you want a baseline to
+compare against or a run with no network.
 
-The practical recommendation: **run keyword-only first**, look at the plan, and
-add the LLM when you want the queue of `(review)` files to shrink.
+### How the ChatGPT path is set up
 
-The cost is not the reason to hesitate. One call per lecture, measured on the
-real chapter-12 prompts: **~6,900 input tokens** (eight candidate nodes with
-their learning outcomes, plus a windowed transcript digest) and one to two
-thousand output. At Claude Opus 5's $5 / $25 per million tokens that is **about
-seven cents a lecture** — roughly forty cents to classify this entire chapter,
-against the hour of CPU the transcription itself took. Classification is the
-cheap half of this pipeline by a wide margin.
+`--classifier openai` (the default) sends **one call per lecture**:
 
-The repo's LLM path calls **Claude** (`ClassifySettings.model`, default
-`claude-opus-5`) with a JSON schema on the response, so a malformed answer is
-impossible rather than merely unlikely. Nothing about the design is
-Claude-specific — it needs structured output and long context, which any
-frontier model provides.
+- **The whole syllabus subtree**, nested chapter → subtopic → lesson, with each
+  node's id, title, filename label, aliases, keywords and learning outcomes.
+  Not a retrieval shortlist. Filtering the options by keyword score before the
+  model reads the lecture would put failure 1 and 2 back: the right answer
+  could be missing from the list before anything had read a word.
+- **The whole transcript**, one timestamped line per 45 seconds. Not a window
+  digest and not the first five minutes — what a lecture is about is a fact
+  about all of it, and the timestamps are what let the model tell an opening
+  recap from the subject.
+
+What comes back is constrained twice:
+
+- The reply schema declares the legal node ids as a JSON Schema `enum` and is
+  sent with `strict: true`, so a conforming reply *cannot* contain an id the
+  syllabus does not have.
+- Every id is re-checked against the taxonomy anyway, and one belonging to a
+  different chapter than the one just chosen is dropped. A schema constrains
+  the reply, not the world.
+
+Then the filename is rendered from the taxonomy's own `short_title` for those
+ids. **The model returns ids and never a name**, which is what makes "no
+inventions" structural rather than a request: there is no path from a made-up
+name to a file on disk. `tests/test_openai_classifier.py` holds all of this,
+through a fake client, so none of it needs an API key to check.
+
+`OPENAI_API_KEY` goes in `.env` at the repo root. The model is
+`ClassifySettings.openai_model`, default `gpt-5` because every account with API
+access has it; `--ai-model gpt-5.1` or the `classify.openai_model` setting
+switches it, and nothing in the call is model-specific.
+
+Cost is not the reason to hesitate. The syllabus half of the prompt is
+measured: rendering all three shipped syllabi in full gives **15,000–19,000
+tokens** (A2 Biology 74.6k characters, AS Chemistry 59.9k, IGCSE Maths 64.8k),
+and `--scope bio.topic_12` cuts Biology's to about **2,700**. The transcript
+half has not been measured on a real recording and is on the order of ten to
+twenty thousand tokens for a full lecture. So: **a few cents a lecture
+unscoped, well under one scoped**, against the hour of CPU the transcription
+itself took. Classification is the cheap half of this pipeline by a wide
+margin — and `--scope` is still worth passing, now for accuracy first and cost
+second.
+
+The earlier Claude path is still there as `--classifier anthropic`
+(`ClassifySettings.model`, default `claude-opus-5`), also with a JSON schema on
+the response. It reads a retrieved shortlist rather than the whole syllabus,
+which is the design this replaces rather than a second opinion on it.
 
 ---
 

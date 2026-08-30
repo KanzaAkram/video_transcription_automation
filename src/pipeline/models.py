@@ -183,9 +183,14 @@ class TopicMatch(BaseModel):
 
 #: A filename may name at most this many syllabus subtopics. Stated once, here,
 #: because it has to hold for every path that can build a Classification — the
-#: keyword classifier, an LLM reply, a hand-written fixture — and a rule that
+#: keyword classifier, a model reply, a hand-written fixture — and a rule that
 #: lives in only one of those is not a rule.
-MAX_SUBTOPICS_IN_NAME = 2
+#:
+#: Three, not two: a lecture that works through three subtopics of one chapter
+#: is a real thing and the classifier can now see it, where keyword coverage
+#: could only ever rank. The bound still exists because a fourth subtopic is
+#: not a description of a lecture, it is a table of contents.
+MAX_SUBTOPICS_IN_NAME = 3
 
 
 class Classification(BaseModel):
@@ -228,12 +233,12 @@ class Classification(BaseModel):
 
     @field_validator("topic_node_ids")
     @classmethod
-    def _at_most_two_subtopics(cls, v: list[str]) -> list[str]:
-        """Refuse a third subtopic at the type boundary.
+    def _at_most_three_subtopics(cls, v: list[str]) -> list[str]:
+        """Refuse a fourth subtopic at the type boundary.
 
         Truncating silently would be friendlier and worse: the caller that
-        supplied three — most likely a model reply — would keep supplying
-        three, and nobody would ever see it.
+        supplied four — most likely a model reply — would keep supplying four,
+        and nobody would ever see it.
         """
         if len(v) > MAX_SUBTOPICS_IN_NAME:
             raise ValueError(

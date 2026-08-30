@@ -28,19 +28,24 @@
 # in the format requires it, and splitting topic 2 into an "Algebra" folder and
 # a "Graphs and Calculus" folder later is an overlay edit, not a schema change.
 #
-# -- No Drive folders exist for this subject yet -------------------------------
-# There is no Drive folder listing for IGCSE Maths at the time of writing, so
-# every chapter carries drive_folder_name: null and coursebook_chapter: null,
-# and teaching_order simply follows the syllabus topic order 1-9. That makes
-# the whole subject *pending*: the classifier can recognise every subtopic and
-# score against it, but placement routes to review rather than inventing a
-# folder to drop a file into.
+# -- Drive folders --------------------------------------------------------------
+# Every chapter carries a numbered drive_folder_name, matching the convention
+# the user's AS Chemistry tree already uses: "0. Introduction", "1. Number",
+# "2. Algebra and Graphs". The leading ordinal is teaching_order, so the folder
+# listing sorts into the order the course is actually taught rather than
+# alphabetically - which is the whole reason the numbers are there.
 #
-# When the folders do appear, fill in drive_folder_name - and coursebook_chapter,
-# and the real teaching_order, which almost certainly is not 1-9 - HERE, and
-# re-run the ingester. That is an overlay edit plus a regeneration. It is never
-# a code change: no part of the pipeline hard-codes a folder name, and any patch
-# that adds one is the bug, not the fix.
+# coursebook_chapter stays null: unlike Chemistry, there is no coursebook whose
+# chapter numbering disagrees with the teaching order, so there is no second
+# number to record. If one appears, it goes here and the folder name grows a
+# "(Chapter N)" suffix exactly as Chemistry's do - never derived from
+# teaching_order, which is the mistake ADR-013 exists to prevent.
+#
+# teaching_order currently follows the syllabus topic order 1-9. If the course
+# is taught in a different order, fix it HERE and re-run the ingester. That is
+# an overlay edit plus a regeneration; it is never a code change, because no
+# part of the pipeline hard-codes a folder name, and any patch that adds one is
+# the bug rather than the fix.
 #
 # -- What this particular syllabus does to your keywords -----------------------
 # The 0580 source is shaped differently from the Chemistry one and it bites in
@@ -198,12 +203,45 @@ subject_vocabulary:
 
 chapters:
 
+  # -- 0. Introduction --------------------------------------------------------
+  # Admin, not teaching. Excluded so a course-intro recording cannot absorb
+  # genuine content - an intro session name-checks half the syllabus in forty
+  # minutes and would otherwise outscore the lecture that actually taught it.
+  #
+  # It is still a real chapter with a real folder, because these sessions
+  # exist and have to go somewhere: the 5 August recording is fifty-six
+  # minutes of year plan, paper codes and calculator policy. Without this node
+  # the classifier knows exactly what that recording is and has nowhere to put
+  # it, so it lands in the folder root called "Unclassified".
+  #
+  # The title has to stay "Introduction": `naming.orientation_label` is the
+  # same string, and it is what finds this node.
+  - id: introduction
+    title: Introduction
+    teaching_order: 0
+    coursebook_chapter: null
+    drive_folder_name: "0. Introduction"
+    exclude_from_classification: true
+    aliases: [orientation, course intro, first class, welcome, induction]
+    keywords:
+      - syllabus
+      - year plan
+      - exam structure
+      - paper 1
+      - paper 2
+      - paper 3
+      - paper 4
+      - core and extended
+      - calculator policy
+      - grade boundaries
+      - course outline
+
   # -- 1 Number ---------------------------------------------------------------
   - id: number
     title: Number
     teaching_order: 1
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "1. Number"
     # "number" and "numbers" removed as aliases: they are this chapter's own
     # title, which search_document already indexes, and as keywords they fired
     # in 40 of 117 real windows including every chemistry lecture. "ratio" went
@@ -600,7 +638,7 @@ chapters:
     title: Algebra and Graphs
     teaching_order: 2
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "2. Algebra and Graphs"
     aliases: [algebra, algebra and graphs, topic 2, chapter 2, graphs]
     keywords:
       - expand the brackets
@@ -857,7 +895,7 @@ chapters:
     title: Coordinate Geometry
     teaching_order: 3
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "3. Coordinate Geometry"
     aliases: [coordinate geometry, topic 3, chapter 3, straight line graphs]
     keywords:
       - gradient
@@ -983,7 +1021,7 @@ chapters:
     title: Geometry
     teaching_order: 4
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "4. Geometry"
     # "angles" removed: an ordinary word that fired only on chemistry
     # ("angle of deflection"). The specific angle terms below discriminate.
     aliases: [geometry, topic 4, chapter 4, shape and space]
@@ -1145,7 +1183,7 @@ chapters:
     title: Mensuration
     teaching_order: 5
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "5. Mensuration"
     aliases: [mensuration, topic 5, chapter 5, area and volume, measures]
     keywords:
       - perimeter
@@ -1250,7 +1288,7 @@ chapters:
     title: Trigonometry
     teaching_order: 6
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "6. Trigonometry"
     aliases: [trigonometry, trig, topic 6, chapter 6]
     keywords:
       - Pythagoras
@@ -1377,7 +1415,7 @@ chapters:
     title: Transformations and Vectors
     teaching_order: 7
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "7. Transformations and Vectors"
     aliases: [transformations and vectors, transformations, vectors,
               topic 7, chapter 7]
     keywords:
@@ -1463,7 +1501,7 @@ chapters:
     title: Probability
     teaching_order: 8
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "8. Probability"
     aliases: [probability, topic 8, chapter 8, chance]
     keywords:
       - probability scale
@@ -1591,7 +1629,7 @@ chapters:
     title: Statistics
     teaching_order: 9
     coursebook_chapter: null
-    drive_folder_name: null
+    drive_folder_name: "9. Statistics"
     aliases: [statistics, stats, topic 9, chapter 9, data handling]
     # Bare "mean" and "mode" removed for the reason given on 9.3: they are
     # ordinary English ("I mean", "demo mode") and fired on lectures with no

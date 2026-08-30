@@ -21,7 +21,7 @@ Everything in this repo runs today against a **local filesystem stand-in for Goo
 | Google Drive adapter | Interface implemented, calls stubbed pending credentials |
 | Zoom client + webhook receiver | Interface implemented, calls stubbed pending credentials |
 | ASR (faster-whisper) | Provider implemented, needs GPU host + `ffmpeg` |
-| LLM classifier | Implemented against the Claude API, needs `ANTHROPIC_API_KEY` |
+| AI classifier | Implemented against the OpenAI API, needs `OPENAI_API_KEY`. A Claude path and a keyword-only baseline are also implemented — `classify.provider` switches. |
 
 ## Read these first
 
@@ -48,7 +48,8 @@ Zoom "recording.completed" webhook
   [ asr ]     faster-whisper large-v3, primed with syllabus vocabulary
         │
         ▼
-  [ classify ] retrieve candidate syllabus nodes → LLM picks + cites evidence
+  [ classify ] ChatGPT reads the whole transcript against the whole syllabus
+               → one chapter + one to three subtopic ids, with quoted evidence
         │
         ├── low confidence ──► _Needs Review folder + notification (never silently misfiled)
         ▼
@@ -92,7 +93,7 @@ It builds a miniature copy of your `AS Chemistry` tree under `.dryrun/`, drops t
 
 Both recordings carry the Zoom meeting topic `"Chemistry Class"`, which tells you nothing — the classification comes entirely from the transcript.
 
-The second outcome is the safety mechanism, not a failure: a misfiled lecture is worse than an unfiled one because it's invisible. Add `--llm` to use the real Claude classifier (needs `ANTHROPIC_API_KEY`); `--keep` leaves `.dryrun/` in place so you can inspect the result.
+The second outcome is the safety mechanism, not a failure: a misfiled lecture is worse than an unfiled one because it's invisible — and it is the keyword baseline being conservative, which is what it is for. Add `--ai` to classify with the real model instead (ChatGPT by default, needs `OPENAI_API_KEY`); `--keep` leaves `.dryrun/` in place so you can inspect the result.
 
 ## Other scripts
 
@@ -118,7 +119,7 @@ src/pipeline/
   media/           ffmpeg audio extraction and probing
   asr/             ASR provider interface + faster-whisper implementation
   syllabus/        taxonomy loading and the searchable index
-  classify/        candidate retrieval, LLM classifier, confidence policy
+  classify/        ChatGPT classifier, candidate retrieval, confidence policy
   naming/          filename templates, sanitising, collision handling
   placement/       syllabus node → Drive folder resolution
   orchestration/   task definitions and the state machine runner

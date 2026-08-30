@@ -11,6 +11,7 @@ rather than to authentication.
 
 from __future__ import annotations
 
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -131,14 +132,33 @@ def main() -> int:
             report(OK, "Zoom credentials present")
 
     # ── Classification ───────────────────────────────────────────────────────
-    if secrets.anthropic_api_key:
-        report(OK, f"Anthropic key present (model={settings.classify.model})")
-    else:
+    # Checked against the *configured* provider rather than against whichever
+    # key happens to be present: a run with `provider: openai` and only an
+    # Anthropic key set is misconfigured, and a check that reported "key
+    # present" would say so on exactly that run.
+    provider = settings.classify.provider
+    keys = {
+        "openai": ("OPENAI_API_KEY", secrets.openai_api_key, settings.classify.openai_model),
+        "anthropic": ("ANTHROPIC_API_KEY", secrets.anthropic_api_key, settings.classify.model),
+    }
+    if provider not in keys:
         report(
             WARN,
-            "ANTHROPIC_API_KEY not set — classification falls back to the "
-            "keyword baseline, which routes far more lectures to review",
+            "classify.provider is 'keyword' — no API key needed, and no lecture is "
+            "classified by reading it. Keyword coverage cannot tell a topic that was "
+            "taught from one that was named; set provider: openai for real placement",
         )
+    else:
+        env_name, value, model = keys[provider]
+        if value or os.environ.get(env_name):
+            report(OK, f"{provider} key present (model={model})")
+        else:
+            report(
+                WARN,
+                f"classify.provider is {provider!r} but {env_name} is not set — "
+                "classification falls back to the keyword baseline, which routes far "
+                "more lectures to review and misfiles some of the rest",
+            )
 
     # ── Local tooling ────────────────────────────────────────────────────────
     # ffmpeg is needed to extract audio from a Zoom download, not to

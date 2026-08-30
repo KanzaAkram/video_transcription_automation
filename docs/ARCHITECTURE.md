@@ -274,11 +274,26 @@ Four fields do the heavy lifting:
 
 The most important requirement you gave: **classify on what was actually taught, not on the recording title.** A Zoom title of "Chemistry Class" carries no information. The transcript carries all of it.
 
-Three stages: retrieve, decide, gate.
+Two stages on the default path — decide, then gate — with retrieval running
+alongside as reporting rather than as a filter.
 
 ### 7.1 Retrieve candidates
 
-Comparing a 12,000-word transcript against every syllabus node with an LLM would be slow, expensive, and worse — long-context comparison across dozens of similar chemistry topics is exactly where models blur distinctions. So retrieval narrows the field first.
+This was originally the first stage and is now a second opinion. The reasoning
+for it was that comparing a 12,000-word transcript against every syllabus node
+with an LLM would be slow, expensive, and worse, because long-context
+comparison across dozens of similar chemistry topics is where models blur
+distinctions. Two of the three turned out not to hold: a full syllabus is
+15,000–19,000 tokens and a lecture is ten to twenty thousand more, which is
+neither slow nor expensive at current prices. The third is a real risk, and the
+prompt answers it by nesting the tree, quoting each node's learning outcomes,
+and requiring timestamped evidence for the choice.
+
+What did hold is the cost of narrowing: a keyword shortlist can drop the right
+answer before anything has read the lecture, and then nothing downstream can
+recover it. So retrieval no longer gates the decision. It still runs, and its
+coverage profile is reported next to the model's answer so the two can be seen
+to disagree.
 
 The transcript is split into windows of a few minutes each. Each window is scored against every syllabus node by two independent methods:
 
@@ -289,34 +304,41 @@ Scores are fused and aggregated across windows into a ranked candidate list, typ
 
 ### 7.2 Decide
 
-One call to Claude (`claude-opus-5`, adaptive thinking, structured output). It receives:
+One call to ChatGPT (`classify.openai_model`, default `gpt-5`, structured
+output). It receives:
 
-- The candidate nodes with their full syllabus text
-- A window-by-window digest of the transcript
-- The coverage profile
-- The date, teacher, and any Zoom meeting topic — as **weak** signals, explicitly labelled as such
+- **The whole syllabus subtree**, nested chapter → subtopic → lesson, with each
+  node's id, title, filename label, aliases, keywords and learning outcomes
+- **The whole transcript**, one timestamped line per 45 seconds
+- The date, teacher, original filename and any Zoom meeting topic — as **weak**
+  signals, explicitly labelled as such and explicitly not to be classified from
 
 It returns a validated JSON object, not prose:
 
 ```json
 {
-  "primary": {
-    "node_id": "chem.atomic_structure.rel_masses",
-    "confidence": 0.91,
-    "coverage": 0.78,
-    "evidence": [
-      {"quote": "so the relative atomic mass is the weighted mean of the isotopes",
-       "start_s": 412.5}
-    ]
-  },
-  "secondary": [{"node_id": "chem.atomic_structure", "coverage": 0.18}],
-  "is_continuation": false,
+  "chapter_id": "chem.atomic_structure",
+  "subtopics": [{"node_id": "chem.2_1", "coverage": 0.78}],
+  "confidence": 0.91,
+  "evidence": [
+    {"quote": "so the relative atomic mass is the weighted mean of the isotopes",
+     "start_s": 412.5}
+  ],
   "reasoning": "Two thirds of the lecture derives weighted averages from mass spectra...",
-  "abstain": false
+  "abstain": false,
+  "abstain_reason": ""
 }
 ```
 
 Structured output means the response is schema-validated at the API layer, so the pipeline never parses free text and never has to handle a malformed reply.
+
+**The reply names ids and never names topics.** `chapter_id` and each `node_id`
+are declared in the schema as an `enum` of the actual syllabus ids, so a
+conforming reply cannot contain something the syllabus does not have; the
+filename is then rendered from the taxonomy's own `short_title` for those ids.
+There is no field a made-up name could travel in. Every id is re-checked
+against the taxonomy afterwards regardless, and one belonging to a different
+chapter than the one just chosen is dropped.
 
 **Evidence quotes with timestamps are required.** They are what makes a wrong classification debuggable — you can jump to 6:52 in the recording and see immediately whether the model was right. A classifier that says "Atomic Structure, trust me" is unauditable, and an unauditable classifier eventually silently degrades a folder tree.
 

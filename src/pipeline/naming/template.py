@@ -9,9 +9,10 @@ That is deliberate. A pipeline that renames everything into some new scheme
 would leave the existing archive inconsistent, so the default is your format
 and the template is configuration rather than code.
 
-The topic is one subtopic, or two joined by `subtopic_separator`, and never
-three. The second example above is the upper bound of what a name should be,
-not a typical one: most recordings teach one subtopic and are named for it.
+The topic is one subtopic, or up to three joined by `subtopic_separator`. The
+second example above is a typical two-subtopic name, not the upper bound: most
+recordings teach one subtopic and are named for it, and a name reaches three
+only when the lecture genuinely worked through three.
 
 Only the topic may be shortened. The date, the "(review)" marker, the part
 suffix and the extension each carry something a reader cannot recover from the
@@ -88,6 +89,28 @@ def _fit(text: str, budget: int) -> str:
     return _DANGLING_TAIL.sub("", text[:budget])
 
 
+def _fit_label(label: str, budget: int, settings: NamingSettings) -> str:
+    """Fit a joined subtopic label into `budget`, dropping whole names first.
+
+    A plain `_fit` on "A + B + C" stops mid-word and leaves "A + B + Muscle
+    Structure and the Neuro", which reads as a third subtopic whose name is
+    wrong rather than as a name with a third subtopic left off. Two subtopics
+    named correctly is a true, shorter statement about the lecture; two and a
+    fragment is not.
+
+    Only ever reached by the pathological triples — the longest three-subtopic
+    label in the shipped syllabi is 155 characters, against a 120-character
+    cap — so this changes nothing about ordinary names.
+    """
+    parts = _split_subtopics(label, settings)
+    while len(parts) > 1:
+        joined = settings.subtopic_separator.join(parts)
+        if len(joined) <= budget:
+            return joined
+        parts.pop()
+    return _fit(parts[0] if parts else label, budget)
+
+
 def _split_subtopics(label: str, settings: NamingSettings) -> list[str]:
     """Recover the individual subtopics inside an already-joined label.
 
@@ -117,10 +140,11 @@ def _topic_label(
 
     Four sources in falling order of authority:
 
-      1. `topic_node_ids` — the one or two subtopics the classifier committed
-         to, rendered through each node's `label` so the filename gets the
-         keyword form ("Shapes of Molecules") rather than the syllabus
-         sentence.
+      1. `topic_node_ids` — the one to three subtopics the classifier
+         committed to, rendered through each node's `label` so the filename
+         gets the keyword form ("Shapes of Molecules") rather than the
+         syllabus sentence. This is the only source the ChatGPT path uses:
+         it returns syllabus node ids and never a label of its own.
       2. `suggested_topic_label` — a free-text label, usually from the LLM.
       3. the primary node's own label.
       4. "Unclassified".
@@ -134,7 +158,7 @@ def _topic_label(
     model reply still carries one, because the reply schema makes every field
     mandatory, and the unknown-node-id path clears the ids without clearing the
     label. Guarding only the call sites that exist today would leave the next
-    one free to name three subtopics, so the guard sits at the single point
+    one free to name a fourth subtopic, so the guard sits at the single point
     every caller passes through.
     """
     label = _raw_topic_label(classification, taxonomy, settings)
@@ -143,7 +167,7 @@ def _topic_label(
         label = settings.subtopic_separator.join(parts[: settings.max_subtopics])
     # One field of a filename can never exceed the whole filename; build_name
     # trims further, to what the protected parts actually leave.
-    return _fit(label, settings.max_length)
+    return _fit_label(label, settings.max_length, settings)
 
 
 def _raw_topic_label(
@@ -305,8 +329,8 @@ def build_name(
         together, in whatever order the template puts them.
         """
         overhead = len(render(_PROBE, part_suffix)) - len(_PROBE)
-        name = render(_fit(topic, settings.max_length - overhead), part_suffix)
-        return _enforce_length(name, extension, settings.max_length)
+        fitted = _fit_label(topic, settings.max_length - overhead, settings)
+        return _enforce_length(render(fitted, part_suffix), extension, settings.max_length)
 
     candidate = render_fitted("")
     part_number: int | None = None

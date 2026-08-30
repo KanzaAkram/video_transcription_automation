@@ -1,19 +1,26 @@
-"""One chapter, one or two subtopics, never three.
+"""One chapter, one to three subtopics, never four.
 
 The rules being protected here are the user's, stated about their own archive:
 
   1. Most recordings cover exactly one syllabus subtopic, and the filename is
      that subtopic's name.
-  2. A recording covering two gets both names.
-  3. Never three or more. Hard cap.
+  2. A recording covering two or three gets each of their names.
+  3. Never four or more. Hard cap.
   4. A recording belongs to exactly one chapter folder, chosen by weighing the
      transcript per chapter rather than by following the single strongest
      subtopic.
   5. Filenames carry keywords, not syllabus sentences: "Shapes of Molecules",
      not "Intermolecular forces, electronegativity and bond properties".
 
-Rules 3 and 4 are the ones with teeth. Three subtopics in a name makes it
-unreadable; the wrong chapter makes the recording unfindable, and silently so.
+Rules 3 and 4 are the ones with teeth. A fourth subtopic turns a filename into
+a table of contents; the wrong chapter makes the recording unfindable, and
+silently so.
+
+The keyword classifier exercised here still returns at most two, and that is a
+statement about coverage counting rather than about filenames: it can rank
+subtopics but cannot tell "taught this" from "said this word", so a third name
+chosen that way would be a guess. Three is reachable through
+`classify.openai_classifier`, which reads the lecture.
 """
 
 from __future__ import annotations
@@ -188,20 +195,31 @@ def test_two_names_still_fit_the_default_length_cap(recording_factory, chem):
     assert len(name) <= NamingSettings().max_length
 
 
-# ── Rule 3: never three ───────────────────────────────────────────────────────
+# ── Rule 3: never four ────────────────────────────────────────────────────────
 
 
-def test_a_third_subtopic_is_refused_at_the_model_boundary():
+def test_a_fourth_subtopic_is_refused_at_the_model_boundary():
     """Not truncated — refused.
 
-    Silently dropping the third would be friendlier and worse: whatever
-    supplied three would go on supplying three, unseen.
+    Silently dropping the fourth would be friendlier and worse: whatever
+    supplied four would go on supplying four, unseen.
     """
-    with pytest.raises(ValidationError, match="at most 2 subtopics"):
-        Classification(topic_node_ids=["chem.3_5", "chem.3_6", "chem.3_7"])
+    with pytest.raises(ValidationError, match="at most 3 subtopics"):
+        Classification(topic_node_ids=["chem.3_5", "chem.3_6", "chem.3_7", "chem.1_1"])
 
 
-def test_a_third_subtopic_is_refused_on_assignment_too():
+def test_three_subtopics_are_accepted_at_the_model_boundary():
+    """The cap moved from two to three; it did not stop existing.
+
+    Three is a description a lecture can earn — the AI classifier reads the
+    whole transcript and can say "this taught these three" — where the keyword
+    path could only ever rank three. So the boundary has to admit it.
+    """
+    classification = Classification(topic_node_ids=["chem.3_5", "chem.3_6", "chem.3_7"])
+    assert classification.topic_node_ids == ["chem.3_5", "chem.3_6", "chem.3_7"]
+
+
+def test_a_fourth_subtopic_is_refused_on_assignment_too():
     """Construction already refused it. Assignment is the path the code takes.
 
     `classify/service.py` builds the Classification and then *assigns*
@@ -210,22 +228,45 @@ def test_a_third_subtopic_is_refused_on_assignment_too():
     used and was skipped on the one path everything uses.
     """
     classification = Classification(topic_node_ids=["chem.3_5"])
-    with pytest.raises(ValidationError, match="at most 2 subtopics"):
-        classification.topic_node_ids = ["chem.3_5", "chem.3_6", "chem.3_7"]
+    with pytest.raises(ValidationError, match="at most 3 subtopics"):
+        classification.topic_node_ids = ["chem.3_5", "chem.3_6", "chem.3_7", "chem.1_1"]
     assert classification.topic_node_ids == ["chem.3_5"]
 
 
-def test_a_third_subtopic_is_never_selected_however_strong(chem):
-    """Three subtopics of one chapter, all comfortably over both thresholds."""
+def test_the_keyword_classifier_never_selects_a_third_however_strong(chem):
+    """Three subtopics of one chapter, all comfortably over both thresholds.
+
+    The cap allows three now; coverage counting still must not produce one.
+    `select_subtopics` weighs the runner-up and stops, because a third name
+    chosen from window counts asserts something the counts cannot support.
+    """
     candidates = _candidates(chem, {"chem.3_5": 0.30, "chem.3_6": 0.25, "chem.3_7": 0.22})
     picked = select_subtopics(candidates, chem, "chem.chemical_bonding", ClassifySettings())
     assert [c.node.id for c in picked] == ["chem.3_5", "chem.3_6"]
 
 
+def test_the_keyword_cap_survives_the_shared_post_processing(chem):
+    """Regression: `select_subtopics` stopping at two was not enough.
+
+    `assign_chapter_and_topics` refills the subtopic list from `secondary`,
+    which on the keyword path carries reporting-only candidates that were
+    never picked. Raising `naming.max_subtopics` to 3 therefore produced
+    three-part keyword filenames through the back door, while the function
+    everyone reads to check the rule still returned two.
+
+    Three same-chapter subtopics within a few points of each other is the
+    shape that exposes it, and it is not exotic: a lecture working through one
+    chapter looks exactly like this to a word count.
+    """
+    result = _classify(chem, {"chem.3_5": 0.30, "chem.3_6": 0.28, "chem.3_7": 0.26})
+    assert result.topic_node_ids == ["chem.3_5", "chem.3_6"]
+
+
 def test_the_cap_cannot_be_raised_in_configuration():
     """Rule 3 expressed where it cannot be worked around."""
+    assert NamingSettings(max_subtopics=3).max_subtopics == 3
     with pytest.raises(ValidationError):
-        NamingSettings(max_subtopics=3)
+        NamingSettings(max_subtopics=4)
 
 
 def test_the_cap_is_honoured_when_lowered(recording_factory, chem):
@@ -251,25 +292,25 @@ def test_two_subtopics_never_read_as_four(recording_factory, chem):
     assert name.count(NamingSettings().subtopic_separator) == 1
 
 
-def test_a_free_text_label_naming_three_subtopics_is_capped(recording_factory, chem):
+def test_a_free_text_label_naming_four_subtopics_is_capped(recording_factory, chem):
     """The label is governed wherever it came from, not just where it is set.
 
     `suggested_topic_label` reaches the filename with no taxonomy behind it on
     two live paths: an abstaining reply still carries one, because the reply
     schema marks every property required, and the unknown-node-id path clears
     the ids and the primary but not the label. Capping at those two call sites
-    would leave the next one free to name three subtopics, so the cap lives at
-    the point every caller passes through.
+    would leave the next one free to name a fourth subtopic, so the cap lives
+    at the point every caller passes through.
     """
     classification = Classification(
-        suggested_topic_label="Enthalpy Change & Hess's Law & Bond Energies",
+        suggested_topic_label="Enthalpy Change & Hess's Law & Bond Energies & Entropy",
         abstain=True,
         abstain_reason="no candidate cleared the floor",
     )
     plan = build_name(
         _recording(recording_factory, day=23), classification, chem, NamingSettings()
     )
-    assert plan.filename == "Sep, 23 - Enthalpy Change + Hess's Law.mp4"
+    assert plan.filename == "Sep, 23 - Enthalpy Change + Hess's Law + Bond Energies.mp4"
 
 
 def test_a_verbose_free_text_label_is_held_to_the_length_rule(recording_factory, chem):

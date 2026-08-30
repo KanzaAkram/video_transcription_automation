@@ -1,4 +1,4 @@
-"""Choosing one chapter, then one or two subtopics inside it.
+"""Choosing one chapter, then the subtopics inside it — the keyword path.
 
 Two decisions that look like one and are not.
 
@@ -11,11 +11,15 @@ and a recording belongs to exactly one chapter. It is one lesson; it goes in
 one folder. Splitting it across two would double the archive without adding a
 single minute of teaching to it.
 
-**Which subtopics** is a naming decision, and it is capped at two. Most
-lectures cover exactly one subtopic and are named for it. A lecture that
-genuinely straddles two gets both. Three is never right: by then the filename
-is longer than the folder listing is wide, and a name nobody reads is worse
-than a short name that is only mostly right.
+**Which subtopics** is a naming decision, capped at `MAX_SUBTOPICS_IN_NAME`.
+Most lectures cover exactly one subtopic and are named for it; a lecture that
+genuinely straddles two or three gets each of them. `select_subtopics` here
+only ever returns one or two, and that is a statement about keyword coverage
+rather than about filenames: coverage can rank subtopics but cannot tell
+"taught this" from "said this word", so a third name chosen that way is a
+guess wearing the same clothes as a fact. The ChatGPT path
+(`classify.openai_classifier`) reads the lecture and can honestly return
+three.
 
 Everything here is a pure function over the CandidateSet retrieval already
 produced — no I/O, no model calls — so the decisions are testable in isolation
@@ -28,11 +32,13 @@ from dataclasses import dataclass
 
 from pipeline.classify.retriever import Candidate, CandidateSet
 from pipeline.config import ClassifySettings
+from pipeline.models import MAX_SUBTOPICS_IN_NAME
 from pipeline.syllabus import Taxonomy
 
 #: The rule stated where it cannot be configured away. `NamingSettings`
-#: enforces the same bound on input; this one bounds the output.
-HARD_SUBTOPIC_CAP = 2
+#: enforces the same bound on input; this one bounds the output. One number,
+#: imported rather than repeated, so raising the cap cannot half-happen.
+HARD_SUBTOPIC_CAP = MAX_SUBTOPICS_IN_NAME
 
 
 @dataclass(frozen=True)
@@ -155,6 +161,10 @@ def select_subtopics(
     max_subtopics: int = HARD_SUBTOPIC_CAP,
 ) -> list[Candidate]:
     """The one or two subtopics of `chapter_id` that name the file.
+
+    Two, never three, whatever `max_subtopics` allows: only the runner-up is
+    ever considered. Keyword coverage ranks subtopics, and a ranking is not
+    evidence that a third one was taught — see the module docstring.
 
     The thresholds live on ClassifySettings and the cap on NamingSettings, so
     the cap arrives as an argument rather than off `settings`: this module has
