@@ -481,6 +481,198 @@ def test_an_abstain_never_leaves_a_label_behind(bio, transcript, recording):
     assert name == "Aug, 9 - Unclassified.mp4"
 
 
+# ── Which part of the subtopic (the duplicate-name fix) ───────────────────────
+
+# Subtopic 12.1 with two outcomes that are plainly two different lessons — the
+# shape of AS Chemistry 1.1, which is seven outcomes over at least two lessons
+# and produced two recordings both called "Subatomic Particles".
+FOCUS_YAML = """
+version: 1
+subject_id: a2_biology
+subject_name: A2 Biology
+nodes:
+  - id: bio.topic_12
+    title: Energy and respiration
+    drive_folder_name: "chap 12-Respiration"
+    children:
+      - id: bio.12_1
+        title: Energy
+        short_title: Energy
+        keywords: [ATP]
+        learning_outcomes:
+          - code: "12.1.2"
+            text: >-
+              describe the features of ATP that make it suitable as the
+              universal energy currency
+            verified: true
+          - code: "12.1.5"
+            text: >-
+              state that the respiratory quotient is the ratio of carbon
+              dioxide produced to oxygen taken in
+            verified: true
+"""
+
+
+@pytest.fixture
+def focus_bio(tmp_path):
+    path = tmp_path / "focus.yaml"
+    path.write_text(FOCUS_YAML, encoding="utf-8")
+    return load_taxonomy(path)
+
+
+def _focus_classifier(tax, **reply_kw):
+    classifier = OpenAIClassifier(tax, ClassifySettings(), NamingSettings())
+    payload = _reply(
+        chapter_id="bio.topic_12",
+        subtopics=[{"node_id": "bio.12_1", "coverage": 0.8}],
+        **reply_kw,
+    )
+    completions = _FakeCompletions(payload)
+    classifier._client = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+    return classifier
+
+
+def test_two_lessons_on_one_subtopic_no_longer_share_a_name(
+    focus_bio, transcript, recording
+):
+    """The whole point of reading the learning outcomes.
+
+    Both lectures are subtopic 12.1, so both used to be called "Energy". The
+    syllabus distinguishes them one level down and now so does the filename.
+    """
+    first = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.2"], topic_keywords=["Universal Energy Currency"]
+    ).classify(recording, transcript)
+    second = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.5"], topic_keywords=["Respiratory Quotient"]
+    ).classify(recording, transcript)
+
+    naming = NamingSettings()
+    assert build_name(recording, first, focus_bio, naming).filename == (
+        "Aug, 9 - Universal Energy Currency.mp4"
+    )
+    assert build_name(recording, second, focus_bio, naming).filename == (
+        "Aug, 9 - Respiratory Quotient.mp4"
+    )
+
+
+def test_a_focus_word_the_syllabus_never_used_is_refused(focus_bio, transcript, recording):
+    """The one place the model chooses words, so the one place to check them.
+
+    "Mitochondria" may well be true of the lecture; it is not in outcome
+    12.1.2, so it cannot go in the filename. Dropped whole rather than
+    repaired, because a repaired phrase reads as though the syllabus said
+    something it did not.
+    """
+    result = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.2"], topic_keywords=["Energy Currency in Mitochondria"]
+    ).classify(recording, transcript)
+
+    assert result.focus is None
+    assert build_name(recording, result, focus_bio, NamingSettings()).filename == (
+        "Aug, 9 - Energy.mp4"
+    )
+
+
+def test_a_focus_is_grounded_only_in_the_outcomes_it_claimed(
+    focus_bio, transcript, recording
+):
+    """Grounding in an outcome the lecture did not teach is grounding in the
+    wrong thing. "Respiratory Quotient" is real syllabus wording — from the
+    other outcome."""
+    result = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.2"], topic_keywords=["Respiratory Quotient"]
+    ).classify(recording, transcript)
+    assert result.focus is None
+
+
+def test_connecting_words_do_not_have_to_be_in_the_syllabus(
+    focus_bio, transcript, recording
+):
+    """Otherwise "Behaviour in an Electric Field" fails on the word "an"."""
+    result = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.5"], topic_keywords=["Ratio of Carbon Dioxide to Oxygen"]
+    ).classify(recording, transcript)
+    assert result.focus == "Ratio of Carbon Dioxide to Oxygen"
+
+
+def test_a_grammatical_variant_of_syllabus_wording_is_allowed(
+    focus_bio, transcript, recording
+):
+    """Grounding is a quoting rule, not a spelling rule.
+
+    Cambridge writes outcomes as instructions - "describe the features of ATP"
+    - and a filename wants the noun phrase. Demanding the exact surface form
+    banned "Describing" and left names that are not English, so a word is
+    accepted when its stem matches one the syllabus used. The word still has to
+    be the syllabus', only conjugated.
+    """
+    result = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.5"], topic_keywords=["Ratios of Produced Carbon Dioxide"]
+    ).classify(recording, transcript)
+    # "ratios" from "ratio", "produced" from "produced" - all syllabus stems.
+    assert result.focus == "Ratios of Produced Carbon Dioxide"
+
+
+def test_no_focus_leaves_the_plain_subtopic_name(focus_bio, transcript, recording):
+    """A lecture that worked evenly through the subtopic has nothing to narrow,
+    and a focus restating the heading would add length and no information."""
+    result = _focus_classifier(focus_bio, outcome_codes=[], topic_keywords=[]).classify(
+        recording, transcript
+    )
+    assert result.focus is None
+    assert build_name(recording, result, focus_bio, NamingSettings()).filename == (
+        "Aug, 9 - Energy.mp4"
+    )
+
+
+def test_the_outcome_codes_are_kept_for_audit(focus_bio, transcript, recording):
+    """What the focus was drawn from, so a wrong one is diagnosable."""
+    result = _focus_classifier(
+        focus_bio, outcome_codes=["12.1.5"], topic_keywords=["Respiratory Quotient"]
+    ).classify(recording, transcript)
+    assert result.outcome_codes == ["12.1.5"]
+
+
+def test_several_keywords_are_joined_with_the_subtopic_separator(
+    focus_bio, transcript, recording
+):
+    """Two keywords render as "A + B", which is the shape the user asked for
+    and the shape the archive already uses for two subtopics."""
+    result = _focus_classifier(
+        focus_bio,
+        outcome_codes=["12.1.5"],
+        topic_keywords=["Respiratory Quotient", "Carbon Dioxide"],
+    ).classify(recording, transcript)
+    assert result.focus == "Respiratory Quotient + Carbon Dioxide"
+    name = build_name(recording, result, focus_bio, NamingSettings()).filename
+    assert name == "Aug, 9 - Respiratory Quotient + Carbon Dioxide.mp4"
+    # The subtopic heading is not in it.
+    assert "Energy" not in name
+
+
+def test_one_bad_keyword_does_not_cost_the_others(focus_bio, transcript, recording):
+    """Per keyword, not all-or-nothing: three phrases of which one is invented
+    should cost that one phrase, not the filename."""
+    result = _focus_classifier(
+        focus_bio,
+        outcome_codes=["12.1.5"],
+        topic_keywords=["Respiratory Quotient", "Cathode Ray Tubes"],
+    ).classify(recording, transcript)
+    assert result.focus == "Respiratory Quotient"
+
+
+def test_a_keyword_repeated_in_other_words_is_dropped(focus_bio, transcript, recording):
+    """"Respiratory Quotient + Quotient of Respiration" claims the lecture
+    covered two things when it covered one."""
+    result = _focus_classifier(
+        focus_bio,
+        outcome_codes=["12.1.5"],
+        topic_keywords=["Respiratory Quotient", "Quotient Respiratory"],
+    ).classify(recording, transcript)
+    assert result.focus == "Respiratory Quotient"
+
+
 # ── The class about the course, not about the subject ─────────────────────────
 
 ORIENTATION_YAML = TAXONOMY_YAML.replace(

@@ -1,0 +1,362 @@
+# Curation overlay for the A Level half of Cambridge AS & A Level Chemistry 9701
+# (2025-2027).
+#
+# The syllabus half of this taxonomy - topic and subtopic numbers, titles and
+# all 146 learning outcomes - is extracted verbatim from the official PDF by
+# scripts/ingest_syllabus.py and marked verified: true. Nothing in this file
+# repeats it. What lives here is only what the PDF cannot say:
+#
+#   drive_folder_name   which folder a chapter's recordings live in
+#   teaching_order      the order the chapters are actually taught in
+#   short_title         the KEYWORDS that go in the filename
+#   keywords / aliases  what a teacher says out loud
+#
+# -- Scope --------------------------------------------------------------------
+# 9701 is one syllabus covering two years, and the PDF interleaves them: topics
+# 1-22 are "AS Level subject content", 23-37 are "A Level subject content".
+# This overlay covers the A Level half only, which is what the "A2 chemistry"
+# recordings are. The AS half has its own taxonomy, built from a JSON source
+# rather than this PDF, and the two must not be merged: a lecture on A Level
+# Electrochemistry (24) and one on AS Electrochemistry (6) are different
+# lessons that share a title, and one taxonomy holding both would let a
+# recording be named after the wrong year of the course.
+#
+# -- Chapter folders ----------------------------------------------------------
+# One chapter per syllabus topic, numbered in syllabus order, matching the
+# convention the AS Chemistry Drive tree already uses ("1. Atomic Structure
+# (Chapter 1)"). teaching_order carries the leading ordinal so the folder
+# listing sorts into teaching order rather than alphabetically.
+#
+# coursebook_chapter is null throughout: there is no coursebook numbering on
+# record for this half yet. When there is, it goes HERE and the folder name
+# grows a "(Chapter N)" suffix - never derived from teaching_order, which is
+# the transposition ADR-013 exists to prevent.
+#
+# -- short_title --------------------------------------------------------------
+# Keywords only, 2-4 words, Title Case, under about 35 characters. Cambridge
+# writes subtopic titles as whole sentences - 27.1 is "Similarities and trends
+# in the properties of the Group 2 metals, magnesium to barium, and their
+# compounds" - and a filename made of that is unreadable. Where the syllabus
+# title is already short and concrete ("Electrolysis", "Phenol", "Amides") it
+# is kept verbatim.
+#
+# -- On keywords --------------------------------------------------------------
+# A keyword must be a phrase a teacher says out loud, and every token of it has
+# to land in the same window for it to count, so multi-word keywords are kept
+# short and concrete. It must also SEPARATE a subtopic from its siblings:
+# "reaction", "energy", "compound" and "structure" are said in every chemistry
+# lecture and discriminate nothing, so they are deliberately absent. What is
+# present is named methods and named objects - Born-Haber cycle, Nernst
+# equation, ligand exchange, azo dye, tetrahedral complex, Kstab.
+#
+# A term goes in keywords OR aliases, never both: retriever._keyword_hits
+# counts it once from each and search_document emits keywords twice plus
+# aliases once, so a duplicated term silently carries three times the weight.
+#
+# These matter less than they used to. The production classifier is ChatGPT
+# reading the learning outcomes, not BM25 counting keywords, so the outcome
+# text above carries most of the signal. Keywords still prime the Whisper
+# decoder and still feed the reported keyword line, which is why they are
+# curated rather than omitted.
+
+subject_id: a2_chemistry
+subject_name: A2 Chemistry
+syllabus_code: "9701"
+syllabus_years: "2025-2027"
+node_id_prefix: a2chem
+source: >-
+  Topic, subtopic and learning-outcome text extracted verbatim from the A Level
+  subject content of the official Cambridge International AS & A Level
+  Chemistry 9701 syllabus for 2025, 2026 and 2027. Drive folder names, teaching
+  order, short titles, keywords and aliases are hand-curated.
+
+subject_vocabulary:
+  - lattice energy
+  - Born-Haber cycle
+  - enthalpy of hydration
+  - enthalpy of solution
+  - electrode potential
+  - Nernst equation
+  - electrolysis
+  - Faraday
+  - Bronsted
+  - conjugate acid
+  - buffer solution
+  - solubility product
+  - partition coefficient
+  - rate equation
+  - order of reaction
+  - rate constant
+  - half-life
+  - heterogeneous catalyst
+  - transition element
+  - ligand
+  - complex ion
+  - ligand exchange
+  - stability constant
+  - stereoisomerism
+  - optical isomerism
+  - chiral
+  - arene
+  - benzene
+  - electrophilic substitution
+  - phenol
+  - acyl chloride
+  - ester
+  - amine
+  - phenylamine
+  - azo dye
+  - amide
+  - amino acid
+  - zwitterion
+  - condensation polymerisation
+  - polyester
+  - polyamide
+  - thin-layer chromatography
+  - Rf value
+  - NMR spectroscopy
+  - chemical shift
+  - deuterium
+
+# -- The Introduction chapter --------------------------------------------------
+# Not syllabus content, which is exactly why it is here rather than under
+# `topics`. The first session of a course is the year plan, the paper codes and
+# the calculator policy, and it has to go somewhere - without this node the
+# classifier recognises the recording perfectly and has nowhere to file it.
+#
+# The title has to stay "Introduction": `naming.orientation_label` is the same
+# string, and it is what finds this node.
+extra_chapters:
+  - id: introduction
+    title: Introduction
+    teaching_order: 0
+    drive_folder_name: "0. Introduction"
+    aliases: [orientation, course intro, first class, welcome, induction]
+    keywords:
+      - syllabus
+      - year plan
+      - exam structure
+      - paper 1
+      - paper 2
+      - paper 3
+      - paper 4
+      - grade boundaries
+      - course outline
+
+topics:
+
+  "23":
+    teaching_order: 1
+    drive_folder_name: "1. Chemical Energetics"
+    aliases: [energetics, lattice enthalpy, chapter 23]
+    keywords: [lattice energy, Born-Haber, enthalpy change, hydration]
+    subtopics:
+      "23.1":
+        short_title: "Lattice Energy & Born-Haber"
+        keywords: [lattice energy, Born-Haber cycle, electron affinity, atomisation, ionic charge]
+      "23.2":
+        short_title: "Solution & Hydration Enthalpies"
+        keywords: [enthalpy of solution, enthalpy of hydration, ionic radius, solubility]
+
+  "24":
+    teaching_order: 2
+    drive_folder_name: "2. Electrochemistry"
+    aliases: [electrochemistry, electrode potentials, chapter 24]
+    keywords: [electrolysis, electrode potential, electrochemical cell, Faraday]
+    subtopics:
+      "24.1":
+        short_title: "Electrolysis"
+        keywords: [electrolysis, Faraday constant, Avogadro constant, quantity of charge, electrode]
+      "24.2":
+        short_title: "Electrode & Cell Potentials"
+        keywords: [standard electrode potential, cell potential, Nernst equation, half-cell, salt bridge, feasibility]
+
+  "25":
+    teaching_order: 3
+    drive_folder_name: "3. Equilibria"
+    aliases: [equilibria, acids and bases, chapter 25]
+    keywords: [Bronsted, buffer, pH, solubility product, partition]
+    subtopics:
+      "25.1":
+        short_title: "Acids, Bases & Buffers"
+        keywords: [Bronsted-Lowry, conjugate acid, conjugate base, Ka, Kw, pH curve, buffer solution, indicator, solubility product, common ion effect]
+      "25.2":
+        short_title: "Partition Coefficients"
+        keywords: [partition coefficient, immiscible, solvent extraction]
+
+  "26":
+    teaching_order: 4
+    drive_folder_name: "4. Reaction Kinetics"
+    aliases: [kinetics, rate equations, chapter 26]
+    keywords: [rate equation, order of reaction, rate constant, catalyst]
+    subtopics:
+      "26.1":
+        short_title: "Rate Equations & Orders"
+        keywords: [rate equation, order of reaction, rate constant, rate-determining step, half-life, initial rates]
+      "26.2":
+        short_title: "Homogeneous & Heterogeneous Catalysts"
+        keywords: [homogeneous catalyst, heterogeneous catalyst, adsorption, active site]
+
+  "27":
+    teaching_order: 5
+    drive_folder_name: "5. Group 2"
+    aliases: [group 2, alkaline earth, chapter 27]
+    keywords: [magnesium, barium, thermal decomposition, group 2]
+    subtopics:
+      "27.1":
+        short_title: "Group 2 Trends"
+        keywords: [thermal decomposition, nitrate, carbonate, hydroxide solubility, magnesium, barium]
+
+  "28":
+    teaching_order: 6
+    drive_folder_name: "6. Transition Elements"
+    aliases: [transition elements, transition metals, chapter 28]
+    keywords: [transition element, ligand, complex ion, oxidation state, d orbital]
+    subtopics:
+      "28.1":
+        short_title: "Transition Element Properties"
+        keywords: [d block, incomplete d subshell, variable oxidation state, titanium, copper, electronic configuration]
+      "28.2":
+        short_title: "Complexes & Ligand Exchange"
+        keywords: [ligand, ligand exchange, coordination number, dative bond, complex ion, catalytic behaviour]
+      "28.3":
+        short_title: "Colour of Complexes"
+        keywords: [d orbital splitting, degenerate, colorimetry, wavelength absorbed, complementary colour]
+      "28.4":
+        short_title: "Stereoisomerism in Complexes"
+        keywords: [cis-platin, octahedral complex, square planar, geometric isomerism]
+      "28.5":
+        short_title: "Stability Constants"
+        keywords: [stability constant, Kstab, ligand substitution]
+
+  "29":
+    teaching_order: 7
+    drive_folder_name: "7. Intro to A2 Organic Chemistry"
+    aliases: [organic chemistry, isomerism, chapter 29]
+    keywords: [functional group, nomenclature, optical isomerism, sigma bond, pi bond]
+    subtopics:
+      "29.1":
+        short_title: "Formulas & Nomenclature"
+        keywords: [functional group, skeletal formula, displayed formula, homologous series, naming]
+      "29.2":
+        short_title: "Characteristic Organic Reactions"
+        keywords: [nucleophilic substitution, electrophilic addition, oxidation, reduction, hydrolysis]
+      "29.3":
+        short_title: "Sigma & Pi Bonds in Arenes"
+        keywords: [sigma bond, pi bond, delocalisation, planar, benzene ring]
+      "29.4":
+        short_title: "Optical Isomerism"
+        keywords: [optical isomerism, chiral centre, enantiomer, racemic mixture, plane-polarised light]
+
+  "30":
+    teaching_order: 8
+    drive_folder_name: "8. Arenes"
+    aliases: [arenes, benzene, chapter 30]
+    keywords: [benzene, arene, electrophilic substitution, nitration]
+    subtopics:
+      "30.1":
+        short_title: "Arenes"
+        keywords: [benzene, delocalisation, electrophilic substitution, nitration, halogenation, side-chain oxidation, Friedel-Crafts]
+
+  "31":
+    teaching_order: 9
+    drive_folder_name: "9. Halogen Compounds"
+    aliases: [halogen compounds, halogenoarenes, chapter 31]
+    keywords: [halogenoalkane, halogenoarene, carbon-halogen bond]
+    subtopics:
+      "31.1":
+        short_title: "Halogen Compounds"
+        keywords: [halogenoarene, relative resistance, hydrolysis, carbon-halogen bond strength]
+
+  "32":
+    teaching_order: 10
+    drive_folder_name: "10. Hydroxy Compounds"
+    aliases: [alcohols, phenol, chapter 32]
+    keywords: [alcohol, phenol, hydroxy]
+    subtopics:
+      "32.1":
+        short_title: "Alcohols"
+        keywords: [tri-iodomethane, iodoform, oxidation of alcohols]
+      "32.2":
+        short_title: "Phenol"
+        keywords: [phenol, phenoxide, acidity of phenol, bromination, nitration, sodium hydroxide]
+
+  "33":
+    teaching_order: 11
+    drive_folder_name: "11. Carboxylic Acids & Derivatives"
+    aliases: [carboxylic acids, esters, acyl chlorides, chapter 33]
+    keywords: [carboxylic acid, ester, acyl chloride, hydrolysis]
+    subtopics:
+      "33.1":
+        short_title: "Carboxylic Acids"
+        keywords: [carboxylic acid, acidity, chlorine substituent, lithium aluminium hydride, esterification]
+      "33.2":
+        short_title: "Esters"
+        keywords: [ester, acid hydrolysis, alkaline hydrolysis, saponification]
+      "33.3":
+        short_title: "Acyl Chlorides"
+        keywords: [acyl chloride, ethanoyl chloride, nucleophilic addition-elimination, phosphorus pentachloride]
+
+  "34":
+    teaching_order: 12
+    drive_folder_name: "12. Nitrogen Compounds"
+    aliases: [amines, amides, amino acids, chapter 34]
+    keywords: [amine, phenylamine, amide, amino acid, azo]
+    subtopics:
+      "34.1":
+        short_title: "Primary & Secondary Amines"
+        keywords: [primary amine, secondary amine, basicity, lone pair, ammonia]
+      "34.2":
+        short_title: "Phenylamine & Azo Compounds"
+        keywords: [phenylamine, diazonium salt, coupling reaction, azo dye, nitrobenzene reduction]
+      "34.3":
+        short_title: "Amides"
+        keywords: [amide, primary amide, secondary amide, amide hydrolysis]
+      "34.4":
+        short_title: "Amino Acids"
+        keywords: [amino acid, zwitterion, isoelectric point, peptide bond]
+
+  "35":
+    teaching_order: 13
+    drive_folder_name: "13. Polymerisation"
+    aliases: [polymers, polymerisation, chapter 35]
+    keywords: [condensation polymerisation, polyester, polyamide, monomer]
+    subtopics:
+      "35.1":
+        short_title: "Condensation Polymerisation"
+        keywords: [condensation polymerisation, polyester, polyamide, repeat unit, Terylene, nylon]
+      "35.2":
+        short_title: "Predicting Polymerisation Type"
+        keywords: [addition polymerisation, monomer structure, predicting type]
+      "35.3":
+        short_title: "Degradable Polymers"
+        keywords: [degradable polymer, photodegradable, biodegradable, hydrolysable]
+
+  "36":
+    teaching_order: 14
+    drive_folder_name: "14. Organic Synthesis"
+    aliases: [synthesis, synthetic route, chapter 36]
+    keywords: [synthetic route, multi-step synthesis, chiral drug]
+    subtopics:
+      "36.1":
+        short_title: "Organic Synthesis"
+        keywords: [synthetic route, multi-step synthesis, chiral drug, racemic]
+
+  "37":
+    teaching_order: 15
+    drive_folder_name: "15. Analytical Techniques"
+    aliases: [analysis, chromatography, NMR, chapter 37]
+    keywords: [chromatography, Rf value, NMR, chemical shift]
+    subtopics:
+      "37.1":
+        short_title: "Thin-Layer Chromatography"
+        keywords: [thin-layer chromatography, Rf value, stationary phase, mobile phase, retention]
+      "37.2":
+        short_title: "Gas & Liquid Chromatography"
+        keywords: [gas chromatography, liquid chromatography, retention time, peak area]
+      "37.3":
+        short_title: "Carbon-13 NMR"
+        keywords: [carbon-13 NMR, chemical shift, carbon environment, TMS]
+      "37.4":
+        short_title: "Proton NMR"
+        keywords: [proton NMR, splitting pattern, integration, deuterium exchange, n+1 rule, CDCl3]

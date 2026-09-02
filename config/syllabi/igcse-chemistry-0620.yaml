@@ -1,0 +1,1888 @@
+# IGCSE Chemistry 0620 (2026-2028)
+#
+# GENERATED — do not edit by hand. Regenerate with:
+#   python scripts/ingest_syllabus.py \
+#       --pdf config/syllabi/sources/igcse-chemistry-0620.pdf \
+#       --overlay config/syllabi/overlays/igcse-chemistry-0620.yaml \
+#       --out config/syllabi/igcse-chemistry-0620.yaml --section single
+#
+# Titles and learning outcomes are verbatim from the official PDF and are
+# marked verified. Keywords, aliases, Drive folder names and the lesson
+# layer come from the overlay: edit those there, not here.
+
+version: 1
+subject_id: igcse_chemistry
+subject_name: IGCSE Chemistry
+syllabus_code: '0620'
+syllabus_years: 2026-2028
+awarding_body: Cambridge International
+source: Topic, subtopic and learning-outcome text extracted verbatim from the official Cambridge IGCSE
+  Chemistry 0620 syllabus for 2026, 2027 and 2028 (Core and Supplement). Drive folder names, teaching
+  order, short titles, keywords and aliases are hand-curated.
+subject_vocabulary:
+- kinetic particle theory
+- diffusion
+- proton number
+- nucleon number
+- isotope
+- ionic bond
+- dot-and-cross diagram
+- covalent bond
+- giant covalent
+- metallic bonding
+- relative formula mass
+- mole
+- Avogadro constant
+- empirical formula
+- electrolysis
+- electrolyte
+- electrode
+- fuel cell
+- exothermic
+- endothermic
+- bond energy
+- rate of reaction
+- catalyst
+- reversible reaction
+- dynamic equilibrium
+- oxidation
+- reduction
+- redox
+- oxidising agent
+- acid
+- alkali
+- neutralisation
+- titration
+- amphoteric
+- salt preparation
+- Periodic Table
+- Group I
+- Group VII
+- halogen
+- transition element
+- noble gas
+- alloy
+- reactivity series
+- sacrificial protection
+- blast furnace
+- electroplating
+- fertiliser
+- catalytic converter
+- greenhouse gas
+- homologous series
+- functional group
+- hydrocarbon
+- fractional distillation
+- cracking
+- alkane
+- alkene
+- addition reaction
+- alcohol
+- fermentation
+- carboxylic acid
+- ester
+- addition polymerisation
+- chromatography
+- flame test
+nodes:
+- id: igchem.introduction
+  title: Introduction
+  teaching_order: 0
+  drive_folder_name: 0. Introduction
+  verified: true
+  exclude_from_classification: true
+  aliases:
+  - orientation
+  - course intro
+  - first class
+  - welcome
+  - induction
+  keywords:
+  - syllabus
+  - year plan
+  - exam structure
+  - paper 1
+  - paper 2
+  - paper 3
+  - paper 4
+  - grade boundaries
+  - course outline
+- id: igchem.topic_1
+  title: States of matter
+  syllabus_topic: '1'
+  teaching_order: 1
+  drive_folder_name: 1. States of Matter
+  verified: true
+  aliases:
+  - states of matter
+  - particle theory
+  - chapter 1
+  keywords:
+  - solid
+  - liquid
+  - gas
+  - kinetic particle theory
+  - diffusion
+  children:
+  - id: igchem.1_1
+    title: Solids, liquids and gases
+    short_title: Solids, Liquids & Gases
+    syllabus_topic: '1.1'
+    verified: true
+    keywords:
+    - kinetic particle theory
+    - melting
+    - boiling
+    - condensation
+    - sublimation
+    - pressure and temperature
+    learning_outcomes:
+    - code: 1.1.1
+      text: State the distinguishing properties of solids, liquids and gases
+      verified: true
+    - code: 1.1.2
+      text: Describe the structures of solids, liquids and gases in terms of particle separation, arrangement
+        and motion
+      verified: true
+    - code: 1.1.3
+      text: Describe changes of state in terms of melting, boiling, evaporating, freezing and condensing
+      verified: true
+    - code: 1.1.4
+      text: Describe the effects of temperature and pressure on the volume of a gas
+      verified: true
+    - code: 1.1.5
+      text: Explain changes of state in terms of kinetic particle theory, including the interpretation
+        of heating and cooling curves
+      verified: true
+    - code: 1.1.6
+      text: Explain, in terms of kinetic particle theory, the effects of temperature and pressure on the
+        volume of a gas
+      verified: true
+  - id: igchem.1_2
+    title: Diffusion
+    short_title: Diffusion
+    syllabus_topic: '1.2'
+    verified: true
+    keywords:
+    - diffusion
+    - relative molecular mass
+    - rate of diffusion
+    learning_outcomes:
+    - code: 1.2.1
+      text: Describe and explain diffusion in terms of kinetic particle theory
+      verified: true
+    - code: 1.2.2
+      text: Describe and explain the effect of relative molecular mass on the rate of diffusion of gases
+        Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+- id: igchem.topic_2
+  title: Atoms, elements and compounds
+  syllabus_topic: '2'
+  teaching_order: 2
+  drive_folder_name: 2. Atoms, Elements & Compounds
+  verified: true
+  aliases:
+  - atomic structure
+  - bonding
+  - chapter 2
+  keywords:
+  - atom
+  - proton
+  - neutron
+  - electron
+  - isotope
+  - bonding
+  children:
+  - id: igchem.2_1
+    title: Elements, compounds and mixtures
+    short_title: Elements, Compounds & Mixtures
+    syllabus_topic: '2.1'
+    verified: true
+    keywords:
+    - element
+    - mixture
+    - pure substance
+    learning_outcomes:
+    - code: 2.1.1
+      text: "\aDescribe the differences between elements, compounds and mixtures"
+      verified: true
+  - id: igchem.2_2
+    title: Atomic structure and the Periodic Table
+    short_title: Atomic Structure
+    syllabus_topic: '2.2'
+    verified: true
+    keywords:
+    - proton number
+    - nucleon number
+    - electronic configuration
+    - shell
+    - nucleus
+    learning_outcomes:
+    - code: 2.2.1
+      text: Describe the structure of the atom as a central nucleus containing neutrons and protons surrounded
+        by electrons in shells
+      verified: true
+    - code: 2.2.2
+      text: State the relative charges and relative masses of a proton, a neutron and an electron
+      verified: true
+    - code: 2.2.3
+      text: Define proton number / atomic number as the number of protons in the nucleus of an atom
+      verified: true
+    - code: 2.2.4
+      text: Define mass number / nucleon number as the total number of protons and neutrons in the nucleus
+        of an atom
+      verified: true
+    - code: 2.2.5
+      text: Determine the electronic configuration of elements and their ions with proton number 1 to
+        20, e.g. 2,8,3
+      verified: true
+    - code: 2.2.6
+      text: "State that: (a) \aGroup VIII noble gases have a full outer electron shell (b) \athe number\
+        \ of outer shell electrons is equal to the group number in Groups I to VII (c) \athe number of\
+        \ occupied electron shells is equal to the period number"
+      verified: true
+  - id: igchem.2_3
+    title: Isotopes
+    short_title: Isotopes
+    syllabus_topic: '2.3'
+    verified: true
+    keywords:
+    - isotope
+    - relative atomic mass
+    - same proton number
+    learning_outcomes:
+    - code: 2.3.1
+      text: Define isotopes as different atoms of the same element that have the same number of protons
+        but different numbers of neutrons
+      verified: true
+    - code: 2.3.2
+      text: Interpret and use symbols for atoms, e.g. 6 12C, and ions, e.g. 17 35Cl -
+      verified: true
+    - code: 2.3.3
+      text: State that isotopes of the same element have the same chemical properties because they have
+        the same number of electrons and therefore the same electronic configuration
+      verified: true
+    - code: 2.3.4
+      text: Calculate the relative atomic mass of an element from the relative masses and abundances of
+        its isotopes Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.2_4
+    title: Ions and ionic bonds
+    short_title: Ionic Bonding
+    syllabus_topic: '2.4'
+    verified: true
+    keywords:
+    - cation
+    - anion
+    - ionic bond
+    - dot-and-cross diagram
+    - giant lattice
+    - electrostatic attraction
+    learning_outcomes:
+    - code: 2.4.1
+      text: Describe the formation of positive ions, known as cations, and negative ions, known as anions
+      verified: true
+    - code: 2.4.2
+      text: State that an ionic bond is a strong electrostatic attraction between oppositely charged ions
+      verified: true
+    - code: 2.4.3
+      text: Describe the formation of ionic bonds between elements from Group I and Group VII, including
+        the use of dot-and-cross diagrams
+      verified: true
+    - code: 2.4.4
+      text: "Describe the properties of ionic compounds: (a) \ahigh melting points and boiling points\
+        \ (b) \agood electrical conductivity when aqueous or molten and poor when solid"
+      verified: true
+    - code: 2.4.5
+      text: Describe the giant lattice structure of ionic compounds as a regular arrangement of alternating
+        positive and negative ions
+      verified: true
+    - code: 2.4.6
+      text: Describe the formation of ionic bonds between ions of metallic and non-metallic elements,
+        including the use of dot-and-cross diagrams
+      verified: true
+    - code: 2.4.7
+      text: "Explain in terms of structure and bonding the properties of ionic compounds: (a) high melting\
+        \ points and boiling points (b) \agood electrical conductivity when aqueous or molten and poor\
+        \ when solid"
+      verified: true
+  - id: igchem.2_5
+    title: Simple molecules and covalent bonds
+    short_title: Covalent Bonding
+    syllabus_topic: '2.5'
+    verified: true
+    keywords:
+    - covalent bond
+    - shared pair
+    - simple molecular
+    - intermolecular force
+    learning_outcomes:
+    - code: 2.5.1
+      text: State that a covalent bond is formed when a pair of electrons is shared between two atoms
+        leading to noble gas electronic configurations
+      verified: true
+    - code: 2.5.2
+      text: Describe the formation of covalent bonds in simple molecules, including H2, Cl 2, H2O, CH4,
+        NH3 and HCl. Use dot-and-cross diagrams to show the electronic configurations in these and similar
+        molecules
+      verified: true
+    - code: 2.5.3
+      text: 'Describe in terms of structure and bonding the properties of simple molecular compounds:
+        (a) low melting points and boiling points (b) poor electrical conductivity'
+      verified: true
+    - code: 2.5.4
+      text: Describe the formation of covalent bonds in simple molecules, including CH3OH, C2H4, O2, CO2
+        and N2. Use dot-and-cross diagrams to show the electronic configurations in these and similar
+        molecules
+      verified: true
+    - code: 2.5.5
+      text: "Explain in terms of structure and bonding the properties of simple molecular compounds: (a)\
+        \ \alow melting points and boiling points in terms of weak intermolecular forces (specific types\
+        \ of intermolecular forces are not required) (b) poor electrical conductivity"
+      verified: true
+  - id: igchem.2_6
+    title: Giant covalent structures
+    short_title: Giant Covalent Structures
+    syllabus_topic: '2.6'
+    verified: true
+    keywords:
+    - diamond
+    - graphite
+    - silicon dioxide
+    - giant covalent
+    - layer
+    learning_outcomes:
+    - code: 2.6.1
+      text: Describe the giant covalent structures of graphite and diamond
+      verified: true
+    - code: 2.6.2
+      text: 'Relate the structures and bonding of graphite and diamond to their uses, limited to: (a)
+        graphite as a lubricant and as an electrode (b) diamond in cutting tools'
+      verified: true
+    - code: 2.6.3
+      text: Describe the giant covalent structure of silicon(IV) oxide, SiO2
+      verified: true
+    - code: 2.6.4
+      text: Describe the similarity in properties between diamond and silicon(IV) oxide, related to their
+        structures Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.2_7
+    title: Metallic bonding
+    short_title: Metallic Bonding
+    syllabus_topic: '2.7'
+    verified: true
+    keywords:
+    - metallic bonding
+    - sea of electrons
+    - delocalised
+    - positive ion lattice
+    learning_outcomes:
+    - code: 2.7.1
+      text: Describe metallic bonding as the electrostatic attraction between the positive ions in a giant
+        metallic lattice and a 'sea' of delocalised electrons
+      verified: true
+    - code: 2.7.2
+      text: 'Explain in terms of structure and bonding the properties of metals: (a) good electrical conductivity
+        (b) malleability and ductility'
+      verified: true
+- id: igchem.topic_3
+  title: Stoichiometry
+  syllabus_topic: '3'
+  teaching_order: 3
+  drive_folder_name: 3. Stoichiometry
+  verified: true
+  aliases:
+  - stoichiometry
+  - moles
+  - chapter 3
+  keywords:
+  - formula
+  - mole
+  - Avogadro constant
+  - relative formula mass
+  children:
+  - id: igchem.3_1
+    title: Formulae
+    short_title: Formulae & Equations
+    syllabus_topic: '3.1'
+    verified: true
+    keywords:
+    - chemical formula
+    - balanced equation
+    - state symbol
+    - ionic equation
+    learning_outcomes:
+    - code: 3.1.1
+      text: State the formulae of the elements and compounds named in the subject content
+      verified: true
+    - code: 3.1.2
+      text: Define the molecular formula of a compound as the number and type of different atoms in one
+        molecule
+      verified: true
+    - code: 3.1.3
+      text: Deduce the formula of a simple compound from the relative numbers of atoms present in a model
+        or a diagrammatic representation
+      verified: true
+    - code: 3.1.4
+      text: Construct word equations and symbol equations to show how reactants form products, including
+        state symbols
+      verified: true
+    - code: 3.1.5
+      text: Define the empirical formula of a compound as the simplest whole number ratio of the different
+        atoms or ions in a compound
+      verified: true
+    - code: 3.1.6
+      text: Deduce the formula of an ionic compound from the relative numbers of the ions present in a
+        model or a diagrammatic representation or from the charges on the ions
+      verified: true
+    - code: 3.1.7
+      text: Construct symbol equations with state symbols, including ionic equations
+      verified: true
+    - code: 3.1.8
+      text: Deduce the symbol equation with state symbols for a chemical reaction, given relevant information
+      verified: true
+  - id: igchem.3_2
+    title: Relative masses of atoms and molecules
+    short_title: Relative Masses
+    syllabus_topic: '3.2'
+    verified: true
+    keywords:
+    - relative atomic mass
+    - relative molecular mass
+    - relative formula mass
+    learning_outcomes:
+    - code: 3.2.1
+      text: Describe relative atomic mass, Ar, as the average mass of the isotopes of an element compared
+        to 1/12th of the mass of an atom of 12C
+      verified: true
+    - code: 3.2.2
+      text: Define relative molecular mass, Mr, as the sum of the relative atomic masses. Relative formula
+        mass, Mr, will be used for ionic compounds
+      verified: true
+    - code: 3.2.3
+      text: Calculate reacting masses in simple proportions. Calculations will not involve the mole concept
+      verified: true
+  - id: igchem.3_3
+    title: The mole and the Avogadro constant
+    short_title: Moles & Avogadro
+    syllabus_topic: '3.3'
+    verified: true
+    keywords:
+    - mole
+    - Avogadro constant
+    - molar gas volume
+    - concentration
+    - empirical formula
+    - limiting reactant
+    - percentage yield
+    learning_outcomes:
+    - code: 3.3.1
+      text: State that concentration can be measured in g / dm3 or mol / dm3
+      verified: true
+    - code: 3.3.2
+      text: State that the mole, mol, is the unit of amount of substance and that one mole contains 6.02
+        × 1023 particles, e.g. atoms, ions, molecules; this number is the Avogadro constant
+      verified: true
+    - code: 3.3.3
+      text: "Use the relationship amount of substance (mol) = mass (g) molar mass (g / mol) to calculate:\
+        \ (a) amount of substance (b) mass (c) molar mass (d) \arelative atomic mass or relative molecular\
+        \ / formula mass (e) \anumber of particles, using the value of the Avogadro constant"
+      verified: true
+    - code: 3.3.4
+      text: Use the molar gas volume, taken as 24 dm3 at room temperature and pressure, r.t.p., in calculations
+        involving gases
+      verified: true
+    - code: 3.3.5
+      text: Calculate stoichiometric reacting masses, limiting reactants, volumes of gases at r.t.p.,
+        volumes of solutions and concentrations of solutions expressed in g / dm3 and mol / dm3, including
+        conversion between cm3 and dm3
+      verified: true
+    - code: 3.3.6
+      text: Use experimental data from a titration to calculate the moles of solute, or the concentration
+        or volume of a solution
+      verified: true
+    - code: 3.3.7
+      text: Calculate empirical formulae and molecular formulae, given appropriate data
+      verified: true
+    - code: 3.3.8
+      text: Calculate percentage yield, percentage composition by mass and percentage purity, given appropriate
+        data
+      verified: true
+- id: igchem.topic_4
+  title: Electrochemistry
+  syllabus_topic: '4'
+  teaching_order: 4
+  drive_folder_name: 4. Electrochemistry
+  verified: true
+  aliases:
+  - electrolysis
+  - electrochemistry
+  - chapter 4
+  keywords:
+  - electrolysis
+  - electrode
+  - electrolyte
+  - fuel cell
+  children:
+  - id: igchem.4_1
+    title: Electrolysis
+    short_title: Electrolysis
+    syllabus_topic: '4.1'
+    verified: true
+    keywords:
+    - electrolysis
+    - anode
+    - cathode
+    - electrolyte
+    - molten
+    - aqueous
+    - electroplating
+    - half-equation
+    learning_outcomes:
+    - code: 4.1.1
+      text: Define electrolysis as the decomposition of an ionic compound, when molten or in aqueous solution,
+        by the passage of an electric current
+      verified: true
+    - code: 4.1.2
+      text: "Identify in simple electrolytic cells: (a)\a the anode as the positive electrode (b) \athe\
+        \ cathode as the negative electrode (c) \athe electrolyte as the molten or aqueous substance that\
+        \ undergoes electrolysis"
+      verified: true
+    - code: 4.1.3
+      text: 'Identify the products formed at the electrodes and describe the observations made during
+        the electrolysis of: (a) molten lead(II) bromide (b) concentrated aqueous sodium chloride (c)
+        dilute sulfuric acid using inert electrodes made of platinum or carbon / graphite'
+      verified: true
+    - code: 4.1.4
+      text: State that metals or hydrogen are formed at the cathode and that non-metals (other than hydrogen)
+        are formed at the anode
+      verified: true
+    - code: 4.1.5
+      text: Predict the identity of the products at each electrode for the electrolysis of a binary compound
+        in the molten state
+      verified: true
+    - code: 4.1.6
+      text: State that metal objects are electroplated to improve their appearance and resistance to corrosion
+      verified: true
+    - code: 4.1.7
+      text: Describe how metals are electroplated
+      verified: true
+  - id: igchem.4_2
+    title: Hydrogen-oxygen fuel cells
+    short_title: Hydrogen-Oxygen Fuel Cells
+    syllabus_topic: '4.2'
+    verified: true
+    keywords:
+    - fuel cell
+    - hydrogen-oxygen
+    - advantages and disadvantages
+    learning_outcomes:
+    - code: 4.2.1
+      text: State that a hydrogen-oxygen fuel cell uses hydrogen and oxygen to produce electricity with
+        water as the only chemical product
+      verified: true
+    - code: 4.2.2
+      text: Describe the advantages and disadvantages of using hydrogen-oxygen fuel cells in comparison
+        with gasoline / petrol engines in vehicles Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027
+        and 2028. Subject content
+      verified: true
+- id: igchem.topic_5
+  title: Chemical energetics
+  syllabus_topic: '5'
+  teaching_order: 5
+  drive_folder_name: 5. Chemical Energetics
+  verified: true
+  aliases:
+  - energetics
+  - energy changes
+  - chapter 5
+  keywords:
+  - exothermic
+  - endothermic
+  - bond energy
+  - enthalpy
+  children:
+  - id: igchem.5_1
+    title: Exothermic and endothermic reactions
+    short_title: Exothermic & Endothermic Reactions
+    syllabus_topic: '5.1'
+    verified: true
+    keywords:
+    - exothermic
+    - endothermic
+    - reaction pathway diagram
+    - bond breaking
+    - bond making
+    - activation energy
+    - bond energy
+    learning_outcomes:
+    - code: 5.1.1
+      text: State that an exothermic reaction transfers thermal energy to the surroundings leading to
+        an increase in the temperature of the surroundings
+      verified: true
+    - code: 5.1.2
+      text: State that an endothermic reaction takes in thermal energy from the surroundings leading to
+        a decrease in the temperature of the surroundings
+      verified: true
+    - code: 5.1.3
+      text: Interpret reaction pathway diagrams showing exothermic and endothermic reactions
+      verified: true
+    - code: 5.1.4
+      text: State that the transfer of thermal energy during a reaction is called the enthalpy change,
+        ∆H, of the reaction. ∆H is negative for exothermic reactions and positive for endothermic reactions
+      verified: true
+    - code: 5.1.5
+      text: Define activation energy, Ea, as the minimum energy that colliding particles must have to
+        react
+      verified: true
+    - code: 5.1.6
+      text: 'Draw and label reaction pathway diagrams for exothermic and endothermic reactions using information
+        provided, to include: (a) reactants (b) products (c) enthalpy change of the reaction, ∆H (d) activation
+        energy, Ea'
+      verified: true
+    - code: 5.1.7
+      text: State that bond breaking is an endothermic process and bond making is an exothermic process
+        and explain the enthalpy change of a reaction in terms of bond breaking and bond making
+      verified: true
+    - code: 5.1.8
+      text: Calculate the enthalpy change of a reaction using bond energies Cambridge IGCSE Chemistry
+        0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+- id: igchem.topic_6
+  title: Chemical reactions
+  syllabus_topic: '6'
+  teaching_order: 6
+  drive_folder_name: 6. Chemical Reactions
+  verified: true
+  aliases:
+  - rates
+  - equilibrium
+  - redox
+  - chapter 6
+  keywords:
+  - rate of reaction
+  - catalyst
+  - reversible
+  - equilibrium
+  - redox
+  children:
+  - id: igchem.6_1
+    title: Physical and chemical changes
+    short_title: Physical & Chemical Changes
+    syllabus_topic: '6.1'
+    verified: true
+    keywords:
+    - physical change
+    - chemical change
+    learning_outcomes:
+    - code: 6.1.1
+      text: Identify physical and chemical changes, and describe the differences between them
+      verified: true
+  - id: igchem.6_2
+    title: Rate of reaction
+    short_title: Rate of Reaction
+    syllabus_topic: '6.2'
+    verified: true
+    keywords:
+    - rate of reaction
+    - surface area
+    - catalyst
+    - collision
+    - concentration
+    - photochemical
+    learning_outcomes:
+    - code: 6.2.1
+      text: "Describe the effect on the rate of reaction of: (a) changing the concentration of solutions\
+        \ (b) changing the pressure of gases (c) changing the surface area of solids (d) changing the\
+        \ temperature (e) \aadding or removing a catalyst, including enzymes"
+      verified: true
+    - code: 6.2.2
+      text: State that a catalyst increases the rate of a reaction and is unchanged at the end of a reaction
+      verified: true
+    - code: 6.2.3
+      text: Describe practical methods for investigating the rate of a reaction including change in mass
+        of a reactant or a product and the formation of a gas
+      verified: true
+    - code: 6.2.4
+      text: Interpret data, including graphs, from rate of reaction experiments
+      verified: true
+    - code: 6.2.5
+      text: 'Describe collision theory in terms of: (a) number of particles per unit volume (b) frequency
+        of collisions between particles (c) kinetic energy of particles (d) activation energy, Ea'
+      verified: true
+    - code: 6.2.6
+      text: "Describe and explain the effect on the rate of reaction of: (a) changing the concentration\
+        \ of solutions (b) changing the pressure of gases (c) changing the surface area of solids (d)\
+        \ changing the temperature (e) \aadding or removing a catalyst, including enzymes using collision\
+        \ theory"
+      verified: true
+    - code: 6.2.7
+      text: State that a catalyst decreases the activation energy, Ea, of a reaction
+      verified: true
+    - code: 6.2.8
+      text: Evaluate practical methods for investigating the rate of a reaction including change in mass
+        of a reactant or a product and the formation of a gas Cambridge IGCSE Chemistry 0620 syllabus
+        for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.6_3
+    title: Reversible reactions and equilibrium
+    short_title: Reversible Reactions & Equilibrium
+    syllabus_topic: '6.3'
+    verified: true
+    keywords:
+    - reversible reaction
+    - dynamic equilibrium
+    - Le Chatelier
+    - Haber process
+    - Contact process
+    - hydrated
+    - anhydrous
+    learning_outcomes:
+    - code: 6.3.1
+      text: State that some chemical reactions are reversible as shown by the symbol ⇌
+      verified: true
+    - code: 6.3.2
+      text: "Describe how changing the conditions can change the direction of a reversible reaction for:\
+        \ (a) the effect of heat on hydrated compounds (b) \athe addition of water to anhydrous compounds\
+        \ limited to copper(II) sulfate and cobalt(II) chloride"
+      verified: true
+    - code: 6.3.3
+      text: "State that a reversible reaction in a closed system is at equilibrium when: (a) \athe rate\
+        \ of the forward reaction is equal to the rate of the reverse reaction (b) \athe concentrations\
+        \ of reactants and products are no longer changing"
+      verified: true
+    - code: 6.3.4
+      text: 'Predict and explain, for a reversible reaction, how the position of equilibrium is affected
+        by: (a) changing temperature (b) changing pressure (c) changing concentration (d) using a catalyst
+        using information provided'
+      verified: true
+    - code: 6.3.5
+      text: State the symbol equation for the production of ammonia in the Haber process, N2(g) + 3H2(g)
+        ⇌ 2NH3(g)
+      verified: true
+    - code: 6.3.6
+      text: State the sources of the hydrogen (methane) and nitrogen (air) in the Haber process
+      verified: true
+    - code: 6.3.7
+      text: State the typical conditions in the Haber process as 450 °C, 20 000 kPa / 200 atm and an iron
+        catalyst
+      verified: true
+    - code: 6.3.8
+      text: State the symbol equation for the conversion of sulfur dioxide to sulfur trioxide in the Contact
+        process, 2SO2(g) + O2(g) ⇌ 2SO3(g)
+      verified: true
+    - code: 6.3.9
+      text: State the sources of the sulfur dioxide (burning sulfur or roasting sulfide ores) and oxygen
+        (air) in the Contact process
+      verified: true
+    - code: 6.3.10
+      text: State the typical conditions for the conversion of sulfur dioxide to sulfur trioxide in the
+        Contact process as 450 °C, 200 kPa / 2 atm and a vanadium(V) oxide catalyst
+      verified: true
+    - code: 6.3.11
+      text: Explain, in terms of rate of reaction and position of equilibrium, why the typical conditions
+        stated are used in the Haber process and in the Contact process, including safety considerations
+        and economics Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.6_4
+    title: Redox
+    short_title: Redox
+    syllabus_topic: '6.4'
+    verified: true
+    keywords:
+    - oxidation
+    - reduction
+    - redox
+    - oxidising agent
+    - reducing agent
+    - oxidation number
+    - acidified potassium manganate
+    learning_outcomes:
+    - code: 6.4.1
+      text: Use a Roman numeral to indicate the oxidation number of an element in a compound
+      verified: true
+    - code: 6.4.2
+      text: Define redox reactions as involving simultaneous oxidation and reduction
+      verified: true
+    - code: 6.4.3
+      text: Define oxidation as gain of oxygen and reduction as loss of oxygen
+      verified: true
+    - code: 6.4.4
+      text: Identify redox reactions as reactions involving gain and loss of oxygen
+      verified: true
+    - code: 6.4.5
+      text: Identify oxidation and reduction in redox reactions
+      verified: true
+    - code: 6.4.6
+      text: 'Define oxidation in terms of: (a) loss of electrons (b) an increase in oxidation number'
+      verified: true
+    - code: 6.4.7
+      text: 'Define reduction in terms of: (a) gain of electrons (b) a decrease in oxidation number'
+      verified: true
+    - code: 6.4.8
+      text: Identify redox reactions as reactions involving gain and loss of electrons
+      verified: true
+    - code: 6.4.9
+      text: "Identify redox reactions by changes in oxidation number using: (a) \athe oxidation number\
+        \ of elements in their uncombined state is zero (b) \athe oxidation number of a monatomic ion\
+        \ is the same as the charge on the ion (c) \athe sum of the oxidation numbers in a compound is\
+        \ zero (d) \athe sum of the oxidation numbers in an ion is equal to the charge on the ion"
+      verified: true
+    - code: 6.4.10
+      text: Identify redox reactions by the colour changes involved when using acidified aqueous potassium
+        manganate(VII) or aqueous potassium iodide
+      verified: true
+    - code: 6.4.11
+      text: Define an oxidising agent as a substance that oxidises another substance and is itself reduced
+      verified: true
+    - code: 6.4.12
+      text: Define a reducing agent as a substance that reduces another substance and is itself oxidised
+      verified: true
+    - code: 6.4.13
+      text: Identify oxidising agents and reducing agents in redox reactions Cambridge IGCSE Chemistry
+        0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+- id: igchem.topic_7
+  title: Acids, bases and salts
+  syllabus_topic: '7'
+  teaching_order: 7
+  drive_folder_name: 7. Acids, Bases & Salts
+  verified: true
+  aliases:
+  - acids
+  - bases
+  - salts
+  - chapter 7
+  keywords:
+  - acid
+  - alkali
+  - neutralisation
+  - salt
+  - indicator
+  - pH
+  children:
+  - id: igchem.7_1
+    title: The characteristic properties of acids and bases
+    short_title: Acids & Bases
+    syllabus_topic: '7.1'
+    verified: true
+    keywords:
+    - acid
+    - alkali
+    - litmus
+    - thymolphthalein
+    - methyl orange
+    - pH scale
+    - neutralisation
+    - proton donor
+    - strong acid
+    - weak acid
+    learning_outcomes:
+    - code: 7.1.1
+      text: 'Describe the characteristic properties of acids in terms of their reactions with: (a) metals
+        (b) bases (c) carbonates'
+      verified: true
+    - code: 7.1.2
+      text: 'Describe acids in terms of their effect on: (a) litmus (b) thymolphthalein (c) methyl orange'
+      verified: true
+    - code: 7.1.3
+      text: State that bases are oxides or hydroxides of metals and that alkalis are soluble bases
+      verified: true
+    - code: 7.1.4
+      text: 'Describe the characteristic properties of bases in terms of their reactions with: (a) acids
+        (b) ammonium salts'
+      verified: true
+    - code: 7.1.5
+      text: 'Describe alkalis in terms of their effect on: (a) litmus (b) thymolphthalein (c) methyl orange'
+      verified: true
+    - code: 7.1.6
+      text: State that aqueous solutions of acids contain H+ ions and aqueous solutions of alkalis contain
+        OH- ions
+      verified: true
+    - code: 7.1.7
+      text: Describe how to compare hydrogen ion concentration, neutrality, relative acidity and relative
+        alkalinity in terms of colour and pH using universal indicator paper
+      verified: true
+    - code: 7.1.8
+      text: Describe the neutralisation reaction between an acid and an alkali to produce water, H+ (aq)
+        + OH- (aq) → H2O (l )
+      verified: true
+    - code: 7.1.9
+      text: Define acids as proton donors and bases as proton acceptors
+      verified: true
+    - code: 7.1.10
+      text: Define a strong acid as an acid that is completely dissociated in aqueous solution and a weak
+        acid as an acid that is partially dissociated in aqueous solution
+      verified: true
+    - code: 7.1.11
+      text: State that hydrochloric acid is a strong acid, as shown by the symbol equation, HCl (aq) →
+        H+(aq) + Cl -(aq)
+      verified: true
+    - code: 7.1.12
+      text: State that ethanoic acid is a weak acid, as shown by the symbol equation, CH3COOH(aq) ⇌ H+(aq)
+        + CH3COO-(aq) Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.7_2
+    title: Oxides
+    short_title: Oxides
+    syllabus_topic: '7.2'
+    verified: true
+    keywords:
+    - acidic oxide
+    - basic oxide
+    - amphoteric
+    - neutral oxide
+    learning_outcomes:
+    - code: 7.2.1
+      text: Classify oxides as acidic, including SO2 and CO2, or basic, including CuO and CaO, related
+        to metallic and non-metallic character
+      verified: true
+    - code: 7.2.2
+      text: Describe amphoteric oxides as oxides that react with acids and with bases to produce a salt
+        and water
+      verified: true
+    - code: 7.2.3
+      text: Classify Al 2O3 and ZnO as amphoteric oxides
+      verified: true
+  - id: igchem.7_3
+    title: Preparation of salts
+    short_title: Preparation of Salts
+    syllabus_topic: '7.3'
+    verified: true
+    keywords:
+    - salt preparation
+    - crystallisation
+    - filtration
+    - precipitation
+    - titration
+    - soluble
+    - insoluble
+    learning_outcomes:
+    - code: 7.3.1
+      text: 'Describe the preparation, separation and purification of soluble salts by reaction of an
+        acid with: (a) an alkali by titration (b) excess metal (c) excess insoluble base (d) excess insoluble
+        carbonate'
+      verified: true
+    - code: 7.3.2
+      text: "Describe the general solubility rules for salts: (a) \asodium, potassium and ammonium salts\
+        \ are soluble (b) nitrates are soluble (c) chlorides are soluble, except lead and silver (d) \a\
+        sulfates are soluble, except barium, calcium and lead (e) \acarbonates are insoluble, except sodium,\
+        \ potassium and ammonium (f) \ahydroxides are insoluble, except sodium, potassium, ammonium and\
+        \ calcium (partially)"
+      verified: true
+    - code: 7.3.3
+      text: Define a hydrated substance as a substance that is chemically combined with water and an anhydrous
+        substance as a substance containing no water
+      verified: true
+    - code: 7.3.4
+      text: Describe the preparation of insoluble salts by precipitation
+      verified: true
+    - code: 7.3.5
+      text: Define the term water of crystallisation as the water molecules present in hydrated crystals,
+        including CuSO4•5H2O and CoCl 2•6H2O Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and
+        2028. Subject content
+      verified: true
+- id: igchem.topic_8
+  title: The Periodic Table
+  syllabus_topic: '8'
+  teaching_order: 8
+  drive_folder_name: 8. The Periodic Table
+  verified: true
+  aliases:
+  - periodic table
+  - groups
+  - chapter 8
+  keywords:
+  - Periodic Table
+  - group
+  - period
+  - Group I
+  - Group VII
+  - noble gas
+  children:
+  - id: igchem.8_1
+    title: Arrangement of elements
+    short_title: Arrangement of Elements
+    syllabus_topic: '8.1'
+    verified: true
+    keywords:
+    - proton number
+    - group
+    - period
+    - metal
+    - non-metal
+    - position in the Periodic Table
+    learning_outcomes:
+    - code: 8.1.1
+      text: Describe the Periodic Table as an arrangement of elements in periods and groups and in order
+        of increasing proton number / atomic number
+      verified: true
+    - code: 8.1.2
+      text: Describe the change from metallic to non-metallic character across a period
+      verified: true
+    - code: 8.1.3
+      text: Describe the relationship between group number and the charge of the ions formed from elements
+        in that group
+      verified: true
+    - code: 8.1.4
+      text: Explain similarities in the chemical properties of elements in the same group of the Periodic
+        Table in terms of their electronic configuration
+      verified: true
+    - code: 8.1.5
+      text: Explain how the position of an element in the Periodic Table can be used to predict its properties
+      verified: true
+    - code: 8.1.6
+      text: Identify trends in groups, given information about the elements
+      verified: true
+  - id: igchem.8_2
+    title: Group I properties
+    short_title: Group I Properties
+    syllabus_topic: '8.2'
+    verified: true
+    keywords:
+    - Group I
+    - alkali metal
+    - lithium
+    - sodium
+    - potassium
+    - trend in reactivity
+    learning_outcomes:
+    - code: 8.2.1
+      text: 'Describe the Group I alkali metals, lithium, sodium and potassium, as relatively soft metals
+        with general trends down the group, limited to: (a) decreasing melting point (b) increasing density
+        (c) increasing reactivity'
+      verified: true
+    - code: 8.2.2
+      text: Predict the properties of other elements in Group I, given information about the elements
+      verified: true
+  - id: igchem.8_3
+    title: Group VII properties
+    short_title: Group VII Properties
+    syllabus_topic: '8.3'
+    verified: true
+    keywords:
+    - Group VII
+    - halogen
+    - chlorine
+    - bromine
+    - iodine
+    - displacement reaction
+    learning_outcomes:
+    - code: 8.3.1
+      text: 'Describe the Group VII halogens, chlorine, bromine and iodine, as diatomic non-metals with
+        general trends down the group, limited to: (a) increasing density (b) decreasing reactivity'
+      verified: true
+    - code: 8.3.2
+      text: 'State the appearance of the halogens at r.t.p. as: (a) chlorine, a pale yellow-green gas
+        (b) bromine, a red-brown liquid (c) iodine, a grey-black solid'
+      verified: true
+    - code: 8.3.3
+      text: Describe and explain the displacement reactions of halogens with other halide ions
+      verified: true
+    - code: 8.3.4
+      text: Predict the properties of other elements in Group VII, given information about the elements
+      verified: true
+  - id: igchem.8_4
+    title: Transition elements
+    short_title: Transition Elements
+    syllabus_topic: '8.4'
+    verified: true
+    keywords:
+    - transition element
+    - variable oxidation number
+    - coloured compound
+    - catalyst
+    learning_outcomes:
+    - code: 8.4.1
+      text: "Describe the transition elements as metals that: (a) have high densities (b) have high melting\
+        \ points (c) form coloured compounds (d) \aoften act as catalysts as elements and in compounds"
+      verified: true
+    - code: 8.4.2
+      text: Describe transition elements as having ions with variable oxidation numbers, including iron(II)
+        and iron(III)
+      verified: true
+  - id: igchem.8_5
+    title: Noble gases
+    short_title: Noble Gases
+    syllabus_topic: '8.5'
+    verified: true
+    keywords:
+    - noble gas
+    - full outer shell
+    - unreactive
+    learning_outcomes:
+    - code: 8.5.1
+      text: Describe the Group VIII noble gases as unreactive, monatomic gases and explain this in terms
+        of electronic configuration
+      verified: true
+- id: igchem.topic_9
+  title: Metals
+  syllabus_topic: '9'
+  teaching_order: 9
+  drive_folder_name: 9. Metals
+  verified: true
+  aliases:
+  - metals
+  - alloys
+  - extraction
+  - chapter 9
+  keywords:
+  - metal
+  - alloy
+  - reactivity series
+  - corrosion
+  - extraction
+  children:
+  - id: igchem.9_1
+    title: Properties of metals
+    short_title: Properties of Metals
+    syllabus_topic: '9.1'
+    verified: true
+    keywords:
+    - malleable
+    - ductile
+    - conductor
+    - physical property of metals
+    learning_outcomes:
+    - code: 9.1.1
+      text: 'Compare the general physical properties of metals and non-metals, including: (a) thermal
+        conductivity (b) electrical conductivity (c) malleability and ductility (d) melting points and
+        boiling points'
+      verified: true
+    - code: 9.1.2
+      text: 'Describe the general chemical properties of metals, limited to their reactions with: (a)
+        dilute acids (b) cold water and steam (c) oxygen'
+      verified: true
+  - id: igchem.9_2
+    title: Uses of metals
+    short_title: Uses of Metals
+    syllabus_topic: '9.2'
+    verified: true
+    keywords:
+    - aluminium
+    - copper
+    - use of metals
+    learning_outcomes:
+    - code: 9.2.1
+      text: "Describe the uses of metals in terms of their physical properties, including: (a) \aaluminium\
+        \ in the manufacture of aircraft because of its low density (b) \aaluminium in the manufacture\
+        \ of overhead electrical cables because of its low density and good electrical conductivity (c)\
+        \ \aaluminium in food containers because of its resistance to corrosion (d) \acopper in electrical\
+        \ wiring because of its good electrical conductivity and ductility"
+      verified: true
+  - id: igchem.9_3
+    title: Alloys and their properties
+    short_title: Alloys & Their Properties
+    syllabus_topic: '9.3'
+    verified: true
+    keywords:
+    - alloy
+    - brass
+    - stainless steel
+    - layer of atoms
+    - harder and stronger
+    learning_outcomes:
+    - code: 9.3.1
+      text: "Describe an alloy as a mixture of a metal with other elements, including: (a) brass as a\
+        \ mixture of copper and zinc (b) \astainless steel as a mixture of iron and other elements such\
+        \ as chromium, nickel and carbon"
+      verified: true
+    - code: 9.3.2
+      text: State that alloys can be harder and stronger than the pure metals and are more useful
+      verified: true
+    - code: 9.3.3
+      text: Describe the uses of alloys in terms of their physical properties, including stainless steel
+        in cutlery because of its hardness and resistance to rusting
+      verified: true
+    - code: 9.3.4
+      text: Identify representations of alloys from diagrams of structure
+      verified: true
+    - code: 9.3.5
+      text: Explain in terms of structure how alloys can be harder and stronger than the pure metals because
+        the different sized atoms in alloys mean the layers can no longer slide over each other
+      verified: true
+  - id: igchem.9_4
+    title: Reactivity series
+    short_title: Reactivity Series
+    syllabus_topic: '9.4'
+    verified: true
+    keywords:
+    - reactivity series
+    - displacement reaction
+    - reaction with water
+    - reaction with dilute acid
+    - tendency to form positive ions
+    learning_outcomes:
+    - code: 9.4.1
+      text: 'State the order of the reactivity series as: potassium, sodium, calcium, magnesium, aluminium,
+        carbon, zinc, iron, hydrogen, copper, silver, gold'
+      verified: true
+    - code: 9.4.2
+      text: "Describe the reactions, if any, of: (a) \apotassium, sodium and calcium with cold water (b)\
+        \ magnesium with steam (c) \amagnesium, zinc, iron, copper, silver and gold with dilute hydrochloric\
+        \ acid and explain these reactions in terms of the position of the metals in the reactivity series"
+      verified: true
+    - code: 9.4.3
+      text: Deduce an order of reactivity from a given set of experimental results
+      verified: true
+    - code: 9.4.4
+      text: Describe the relative reactivities of metals in terms of their tendency to form positive ions,
+        by displacement reactions, if any, with the aqueous ions of magnesium, zinc, iron, copper and
+        silver
+      verified: true
+    - code: 9.4.5
+      text: Explain the apparent unreactivity of aluminium in terms of its oxide layer Cambridge IGCSE
+        Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.9_5
+    title: Corrosion of metals
+    short_title: Corrosion of Metals
+    syllabus_topic: '9.5'
+    verified: true
+    keywords:
+    - rusting
+    - corrosion
+    - sacrificial protection
+    - galvanising
+    - barrier method
+    learning_outcomes:
+    - code: 9.5.1
+      text: State the conditions required for the rusting of iron and steel to form hydrated iron(III)
+        oxide
+      verified: true
+    - code: 9.5.2
+      text: State some common barrier methods, including painting, greasing and coating with plastic
+      verified: true
+    - code: 9.5.3
+      text: Describe how barrier methods prevent rusting by excluding oxygen or water
+      verified: true
+    - code: 9.5.4
+      text: Describe the use of zinc in galvanising as an example of a barrier method and sacrificial
+        protection
+      verified: true
+    - code: 9.5.5
+      text: Explain sacrificial protection in terms of the reactivity series and in terms of electron
+        loss
+      verified: true
+  - id: igchem.9_6
+    title: Extraction of metals
+    short_title: Extraction of Metals
+    syllabus_topic: '9.6'
+    verified: true
+    keywords:
+    - blast furnace
+    - haematite
+    - coke
+    - limestone
+    - slag
+    - extraction by electrolysis
+    learning_outcomes:
+    - code: 9.6.1
+      text: Describe the ease in obtaining metals from their ores, related to the position of the metal
+        in the reactivity series
+      verified: true
+    - code: 9.6.2
+      text: "Describe the extraction of iron from hematite in the blast furnace, limited to: (a) \athe\
+        \ burning of carbon (coke) to provide heat and produce carbon dioxide (b) \athe reduction of carbon\
+        \ dioxide to carbon monoxide (c) \athe reduction of iron(III) oxide by carbon monoxide (d) \a\
+        the thermal decomposition of calcium carbonate / limestone to produce calcium oxide (e) the formation\
+        \ of slag Symbol equations are not required"
+      verified: true
+    - code: 9.6.3
+      text: State that the main ore of aluminium is bauxite and that aluminium is extracted by electrolysis
+      verified: true
+    - code: 9.6.4
+      text: State the symbol equations for the extraction of iron from hematite (a) C + O2→ CO2 (b) C
+        + CO2→ 2CO (c) Fe2O3 + 3CO → 2Fe + 3CO2 (d) CaCO3→ CaO + CO2 (e) CaO + SiO2→ CaSiO3
+      verified: true
+    - code: 9.6.5
+      text: "Describe the extraction of aluminium from purified bauxite / aluminium oxide, including:\
+        \ (a) the role of cryolite (b) \awhy the carbon anodes need to be regularly replaced (c) \athe\
+        \ reactions at the electrodes, including ionic half-equations Details of the purification of bauxite\
+        \ are not required Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content"
+      verified: true
+- id: igchem.topic_10
+  title: Chemistry of the environment
+  syllabus_topic: '10'
+  teaching_order: 10
+  drive_folder_name: 10. Chemistry of the Environment
+  verified: true
+  aliases:
+  - environment
+  - water
+  - air quality
+  - chapter 10
+  keywords:
+  - water treatment
+  - fertiliser
+  - air pollution
+  - greenhouse gas
+  children:
+  - id: igchem.10_1
+    title: Water
+    short_title: Water
+    syllabus_topic: '10.1'
+    verified: true
+    keywords:
+    - water treatment
+    - filtration
+    - chlorination
+    - anhydrous cobalt chloride
+    - distilled water
+    - test for water
+    learning_outcomes:
+    - code: 10.1.1
+      text: Describe chemical tests for the presence of water using anhydrous cobalt(II) chloride and
+        anhydrous copper(II) sulfate
+      verified: true
+    - code: 10.1.2
+      text: Describe how to test for the purity of water using melting point and boiling point
+      verified: true
+    - code: 10.1.3
+      text: Explain that distilled water is used in practical chemistry rather than tap water because
+        it contains fewer chemical impurities
+      verified: true
+    - code: 10.1.4
+      text: 'State that water from natural sources may contain substances, including: (a) dissolved oxygen
+        (b) metal compounds (c) plastics (d) sewage (e) harmful microbes (f) nitrates from fertilisers
+        (g) phosphates from fertilisers and detergents'
+      verified: true
+    - code: 10.1.5
+      text: "State that some of these substances are beneficial, including: (a) dissolved oxygen for aquatic\
+        \ life (b) \asome metal compounds provide essential minerals for life"
+      verified: true
+    - code: 10.1.6
+      text: "State that some of these substances are potentially harmful, including: (a) some metal compounds\
+        \ are toxic (b) some plastics harm aquatic life (c) \asewage contains harmful microbes which cause\
+        \ disease (d) \anitrates and phosphates lead to deoxygenation of water and damage to aquatic life\
+        \ Details of the eutrophication process are not required"
+      verified: true
+    - code: 10.1.7
+      text: 'Describe the treatment of the domestic water supply in terms of: (a) sedimentation and filtration
+        to remove solids (b) use of carbon to remove tastes and odours (c) chlorination to kill microbes'
+      verified: true
+  - id: igchem.10_2
+    title: Fertilisers
+    short_title: Fertilisers
+    syllabus_topic: '10.2'
+    verified: true
+    keywords:
+    - NPK fertiliser
+    - nitrogen
+    - phosphorus
+    - potassium
+    - ammonium salt
+    learning_outcomes:
+    - code: 10.2.1
+      text: State that ammonium salts and nitrates are used as fertilisers
+      verified: true
+    - code: 10.2.2
+      text: Describe the use of NPK fertilisers to provide the elements nitrogen, phosphorus and potassium
+        for improved plant growth
+      verified: true
+  - id: igchem.10_3
+    title: Air quality and climate
+    short_title: Air Quality & Climate
+    syllabus_topic: '10.3'
+    verified: true
+    keywords:
+    - greenhouse gas
+    - climate change
+    - carbon monoxide
+    - sulfur dioxide
+    - acid rain
+    - catalytic converter
+    - photosynthesis
+    learning_outcomes:
+    - code: 10.3.1
+      text: State the composition of clean, dry air as approximately 78% nitrogen, N2, 21% oxygen, O2
+        and the remainder as a mixture of noble gases and carbon dioxide, CO2
+      verified: true
+    - code: 10.3.2
+      text: "State the source of each of these air pollutants, limited to: (a) \acarbon dioxide from the\
+        \ complete combustion of carbon-containing fuels (b) \acarbon monoxide and particulates from the\
+        \ incomplete combustion of carbon- containing fuels (c) \amethane from the decomposition of vegetation\
+        \ and waste gases from digestion in animals (d) oxides of nitrogen from car engines (e) \asulfur\
+        \ dioxide from the combustion of fossil fuels which contain sulfur compounds"
+      verified: true
+    - code: 10.3.3
+      text: "State the adverse effect of these air pollutants, limited to: (a) \acarbon dioxide: higher\
+        \ levels of carbon dioxide leading to increased global warming, which leads to climate change\
+        \ (b) carbon monoxide: toxic gas (c) \aparticulates: increased risk of respiratory problems and\
+        \ cancer (d) \amethane: higher levels of methane leading to increased global warming, which leads\
+        \ to climate change (e) \aoxides of nitrogen: acid rain, photochemical smog and respiratory problems\
+        \ (f) sulfur dioxide: acid rain"
+      verified: true
+    - code: 10.3.4
+      text: "State and explain strategies to reduce the effects of these environmental issues, limited\
+        \ to: (a) \aclimate change: planting trees, reduction in livestock farming, decreasing use of\
+        \ fossil fuels, increasing use of hydrogen and renewable energy, e.g. wind, solar (b) \aacid rain:\
+        \ use of catalytic converters in vehicles, reducing emissions of sulfur dioxide by using low-sulfur\
+        \ fuels and flue gas desulfurisation with calcium oxide"
+      verified: true
+    - code: 10.3.5
+      text: Describe photosynthesis as the reaction between carbon dioxide and water to produce glucose
+        and oxygen in the presence of chlorophyll and using energy from light
+      verified: true
+    - code: 10.3.6
+      text: State the word equation for photosynthesis, carbon dioxide + water → glucose + oxygen
+      verified: true
+- id: igchem.topic_11
+  title: Organic chemistry
+  syllabus_topic: '11'
+  teaching_order: 11
+  drive_folder_name: 11. Organic Chemistry
+  verified: true
+  aliases:
+  - organic chemistry
+  - hydrocarbons
+  - polymers
+  - chapter 11
+  keywords:
+  - homologous series
+  - functional group
+  - alkane
+  - alkene
+  - alcohol
+  - polymer
+  children:
+  - id: igchem.11_1
+    title: Formulae, functional groups and terminology
+    short_title: Formulae & Functional Groups
+    syllabus_topic: '11.1'
+    verified: true
+    keywords:
+    - homologous series
+    - functional group
+    - general formula
+    - structural formula
+    - displayed formula
+    - saturated
+    - unsaturated
+    - isomer
+    learning_outcomes:
+    - code: 11.1.1
+      text: Draw and interpret the displayed formula of a molecule to show all the atoms and all the bonds
+      verified: true
+    - code: 11.1.2
+      text: "Write and interpret general formulae of compounds in the same homologous series, limited\
+        \ to: (a) \aalkanes, CnH2n+2 (b) \aalkenes, CnH2n (c) \aalcohols, CnH2n+1OH (d) \acarboxylic acids,\
+        \ CnH2n+1COOH"
+      verified: true
+    - code: 11.1.3
+      text: Identify a functional group as an atom or group of atoms that determine the chemical properties
+        of a homologous series
+      verified: true
+    - code: 11.1.4
+      text: State that a homologous series is a family of similar compounds with similar chemical properties
+        due to the presence of the same functional group
+      verified: true
+    - code: 11.1.5
+      text: State that a saturated compound has molecules in which all carbon-carbon bonds are single
+        bonds
+      verified: true
+    - code: 11.1.6
+      text: State that an unsaturated compound has molecules in which one or more carbon- carbon bonds
+        are not single bonds
+      verified: true
+  - id: igchem.11_2
+    title: Naming organic compounds
+    short_title: Naming Organic Compounds
+    syllabus_topic: '11.2'
+    verified: true
+    keywords:
+    - nomenclature
+    - prefix
+    - suffix
+    - naming organic
+    learning_outcomes:
+    - code: 11.2.1
+      text: "Name and draw the displayed formulae of: (a) methane and ethane (b) ethene (c) ethanol (d)\
+        \ ethanoic acid (e) \athe products of the reactions stated in sections 11.4-11.7"
+      verified: true
+    - code: 11.2.2
+      text: State the type of compound present, given a chemical name ending in -ane, -ene, -ol, or -oic
+        acid or from a molecular formula or displayed formula
+      verified: true
+    - code: 11.2.3
+      text: "Name and draw the structural and displayed formulae of unbranched: (a) alkanes (b) \aalkenes,\
+        \ including but-1-ene and but-2-ene (c) \aalcohols, including propan-1-ol, propan-2-ol, butan-1-ol\
+        \ and butan-2-ol (d) carboxylic acids containing up to four carbon atoms per molecule"
+      verified: true
+    - code: 11.2.4
+      text: Name and draw the displayed formulae of the unbranched esters which can be made from unbranched
+        alcohols and carboxylic acids, each containing up to four carbon atoms Cambridge IGCSE Chemistry
+        0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.11_3
+    title: Fuels
+    short_title: Fuels
+    syllabus_topic: '11.3'
+    verified: true
+    keywords:
+    - fractional distillation
+    - petroleum
+    - fraction
+    - refinery gas
+    - bitumen
+    - methane
+    - complete combustion
+    learning_outcomes:
+    - code: 11.3.1
+      text: 'Name the fossil fuels: coal, natural gas and petroleum'
+      verified: true
+    - code: 11.3.2
+      text: Name methane as the main constituent of natural gas
+      verified: true
+    - code: 11.3.3
+      text: State that hydrocarbons are compounds that contain hydrogen and carbon only
+      verified: true
+    - code: 11.3.4
+      text: State that petroleum is a mixture of hydrocarbons
+      verified: true
+    - code: 11.3.5
+      text: Describe the separation of petroleum into useful fractions by fractional distillation
+      verified: true
+    - code: 11.3.6
+      text: 'Describe how the properties of fractions obtained from petroleum change from the bottom to
+        the top of the fractionating column, limited to: (a) decreasing chain length (b) higher volatility
+        (c) lower boiling points (d) lower viscosity'
+      verified: true
+    - code: 11.3.7
+      text: "Name the uses of the fractions as: (a) \arefinery gas fraction for gas used in heating and\
+        \ cooking (b) gasoline / petrol fraction for fuel used in cars (c) naphtha fraction as a chemical\
+        \ feedstock (d) kerosene / paraffin fraction for jet fuel (e) \adiesel oil / gas oil fraction\
+        \ for fuel used in diesel engines (f) \afuel oil fraction for fuel used in ships and home heating\
+        \ systems (g) \alubricating oil fraction for lubricants, waxes and polishes (h) bitumen fraction\
+        \ for making roads"
+      verified: true
+  - id: igchem.11_4
+    title: Alkanes
+    short_title: Alkanes
+    syllabus_topic: '11.4'
+    verified: true
+    keywords:
+    - alkane
+    - substitution reaction
+    - ultraviolet light
+    - bromine and alkane
+    - saturated hydrocarbon
+    learning_outcomes:
+    - code: 11.4.1
+      text: State that the bonding in alkanes is single covalent and that alkanes are saturated hydrocarbons
+      verified: true
+    - code: 11.4.2
+      text: Describe the properties of alkanes as being generally unreactive, except in terms of combustion
+        and substitution by chlorine
+      verified: true
+    - code: 11.4.3
+      text: State that in a substitution reaction one atom or group of atoms is replaced by another atom
+        or group of atoms
+      verified: true
+    - code: 11.4.4
+      text: Describe the substitution reaction of alkanes with chlorine as a photochemical reaction, with
+        ultraviolet light providing the activation energy, Ea, and draw the structural or displayed formulae
+        of the products, limited to monosubstitution
+      verified: true
+  - id: igchem.11_5
+    title: Alkenes
+    short_title: Alkenes
+    syllabus_topic: '11.5'
+    verified: true
+    keywords:
+    - alkene
+    - cracking
+    - addition reaction
+    - bromine water
+    - unsaturated
+    - hydrogenation
+    learning_outcomes:
+    - code: 11.5.1
+      text: State that the bonding in alkenes includes a double carbon-carbon covalent bond and that alkenes
+        are unsaturated hydrocarbons
+      verified: true
+    - code: 11.5.2
+      text: Describe the manufacture of alkenes and hydrogen by the cracking of larger alkane molecules
+        using a high temperature and a catalyst
+      verified: true
+    - code: 11.5.3
+      text: Describe the reasons for the cracking of larger alkane molecules
+      verified: true
+    - code: 11.5.4
+      text: Describe the test to distinguish between saturated and unsaturated hydrocarbons by their reaction
+        with aqueous bromine
+      verified: true
+    - code: 11.5.5
+      text: State that in an addition reaction only one product is formed
+      verified: true
+    - code: 11.5.6
+      text: "Describe the properties of alkenes in terms of addition reactions with: (a) bromine or aqueous\
+        \ bromine (b) \ahydrogen in the presence of a nickel catalyst (c) steam in the presence of an\
+        \ acid catalyst and draw the structural or displayed formulae of the products Cambridge IGCSE\
+        \ Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content"
+      verified: true
+  - id: igchem.11_6
+    title: Alcohols
+    short_title: Alcohols
+    syllabus_topic: '11.6'
+    verified: true
+    keywords:
+    - ethanol
+    - fermentation
+    - catalytic addition of steam
+    - alcohol as a fuel
+    - oxidation to carboxylic acid
+    learning_outcomes:
+    - code: 11.6.1
+      text: "Describe the manufacture of ethanol by: (a) \afermentation of aqueous glucose at 25- 35 °C\
+        \ in the presence of yeast and in the absence of oxygen (b) \acatalytic addition of steam to ethene\
+        \ at 300 °C and 6000 kPa / 60 atm in the presence of an acid catalyst"
+      verified: true
+    - code: 11.6.2
+      text: Describe the combustion of ethanol
+      verified: true
+    - code: 11.6.3
+      text: 'State the uses of ethanol as: (a) a solvent (b) a fuel'
+      verified: true
+    - code: 11.6.4
+      text: 'Describe the advantages and disadvantages of the manufacture of ethanol by: (a) fermentation
+        (b) catalytic addition of steam to ethene'
+      verified: true
+  - id: igchem.11_7
+    title: Carboxylic acids
+    short_title: Carboxylic Acids
+    syllabus_topic: '11.7'
+    verified: true
+    keywords:
+    - carboxylic acid
+    - ethanoic acid
+    - ester
+    - esterification
+    learning_outcomes:
+    - code: 11.7.1
+      text: 'Describe the reaction of ethanoic acid with: (a) metals (b) bases (c) carbonates including
+        names and formulae of the salts produced'
+      verified: true
+    - code: 11.7.2
+      text: "Describe the formation of ethanoic acid by the oxidation of ethanol: (a) \awith acidified\
+        \ aqueous potassium manganate(VII) (b) \aby bacterial oxidation during vinegar production"
+      verified: true
+    - code: 11.7.3
+      text: Describe the reaction of a carboxylic acid with an alcohol using an acid catalyst to form
+        an ester Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028. Subject content
+      verified: true
+  - id: igchem.11_8
+    title: Polymers
+    short_title: Polymers
+    syllabus_topic: '11.8'
+    verified: true
+    keywords:
+    - addition polymerisation
+    - condensation polymerisation
+    - monomer
+    - repeat unit
+    - PET
+    - nylon
+    - polyester
+    - plastic pollution
+    learning_outcomes:
+    - code: 11.8.1
+      text: Define polymers as large molecules built up from many smaller molecules called monomers
+      verified: true
+    - code: 11.8.2
+      text: Describe the formation of poly(ethene) as an example of addition polymerisation using ethene
+        monomers
+      verified: true
+    - code: 11.8.3
+      text: State that plastics are made from polymers
+      verified: true
+    - code: 11.8.4
+      text: Describe how the properties of plastics have implications for their disposal
+      verified: true
+    - code: 11.8.5
+      text: 'Describe the environmental challenges caused by plastics, limited to: (a) disposal in landfill
+        sites (b) accumulation in oceans (c) formation of toxic gases from burning'
+      verified: true
+    - code: 11.8.6
+      text: Identify the repeat units and / or linkages in addition polymers and in condensation polymers
+      verified: true
+    - code: 11.8.7
+      text: Deduce the structure or repeat unit of an addition polymer from a given alkene and vice versa
+      verified: true
+    - code: 11.8.8
+      text: "Deduce the structure or repeat unit of a condensation polymer from given monomers and vice\
+        \ versa, limited to: (a) \apolyamides from a dicarboxylic acid and a diamine (b) \apolyesters\
+        \ from a dicarboxylic acid and a diol"
+      verified: true
+    - code: 11.8.9
+      text: Describe the differences between addition and condensation polymerisation
+      verified: true
+    - code: 11.8.10
+      text: 'Describe and draw the structure of: (a) nylon, a polyamide C O C O C C O O N H N H N H N
+        H (b) PET, a polyester C O C O C C O O O O O O The full name for PET, polyethylene terephthalate,
+        is not required'
+      verified: true
+    - code: 11.8.11
+      text: State that PET can be converted back into monomers and re-polymerised
+      verified: true
+    - code: 11.8.12
+      text: 'Describe proteins as natural polyamides and that they are formed from amino acid monomers
+        with the general structure: H O H O H N H C C R where R represents different types of side- chain'
+      verified: true
+    - code: 11.8.13
+      text: 'Describe and draw the structure of proteins as: N H C O N H C O N H C O Cambridge IGCSE Chemistry
+        0620 syllabus for 2026, 2027 and 2028. Subject content'
+      verified: true
+- id: igchem.topic_12
+  title: Experimental techniques and chemical analysis
+  syllabus_topic: '12'
+  teaching_order: 12
+  drive_folder_name: 12. Experimental Techniques & Analysis
+  verified: true
+  aliases:
+  - practical
+  - analysis
+  - chapter 12
+  - experimental techniques
+  keywords:
+  - titration
+  - chromatography
+  - flame test
+  - separation
+  - identification
+  children:
+  - id: igchem.12_1
+    title: Experimental design
+    short_title: Experimental Design
+    syllabus_topic: '12.1'
+    verified: true
+    keywords:
+    - measuring cylinder
+    - burette
+    - pipette
+    - thermometer
+    - apparatus
+    - purity
+    learning_outcomes:
+    - code: 12.1.1
+      text: 'Name appropriate apparatus for the measurement of time, temperature, mass and volume, including:
+        (a) stop-watches (b) thermometers (c) balances (d) burettes (e) volumetric pipettes (f) measuring
+        cylinders (g) gas syringes'
+      verified: true
+    - code: 12.1.2
+      text: Suggest advantages and disadvantages of experimental methods and apparatus
+      verified: true
+    - code: 12.1.3
+      text: "Describe a: (a) \asolvent as a substance that dissolves a solute (b) \asolute as a substance\
+        \ that is dissolved in a solvent (c) \asolution as a mixture of one or more solutes dissolved\
+        \ in a solvent (d) \asaturated solution as a solution containing the maximum concentration of\
+        \ a solute dissolved in the solvent at a specified temperature (e) \aresidue as a substance that\
+        \ remains after evaporation, distillation, filtration or any similar process (f) \afiltrate as\
+        \ a liquid or solution that has passed through a filter"
+      verified: true
+  - id: igchem.12_2
+    title: Acid-base titrations
+    short_title: Acid-Base Titrations
+    syllabus_topic: '12.2'
+    verified: true
+    keywords:
+    - titration
+    - burette
+    - indicator
+    - end-point
+    learning_outcomes:
+    - code: 12.2.1
+      text: 'Describe an acid-base titration to include the use of a: (a) burette (b) volumetric pipette
+        (c) suitable indicator'
+      verified: true
+    - code: 12.2.2
+      text: Describe how to identify the end-point of a titration using an indicator
+      verified: true
+  - id: igchem.12_3
+    title: Chromatography
+    short_title: Chromatography
+    syllabus_topic: '12.3'
+    verified: true
+    keywords:
+    - chromatography
+    - chromatogram
+    - locating agent
+    - Rf value
+    - baseline
+    - solvent front
+    learning_outcomes:
+    - code: 12.3.1
+      text: Describe how paper chromatography is used to separate mixtures of soluble coloured substances,
+        using a suitable solvent
+      verified: true
+    - code: 12.3.2
+      text: "Interpret simple chromatograms to identify: (a) \aunknown substances by comparison with known\
+        \ substances (b) pure and impure substances"
+      verified: true
+    - code: 12.3.3
+      text: Describe how paper chromatography is used to separate mixtures of soluble colourless substances,
+        using a suitable solvent and a locating agent Knowledge of specific locating agents is not required
+      verified: true
+    - code: 12.3.4
+      text: 'State and use the equation for Rf: Rf = distance travelled by substance distance travelled
+        by solvent'
+      verified: true
+  - id: igchem.12_4
+    title: Separation and purification
+    short_title: Separation & Purification
+    syllabus_topic: '12.4'
+    verified: true
+    keywords:
+    - filtration
+    - crystallisation
+    - simple distillation
+    - fractional distillation
+    - melting point as purity
+    learning_outcomes:
+    - code: 12.4.1
+      text: 'Describe and explain methods of separation and purification using: (a) a suitable solvent
+        (b) filtration (c) crystallisation (d) simple distillation (e) fractional distillation'
+      verified: true
+    - code: 12.4.2
+      text: Suggest suitable separation and purification techniques, given information about the substances
+        involved
+      verified: true
+    - code: 12.4.3
+      text: Identify substances and assess their purity using melting point and boiling point information
+      verified: true
+  - id: igchem.12_5
+    title: Identification of ions and gases
+    short_title: Identification of Ions & Gases
+    syllabus_topic: '12.5'
+    verified: true
+    keywords:
+    - flame test
+    - test for gases
+    - limewater
+    - damp litmus
+    - precipitate with sodium hydroxide
+    - test for halide
+    learning_outcomes:
+    - code: 12.5.1
+      text: "Describe tests to identify the anions: (a) \acarbonate, CO3 2-, by reaction with dilute acid\
+        \ and then testing for carbon dioxide gas (b) \achloride, Cl -, bromide, Br -, and iodide, I-,\
+        \ by acidifying with dilute nitric acid then adding aqueous silver nitrate (c) \anitrate, NO3\
+        \ -, reduction with aluminium foil and aqueous sodium hydroxide and then testing for ammonia gas\
+        \ (d) \asulfate, SO4 2-, by acidifying with dilute nitric acid and then adding aqueous barium\
+        \ nitrate (e) \asulfite, SO3 2-, by reaction with acidified aqueous potassium manganate(VII)"
+      verified: true
+    - code: 12.5.2
+      text: 'Describe tests using aqueous sodium hydroxide and aqueous ammonia to identify the aqueous
+        cations: (a) aluminium, Al 3+ (b) ammonium, NH4 + (c) calcium, Ca2+ (d) chromium(III), Cr3+ (e)
+        copper(II), Cu2+ (f) iron(II), Fe2+ (g) iron(III), Fe3+ (h) zinc, Zn2+'
+      verified: true
+    - code: 12.5.3
+      text: "Describe tests to identify the gases: (a) ammonia, NH3, using damp red litmus paper (b) carbon\
+        \ dioxide, CO2, using limewater (c) chlorine, Cl 2, using damp litmus paper (d) hydrogen, H2,\
+        \ using a lighted splint (e) oxygen, O2, using a glowing splint (f) \asulfur dioxide, SO2, using\
+        \ acidified aqueous potassium manganate(VII)"
+      verified: true
+    - code: 12.5.4
+      text: 'Describe the use of a flame test to identify the cations: (a) lithium, Li+ (b) sodium, Na+
+        (c) potassium, K+ (d) calcium, Ca2+ (e) barium, Ba2+ (f) copper(II), Cu2+'
+      verified: true

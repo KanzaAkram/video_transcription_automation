@@ -34,11 +34,12 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from typing import Any
 
 from pydantic import BaseModel, Field
 
-from pipeline.classify.chapters import chapter_of
+from pipeline.classify.chapters import chapter_of, secondary_qualifies
 from pipeline.classify.retriever import CandidateSet
 from pipeline.config import ClassifySettings, NamingSettings
 from pipeline.models import Classification, Evidence, Recording, TopicMatch, Transcript
@@ -51,6 +52,12 @@ log = logging.getLogger(__name__)
 #: with — an empty string would have to be legal everywhere, and then every
 #: reply could quietly carry one.
 NO_CHAPTER = "NONE"
+
+
+def clamp_unit(value: float) -> float:
+    """A reported fraction, forced into 0..1. `TopicMatch` rejects anything else."""
+    return max(0.0, min(1.0, value))
+
 
 #: Above this many options, or this many characters of them, ids are sent as a
 #: plain string rather than an enum. Structured outputs cap enum size, and a
@@ -117,6 +124,55 @@ chapter name or a subtopic name, and never merge two subtopics into one. The \
 filename is built from the syllabus' own titles for the ids you return, so an \
 id that is not in the list is a file nobody can find again.
 
+4a. **`outcome_codes` and `topic_keywords` — THE FILENAME.** This is the part \
+a human reads, so read this rule twice.
+
+   The subtopic heading does not go in the filename. It is the folder-level \
+answer and it is far too coarse to name a recording: AS Chemistry 1.1 carries \
+seven learning outcomes taught over three lessons, so three files would all be \
+called "Subatomic Particles". What names the file is **the keywords of the \
+learning outcomes this lecture actually taught.**
+
+   So do two things:
+
+   Some syllabuses go one level deeper: a SUBTOPIC with LESSON nodes beneath \
+it, each carrying its own learning outcomes. Where that level exists it is the \
+one you pick from — it is finer than the subtopic and is what a single \
+recording actually covers — and its outcomes are what the keywords come from. \
+Where it does not exist, the subtopic is the finest level there is. Either \
+way: **always draw keywords from the outcomes of the deepest node you chose.**
+
+   - `outcome_codes` — the outcomes the lecture taught, as the codes printed \
+in brackets above, like [1.1.5]. This is your citation.
+   - `topic_keywords` — **one to three short keyword phrases**, taken from the \
+text of exactly those outcomes, that a student would recognise as what the \
+lesson was about. Two to four words each, Title Case.
+
+   They are joined with " + " to make the name, so each one has to stand on \
+its own:
+
+       ["Behaviour in an Electric Field"]        -> Aug, 11 - Behaviour in an Electric Field.mp4
+       ["Relative Charges", "Relative Masses"]   -> Aug, 13 - Relative Charges + Relative Masses.mp4
+       ["Atomic Radius", "Ionic Radius"]         -> Aug, 18 - Atomic Radius + Ionic Radius.mp4
+
+   Give two or three only when the lecture genuinely taught two or three \
+distinct things. One is the common case and one good keyword beats three \
+vague ones. Never repeat the same idea twice in different words — "Rules of \
+Indices" and "Laws of Indices" are one keyword, not two.
+
+   **Every word must appear in the text of the outcomes you cited** \
+(connecting words like "in", "and", "of", "the" excepted). This is checked \
+against the syllabus, and a keyword containing a word that is not there is \
+thrown away — you cannot paraphrase here, only quote. Reuse the syllabus' own \
+nouns. A grammatical form of a syllabus word is fine: where an outcome says \
+"describe the behaviour", "Behaviour" is allowed.
+
+   Do not name the subtopic. "Indices I", "Subatomic Particles" and "Acids & \
+Bases" are subtopic headings; if that is all you can say about a lecture, you \
+have not looked at the outcomes closely enough. Leave `topic_keywords` empty \
+only if the outcomes genuinely offer nothing more specific — the filename then \
+falls back to the subtopic heading, which is the outcome to avoid.
+
 5. **Judge from the whole lecture.** The first five minutes are usually a \
 recap of the previous lesson, attendance, or homework, and the last few are \
 often questions. What a lecture is about is what the middle of it is spent on.
@@ -182,6 +238,40 @@ def system_prompt(settings: ClassifySettings) -> str:
 # ── Reply ─────────────────────────────────────────────────────────────────────
 
 
+#: Words a focus phrase may contain that are not in the syllabus text. Function
+#: words only — they carry no subject meaning, so letting them through cannot
+#: smuggle in a topic, and refusing them would reject "Behaviour in an Electric
+#: Field" for the word "an".
+_CONNECTIVES = frozenset(
+    [
+        "a",
+        "an",
+        "and",
+        "as",
+        "at",
+        "by",
+        "for",
+        "from",
+        "in",
+        "into",
+        "of",
+        "on",
+        "or",
+        "the",
+        "to",
+        "with",
+        "within",
+        "across",
+        "between",
+        "during",
+        "over",
+        "under",
+    ]
+)
+
+_WORD = re.compile(r"[a-z0-9]+")
+
+
 class _SubtopicOut(BaseModel):
     node_id: str
     coverage: float
@@ -201,6 +291,8 @@ ORIENTATION = "orientation"
 class _ReplyOut(BaseModel):
     chapter_id: str
     subtopics: list[_SubtopicOut] = Field(default_factory=list)
+    outcome_codes: list[str] = Field(default_factory=list)
+    topic_keywords: list[str] = Field(default_factory=list)
     session_type: str = LESSON
     confidence: float = 0.0
     evidence: list[_EvidenceOut] = Field(default_factory=list)
@@ -239,6 +331,8 @@ def response_schema(chapter_ids: list[str], subtopic_ids: list[str]) -> dict[str
         "required": [
             "chapter_id",
             "subtopics",
+            "outcome_codes",
+            "topic_keywords",
             "session_type",
             "confidence",
             "evidence",
@@ -270,6 +364,25 @@ def response_schema(chapter_ids: list[str], subtopic_ids: list[str]) -> dict[str
                         },
                     },
                 },
+            },
+            "outcome_codes": {
+                "type": "array",
+                "description": (
+                    "Codes of the learning outcomes this lecture actually taught, from "
+                    "the subtopics you named — e.g. ['1.1.5', '1.1.6']. Empty only if "
+                    "the lecture covered the whole subtopic evenly."
+                ),
+                "items": {"type": "string"},
+            },
+            "topic_keywords": {
+                "type": "array",
+                "description": (
+                    "One to three short keyword phrases that NAME THE FILE, taken word "
+                    "for word from the learning outcomes cited above. Two to four words "
+                    "each, Title Case, joined with ' + '. Not the subtopic heading. "
+                    "Empty only if the outcomes offer nothing more specific."
+                ),
+                "items": {"type": "string"},
             },
             "session_type": {
                 "type": "string",
@@ -351,6 +464,122 @@ def chapter_nodes(taxonomy: Taxonomy) -> list[SyllabusNode]:
     ]
 
 
+#: Suffixes stripped before comparing a focus word to the syllabus.
+#:
+#: Grounding is a quoting rule, not a spelling rule. Cambridge writes outcomes
+#: as instructions to a candidate - "Change the subject of simple formulas" -
+#: and a filename wants the noun phrase, "Changing the Subject". Requiring the
+#: exact surface form banned the readable version and left "Change Subject",
+#: which is not English. Matching on a crude stem admits the conjugation and
+#: nothing else: the word still has to be one the syllabus used for these
+#: outcomes.
+_SUFFIXES = ("ing", "ions", "ion", "ies", "ied", "es", "ed", "s", "ly", "al")
+
+
+def _stem(word: str) -> str:
+    for suffix in _SUFFIXES:
+        if len(word) > len(suffix) + 2 and word.endswith(suffix):
+            return word[: -len(suffix)]
+    return word
+
+
+def grounded_focus(
+    focus: str, nodes: list[SyllabusNode], codes: list[str]
+) -> tuple[str | None, str]:
+    """Keep the focus phrase only if the syllabus supplies every word of it.
+
+    Returns `(focus_or_None, why)`.
+
+    The rest of this module keeps invented names out by never letting the model
+    write one: it returns ids, and the labels come from the taxonomy. `focus`
+    is the one place that cannot work, because the distinction being drawn —
+    which half of subtopic 1.1 this lecture was — has no id of its own. The
+    syllabus states it only as prose, inside the learning outcomes.
+
+    So the guarantee is weakened in exactly one controlled way: the model may
+    choose *words*, but only words the syllabus already used for these
+    outcomes. "Behaviour in an Electric Field" survives because outcome 1.1.5
+    says "describe the behaviour of beams of protons, neutrons and electrons
+    moving at the same velocity in an electric field". "Cathode Ray Tubes"
+    would not, however true it might be of the lesson.
+
+    All or nothing. A phrase with one ungrounded word is dropped whole rather
+    than having the word removed, because a repaired phrase reads as though the
+    syllabus said something it did not — and the fallback, the plain subtopic
+    name, is never wrong, only less specific.
+
+    Called once per keyword, so one bad phrase costs that phrase and not the
+    whole name.
+    """
+    phrase = " ".join(focus.split())
+    if not phrase:
+        return None, "empty"
+
+    wanted = {c.strip() for c in codes if c.strip()}
+    vocabulary: set[str] = set()
+    matched_codes = 0
+    for node in nodes:
+        for outcome in node.learning_outcomes:
+            # Restricted to the outcomes the model said it taught, when it said
+            # so. A focus grounded in an outcome the lecture did not cover is
+            # grounded in the wrong thing.
+            if wanted and outcome.code not in wanted:
+                continue
+            matched_codes += 1
+            vocabulary.update(_WORD.findall(outcome.text.lower()))
+        # The node's own words too: its title and short title are syllabus text
+        # by the same argument, and a focus is allowed to lean on them.
+        vocabulary.update(_WORD.findall(node.title.lower()))
+        if node.short_title:
+            vocabulary.update(_WORD.findall(node.short_title.lower()))
+        for term in (*node.keywords, *node.aliases):
+            vocabulary.update(_WORD.findall(term.lower()))
+
+    if wanted and not matched_codes:
+        return None, f"none of the outcome codes {sorted(wanted)} belong to the chosen subtopics"
+
+    stems = {_stem(word) for word in vocabulary}
+    words = [w for w in _WORD.findall(phrase.lower()) if w not in _CONNECTIVES]
+    ungrounded = [w for w in words if w not in vocabulary and _stem(w) not in stems]
+    if ungrounded:
+        return None, f"not syllabus wording: {', '.join(sorted(set(ungrounded)))}"
+
+    return phrase, "grounded"
+
+
+def grounded_keywords(
+    keywords: list[str], nodes: list[SyllabusNode], codes: list[str]
+) -> list[str]:
+    """The keywords the syllabus supports, in order, deduplicated.
+
+    Per keyword rather than all-or-nothing across the set: three phrases of
+    which one is invented should cost that one phrase, not the filename. What
+    survives still has to be entirely the syllabus' own words.
+
+    Deduplication is on the stemmed words, not the string, because "Rules of
+    Indices" and "Index Rules" are one keyword said twice and would render as
+    "Rules of Indices + Index Rules" - a name that claims the lecture covered
+    two things when it covered one.
+    """
+    kept: list[str] = []
+    seen: list[frozenset[str]] = []
+    for keyword in keywords:
+        phrase, why = grounded_focus(keyword, nodes, codes)
+        if phrase is None:
+            if keyword.strip():
+                log.warning("dropping keyword %r: %s", keyword.strip(), why)
+            continue
+        content = frozenset(
+            _stem(w) for w in _WORD.findall(phrase.lower()) if w not in _CONNECTIVES
+        )
+        if content and content in seen:
+            log.info("dropping keyword %r: says the same as one already kept", phrase)
+            continue
+        seen.append(content)
+        kept.append(phrase)
+    return kept
+
+
 def orientation_node(taxonomy: Taxonomy, label: str) -> SyllabusNode | None:
     """The chapter a course-orientation session is filed under, if there is one.
 
@@ -391,8 +620,21 @@ def _node_block(node: SyllabusNode, marker: str, *, choosable: bool) -> list[str
         lines.append(f"    also called: {', '.join(node.aliases[:10])}")
     if node.keywords:
         lines.append(f"    keywords: {', '.join(node.keywords[:24])}")
-    for outcome in node.learning_outcomes[:8]:
-        lines.append(f"    - {outcome.text}")
+    # With their codes, and all of them.
+    #
+    # The code is what `outcome_codes` is supposed to come back as, and it was
+    # not being shown: the model saw eight anonymous sentences and duly
+    # returned prose — "2.5 - Solve equations (quadratic via formula)" — which
+    # matched no code in the taxonomy, so `grounded_focus` rejected every
+    # focus it was ever given and the whole learning-outcome layer silently did
+    # nothing. You cannot ask for a citation without printing the reference.
+    #
+    # The [:8] cap went with it. It was there to keep the prompt small, from
+    # when the prompt was a retrieval shortlist; the syllabus is 8-19k tokens
+    # whole, and truncating outcomes hides exactly the later ones that
+    # distinguish a second lecture on the same subtopic from the first.
+    for outcome in node.learning_outcomes:
+        lines.append(f"    [{outcome.code}] {outcome.text}")
     return lines
 
 
@@ -494,6 +736,16 @@ class OpenAIClassifier:
         self.api_key = api_key
         self.allowed = allowed_ids or default_allowed_ids(taxonomy)
         self._client = None
+        #: What this run has already named, in order. One classifier instance
+        #: handles one folder, so this is the folder's history.
+        #:
+        #: The model sees one lecture at a time and cannot otherwise know that
+        #: the recording two days earlier already took "Rules and Fractional
+        #: Indices" — so two lessons of one subtopic came back with the same
+        #: words in a different order, which looks like a distinction and is
+        #: not. Telling it what is taken is what lets the second one pick the
+        #: half it actually taught.
+        self._assigned: list[str] = []
 
     # ── API ──────────────────────────────────────────────────────────────────
 
@@ -611,6 +863,20 @@ class OpenAIClassifier:
             parts.append(f"Zoom meeting topic: {recording.meeting_topic}")
         if recording.teacher:
             parts.append(f"Teacher: {recording.teacher}")
+        if self._assigned:
+            parts += [
+                "",
+                "# Already named in this folder",
+                "",
+                "Earlier recordings from this same course, in the order they were "
+                "taught. If this lecture lands on a subtopic one of them already "
+                "used, it is the next lesson of that subtopic, not the same lesson: "
+                "give it a `focus` naming the part THIS one taught that the one "
+                "above did not. Do not reuse a phrase below, and do not reorder its "
+                "words and call that different.",
+                "",
+                *(f"- {name}" for name in self._assigned),
+            ]
         parts += [
             "",
             "Filenames and meeting topics on these recordings are generic "
@@ -737,6 +1003,29 @@ class OpenAIClassifier:
                     chapter.id,
                 )
                 continue
+            # The same two bars every other path applies, against the model's
+            # own reported coverage. The prompt states them; this is what makes
+            # them true — and the OpenAI path was the only one stating a rule
+            # it never enforced.
+            #
+            # It matters on real data: the 10 August maths lecture intermittently
+            # came back naming Surds as a second subtopic, and "surd" is said
+            # twice in a hundred minutes, both times in the same minute. A
+            # coverage figure is an estimate and estimates run high; the bar is
+            # what stops one reaching a filename.
+            if chosen and not secondary_qualifies(
+                clamp_unit(chosen[0].coverage), clamp_unit(item.coverage), self.settings
+            ):
+                log.info(
+                    "dropping secondary %r: %.0f%% against a %.0f%% floor and %.0f%% "
+                    "of the primary's %.0f%%",
+                    item.node_id,
+                    item.coverage * 100,
+                    self.settings.secondary_subtopic_min_coverage * 100,
+                    self.settings.secondary_subtopic_ratio * 100,
+                    chosen[0].coverage * 100,
+                )
+                continue
             chosen.append(item)
             if len(chosen) >= self.naming.max_subtopics:
                 break
@@ -748,9 +1037,7 @@ class OpenAIClassifier:
                 + f") is a known node inside chapter {chapter.id!r}"
             )
 
-        def clamp(value: float) -> float:
-            return max(0.0, min(1.0, value))
-
+        clamp = clamp_unit
         primary = chosen[0]
         classification = Classification(
             primary=TopicMatch(
@@ -774,13 +1061,28 @@ class OpenAIClassifier:
             method=self.name,
             model=model_name,
         )
+        # Which part of the subtopic — the level below the heading, where two
+        # lessons on one subtopic stop having the same name. Dropped whole
+        # unless the syllabus supplies every word of it.
+        nodes = [n for n in (self.taxonomy.get(s.node_id) for s in chosen) if n is not None]
+        kept = grounded_keywords(reply.topic_keywords, nodes, reply.outcome_codes)[
+            : self.naming.max_subtopics
+        ]
+        focus = self.naming.subtopic_separator.join(kept) or None
+        classification.focus = focus
+        classification.outcome_codes = [c for c in reply.outcome_codes if c.strip()]
+
         # From the syllabus, never from the model. `naming.template` prefers
         # `topic_node_ids` and renders the same labels from them, so the two
-        # agree by construction; this is what a reviewer reads in
-        # rename_plan.json, and what naming falls back to if the ids are lost.
-        classification.suggested_topic_label = self.naming.subtopic_separator.join(
-            node.label
-            for node in (self.taxonomy.get(s.node_id) for s in chosen)
-            if node is not None
-        )
+        # agree by construction; this is what a reviewer reads in the plan, and
+        # what naming falls back to if the ids are lost.
+        # The keywords ARE the name. The subtopic heading is the folder-level
+        # answer and too coarse to name a recording - three lessons of AS
+        # Chemistry 1.1 would all be "Subatomic Particles". It stays as the
+        # fallback for a reply whose keywords were all rejected, where a coarse
+        # true name beats no name.
+        label = focus or self.naming.subtopic_separator.join(n.label for n in nodes)
+        classification.suggested_topic_label = label
+        # Remembered for the next lecture in this folder. See `_assigned`.
+        self._assigned.append(label)
         return classification

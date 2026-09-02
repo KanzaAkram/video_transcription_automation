@@ -1,0 +1,1374 @@
+# A2 Chemistry 9701 (2025-2027)
+#
+# GENERATED — do not edit by hand. Regenerate with:
+#   python scripts/ingest_syllabus.py \
+#       --pdf config/syllabi/sources/a2-chemistry-9701.pdf \
+#       --overlay config/syllabi/overlays/a2-chemistry-9701.yaml \
+#       --out config/syllabi/a2-chemistry-9701.yaml --section a-level
+#
+# Titles and learning outcomes are verbatim from the official PDF and are
+# marked verified. Keywords, aliases, Drive folder names and the lesson
+# layer come from the overlay: edit those there, not here.
+
+version: 1
+subject_id: a2_chemistry
+subject_name: A2 Chemistry
+syllabus_code: '9701'
+syllabus_years: 2025-2027
+awarding_body: Cambridge International
+source: Topic, subtopic and learning-outcome text extracted verbatim from the A Level subject content
+  of the official Cambridge International AS & A Level Chemistry 9701 syllabus for 2025, 2026 and 2027.
+  Drive folder names, teaching order, short titles, keywords and aliases are hand-curated.
+subject_vocabulary:
+- lattice energy
+- Born-Haber cycle
+- enthalpy of hydration
+- enthalpy of solution
+- electrode potential
+- Nernst equation
+- electrolysis
+- Faraday
+- Bronsted
+- conjugate acid
+- buffer solution
+- solubility product
+- partition coefficient
+- rate equation
+- order of reaction
+- rate constant
+- half-life
+- heterogeneous catalyst
+- transition element
+- ligand
+- complex ion
+- ligand exchange
+- stability constant
+- stereoisomerism
+- optical isomerism
+- chiral
+- arene
+- benzene
+- electrophilic substitution
+- phenol
+- acyl chloride
+- ester
+- amine
+- phenylamine
+- azo dye
+- amide
+- amino acid
+- zwitterion
+- condensation polymerisation
+- polyester
+- polyamide
+- thin-layer chromatography
+- Rf value
+- NMR spectroscopy
+- chemical shift
+- deuterium
+nodes:
+- id: a2chem.introduction
+  title: Introduction
+  teaching_order: 0
+  drive_folder_name: 0. Introduction
+  verified: true
+  exclude_from_classification: true
+  aliases:
+  - orientation
+  - course intro
+  - first class
+  - welcome
+  - induction
+  keywords:
+  - syllabus
+  - year plan
+  - exam structure
+  - paper 1
+  - paper 2
+  - paper 3
+  - paper 4
+  - grade boundaries
+  - course outline
+- id: a2chem.topic_23
+  title: Chemical energetics
+  syllabus_topic: '23'
+  teaching_order: 1
+  drive_folder_name: 1. Chemical Energetics
+  verified: true
+  aliases:
+  - energetics
+  - lattice enthalpy
+  - chapter 23
+  keywords:
+  - lattice energy
+  - Born-Haber
+  - enthalpy change
+  - hydration
+  children:
+  - id: a2chem.23_1
+    title: Lattice energy and Born-Haber cycles
+    short_title: Lattice Energy & Born-Haber
+    syllabus_topic: '23.1'
+    verified: true
+    keywords:
+    - lattice energy
+    - Born-Haber cycle
+    - electron affinity
+    - atomisation
+    - ionic charge
+    learning_outcomes:
+    - code: 23.1.1
+      text: 'define and use the terms: (a) enthalpy change of atomisation, ΔHat (b) lattice energy, ΔHlatt
+        (the change from gas phase ions to solid lattice)'
+      verified: true
+    - code: 23.1.2
+      text: (a) define and use the term first electron affinity, EA (b) explain the factors affecting
+        the electron affinities of elements (c) describe and explain the trends in the electron affinities
+        of the Group 16 and Group 17 elements
+      verified: true
+    - code: 23.1.3
+      text: construct and use Born-Haber cycles for ionic solids (limited to +1 and +2 cations, -1 and
+        -2 anions)
+      verified: true
+    - code: 23.1.4
+      text: carry out calculations involving Born-Haber cycles
+      verified: true
+    - code: 23.1.5
+      text: explain, in qualitative terms, the effect of ionic charge and of ionic radius on the numerical
+        magnitude of a lattice energy
+      verified: true
+  - id: a2chem.23_2
+    title: Enthalpies of solution and hydration
+    short_title: Solution & Hydration Enthalpies
+    syllabus_topic: '23.2'
+    verified: true
+    keywords:
+    - enthalpy of solution
+    - enthalpy of hydration
+    - ionic radius
+    - solubility
+    learning_outcomes:
+    - code: 23.2.1
+      text: define and use the term enthalpy change with reference to hydration, ΔHhyd, and solution,
+        ΔHsol
+      verified: true
+    - code: 23.2.2
+      text: construct and use an energy cycle involving enthalpy change of solution, lattice energy and
+        enthalpy change of hydration
+      verified: true
+    - code: 23.2.3
+      text: carry out calculations involving the energy cycles in 23.2.2
+      verified: true
+    - code: 23.2.4
+      text: explain, in qualitative terms, the effect of ionic charge and of ionic radius on the numerical
+        magnitude of an enthalpy change of hydration 23.3 Entropy change, ΔS
+      verified: true
+- id: a2chem.topic_24
+  title: Electrochemistry
+  syllabus_topic: '24'
+  teaching_order: 2
+  drive_folder_name: 2. Electrochemistry
+  verified: true
+  aliases:
+  - electrochemistry
+  - electrode potentials
+  - chapter 24
+  keywords:
+  - electrolysis
+  - electrode potential
+  - electrochemical cell
+  - Faraday
+  children:
+  - id: a2chem.24_1
+    title: Electrolysis
+    short_title: Electrolysis
+    syllabus_topic: '24.1'
+    verified: true
+    keywords:
+    - electrolysis
+    - Faraday constant
+    - Avogadro constant
+    - quantity of charge
+    - electrode
+    learning_outcomes:
+    - code: 24.1.1
+      text: predict the identities of substances liberated during electrolysis from the state of electrolyte
+        (molten or aqueous), position in the redox series (electrode potential) and concentration
+      verified: true
+    - code: 24.1.2
+      text: state and apply the relationship F = Le between the Faraday constant, F, the Avogadro constant,
+        L, and the charge on the electron, e
+      verified: true
+    - code: 24.1.3
+      text: 'calculate: (a) the quantity of charge passed during electrolysis, using Q = It (b) the mass
+        and/or volume of substance liberated during electrolysis'
+      verified: true
+    - code: 24.1.4
+      text: describe the determination of a value of the Avogadro constant by an electrolytic method ⦵
+        ⦵
+      verified: true
+  - id: a2chem.24_2
+    title: Standard electrode potentials E ⦵, standard cell potentials E ⦵ cell and the Nernst equation
+    short_title: Electrode & Cell Potentials
+    syllabus_topic: '24.2'
+    verified: true
+    keywords:
+    - standard electrode potential
+    - cell potential
+    - Nernst equation
+    - half-cell
+    - salt bridge
+    - feasibility
+    learning_outcomes:
+    - code: 24.2.1
+      text: 'define the terms: (a) standard electrode (reduction) potential (b) standard cell potential'
+      verified: true
+    - code: 24.2.2
+      text: describe the standard hydrogen electrode
+      verified: true
+    - code: 24.2.3
+      text: 'describe methods used to measure the standard electrode potentials of: (a) metals or non-metals
+        in contact with their ions in aqueous solution (b) ions of the same element in different oxidation
+        states'
+      verified: true
+    - code: 24.2.4
+      text: calculate a standard cell potential by combining two standard electrode potentials
+      verified: true
+    - code: 24.2.5
+      text: "use standard cell potentials to: (a) \adeduce the polarity of each electrode and hence explain/deduce\
+        \ the direction of electron flow in the external circuit of a simple cell (b) predict the feasibility\
+        \ of a reaction"
+      verified: true
+    - code: 24.2.6
+      text: deduce from E ⦵ values the relative reactivity of elements, compounds and ions as oxidising
+        agents or as reducing agents
+      verified: true
+    - code: 24.2.7
+      text: construct redox equations using the relevant half-equations
+      verified: true
+    - code: 24.2.8
+      text: predict qualitatively how the value of an electrode potential, E, varies with the concentrations
+        of the aqueous ions
+      verified: true
+    - code: 24.2.9
+      text: use the Nernst equation, e.g. E = E ⦵ + (0.059/z) log [oxidised species] [reduced species]
+        , to predict quantitatively how the value of an electrode potential varies with the concentrations
+        of the aqueous ions; examples include Cu2+(aq) + 2e-⇌ Cu(s), Fe3+(aq) + e-⇌ Fe2+(aq)
+      verified: true
+    - code: 24.2.10
+      text: understand and use the equation ΔG ⦵ = -nE ⦵ cell F
+      verified: true
+- id: a2chem.topic_25
+  title: Equilibria
+  syllabus_topic: '25'
+  teaching_order: 3
+  drive_folder_name: 3. Equilibria
+  verified: true
+  aliases:
+  - equilibria
+  - acids and bases
+  - chapter 25
+  keywords:
+  - Bronsted
+  - buffer
+  - pH
+  - solubility product
+  - partition
+  children:
+  - id: a2chem.25_1
+    title: Acids and bases
+    short_title: Acids, Bases & Buffers
+    syllabus_topic: '25.1'
+    verified: true
+    keywords:
+    - Bronsted-Lowry
+    - conjugate acid
+    - conjugate base
+    - Ka
+    - Kw
+    - pH curve
+    - buffer solution
+    - indicator
+    - solubility product
+    - common ion effect
+    learning_outcomes:
+    - code: 25.1.1
+      text: understand and use the terms conjugate acid and conjugate base
+      verified: true
+    - code: 25.1.2
+      text: define conjugate acid-base pairs, identifying such pairs in reactions
+      verified: true
+    - code: 25.1.3
+      text: define mathematically the terms pH, Ka, pKa and Kw and use them in calculations (Kb and the
+        equation Kw = Ka × Kb will not be tested)
+      verified: true
+    - code: 25.1.4
+      text: 'calculate [H+(aq)] and pH values for: (a) strong acids (b) strong alkalis (c) weak acids'
+      verified: true
+    - code: 25.1.5
+      text: "(a) define a buffer solution (b) explain how a buffer solution can be made (c) explain how\
+        \ buffer solutions control pH; use chemical equations in these explanations (d) \adescribe and\
+        \ explain the uses of buffer solutions, including the role of HCO3 - in controlling pH in blood"
+      verified: true
+    - code: 25.1.6
+      text: calculate the pH of buffer solutions, given appropriate data
+      verified: true
+    - code: 25.1.7
+      text: understand and use the term solubility product, Ksp
+      verified: true
+    - code: 25.1.8
+      text: write an expression for Ksp
+      verified: true
+    - code: 25.1.9
+      text: calculate Ksp from concentrations and vice versa
+      verified: true
+    - code: 25.1.10
+      text: "(a) \aunderstand and use the common ion effect to explain the different solubility of a compound\
+        \ in a solution containing a common ion (b) perform calculations using Ksp values and concentration\
+        \ of a common ion"
+      verified: true
+  - id: a2chem.25_2
+    title: Partition coefficients
+    short_title: Partition Coefficients
+    syllabus_topic: '25.2'
+    verified: true
+    keywords:
+    - partition coefficient
+    - immiscible
+    - solvent extraction
+    learning_outcomes:
+    - code: 25.2.1
+      text: state what is meant by the term partition coefficient, Kpc
+      verified: true
+    - code: 25.2.2
+      text: calculate and use a partition coefficient for a system in which the solute is in the same
+        physical state in the two solvents
+      verified: true
+    - code: 25.2.3
+      text: understand the factors affecting the numerical value of a partition coefficient in terms of
+        the polarities of the solute and the solvents used
+      verified: true
+- id: a2chem.topic_26
+  title: Reaction kinetics
+  syllabus_topic: '26'
+  teaching_order: 4
+  drive_folder_name: 4. Reaction Kinetics
+  verified: true
+  aliases:
+  - kinetics
+  - rate equations
+  - chapter 26
+  keywords:
+  - rate equation
+  - order of reaction
+  - rate constant
+  - catalyst
+  children:
+  - id: a2chem.26_1
+    title: Simple rate equations, orders of reaction and rate constants
+    short_title: Rate Equations & Orders
+    syllabus_topic: '26.1'
+    verified: true
+    keywords:
+    - rate equation
+    - order of reaction
+    - rate constant
+    - rate-determining step
+    - half-life
+    - initial rates
+    learning_outcomes:
+    - code: 26.1.1
+      text: explain and use the terms rate equation, order of reaction, overall order of reaction, rate
+        constant, half-life, rate-determining step and intermediate
+      verified: true
+    - code: 26.1.2
+      text: "(a) understand and use rate equations of the form rate = k [A]m[B]n (for which m and n are\
+        \ 0, 1 or 2) (b) \adeduce the order of a reaction from concentration-time graphs or from experimental\
+        \ data relating to the initial rates method and half-life method (c) \ainterpret experimental\
+        \ data in graphical form, including concentration-time and rate-concentration graphs (d) calculate\
+        \ an initial rate using concentration data (e) construct a rate equation"
+      verified: true
+    - code: 26.1.3
+      text: (a) show understanding that the half-life of a first-order reaction is independent of concentration
+        (b) use the half-life of a first-order reaction in calculations
+      verified: true
+    - code: 26.1.4
+      text: 'calculate the numerical value of a rate constant, for example by: (a) using the initial rates
+        and the rate equation (b) using the half-life, t½ , and the equation k = 0.693 / t½'
+      verified: true
+    - code: 26.1.5
+      text: "for a multi-step reaction: (a) \asuggest a reaction mechanism that is consistent with the\
+        \ rate equation and the equation for the overall reaction (b) predict the order that would result\
+        \ from a given reaction mechanism and rate-determining step (c) \adeduce a rate equation using\
+        \ a given reaction mechanism and rate-determining step for a given reaction (d) identify an intermediate\
+        \ or catalyst from a given reaction mechanism (e) identify the rate determining step from a rate\
+        \ equation and a given reaction mechanism"
+      verified: true
+    - code: 26.1.6
+      text: describe qualitatively the effect of temperature change on the rate constant and hence the
+        rate of a reaction
+      verified: true
+  - id: a2chem.26_2
+    title: Homogeneous and heterogeneous catalysts
+    short_title: Homogeneous & Heterogeneous Catalysts
+    syllabus_topic: '26.2'
+    verified: true
+    keywords:
+    - homogeneous catalyst
+    - heterogeneous catalyst
+    - adsorption
+    - active site
+    learning_outcomes:
+    - code: 26.2.1
+      text: explain that catalysts can be homogeneous or heterogeneous
+      verified: true
+    - code: 26.2.2
+      text: "describe the mode of action of a heterogeneous catalyst to include adsorption of reactants,\
+        \ bond weakening and desorption of products, for example: (a) iron in the Haber process (b) \a\
+        palladium, platinum and rhodium in the catalytic removal of oxides of nitrogen from the exhaust\
+        \ gases of car engines"
+      verified: true
+    - code: 26.2.3
+      text: 'describe the mode of action of a homogeneous catalyst by being used in one step and reformed
+        in a later step, for example: (a) atmospheric oxides of nitrogen in the oxidation of atmospheric
+        sulfur dioxide (b) Fe2+ or Fe3+ in the I-/S2O8 2- reaction Inorganic chemistry'
+      verified: true
+- id: a2chem.topic_27
+  title: Group 2
+  syllabus_topic: '27'
+  teaching_order: 5
+  drive_folder_name: 5. Group 2
+  verified: true
+  aliases:
+  - group 2
+  - alkaline earth
+  - chapter 27
+  keywords:
+  - magnesium
+  - barium
+  - thermal decomposition
+  - group 2
+  children:
+  - id: a2chem.27_1
+    title: "\aSimilarities and trends in the properties of the Group 2 metals, magnesium to barium, and\
+      \ their compounds"
+    short_title: Group 2 Trends
+    syllabus_topic: '27.1'
+    verified: true
+    keywords:
+    - thermal decomposition
+    - nitrate
+    - carbonate
+    - hydroxide solubility
+    - magnesium
+    - barium
+    learning_outcomes:
+    - code: 27.1.1
+      text: describe and explain qualitatively the trend in the thermal stability of the nitrates and
+        carbonates including the effect of ionic radius on the polarisation of the large anion
+      verified: true
+    - code: 27.1.2
+      text: describe and explain qualitatively the variation in solubility and of enthalpy change of solution,
+        ΔH ⦵ sol, of the hydroxides and sulfates in terms of relative magnitudes of the enthalpy change
+        of hydration and the lattice energy
+      verified: true
+- id: a2chem.topic_28
+  title: Chemistry of transition elements
+  syllabus_topic: '28'
+  teaching_order: 6
+  drive_folder_name: 6. Transition Elements
+  verified: true
+  aliases:
+  - transition elements
+  - transition metals
+  - chapter 28
+  keywords:
+  - transition element
+  - ligand
+  - complex ion
+  - oxidation state
+  - d orbital
+  children:
+  - id: a2chem.28_1
+    title: "\aGeneral physical and chemical properties of the first row of transition elements, titanium\
+      \ to copper"
+    short_title: Transition Element Properties
+    syllabus_topic: '28.1'
+    verified: true
+    keywords:
+    - d block
+    - incomplete d subshell
+    - variable oxidation state
+    - titanium
+    - copper
+    - electronic configuration
+    learning_outcomes:
+    - code: 28.1.1
+      text: define a transition element as a d-block element which forms one or more stable ions with
+        incomplete d orbitals
+      verified: true
+    - code: 28.1.2
+      text: sketch the shape of a 3dxy orbital and 3dz² orbital
+      verified: true
+    - code: 28.1.3
+      text: 'understand that transition elements have the following properties: (a) they have variable
+        oxidation states (b) they behave as catalysts (c) they form complex ions (d) they form coloured
+        compounds'
+      verified: true
+    - code: 28.1.4
+      text: explain why transition elements have variable oxidation states in terms of the similarity
+        in energy of the 3d and the 4s sub-shells
+      verified: true
+    - code: 28.1.5
+      text: explain why transition elements behave as catalysts in terms of having more than one stable
+        oxidation state, and vacant d orbitals that are energetically accessible and can form dative bonds
+        with ligands
+      verified: true
+    - code: 28.1.6
+      text: explain why transition elements form complex ions in terms of vacant d orbitals that are energetically
+        accessible
+      verified: true
+  - id: a2chem.28_2
+    title: "\aGeneral characteristic chemical properties of the first set of transition elements, titanium\
+      \ to copper"
+    short_title: Complexes & Ligand Exchange
+    syllabus_topic: '28.2'
+    verified: true
+    keywords:
+    - ligand
+    - ligand exchange
+    - coordination number
+    - dative bond
+    - complex ion
+    - catalytic behaviour
+    learning_outcomes:
+    - code: 28.2.1
+      text: describe and explain the reactions of transition elements with ligands to form complexes,
+        including the complexes of copper(II) and cobalt(II) ions with water and ammonia molecules and
+        hydroxide and chloride ions
+      verified: true
+    - code: 28.2.2
+      text: define the term ligand as a species that contains a lone pair of electrons that forms a dative
+        covalent bond to a central metal atom / ion
+      verified: true
+    - code: 28.2.3
+      text: "understand and use the terms: (a) monodentate ligand including as examples H2O, NH3, Cl-\
+        \ and CN- (b) \abidentate ligand including as examples 1,2-diaminoethane, en, H2NCH2CH2NH2 and\
+        \ the ethanedioate ion, C2O4 2- (c) polydentate ligand including as an example EDTA4-"
+      verified: true
+    - code: 28.2.4
+      text: define the term complex as a molecule or ion formed by a central metal atom / ion surrounded
+        by one or more ligands
+      verified: true
+    - code: 28.2.5
+      text: describe the geometry (shape and bond angles) of transition element complexes which are linear,
+        square planar, tetrahedral or octahedral
+      verified: true
+    - code: 28.2.6
+      text: "(a) state what is meant by coordination number (b) \apredict the formula and charge of a\
+        \ complex ion, given the metal ion, its charge or oxidation state, the ligand and its coordination\
+        \ number or geometry"
+      verified: true
+    - code: 28.2.7
+      text: explain qualitatively that ligand exchange can occur, including the complexes of copper(II)
+        ions and cobalt(II) ions with water and ammonia molecules and hydroxide and chloride ions
+      verified: true
+    - code: 28.2.8
+      text: predict, using E ⦵ values, the feasibility of redox reactions involving transition elements
+        and their ions
+      verified: true
+    - code: 28.2.9
+      text: 'describe the reactions of, and perform calculations involving: (a) MnO4 - / C2O4 2- in acid
+        solution given suitable data (b) MnO4 - / Fe2+ in acid solution given suitable data (c) Cu2+ /
+        I- given suitable data'
+      verified: true
+    - code: 28.2.10
+      text: perform calculations involving other redox systems given suitable data
+      verified: true
+  - id: a2chem.28_3
+    title: Colour of complexes
+    short_title: Colour of Complexes
+    syllabus_topic: '28.3'
+    verified: true
+    keywords:
+    - d orbital splitting
+    - degenerate
+    - colorimetry
+    - wavelength absorbed
+    - complementary colour
+    learning_outcomes:
+    - code: 28.3.1
+      text: define and use the terms degenerate and non-degenerate d orbitals
+      verified: true
+    - code: 28.3.2
+      text: 'describe the splitting of degenerate d orbitals into two non-degenerate sets of d orbitals
+        of higher energy, and use of ΔE in: (a) octahedral complexes, two higher and three lower d orbitals
+        (b) tetrahedral complexes, three higher and two lower d orbitals'
+      verified: true
+    - code: 28.3.3
+      text: explain why transition elements form coloured compounds in terms of the frequency of light
+        absorbed as an electron is promoted between two non-degenerate d orbitals
+      verified: true
+    - code: 28.3.4
+      text: describe, in qualitative terms, the effects of different ligands on ΔE, frequency of light
+        absorbed, and hence the complementary colour that is observed
+      verified: true
+    - code: 28.3.5
+      text: use the complexes of copper(II) ions and cobalt(II) ions with water and ammonia molecules
+        and hydroxide and chloride ions as examples of ligand exchange affecting the colour observed
+      verified: true
+  - id: a2chem.28_4
+    title: Stereoisomerism in transition element complexes
+    short_title: Stereoisomerism in Complexes
+    syllabus_topic: '28.4'
+    verified: true
+    keywords:
+    - cis-platin
+    - octahedral complex
+    - square planar
+    - geometric isomerism
+    learning_outcomes:
+    - code: 28.4.1
+      text: "describe the types of stereoisomerism shown by complexes, including those associated with\
+        \ bidentate ligands: (a) \ageometrical (cis/trans) isomerism, e.g. square planar such as [Pt(NH₃)₂Cl\
+        \ ₂] and octahedral such as [Co(NH3)4(H2O)2]2+ and [Ni(H2NCH2CH2NH2)2(H2O)2]2+ (b) optical isomerism,\
+        \ e.g. [Ni(H2NCH2CH2NH2)3]2+ and [Ni(H2NCH2CH2NH2)2(H2O)2]2+"
+      verified: true
+    - code: 28.4.2
+      text: deduce the overall polarity of complexes such as those described in 28.4.1(a) and 28.4.1(b)
+      verified: true
+  - id: a2chem.28_5
+    title: Stability constants, Kstab
+    short_title: Stability Constants
+    syllabus_topic: '28.5'
+    verified: true
+    keywords:
+    - stability constant
+    - Kstab
+    - ligand substitution
+    learning_outcomes:
+    - code: 28.5.1
+      text: define the stability constant, Kstab, of a complex as the equilibrium constant for the formation
+        of the complex ion in a solvent (from its constituent ions or molecules)
+      verified: true
+    - code: 28.5.2
+      text: write an expression for a Kstab of a complex ([H₂O] should not be included)
+      verified: true
+    - code: 28.5.3
+      text: use Kstab expressions to perform calculations
+      verified: true
+    - code: 28.5.4
+      text: describe and explain ligand exchanges in terms of Kstab values and understand that a large
+        Kstab is due to the formation of a stable complex ion Organic chemistry
+      verified: true
+- id: a2chem.topic_29
+  title: An introduction to A Level organic chemistry homologous series name of functional group structural
+    formula of functional group displayed formula skeletal formula name
+  syllabus_topic: '29'
+  teaching_order: 7
+  drive_folder_name: 7. Intro to A2 Organic Chemistry
+  verified: true
+  aliases:
+  - organic chemistry
+  - isomerism
+  - chapter 29
+  keywords:
+  - functional group
+  - nomenclature
+  - optical isomerism
+  - sigma bond
+  - pi bond
+  children:
+  - id: a2chem.29_1
+    title: Formulas, functional groups and the naming of organic compounds
+    short_title: Formulas & Nomenclature
+    syllabus_topic: '29.1'
+    verified: true
+    keywords:
+    - functional group
+    - skeletal formula
+    - displayed formula
+    - homologous series
+    - naming
+    learning_outcomes:
+    - code: 29.1.1
+      text: understand that the compounds in the table on page 47 contain a functional group which dictates
+        their physical and chemical properties
+      verified: true
+    - code: 29.1.2
+      text: interpret and use the general, structural, displayed and skeletal formulas of the classes
+        of compound stated in the table on page 47
+      verified: true
+    - code: 29.1.3
+      text: understand and use systematic nomenclature of simple aliphatic organic molecules (including
+        cyclic compounds containing a single ring of up to six carbon atoms) with functional groups detailed
+        in the table on page 47, up to six carbon atoms (six plus six for esters and amides, straight
+        chains only for esters and nitriles)
+      verified: true
+    - code: 29.1.4
+      text: understand and use systematic nomenclature of simple aromatic molecules with one benzene ring
+        and one or more simple substituents, for example 3-nitrobenzoic acid or 2,4,6-tribromophenol
+      verified: true
+  - id: a2chem.29_2
+    title: Characteristic organic reactions
+    short_title: Characteristic Organic Reactions
+    syllabus_topic: '29.2'
+    verified: true
+    keywords:
+    - nucleophilic substitution
+    - electrophilic addition
+    - oxidation
+    - reduction
+    - hydrolysis
+    learning_outcomes:
+    - code: 29.2.1
+      text: 'understand and use the following terminology associated with types of organic mechanisms:
+        (a) electrophilic substitution (b) addition-elimination'
+      verified: true
+  - id: a2chem.29_3
+    title: Shapes of aromatic organic molecules; σ and π bonds
+    short_title: Sigma & Pi Bonds in Arenes
+    syllabus_topic: '29.3'
+    verified: true
+    keywords:
+    - sigma bond
+    - pi bond
+    - delocalisation
+    - planar
+    - benzene ring
+    learning_outcomes:
+    - code: 29.3.1
+      text: describe and explain the shape of benzene and other aromatic molecules, including sp² hybridisation,
+        in terms of σ bonds and a delocalised π system
+      verified: true
+  - id: a2chem.29_4
+    title: 'Isomerism: optical'
+    short_title: Optical Isomerism
+    syllabus_topic: '29.4'
+    verified: true
+    keywords:
+    - optical isomerism
+    - chiral centre
+    - enantiomer
+    - racemic mixture
+    - plane-polarised light
+    learning_outcomes:
+    - code: 29.4.1
+      text: understand that enantiomers have identical physical and chemical properties apart from their
+        ability to rotate plane polarised light and their potential biological activity
+      verified: true
+    - code: 29.4.2
+      text: understand and use the terms optically active and racemic mixture
+      verified: true
+    - code: 29.4.3
+      text: describe the effect on plane polarised light of the two optical isomers of a single substance
+      verified: true
+    - code: 29.4.4
+      text: 'explain the relevance of chirality to the synthetic preparation of drug molecules including:
+        (a) the potential different biological activity of the two enantiomers (b) the need to separate
+        a racemic mixture into two pure enantiomers (c) the use of chiral catalysts to produce a single
+        pure optical isomer (Candidates should appreciate that compounds can contain more than one chiral
+        centre, but knowledge of meso compounds and nomenclature such as diastereoisomers is not required.)'
+      verified: true
+- id: a2chem.topic_30
+  title: Hydrocarbons
+  syllabus_topic: '30'
+  teaching_order: 8
+  drive_folder_name: 8. Arenes
+  verified: true
+  aliases:
+  - arenes
+  - benzene
+  - chapter 30
+  keywords:
+  - benzene
+  - arene
+  - electrophilic substitution
+  - nitration
+  children:
+  - id: a2chem.30_1
+    title: Arenes
+    short_title: Arenes
+    syllabus_topic: '30.1'
+    verified: true
+    keywords:
+    - benzene
+    - delocalisation
+    - electrophilic substitution
+    - nitration
+    - halogenation
+    - side-chain oxidation
+    - Friedel-Crafts
+    learning_outcomes:
+    - code: 30.1.1
+      text: "describe the chemistry of arenes as exemplified by the following reactions of benzene and\
+        \ methylbenzene: (a) \asubstitution reactions with Cl ₂ and with Br₂ in the presence of a catalyst,\
+        \ Al Cl ₃ or Al Br₃, to form halogenoarenes (aryl halides) (b) \anitration with a mixture of concentrated\
+        \ HNO₃ and concentrated H₂SO₄ at a temperature between 25 °C and 60 °C (c) Friedel-Crafts alkylation\
+        \ by CH₃Cl and Al Cl ₃ and heat (d) Friedel-Crafts acylation by CH₃COCl and Al Cl ₃ and heat (e)\
+        \ \acomplete oxidation of the side-chain using hot alkaline KMnO₄ and then dilute acid to give\
+        \ a benzoic acid (f) hydrogenation of the benzene ring using H₂ and Pt/Ni catalyst and heat to\
+        \ form a cyclohexane ring"
+      verified: true
+    - code: 30.1.2
+      text: "describe the mechanism of electrophilic substitution in arenes: (a) as exemplified by the\
+        \ formation of nitrobenzene and bromobenzene (b) \awith regards to the effect of delocalisation\
+        \ (aromatic stabilisation) of electrons in arenes to explain the predomination of substitution\
+        \ over addition"
+      verified: true
+    - code: 30.1.3
+      text: predict whether halogenation will occur in the side-chain or in the aromatic ring in arenes
+        depending on reaction conditions
+      verified: true
+    - code: 30.1.4
+      text: describe that in the electrophilic substitution of arenes, different substituents direct to
+        different ring positions (limited to the directing effects of -NH₂, -OH, -R, -NO₂, -COOH and -COR)
+      verified: true
+- id: a2chem.topic_31
+  title: Halogen compounds
+  syllabus_topic: '31'
+  teaching_order: 9
+  drive_folder_name: 9. Halogen Compounds
+  verified: true
+  aliases:
+  - halogen compounds
+  - halogenoarenes
+  - chapter 31
+  keywords:
+  - halogenoalkane
+  - halogenoarene
+  - carbon-halogen bond
+  children:
+  - id: a2chem.31_1
+    title: Halogen compounds
+    short_title: Halogen Compounds
+    syllabus_topic: '31.1'
+    verified: true
+    keywords:
+    - halogenoarene
+    - relative resistance
+    - hydrolysis
+    - carbon-halogen bond strength
+    learning_outcomes:
+    - code: 31.1.1
+      text: 'recall the reactions by which halogenoarenes can be produced: substitution of an arene with
+        Cl₂ or Br₂ in the presence of a catalyst, Al Cl₃ or Al Br₃ to form a halogenoarene, exemplified
+        by benzene to form chlorobenzene and methylbenzene to form 2-chloromethylbenzene and 4-chloromethylbenzene'
+      verified: true
+    - code: 31.1.2
+      text: "\aexplain the difference in reactivity between a halogenoalkane and a halogenoarene as exemplified\
+        \ by chloroethane and chlorobenzene"
+      verified: true
+- id: a2chem.topic_32
+  title: Hydroxy compounds
+  syllabus_topic: '32'
+  teaching_order: 10
+  drive_folder_name: 10. Hydroxy Compounds
+  verified: true
+  aliases:
+  - alcohols
+  - phenol
+  - chapter 32
+  keywords:
+  - alcohol
+  - phenol
+  - hydroxy
+  children:
+  - id: a2chem.32_1
+    title: Alcohols
+    short_title: Alcohols
+    syllabus_topic: '32.1'
+    verified: true
+    keywords:
+    - tri-iodomethane
+    - iodoform
+    - oxidation of alcohols
+    learning_outcomes:
+    - code: 32.1.1
+      text: describe the reaction with acyl chlorides to form esters using ethyl ethanoate
+      verified: true
+  - id: a2chem.32_2
+    title: Phenol
+    short_title: Phenol
+    syllabus_topic: '32.2'
+    verified: true
+    keywords:
+    - phenol
+    - phenoxide
+    - acidity of phenol
+    - bromination
+    - nitration
+    - sodium hydroxide
+    learning_outcomes:
+    - code: 32.2.1
+      text: "recall the reactions (reagents and conditions) by which phenol can be produced: (a) \areaction\
+        \ of phenylamine with HNO₂ or NaNO₂ and dilute acid below 10 °C to produce the diazonium salt;\
+        \ further warming of the diazonium salt with H₂O to give phenol"
+      verified: true
+    - code: 32.2.2
+      text: "recall the chemistry of phenol, as exemplified by the following reactions: (a) with bases,\
+        \ for example NaOH(aq) to produce sodium phenoxide (b) with Na(s) to produce sodium phenoxide\
+        \ and H2(g) (c) in NaOH(aq) with diazonium salts, to give azo compounds (d) \anitration of the\
+        \ aromatic ring with dilute HNO₃(aq) at room temperature to give a mixture of 2-nitrophenol and\
+        \ 4-nitrophenol (e) bromination of the aromatic ring with Br₂(aq) to form 2,4,6-tribromophenol"
+      verified: true
+    - code: 32.2.3
+      text: explain the acidity of phenol
+      verified: true
+    - code: 32.2.4
+      text: describe and explain the relative acidities of water, phenol and ethanol
+      verified: true
+    - code: 32.2.5
+      text: explain why the reagents and conditions for the nitration and bromination of phenol are different
+        from those for benzene
+      verified: true
+    - code: 32.2.6
+      text: recall that the hydroxyl group of a phenol directs to the 2-, 4- and 6-positions
+      verified: true
+    - code: 32.2.7
+      text: apply knowledge of the reactions of phenol to those of other phenolic compounds, e.g. naphthol
+      verified: true
+- id: a2chem.topic_33
+  title: Carboxylic acids and derivatives
+  syllabus_topic: '33'
+  teaching_order: 11
+  drive_folder_name: 11. Carboxylic Acids & Derivatives
+  verified: true
+  aliases:
+  - carboxylic acids
+  - esters
+  - acyl chlorides
+  - chapter 33
+  keywords:
+  - carboxylic acid
+  - ester
+  - acyl chloride
+  - hydrolysis
+  children:
+  - id: a2chem.33_1
+    title: Carboxylic acids
+    short_title: Carboxylic Acids
+    syllabus_topic: '33.1'
+    verified: true
+    keywords:
+    - carboxylic acid
+    - acidity
+    - chlorine substituent
+    - lithium aluminium hydride
+    - esterification
+    learning_outcomes:
+    - code: 33.1.1
+      text: "recall the reaction by which benzoic acid can be produced: (a) \areaction of an alkylbenzene\
+        \ with hot alkaline KMnO₄ and then dilute acid, exemplified by methylbenzene"
+      verified: true
+    - code: 33.1.2
+      text: describe the reaction of carboxylic acids with PCl ₃ and heat, PCl ₅ or SOCl ₂ to form acyl
+        chlorides
+      verified: true
+    - code: 33.1.3
+      text: "recognise that some carboxylic acids can be further oxidised: (a) \athe oxidation of methanoic\
+        \ acid, HCOOH, with Fehling's reagent or Tollens' reagent or acidified KMnO₄ or acidified K₂Cr₂O₇\
+        \ to carbon dioxide and water (b) the oxidation of ethanedioic acid, HOOCCOOH, with warm acidified\
+        \ KMnO₄ to carbon dioxide"
+      verified: true
+    - code: 33.1.4
+      text: describe and explain the relative acidities of carboxylic acids, phenols and alcohols
+      verified: true
+    - code: 33.1.5
+      text: describe and explain the relative acidities of chlorine-substituted carboxylic acids
+      verified: true
+  - id: a2chem.33_2
+    title: Esters
+    short_title: Esters
+    syllabus_topic: '33.2'
+    verified: true
+    keywords:
+    - ester
+    - acid hydrolysis
+    - alkaline hydrolysis
+    - saponification
+    learning_outcomes:
+    - code: 33.2.1
+      text: "recall the reaction by which esters can be produced: (a) \areaction of alcohols with acyl\
+        \ chlorides using the formation of ethyl ethanoate and phenyl benzoate as examples"
+      verified: true
+  - id: a2chem.33_3
+    title: Acyl chlorides
+    short_title: Acyl Chlorides
+    syllabus_topic: '33.3'
+    verified: true
+    keywords:
+    - acyl chloride
+    - ethanoyl chloride
+    - nucleophilic addition-elimination
+    - phosphorus pentachloride
+    learning_outcomes:
+    - code: 33.3.1
+      text: 'recall the reactions (reagents and conditions) by which acyl chlorides can be produced: (a)
+        reaction of carboxylic acids with PCl ₃ and heat, PCl ₅ or SOCl ₂'
+      verified: true
+    - code: 33.3.2
+      text: 'describe the following reactions of acyl chlorides: (a) hydrolysis on addition of water at
+        room temperature to give the carboxylic acid and HCl (b) reaction with an alcohol at room temperature
+        to produce an ester and HCl (c) reaction with phenol at room temperature to produce an ester and
+        HCl (d) reaction with ammonia at room temperature to produce an amide and HCl (e) reaction with
+        a primary or secondary amine at room temperature to produce an amide and HCl'
+      verified: true
+    - code: 33.3.3
+      text: describe the addition-elimination mechanism of acyl chlorides in reactions in 33.3.2(a)-(e)
+      verified: true
+    - code: 33.3.4
+      text: explain the relative ease of hydrolysis of acyl chlorides, alkyl chlorides and halogenoarenes
+        (aryl chlorides)
+      verified: true
+- id: a2chem.topic_34
+  title: Nitrogen compounds
+  syllabus_topic: '34'
+  teaching_order: 12
+  drive_folder_name: 12. Nitrogen Compounds
+  verified: true
+  aliases:
+  - amines
+  - amides
+  - amino acids
+  - chapter 34
+  keywords:
+  - amine
+  - phenylamine
+  - amide
+  - amino acid
+  - azo
+  children:
+  - id: a2chem.34_1
+    title: Primary and secondary amines
+    short_title: Primary & Secondary Amines
+    syllabus_topic: '34.1'
+    verified: true
+    keywords:
+    - primary amine
+    - secondary amine
+    - basicity
+    - lone pair
+    - ammonia
+    learning_outcomes:
+    - code: 34.1.1
+      text: "recall the reactions (reagents and conditions) by which primary and secondary amines are\
+        \ produced: (a) reaction of halogenoalkanes with NH₃ in ethanol heated under pressure (b) \areaction\
+        \ of halogenoalkanes with primary amines in ethanol, heated in a sealed tube / under pressure\
+        \ (c) the reduction of amides with LiAl H₄ (d) the reduction of nitriles with LiAl H₄ or H₂ /\
+        \ Ni"
+      verified: true
+    - code: 34.1.2
+      text: describe the condensation reaction of ammonia or an amine with an acyl chloride at room temperature
+        to give an amide
+      verified: true
+    - code: 34.1.3
+      text: describe and explain the basicity of aqueous solutions of amines
+      verified: true
+  - id: a2chem.34_2
+    title: Phenylamine and azo compounds
+    short_title: Phenylamine & Azo Compounds
+    syllabus_topic: '34.2'
+    verified: true
+    keywords:
+    - phenylamine
+    - diazonium salt
+    - coupling reaction
+    - azo dye
+    - nitrobenzene reduction
+    learning_outcomes:
+    - code: 34.2.1
+      text: describe the preparation of phenylamine via the nitration of benzene to form nitrobenzene
+        followed by reduction with hot Sn/concentrated HCl followed by NaOH(aq)
+      verified: true
+    - code: 34.2.2
+      text: "describe: (a) the reaction of phenylamine with Br₂(aq) at room temperature (b) \athe reaction\
+        \ of phenylamine with HNO₂ or NaNO₂ and dilute acid below 10 °C to produce the diazonium salt;\
+        \ further warming of the diazonium salt with H₂O to give phenol"
+      verified: true
+    - code: 34.2.3
+      text: describe and explain the relative basicities of aqueous ammonia, ethylamine and phenylamine
+      verified: true
+    - code: 34.2.4
+      text: "recall the following about azo compounds: (a) \adescribe the coupling of benzenediazonium\
+        \ chloride with phenol in NaOH(aq) to form an azo compound (b) identify the azo group (c) state\
+        \ that azo compounds are often used as dyes (d) that other azo dyes can be formed via a similar\
+        \ route"
+      verified: true
+  - id: a2chem.34_3
+    title: Amides
+    short_title: Amides
+    syllabus_topic: '34.3'
+    verified: true
+    keywords:
+    - amide
+    - primary amide
+    - secondary amide
+    - amide hydrolysis
+    learning_outcomes:
+    - code: 34.3.1
+      text: 'recall the reactions (reagents and conditions) by which amides are produced: (a) the reaction
+        between ammonia and an acyl chloride at room temperature (b) the reaction between a primary amine
+        and an acyl chloride at room temperature'
+      verified: true
+    - code: 34.3.2
+      text: 'describe the reactions of amides: (a) hydrolysis with aqueous alkali or aqueous acid (b)
+        the reduction of the CO group in amides with LiAl H₄ to form an amine'
+      verified: true
+    - code: 34.3.3
+      text: state and explain why amides are much weaker bases than amines
+      verified: true
+  - id: a2chem.34_4
+    title: Amino acids
+    short_title: Amino Acids
+    syllabus_topic: '34.4'
+    verified: true
+    keywords:
+    - amino acid
+    - zwitterion
+    - isoelectric point
+    - peptide bond
+    learning_outcomes:
+    - code: 34.4.1
+      text: describe the acid / base properties of amino acids and the formation of zwitterions, to include
+        the isoelectric point
+      verified: true
+    - code: 34.4.2
+      text: describe the formation of amide (peptide) bonds between amino acids to give di- and tripeptides
+      verified: true
+    - code: 34.4.3
+      text: interpret and predict the results of electrophoresis on mixtures of amino acids and dipeptides
+        at varying pHs (the assembling of the apparatus will not be tested)
+      verified: true
+- id: a2chem.topic_35
+  title: Polymerisation
+  syllabus_topic: '35'
+  teaching_order: 13
+  drive_folder_name: 13. Polymerisation
+  verified: true
+  aliases:
+  - polymers
+  - polymerisation
+  - chapter 35
+  keywords:
+  - condensation polymerisation
+  - polyester
+  - polyamide
+  - monomer
+  children:
+  - id: a2chem.35_1
+    title: Condensation polymerisation
+    short_title: Condensation Polymerisation
+    syllabus_topic: '35.1'
+    verified: true
+    keywords:
+    - condensation polymerisation
+    - polyester
+    - polyamide
+    - repeat unit
+    - Terylene
+    - nylon
+    learning_outcomes:
+    - code: 35.1.1
+      text: 'describe the formation of polyesters: (a) the reaction between a diol and a dicarboxylic
+        acid or dioyl chloride (b) the reaction of a hydroxycarboxylic acid'
+      verified: true
+    - code: 35.1.2
+      text: 'describe the formation of polyamides: (a) the reaction between a diamine and a dicarboxylic
+        acid or dioyl chloride (b) the reaction of an aminocarboxylic acid (c) the reaction between amino
+        acids'
+      verified: true
+    - code: 35.1.3
+      text: deduce the repeat unit of a condensation polymer obtained from a given monomer or pair of
+        monomers
+      verified: true
+    - code: 35.1.4
+      text: identify the monomer(s) present in a given section of a condensation polymer molecule
+      verified: true
+  - id: a2chem.35_2
+    title: Predicting the type of polymerisation
+    short_title: Predicting Polymerisation Type
+    syllabus_topic: '35.2'
+    verified: true
+    keywords:
+    - addition polymerisation
+    - monomer structure
+    - predicting type
+    learning_outcomes:
+    - code: 35.2.1
+      text: predict the type of polymerisation reaction for a given monomer or pair of monomers
+      verified: true
+    - code: 35.2.2
+      text: deduce the type of polymerisation reaction which produces a given section of a polymer molecule
+      verified: true
+  - id: a2chem.35_3
+    title: Degradable polymers
+    short_title: Degradable Polymers
+    syllabus_topic: '35.3'
+    verified: true
+    keywords:
+    - degradable polymer
+    - photodegradable
+    - biodegradable
+    - hydrolysable
+    learning_outcomes:
+    - code: 35.3.1
+      text: recognise that poly(alkenes) are chemically inert and can therefore be difficult to biodegrade
+      verified: true
+    - code: 35.3.2
+      text: recognise that some polymers can be degraded by the action of light
+      verified: true
+    - code: 35.3.3
+      text: recognise that polyesters and polyamides are biodegradable by acidic and alkaline hydrolysis
+      verified: true
+- id: a2chem.topic_36
+  title: Organic synthesis
+  syllabus_topic: '36'
+  teaching_order: 14
+  drive_folder_name: 14. Organic Synthesis
+  verified: true
+  aliases:
+  - synthesis
+  - synthetic route
+  - chapter 36
+  keywords:
+  - synthetic route
+  - multi-step synthesis
+  - chiral drug
+  children:
+  - id: a2chem.36_1
+    title: Organic synthesis
+    short_title: Organic Synthesis
+    syllabus_topic: '36.1'
+    verified: true
+    keywords:
+    - synthetic route
+    - multi-step synthesis
+    - chiral drug
+    - racemic
+    learning_outcomes:
+    - code: 36.1.1
+      text: 'for an organic molecule containing several functional groups: (a) identify organic functional
+        groups using the reactions in the syllabus (b) predict properties and reactions'
+      verified: true
+    - code: 36.1.2
+      text: devise multi-step synthetic routes for preparing organic molecules using the reactions in
+        the syllabus
+      verified: true
+    - code: 36.1.3
+      text: analyse a given synthetic route in terms of type of reaction and reagents used for each step
+        of it, and possible by-products Analysis
+      verified: true
+- id: a2chem.topic_37
+  title: Analytical techniques
+  syllabus_topic: '37'
+  teaching_order: 15
+  drive_folder_name: 15. Analytical Techniques
+  verified: true
+  aliases:
+  - analysis
+  - chromatography
+  - NMR
+  - chapter 37
+  keywords:
+  - chromatography
+  - Rf value
+  - NMR
+  - chemical shift
+  children:
+  - id: a2chem.37_1
+    title: Thin-layer chromatography
+    short_title: Thin-Layer Chromatography
+    syllabus_topic: '37.1'
+    verified: true
+    keywords:
+    - thin-layer chromatography
+    - Rf value
+    - stationary phase
+    - mobile phase
+    - retention
+    learning_outcomes:
+    - code: 37.1.1
+      text: describe and understand the terms (a) stationary phase, for example aluminium oxide (on a
+        solid support) (b) mobile phase; a polar or non-polar solvent (c) Rf value (d) solvent front and
+        baseline
+      verified: true
+    - code: 37.1.2
+      text: interpret Rf values
+      verified: true
+    - code: 37.1.3
+      text: explain the differences in Rf values in terms of interaction with the stationary phase and
+        of relative solubility in the mobile phase
+      verified: true
+  - id: a2chem.37_2
+    title: Gas / liquid chromatography
+    short_title: Gas & Liquid Chromatography
+    syllabus_topic: '37.2'
+    verified: true
+    keywords:
+    - gas chromatography
+    - liquid chromatography
+    - retention time
+    - peak area
+    learning_outcomes:
+    - code: 37.2.1
+      text: describe and understand the terms (a) stationary phase; a high boiling point non-polar liquid
+        (on a solid support) (b) mobile phase; an unreactive gas (c) retention time
+      verified: true
+    - code: 37.2.2
+      text: interpret gas / liquid chromatograms in terms of the percentage composition of a mixture
+      verified: true
+    - code: 37.2.3
+      text: explain retention times in terms of interaction with the stationary phase
+      verified: true
+  - id: a2chem.37_3
+    title: Carbon-13 NMR spectroscopy
+    short_title: Carbon-13 NMR
+    syllabus_topic: '37.3'
+    verified: true
+    keywords:
+    - carbon-13 NMR
+    - chemical shift
+    - carbon environment
+    - TMS
+    learning_outcomes:
+    - code: 37.3.1
+      text: 'analyse and interpret a carbon-13 NMR spectrum of a simple molecule to deduce: (a) the different
+        environments of the carbon atoms present (b) the possible structures for the molecule'
+      verified: true
+    - code: 37.3.2
+      text: predict or explain the number of peaks in a carbon-13 NMR spectrum for a given molecule
+      verified: true
+  - id: a2chem.37_4
+    title: Proton (1H) NMR spectroscopy
+    short_title: Proton NMR
+    syllabus_topic: '37.4'
+    verified: true
+    keywords:
+    - proton NMR
+    - splitting pattern
+    - integration
+    - deuterium exchange
+    - n+1 rule
+    - CDCl3
+    learning_outcomes:
+    - code: 37.4.1
+      text: "analyse and interpret a proton (1H) NMR spectrum of a simple molecule to deduce: (a) the\
+        \ different environments of proton present using chemical shift values (b) the relative numbers\
+        \ of each type of proton present from relative peak areas (c) \athe number of equivalent protons\
+        \ on the carbon atom adjacent to the one to which the given proton is attached from the splitting\
+        \ pattern, using the n + 1 rule (limited to singlet, doublet, triplet, quartet and multiplet)\
+        \ (d) the possible structures for the molecule"
+      verified: true
+    - code: 37.4.2
+      text: predict the chemical shifts and splitting patterns of the protons in a given molecule
+      verified: true
+    - code: 37.4.3
+      text: describe the use of tetramethylsilane, TMS, as the standard for chemical shift measurements
+      verified: true
+    - code: 37.4.4
+      text: state the need for deuterated solvents, e.g. CDCl ₃, when obtaining a proton NMR spectrum
+      verified: true
+    - code: 37.4.5
+      text: describe the identification of O-H and N-H protons by proton exchange using D₂O
+      verified: true

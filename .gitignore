@@ -41,3 +41,7 @@ models/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Rename-run bookkeeping (plans and undo files), kept out of media folders
+.runs/
+

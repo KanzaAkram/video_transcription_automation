@@ -907,6 +907,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--cache", type=Path, help="Transcript cache dir (default: <folder>/.transcripts)"
     )
+    parser.add_argument(
+        "--work-dir",
+        type=Path,
+        default=None,
+        help="Where rename_plan.json and rename_undo.json are written. Default "
+        "is <repo>/.runs/<folder name>/, deliberately OUTSIDE the recordings "
+        "folder: what belongs there is recordings and transcripts, and a "
+        "bookkeeping file sitting among them is noise a student sees every "
+        "time they open it. The undo plan is still written - it is the only "
+        "record of the original filenames - just not underfoot.",
+    )
     parser.add_argument("--teacher", default=None)
     parser.add_argument(
         "--level",
@@ -1152,6 +1163,9 @@ def main() -> int:
 
     taken: set[str] = set()
     plan: list[dict] = []
+    #: (filename, error) for recordings the classifier could not answer for.
+    #: Reported at the end so a run that half-worked says so out loud.
+    failed: list[tuple[str, str]] = []
 
     for path in files:
         log.info("%s", path.name)
@@ -1189,22 +1203,26 @@ def main() -> int:
         except Exception as error:  # noqa: BLE001 - one bad call, not a bad batch
             # Same reasoning as UnreadableMedia above: a folder is a term of
             # lectures, and a single failed API call should not cost the
-            # nineteen after it. The credential and model checks that would
-            # fail on *every* file already ran before transcription started, so
-            # what reaches here is the transient kind - a malformed reply, a
-            # timeout that outlasted the SDK's retries.
+            # nineteen after it.
             #
-            # The recording is not skipped: it gets a classification that
-            # abstains, which routes it to review with the reason attached. A
-            # file the tool could not think about must not be quietly left
-            # looking like one it considered and had no opinion on.
-            log.error("  classifier failed: %s: %s", type(error).__name__, error)
-            classification = Classification(
-                abstain=True,
-                abstain_reason=f"{classifier.name} classifier failed: "
-                f"{type(error).__name__}: {error}",
-                method=classifier.name,
-            )
+            # The file is SKIPPED, not renamed. An earlier version gave it an
+            # abstaining classification instead, which sounds more informative
+            # and is much worse: an abstain is named "Unclassified", so a
+            # re-run against a dead API renamed correctly-named recordings back
+            # to nothing. That is exactly what happened when the OpenAI credit
+            # balance ran out mid-batch — two files that had been named
+            # perfectly on the previous run came back as
+            # "Aug, 6 - Unclassified.mp4".
+            #
+            # "I could not think about this" and "I thought about it and it
+            # belongs nowhere" must not produce the same filename. Leaving the
+            # file untouched says the first honestly, and costs nothing: the
+            # transcript is cached, so re-running once the API is back is
+            # seconds.
+            log.error("  SKIPPED - classifier failed: %s: %s", type(error).__name__, error)
+            log.info("")
+            failed.append((path.name, f"{type(error).__name__}: {error}"))
+            continue
 
         # Delegate to the model rather than restating the rule. This block used
         # to reimplement it and dropped the coverage floor, which is the gate
@@ -1338,9 +1356,44 @@ def main() -> int:
                 earlier["from"], later["from"], later["ranking"][0]["node"],
             )
 
-    plan_path = args.folder / "rename_plan.json"
+    # Outside the recordings folder by default. What belongs in there is
+    # recordings and transcripts; a bookkeeping file among them is noise every
+    # student sees. The undo plan is still written — it is the only record of
+    # the original filenames — just not underfoot.
+    # Named from the last two path components, not just the leaf. A Drive tree
+    # gives every subject an identically-named recordings folder - "igcse
+    # mathematics/1. Notes, Assignments & Class Recordings", "AS chemistry/1.
+    # Notes, Assignments & Class Recordings" - so keying on the leaf alone put
+    # four subjects' undo plans in one directory, each merging into the last.
+    # The merge is non-destructive, which is exactly what would have made this
+    # hard to notice: nothing is lost, the file just stops describing any one
+    # folder.
+    stem = "-".join(
+        part
+        for part in (args.folder.parent.name, args.folder.name)
+        if part and part not in (".", "..")
+    )
+    work_dir = args.work_dir or (
+        Path(__file__).resolve().parents[1]
+        / ".runs"
+        / (sanitise(stem, naming.strip_characters) or "folder")
+    )
+    work_dir.mkdir(parents=True, exist_ok=True)
+    plan_path = work_dir / "rename_plan.json"
     plan_path.write_text(json.dumps(plan, indent=1, ensure_ascii=False), encoding="utf-8")
     log.info("plan written to %s", plan_path)
+
+    if failed:
+        log.warning("")
+        log.warning(
+            "%d recording(s) were left untouched because the classifier could not "
+            "answer for them. Their transcripts are cached, so re-running once the "
+            "cause is fixed costs seconds and no Whisper time:",
+            len(failed),
+        )
+        for name, why in failed:
+            log.warning("    %s", name)
+            log.warning("        %s", why[:300])
 
     flagged = [row for row in plan if row["low_confidence"]]
     if flagged:
@@ -1381,7 +1434,7 @@ def main() -> int:
         staged = Path(step["staging"])
         staged.rename(staged.with_name(step["to"]))
 
-    undo_path = args.folder / "rename_undo.json"
+    undo_path = work_dir / "rename_undo.json"
     # Merge rather than overwrite. A second --apply run over an
     # already-renamed folder legitimately renames nothing, and a naive write
     # would replace a real undo mapping with an empty one - destroying the only

@@ -75,18 +75,24 @@ embeddings = [
 ]
 
 # Persistence and the work queue.
-queue = [
+# The job store: which recording is at which stage. SQLite on disk, which is
+# ample below a few hundred lectures a week and needs no server of its own.
+#
+# Deliberately no Celery, no Redis and no Postgres. A queue is the right answer
+# to many workers competing for work, and there is one worker; the cost of
+# running a broker and a second database is paid every day for a problem this
+# workload does not have. Moving to Postgres later is a change to DATABASE_URL,
+# and SQLAlchemy is here so that stays true.
+store = [
     "sqlalchemy>=2.0",
     "alembic>=1.13",
     "aiosqlite>=0.20",
-    "psycopg[binary]>=3.1",
-    "celery[redis]>=5.4",
 ]
 
 # Enough to run the tests and the dry run. Deliberately excludes `embeddings`
 # and `asr` so a fresh clone installs in seconds rather than pulling torch.
 dev = [
-    "lecture-pipeline[api,cloud,classify,queue]",
+    "lecture-pipeline[api,cloud,classify,store]",
     "pytest>=8.2",
     "pytest-asyncio>=0.23",
     "ruff>=0.5",
@@ -94,7 +100,7 @@ dev = [
 ]
 
 # Everything, including the heavy ML dependencies. Use on the worker host.
-all = ["lecture-pipeline[api,cloud,asr,classify,embeddings,queue,syllabus,dev]"]
+all = ["lecture-pipeline[api,cloud,asr,classify,embeddings,store,syllabus,dev]"]
 
 [project.scripts]
 lecture-pipeline = "pipeline.cli:main"

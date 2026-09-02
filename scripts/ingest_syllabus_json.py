@@ -157,6 +157,48 @@ def load_syllabus(path: Path) -> tuple[dict[str, Any], int]:
 # ── Syllabus content ──────────────────────────────────────────────────────────
 
 
+#: How Cambridge marks the worked detail that belongs to the objective above
+#: it, rather than being an objective of its own.
+_NOTES_PREFIX = ("notes and examples", "note:", "notes:")
+
+
+def _outcomes(code: str, objectives: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Learning outcomes for one subtopic, with the Notes rows folded in.
+
+    0580 states a third of its entries as "Notes and examples: e.g. find the
+    value of 7^-2 ..." - 90 of its 262. Those are not objectives. They are the
+    worked detail for the objective immediately above, and Cambridge lays them
+    out that way; the JSON simply numbers them alongside.
+
+    Left as separate outcomes they do real damage, because the classifier is
+    now asked to *cite* the outcomes a lecture taught. A subtopic that has
+    three objectives and two Notes rows looks like five, and a citation of
+    "1.7.5" names a row of examples rather than anything that was taught - so
+    two lectures citing different Notes rows appear to differ when they do not.
+    Merging restores the count and gives each objective its own examples, which
+    is where the concrete spoken vocabulary lives ("rationalise the
+    denominator", "three-figure bearing") and is worth keeping in the text the
+    model reads.
+
+    A Notes row with no objective before it - which no syllabus has produced,
+    but the format permits - is kept as itself rather than dropped.
+    """
+    out: list[dict[str, Any]] = []
+    for objective in objectives:
+        text = str(objective["description"]).strip()
+        if out and text.lower().startswith(_NOTES_PREFIX):
+            out[-1]["text"] = f"{out[-1]['text']} {text}".strip()
+            continue
+        out.append(
+            {
+                "code": f"{code}.{objective['objective_number']}",
+                "text": text,
+                "verified": True,
+            }
+        )
+    return out
+
+
 def index_subtopics(document: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """``code -> {title, objectives}``, flattened across every topic.
 
@@ -721,14 +763,7 @@ def _subtopic_node(
         "verified": True,
         "aliases": entry.get("aliases", []),
         "keywords": entry.get("keywords", []),
-        "learning_outcomes": [
-            {
-                "code": f"{code}.{objective['objective_number']}",
-                "text": objective["description"],
-                "verified": True,
-            }
-            for objective in sub["objectives"]
-        ],
+        "learning_outcomes": _outcomes(code, sub["objectives"]),
     }
 
 

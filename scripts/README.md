@@ -11,7 +11,9 @@ the runbooks don't promise tools that aren't written yet.
 | `verify_config.py` | Validate `.env`, `settings.yaml`, taxonomies and local tooling. No network calls. |
 | `bootstrap_drive_map.py` | Read-only. Resolve every syllabus node to a Drive folder and report how each match was made. Run before anything writes. |
 | `ingest_syllabus.py` | Turn an official syllabus PDF into a taxonomy YAML. Outcomes come out verbatim and verified; keywords and the lesson layer come from an overlay. |
+| `ingest_syllabus_json.py` | The same, from a syllabus JSON export rather than the PDF. Used for AS Chemistry 9701 and IGCSE Maths 0580. |
 | `rename_folder.py` | Rename the recordings in **one local folder**, in place. Transcribes, classifies, renames. Nothing moves. Dry run by default. |
+| `google_oauth_setup.py` | Browser consent flow for a personal Gmail account; prints the three `.env` lines. Needed for `oauth_user` mode, which is what a personal account requires. |
 
 Run order when connecting real accounts is in [docs/SETUP.md § 5](../docs/SETUP.md).
 
@@ -32,7 +34,6 @@ be wasted work.
 |---|---|---|
 | `process_one.py` | Run one real recording end to end | Drive + Zoom credentials |
 | `verify_zoom.py` | List recent Zoom recordings, read-only | Zoom credentials |
-| `google_oauth_setup.py` | Browser consent flow, prints a refresh token | `oauth_user` mode only |
 | `status.py` | Daily health summary | job store |
 | `explain.py` | Why a given recording was classified as it was | job store |
 | `calibrate.py` | Confidence threshold sweep against corrections | job store + corrections |

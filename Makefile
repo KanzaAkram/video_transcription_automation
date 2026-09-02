@@ -1,4 +1,4 @@
-.PHONY: install install-all dry-run api worker test lint fmt typecheck clean
+.PHONY: install install-worker install-all dry-run api test lint fmt typecheck clean
 
 install:              ## Tests + dry run. No ML dependencies, any Python 3.11+
 	pip install -e ".[dev]"
@@ -15,9 +15,6 @@ dry-run:              ## End-to-end pipeline with a fake Drive and no credential
 api:                  ## Webhook receiver + admin API
 	uvicorn pipeline.api.main:app --host 0.0.0.0 --port 8080 --reload
 
-worker:               ## Background worker (needs Redis + ffmpeg)
-	celery -A pipeline.orchestration.tasks worker --loglevel=INFO --queues=io,gpu
-
 test:
 	pytest -q
 
@@ -31,4 +28,4 @@ typecheck:
 	mypy
 
 clean:
-	rm -rf .dryrun .pytest_cache .ruff_cache .mypy_cache
+	rm -rf .dryrun .pytest_cache .ruff_cache .mypy_cache .runs

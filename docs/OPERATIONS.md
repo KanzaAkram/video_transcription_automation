@@ -18,9 +18,7 @@ Running it, watching it, and fixing it.
 | Service | Command | Notes |
 |---|---|---|
 | API | `uvicorn pipeline.api.main:app --port 8080` | Must be publicly reachable over HTTPS for webhooks |
-| Worker (I/O) | `celery -A pipeline.orchestration.tasks worker -Q io -c 8` | Scale horizontally |
-| Worker (GPU) | `celery -A pipeline.orchestration.tasks worker -Q gpu -c 1` | Concurrency = GPU count |
-| Scheduler | `celery -A pipeline.orchestration.tasks beat` | Exactly one instance |
+| Processor | a cron job calling the runner | One machine, one recording at a time |
 
 The scheduler runs three periodic jobs:
 
@@ -78,8 +76,8 @@ Check in this order:
 
 1. **Watch channels expired** — `scripts/status.py` shows expiry. Fix: `python scripts/renew_watches.py`. This is the most likely cause.
 2. **Webhook endpoint unreachable** — check the Zoom app's Event Subscription for delivery failures; confirm the certificate is valid.
-3. **Workers down** — `celery -A pipeline.orchestration.tasks inspect active`.
-4. **Queue backed up** — check Redis depth. A stuck GPU job blocks the `gpu` queue.
+3. **Processor not running** — check the cron job and the systemd unit.
+4. **Backlog growing** — transcription is the bottleneck; check how long each recording takes.
 
 The reconciler should catch 1 and 2 on its own within ten minutes. If it hasn't, the scheduler itself is down.
 

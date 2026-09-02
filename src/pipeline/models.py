@@ -223,6 +223,27 @@ class Classification(BaseModel):
     is_continuation: bool = False
     #: What to put in the filename. Often more specific than the node title.
     suggested_topic_label: str | None = None
+
+    #: A few words naming which part of the subtopic this lecture taught, or
+    #: None when it taught the whole thing.
+    #:
+    #: Exists because a syllabus subtopic is not a lecture. AS Chemistry 1.1
+    #: carries seven learning outcomes over at least two lessons — one on what
+    #: the particles are, one on how they deflect in an electric field — and
+    #: naming both files after the subtopic gives them the same name. The
+    #: syllabus already distinguishes them, one level further down than the
+    #: filename was looking.
+    #:
+    #: Every word in it must appear in the syllabus text of the outcomes it
+    #: was drawn from; `classify.openai_classifier` enforces that word by word
+    #: and drops the phrase otherwise. So this is not free text in the sense
+    #: `suggested_topic_label` is: it is a selection from the syllabus, made a
+    #: word at a time.
+    focus: str | None = None
+    #: The learning-outcome codes the lecture covered, e.g. ["1.1.5", "1.1.6"].
+    #: Reporting and audit — this is what `focus` was drawn from, and what
+    #: makes a wrong focus diagnosable rather than merely wrong.
+    outcome_codes: list[str] = Field(default_factory=list)
     reasoning: str = ""
     abstain: bool = False
     abstain_reason: str | None = None

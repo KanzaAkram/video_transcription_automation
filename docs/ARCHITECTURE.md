@@ -524,8 +524,8 @@ The GPU figures are estimates and depend heavily on hardware — a recent consum
 ### Growing
 
 - **One subject, a few lectures a week**: SQLite, one machine, or hosted ASR with no GPU at all.
-- **Several subjects, tens per week**: Postgres, one GPU, a handful of io workers. This is the target for Phase 2.
-- **Institution-wide, hundreds per week**: Postgres with connection pooling, autoscaling io workers, a small GPU pool. Batch overnight — lectures are not latency-sensitive, and an eight-hour turnaround is fine.
+- **Several subjects, tens per week**: the same single box, with transcription moved to a GPU or to a hosted API. Still SQLite, still no queue.
+- **Institution-wide, hundreds per week**: only here does splitting transcription onto its own machine start to pay, and only then does a shared database become necessary. Batch overnight — lectures are not latency-sensitive, and an eight-hour turnaround is fine.
 
 Nothing in the design assumes one subject or one syllabus. Subjects are configuration: adding A2 Chemistry, or Physics 9702, or a different exam board, means adding a YAML file and pointing it at a Drive root. Taxonomies are versioned so a syllabus change doesn't invalidate old classifications.
 
@@ -579,7 +579,10 @@ The dominant cost is GPU hardware or GPU rental, and it is only worth it above r
 
 **Option B is the recommendation** at your likely scale: a small always-on VPS runs the API and scheduler (a webhook endpoint must be reachable and stable), while the GPU worker sits wherever the GPU is and reaches out to the queue. The GPU box needs no inbound ports.
 
-`docker-compose.yml` covers local development; the same images deploy to any container host.
+There is deliberately no compose file, no broker and no second database. One
+machine runs the whole pipeline from a cron job against a SQLite file. That is
+the right shape for tens of lectures a week, and the shape to keep until
+something measured says otherwise.
 
 ---
 

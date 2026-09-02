@@ -1,0 +1,384 @@
+# Curation overlay for Cambridge IGCSE Chemistry 0620 (2026-2028).
+#
+# The syllabus half of this taxonomy - topic and subtopic numbers, titles and
+# all 242 learning outcomes - is extracted verbatim from the official PDF by
+# scripts/ingest_syllabus.py and marked verified: true. Nothing here repeats
+# it. This file holds only what the PDF cannot say: which Drive folder a
+# chapter's recordings live in, the order the chapters are taught, the keywords
+# that go in a filename, and what a teacher says out loud.
+#
+# -- Which syllabus version ---------------------------------------------------
+# 2026-2028, because the recordings are for the May/June 2027 series. 0971 is
+# the same subject content under the 9-1 grade scale, so a 0971 cohort can use
+# this file unchanged; only the grading differs.
+#
+# -- Core and Supplement ------------------------------------------------------
+# 0620 states most subtopics twice: a Core block and a Supplement block, with
+# the outcome numbering running straight through both. They are ONE subtopic
+# and get ONE short_title, deliberately - a Core lesson and a Supplement lesson
+# on the same material must not compete for two different filenames. The
+# ingester collects both blocks under the subtopic they belong to.
+#
+# -- Chapter folders ----------------------------------------------------------
+# One chapter per syllabus topic, numbered in syllabus order, matching the
+# convention the AS Chemistry Drive tree already uses. teaching_order carries
+# the leading ordinal so the listing sorts into teaching order rather than
+# alphabetically. coursebook_chapter is null: no coursebook numbering is on
+# record for this subject, and inventing one from teaching_order is exactly the
+# transposition ADR-013 exists to prevent.
+#
+# -- short_title --------------------------------------------------------------
+# Keywords only, 2-4 words, Title Case. Most 0620 subtopic titles are already
+# good and are kept verbatim - "Diffusion", "Isotopes", "Electrolysis",
+# "Alkanes", "Chromatography". The ones that read as a list or a description
+# are cut down: "The characteristic properties of acids and bases" becomes
+# "Acids & Bases", "Simple molecules and covalent bonds" becomes "Covalent
+# Bonding", "The mole and the Avogadro constant" becomes "Moles & Avogadro".
+#
+# -- On keywords --------------------------------------------------------------
+# A keyword has to be a phrase a teacher says out loud, and every token of it
+# has to land in the same window to count. It also has to SEPARATE a subtopic
+# from its siblings, which is hard in chemistry: "reaction", "element",
+# "compound", "solution" and "structure" are said in every lecture in the
+# subject and discriminate nothing, so they are absent. What is present is
+# named methods and named objects - dot-and-cross diagram, Avogadro constant,
+# reactivity series, sacrificial protection, blast furnace, cracking, addition
+# polymerisation, flame test.
+#
+# A term goes in keywords OR aliases, never both: a duplicate silently carries
+# three times the BM25 weight of an ordinary keyword.
+
+subject_id: igcse_chemistry
+subject_name: IGCSE Chemistry
+syllabus_code: "0620"
+syllabus_years: "2026-2028"
+node_id_prefix: igchem
+source: >-
+  Topic, subtopic and learning-outcome text extracted verbatim from the
+  official Cambridge IGCSE Chemistry 0620 syllabus for 2026, 2027 and 2028
+  (Core and Supplement). Drive folder names, teaching order, short titles,
+  keywords and aliases are hand-curated.
+
+subject_vocabulary:
+  - kinetic particle theory
+  - diffusion
+  - proton number
+  - nucleon number
+  - isotope
+  - ionic bond
+  - dot-and-cross diagram
+  - covalent bond
+  - giant covalent
+  - metallic bonding
+  - relative formula mass
+  - mole
+  - Avogadro constant
+  - empirical formula
+  - electrolysis
+  - electrolyte
+  - electrode
+  - fuel cell
+  - exothermic
+  - endothermic
+  - bond energy
+  - rate of reaction
+  - catalyst
+  - reversible reaction
+  - dynamic equilibrium
+  - oxidation
+  - reduction
+  - redox
+  - oxidising agent
+  - acid
+  - alkali
+  - neutralisation
+  - titration
+  - amphoteric
+  - salt preparation
+  - Periodic Table
+  - Group I
+  - Group VII
+  - halogen
+  - transition element
+  - noble gas
+  - alloy
+  - reactivity series
+  - sacrificial protection
+  - blast furnace
+  - electroplating
+  - fertiliser
+  - catalytic converter
+  - greenhouse gas
+  - homologous series
+  - functional group
+  - hydrocarbon
+  - fractional distillation
+  - cracking
+  - alkane
+  - alkene
+  - addition reaction
+  - alcohol
+  - fermentation
+  - carboxylic acid
+  - ester
+  - addition polymerisation
+  - chromatography
+  - flame test
+
+# -- The Introduction chapter --------------------------------------------------
+# Not syllabus content, which is exactly why it is here rather than under
+# `topics`. The first session of a course is the year plan, the paper codes and
+# the calculator policy, and it has to go somewhere - without this node the
+# classifier recognises the recording perfectly and has nowhere to file it.
+#
+# The title has to stay "Introduction": `naming.orientation_label` is the same
+# string, and it is what finds this node.
+extra_chapters:
+  - id: introduction
+    title: Introduction
+    teaching_order: 0
+    drive_folder_name: "0. Introduction"
+    aliases: [orientation, course intro, first class, welcome, induction]
+    keywords:
+      - syllabus
+      - year plan
+      - exam structure
+      - paper 1
+      - paper 2
+      - paper 3
+      - paper 4
+      - grade boundaries
+      - course outline
+
+topics:
+
+  "1":
+    teaching_order: 1
+    drive_folder_name: "1. States of Matter"
+    aliases: [states of matter, particle theory, chapter 1]
+    keywords: [solid, liquid, gas, kinetic particle theory, diffusion]
+    subtopics:
+      "1.1":
+        short_title: "Solids, Liquids & Gases"
+        keywords: [kinetic particle theory, melting, boiling, condensation, sublimation, pressure and temperature]
+      "1.2":
+        short_title: "Diffusion"
+        keywords: [diffusion, relative molecular mass, rate of diffusion]
+
+  "2":
+    teaching_order: 2
+    drive_folder_name: "2. Atoms, Elements & Compounds"
+    aliases: [atomic structure, bonding, chapter 2]
+    keywords: [atom, proton, neutron, electron, isotope, bonding]
+    subtopics:
+      "2.1":
+        short_title: "Elements, Compounds & Mixtures"
+        keywords: [element, mixture, pure substance]
+      "2.2":
+        short_title: "Atomic Structure"
+        keywords: [proton number, nucleon number, electronic configuration, shell, nucleus]
+      "2.3":
+        short_title: "Isotopes"
+        keywords: [isotope, relative atomic mass, same proton number]
+      "2.4":
+        short_title: "Ionic Bonding"
+        keywords: [cation, anion, ionic bond, dot-and-cross diagram, giant lattice, electrostatic attraction]
+      "2.5":
+        short_title: "Covalent Bonding"
+        keywords: [covalent bond, shared pair, simple molecular, intermolecular force]
+      "2.6":
+        short_title: "Giant Covalent Structures"
+        keywords: [diamond, graphite, silicon dioxide, giant covalent, layer]
+      "2.7":
+        short_title: "Metallic Bonding"
+        keywords: [metallic bonding, sea of electrons, delocalised, positive ion lattice]
+
+  "3":
+    teaching_order: 3
+    drive_folder_name: "3. Stoichiometry"
+    aliases: [stoichiometry, moles, chapter 3]
+    keywords: [formula, mole, Avogadro constant, relative formula mass]
+    subtopics:
+      "3.1":
+        short_title: "Formulae & Equations"
+        keywords: [chemical formula, balanced equation, state symbol, ionic equation]
+      "3.2":
+        short_title: "Relative Masses"
+        keywords: [relative atomic mass, relative molecular mass, relative formula mass]
+      "3.3":
+        short_title: "Moles & Avogadro"
+        keywords: [mole, Avogadro constant, molar gas volume, concentration, empirical formula, limiting reactant, percentage yield]
+
+  "4":
+    teaching_order: 4
+    drive_folder_name: "4. Electrochemistry"
+    aliases: [electrolysis, electrochemistry, chapter 4]
+    keywords: [electrolysis, electrode, electrolyte, fuel cell]
+    subtopics:
+      "4.1":
+        short_title: "Electrolysis"
+        keywords: [electrolysis, anode, cathode, electrolyte, molten, aqueous, electroplating, half-equation]
+      "4.2":
+        short_title: "Hydrogen-Oxygen Fuel Cells"
+        keywords: [fuel cell, hydrogen-oxygen, advantages and disadvantages]
+
+  "5":
+    teaching_order: 5
+    drive_folder_name: "5. Chemical Energetics"
+    aliases: [energetics, energy changes, chapter 5]
+    keywords: [exothermic, endothermic, bond energy, enthalpy]
+    subtopics:
+      "5.1":
+        short_title: "Exothermic & Endothermic Reactions"
+        keywords: [exothermic, endothermic, reaction pathway diagram, bond breaking, bond making, activation energy, bond energy]
+
+  "6":
+    teaching_order: 6
+    drive_folder_name: "6. Chemical Reactions"
+    aliases: [rates, equilibrium, redox, chapter 6]
+    keywords: [rate of reaction, catalyst, reversible, equilibrium, redox]
+    subtopics:
+      "6.1":
+        short_title: "Physical & Chemical Changes"
+        keywords: [physical change, chemical change]
+      "6.2":
+        short_title: "Rate of Reaction"
+        keywords: [rate of reaction, surface area, catalyst, collision, concentration, photochemical]
+      "6.3":
+        short_title: "Reversible Reactions & Equilibrium"
+        keywords: [reversible reaction, dynamic equilibrium, Le Chatelier, Haber process, Contact process, hydrated, anhydrous]
+      "6.4":
+        short_title: "Redox"
+        keywords: [oxidation, reduction, redox, oxidising agent, reducing agent, oxidation number, acidified potassium manganate]
+
+  "7":
+    teaching_order: 7
+    drive_folder_name: "7. Acids, Bases & Salts"
+    aliases: [acids, bases, salts, chapter 7]
+    keywords: [acid, alkali, neutralisation, salt, indicator, pH]
+    subtopics:
+      "7.1":
+        short_title: "Acids & Bases"
+        keywords: [acid, alkali, litmus, thymolphthalein, methyl orange, pH scale, neutralisation, proton donor, strong acid, weak acid]
+      "7.2":
+        short_title: "Oxides"
+        keywords: [acidic oxide, basic oxide, amphoteric, neutral oxide]
+      "7.3":
+        short_title: "Preparation of Salts"
+        keywords: [salt preparation, crystallisation, filtration, precipitation, titration, soluble, insoluble]
+
+  "8":
+    teaching_order: 8
+    drive_folder_name: "8. The Periodic Table"
+    aliases: [periodic table, groups, chapter 8]
+    keywords: [Periodic Table, group, period, Group I, Group VII, noble gas]
+    subtopics:
+      "8.1":
+        short_title: "Arrangement of Elements"
+        keywords: [proton number, group, period, metal, non-metal, position in the Periodic Table]
+      "8.2":
+        short_title: "Group I Properties"
+        keywords: [Group I, alkali metal, lithium, sodium, potassium, trend in reactivity]
+      "8.3":
+        short_title: "Group VII Properties"
+        keywords: [Group VII, halogen, chlorine, bromine, iodine, displacement reaction]
+      "8.4":
+        short_title: "Transition Elements"
+        keywords: [transition element, variable oxidation number, coloured compound, catalyst]
+      "8.5":
+        short_title: "Noble Gases"
+        keywords: [noble gas, full outer shell, unreactive]
+
+  "9":
+    teaching_order: 9
+    drive_folder_name: "9. Metals"
+    aliases: [metals, alloys, extraction, chapter 9]
+    keywords: [metal, alloy, reactivity series, corrosion, extraction]
+    subtopics:
+      "9.1":
+        short_title: "Properties of Metals"
+        keywords: [malleable, ductile, conductor, physical property of metals]
+      "9.2":
+        short_title: "Uses of Metals"
+        keywords: [aluminium, copper, use of metals]
+      "9.3":
+        short_title: "Alloys & Their Properties"
+        keywords: [alloy, brass, stainless steel, layer of atoms, harder and stronger]
+      "9.4":
+        short_title: "Reactivity Series"
+        keywords: [reactivity series, displacement reaction, reaction with water, reaction with dilute acid, tendency to form positive ions]
+      "9.5":
+        short_title: "Corrosion of Metals"
+        keywords: [rusting, corrosion, sacrificial protection, galvanising, barrier method]
+      "9.6":
+        short_title: "Extraction of Metals"
+        keywords: [blast furnace, haematite, coke, limestone, slag, extraction by electrolysis]
+
+  "10":
+    teaching_order: 10
+    drive_folder_name: "10. Chemistry of the Environment"
+    aliases: [environment, water, air quality, chapter 10]
+    keywords: [water treatment, fertiliser, air pollution, greenhouse gas]
+    subtopics:
+      "10.1":
+        short_title: "Water"
+        keywords: [water treatment, filtration, chlorination, anhydrous cobalt chloride, distilled water, test for water]
+      "10.2":
+        short_title: "Fertilisers"
+        keywords: [NPK fertiliser, nitrogen, phosphorus, potassium, ammonium salt]
+      "10.3":
+        short_title: "Air Quality & Climate"
+        keywords: [greenhouse gas, climate change, carbon monoxide, sulfur dioxide, acid rain, catalytic converter, photosynthesis]
+
+  "11":
+    teaching_order: 11
+    drive_folder_name: "11. Organic Chemistry"
+    aliases: [organic chemistry, hydrocarbons, polymers, chapter 11]
+    keywords: [homologous series, functional group, alkane, alkene, alcohol, polymer]
+    subtopics:
+      "11.1":
+        short_title: "Formulae & Functional Groups"
+        keywords: [homologous series, functional group, general formula, structural formula, displayed formula, saturated, unsaturated, isomer]
+      "11.2":
+        short_title: "Naming Organic Compounds"
+        keywords: [nomenclature, prefix, suffix, naming organic]
+      "11.3":
+        short_title: "Fuels"
+        keywords: [fractional distillation, petroleum, fraction, refinery gas, bitumen, methane, complete combustion]
+      "11.4":
+        short_title: "Alkanes"
+        keywords: [alkane, substitution reaction, ultraviolet light, bromine and alkane, saturated hydrocarbon]
+      "11.5":
+        short_title: "Alkenes"
+        keywords: [alkene, cracking, addition reaction, bromine water, unsaturated, hydrogenation]
+      "11.6":
+        short_title: "Alcohols"
+        keywords: [ethanol, fermentation, catalytic addition of steam, alcohol as a fuel, oxidation to carboxylic acid]
+      "11.7":
+        short_title: "Carboxylic Acids"
+        keywords: [carboxylic acid, ethanoic acid, ester, esterification]
+      "11.8":
+        short_title: "Polymers"
+        keywords: [addition polymerisation, condensation polymerisation, monomer, repeat unit, PET, nylon, polyester, plastic pollution]
+
+  "12":
+    teaching_order: 12
+    drive_folder_name: "12. Experimental Techniques & Analysis"
+    aliases: [practical, analysis, chapter 12, experimental techniques]
+    keywords: [titration, chromatography, flame test, separation, identification]
+    subtopics:
+      "12.1":
+        short_title: "Experimental Design"
+        keywords: [measuring cylinder, burette, pipette, thermometer, apparatus, purity]
+      "12.2":
+        short_title: "Acid-Base Titrations"
+        keywords: [titration, burette, indicator, end-point]
+      "12.3":
+        short_title: "Chromatography"
+        keywords: [chromatography, chromatogram, locating agent, Rf value, baseline, solvent front]
+      "12.4":
+        short_title: "Separation & Purification"
+        keywords: [filtration, crystallisation, simple distillation, fractional distillation, melting point as purity]
+      "12.5":
+        short_title: "Identification of Ions & Gases"
+        keywords: [flame test, test for gases, limewater, damp litmus, precipitate with sodium hydroxide, test for halide]

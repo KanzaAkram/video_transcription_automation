@@ -74,6 +74,25 @@ SECTION_MARKERS = {
     "A Level subject content": "a-level",
 }
 
+#: What the section is called in a syllabus that has no AS/A Level split.
+#:
+#: IGCSE and O Level syllabuses carry neither marker anywhere, because there is
+#: only one tier of subject content. The section machinery exists to separate
+#: two halves that Cambridge interleaves in one PDF; where there are not two
+#: halves, "no marker found" means "it is all one section", not "there is no
+#: content" — which is what the parser used to conclude, returning zero topics
+#: from a perfectly well-formed 0620 syllabus.
+SINGLE_SECTION = "single"
+
+#: Lines that introduce a block of learning outcomes.
+#:
+#: AS/A Level writes "Learning outcomes" once per subtopic. IGCSE writes the
+#: tier name instead - "Core", then "Supplement" partway down the same list,
+#: with the numbering running straight through both. Matched exactly rather
+#: than by prefix: "Core" as a prefix would swallow any outcome beginning with
+#: the word, and several do.
+_TIER_HEADINGS = ("Core", "Supplement", "Core and Supplement")
+
 # Page furniture to drop.
 _FURNITURE = (
     "Cambridge International",
@@ -120,11 +139,27 @@ def _page_lines(page: Any) -> list[tuple[str, bool]]:
     return out
 
 
+def _plain_lines(page: Any) -> list[str]:
+    """Just the text of a page's lines, for the section pre-scan."""
+    return [text for text, _ in _page_lines(page)]
+
+
 def parse_pdf(pdf_path: Path) -> dict[str, dict[str, Any]]:
     """Extract ``{topic_number: {title, section, subs: {code: {title, outcomes}}}}``."""
     doc = fitz.open(pdf_path)
     topics: dict[str, dict[str, Any]] = {}
-    section: str | None = None
+
+    # Decided before parsing, because it is a property of the document rather
+    # than of any one page: a syllabus carrying neither section marker anywhere
+    # is single-tier, and every page of it belongs to the one section. Scanning
+    # up front rather than falling back mid-parse keeps the two cases from
+    # interleaving - a split syllabus must never be silently treated as single
+    # just because its first content page came before its first marker.
+    split = any(
+        marker in _plain_lines(page) for page in doc for marker in SECTION_MARKERS
+    )
+    doc = fitz.open(pdf_path)  # the generator above consumed the page cursor
+    section: str | None = None if split else SINGLE_SECTION
     current_topic: str | None = None
     current_sub: dict[str, Any] | None = None
     mode: str | None = None  # None | "topic_title" | "title" | "await" | "outcome"
@@ -144,6 +179,11 @@ def parse_pdf(pdf_path: Path) -> dict[str, dict[str, Any]]:
 
         for line, bold in lines:
             if not line or line in ("continued",) or line in SECTION_MARKERS:
+                continue
+            # IGCSE's equivalent of "Learning outcomes". A subtopic carries a
+            # Core block and often a Supplement block, and both belong to it.
+            if line in _TIER_HEADINGS:
+                mode = "await"
                 continue
             if line.startswith(_FURNITURE):
                 if line.startswith(("Learning outcomes", "Candidates should be able")):
@@ -245,16 +285,51 @@ def build_taxonomy(
     topic_overlays: dict[str, Any] = overlay.get("topics", {})
     nodes: list[dict[str, Any]] = []
 
+    # A topic with no learning outcomes anywhere under it is not subject
+    # content. On a single-tier syllabus the contents page is parsed like any
+    # other - there is no second section marker to identify it by - so it
+    # contributes headings such as "Details of the assessment" and "What else
+    # you need to know", which look exactly like topics and carry no outcomes.
+    # Requiring outcomes drops them without needing to recognise them by name.
     wanted = {
         number: topic
         for number, topic in topics.items()
-        if topic["section"] == section and topic["subs"]
+        if topic["section"] == section
+        and any(sub["outcomes"] for sub in topic["subs"].values())
     }
     unknown = set(topic_overlays) - set(wanted)
     if unknown:
         raise SystemExit(
             f"overlay names topics not present in the {section} section of the PDF: "
             f"{sorted(unknown)}"
+        )
+
+    # Chapters the syllabus does not contain, because they are not subject
+    # content: the course-orientation session, a midterm review week, a
+    # practical paper. They are real folders holding real recordings, and a
+    # taxonomy that cannot name them sends every such lecture to review.
+    #
+    # Marked `exclude_from_classification`, so they are shown to the model as
+    # structure but never offered as an answer for a lesson - an intro session
+    # name-checks half the syllabus in forty minutes and would otherwise
+    # outscore the lecture that actually taught it. `classify.openai_classifier`
+    # reaches the Introduction one only after the model has said the recording
+    # *is* an orientation session.
+    for extra in overlay.get("extra_chapters", []):
+        nodes.append(
+            {
+                "id": f"{prefix}.{extra['id']}",
+                "title": extra["title"],
+                "syllabus_topic": None,
+                "teaching_order": extra.get("teaching_order"),
+                "coursebook_chapter": None,
+                "drive_folder_name": extra.get("drive_folder_name"),
+                "verified": True,
+                "exclude_from_classification": True,
+                "aliases": extra.get("aliases", []),
+                "keywords": extra.get("keywords", []),
+                "children": [],
+            }
         )
 
     for number, topic in sorted(wanted.items(), key=lambda kv: int(kv[0])):
@@ -286,6 +361,18 @@ def build_taxonomy(
             sub_node: dict[str, Any] = {
                 "id": f"{prefix}.{code.replace('.', '_')}",
                 "title": sub["title"],
+                # Keywords-only form for the filename, from the overlay.
+                #
+                # Biology never needed this: its lesson layer supplies the
+                # filename and lesson titles are already written that way. A
+                # syllabus with no lesson layer has nothing between the
+                # subtopic and the file, so without a short title the name
+                # falls back to `title` — which Cambridge writes as a whole
+                # sentence. "Similarities and trends in the properties of the
+                # Group 2 metals, magnesium to barium, and their compounds" is
+                # not a filename. `ingest_syllabus_json.py` has always read
+                # this field; the PDF path simply never did.
+                "short_title": sub_over.get("short_title"),
                 "syllabus_topic": code,
                 "drive_folder_name": sub_over.get("drive_folder_name"),
                 "verified": True,
@@ -354,8 +441,10 @@ def main() -> int:
     parser.add_argument(
         "--section",
         default="a-level",
-        choices=sorted(set(SECTION_MARKERS.values())),
-        help="Which half of the syllabus to emit (default: a-level)",
+        choices=sorted({*SECTION_MARKERS.values(), SINGLE_SECTION}),
+        help="Which half of the syllabus to emit (default: a-level). Pass "
+        f"'{SINGLE_SECTION}' for an IGCSE or O Level syllabus, which has no "
+        "AS/A Level split and so has only one section to emit",
     )
     parser.add_argument("--print-only", action="store_true")
     args = parser.parse_args()
@@ -373,9 +462,14 @@ def main() -> int:
         f"# {taxonomy['subject_name']} {taxonomy['syllabus_code']} "
         f"({taxonomy['syllabus_years']})\n"
         f"#\n"
+        # The real command, with the real paths. A header reading
+        # "--pdf <syllabus.pdf>" says the file was generated without saying
+        # what from, which is the one thing the next person needs.
         f"# GENERATED — do not edit by hand. Regenerate with:\n"
-        f"#   python scripts/ingest_syllabus.py --pdf <syllabus.pdf> \\\n"
-        f"#       --overlay {args.overlay.as_posix()} --out {args.out.as_posix()}\n"
+        f"#   python scripts/ingest_syllabus.py \\\n"
+        f"#       --pdf {args.pdf.as_posix()} \\\n"
+        f"#       --overlay {args.overlay.as_posix()} \\\n"
+        f"#       --out {args.out.as_posix()} --section {args.section}\n"
         f"#\n"
         f"# Titles and learning outcomes are verbatim from the official PDF and are\n"
         f"# marked verified. Keywords, aliases, Drive folder names and the lesson\n"

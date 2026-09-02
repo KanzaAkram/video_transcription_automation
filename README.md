@@ -18,8 +18,8 @@ Everything in this repo runs today against a **local filesystem stand-in for Goo
 | Domain models, config, ports/interfaces | Implemented |
 | Local (fake) Drive adapter | Implemented — pipeline runs offline |
 | Naming, placement, syllabus taxonomy | Implemented |
-| Google Drive adapter | Interface implemented, calls stubbed pending credentials |
-| Zoom client + webhook receiver | Interface implemented, calls stubbed pending credentials |
+| Google Drive adapter | **Implemented** against the real Drive API — read, download, rename, move, upload, create folder, change-watch. Needs credentials to run. |
+| Zoom client + webhook receiver | Webhook receiver implemented and signature-verified. Needs credentials. |
 | ASR (faster-whisper) | Provider implemented, needs GPU host + `ffmpeg` |
 | AI classifier | Implemented against the OpenAI API, needs `OPENAI_API_KEY`. A Claude path and a keyword-only baseline are also implemented — `classify.provider` switches. |
 

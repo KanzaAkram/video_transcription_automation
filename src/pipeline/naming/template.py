@@ -98,27 +98,41 @@ def _fit_label(label: str, budget: int, settings: NamingSettings) -> str:
     named correctly is a true, shorter statement about the lecture; two and a
     fragment is not.
 
-    Only ever reached by the pathological triples — the longest three-subtopic
-    label in the shipped syllabi is 155 characters, against a 120-character
-    cap — so this changes nothing about ordinary names.
+    **A label that already fits is returned untouched.** That is not an
+    optimisation, it is the whole correctness condition. Rebuilding it from its
+    parts re-joins with `subtopic_separator`, and 83 of the shipped syllabi's
+    labels contain a " & " of their own — "Chlorine & Disproportionation",
+    "Estimation & Rounding". Splitting those on the fallback separator and
+    re-joining rewrote one subtopic's true title into "Estimation + Rounding",
+    which reads as two subtopics that the classifier never chose. Caught on the
+    19 August maths lecture, where the file came out named for a pair of topics
+    that do not exist.
+
+    When trimming *is* needed, the parts are re-joined with the separator they
+    were actually split on, for the same reason.
     """
-    parts = _split_subtopics(label, settings)
+    if len(label) <= budget:
+        return label
+    separator, parts = _split_label(label, settings)
     while len(parts) > 1:
-        joined = settings.subtopic_separator.join(parts)
+        parts.pop()
+        joined = separator.join(parts)
         if len(joined) <= budget:
             return joined
-        parts.pop()
     return _fit(parts[0] if parts else label, budget)
 
 
-def _split_subtopics(label: str, settings: NamingSettings) -> list[str]:
-    """Recover the individual subtopics inside an already-joined label.
+def _split_label(label: str, settings: NamingSettings) -> tuple[str, list[str]]:
+    """Split a joined label, reporting which separator did it.
 
     Conservative on purpose. Half the syllabus short titles contain an "&" of
     their own ("Chlorine & Disproportionation"), so the configured separator is
     tried first and the alternatives only if it found nothing: a label this
     module joined is split exactly where it was joined, and a single title
     carrying an "&" is left intact.
+
+    The separator comes back with the parts because any caller that rebuilds
+    the label has to put back what it took out — see `_fit_label`.
     """
     for separator in (settings.subtopic_separator, *_FALLBACK_SEPARATORS):
         if not separator or separator not in label:
@@ -126,9 +140,14 @@ def _split_subtopics(label: str, settings: NamingSettings) -> list[str]:
         parts = [part.strip() for part in label.split(separator)]
         parts = [part for part in parts if part]
         if len(parts) > 1:
-            return parts
+            return separator, parts
     stripped = label.strip()
-    return [stripped] if stripped else []
+    return settings.subtopic_separator, ([stripped] if stripped else [])
+
+
+def _split_subtopics(label: str, settings: NamingSettings) -> list[str]:
+    """The parts of a joined label, for counting them against the cap."""
+    return _split_label(label, settings)[1]
 
 
 def _topic_label(
@@ -138,16 +157,18 @@ def _topic_label(
 ) -> str:
     """What goes in the filename, governed whatever its source.
 
-    Four sources in falling order of authority:
+    Five sources in falling order of authority:
 
-      1. `topic_node_ids` — the one to three subtopics the classifier
+      1. `focus` — the learning-outcome keywords, joined by
+         `subtopic_separator`. The most specific true name available, and what
+         the ChatGPT path produces. Every word of it is the syllabus'.
+      2. `topic_node_ids` — the one to three subtopics the classifier
          committed to, rendered through each node's `label` so the filename
          gets the keyword form ("Shapes of Molecules") rather than the
-         syllabus sentence. This is the only source the ChatGPT path uses:
-         it returns syllabus node ids and never a label of its own.
-      2. `suggested_topic_label` — a free-text label, usually from the LLM.
-      3. the primary node's own label.
-      4. "Unclassified".
+         syllabus sentence. The fallback when no keyword survived grounding.
+      3. `suggested_topic_label` — a free-text label, from the Claude path.
+      4. the primary node's own label.
+      5. "Unclassified".
 
     The order matters for compatibility as much as for quality: callers that
     set none of the new fields — the older pipeline stages, hand-built
@@ -178,6 +199,17 @@ def _raw_topic_label(
     """The best label available, ungoverned. See `_topic_label`."""
     if classification is None:
         return "Unclassified"
+    # The learning-outcome keywords, where the classifier produced any. They
+    # are the most specific true thing available about the lecture: a syllabus
+    # subtopic heading is the folder-level answer and names three lessons
+    # identically, where "Behaviour in an Electric Field" names one of them.
+    #
+    # Every word of them came from the syllabus text of the outcomes the
+    # lecture cited - see `classify.openai_classifier.grounded_keywords` - so
+    # this is still the syllabus naming the file, just one level below the
+    # heading.
+    if classification.focus:
+        return classification.focus
     if classification.topic_node_ids and taxonomy is not None:
         # Capped here as well as at selection: this is the last point before
         # the name is written, and it is the one every caller passes through.

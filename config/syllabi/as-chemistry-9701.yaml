@@ -2,7 +2,7 @@
 #
 # GENERATED — do not edit by hand. Regenerate with:
 #   python scripts/ingest_syllabus_json.py \
-#       --json C:/Users/kanza/Downloads/prompt.py \
+#       --json config/syllabi/sources/as-chemistry-9701.json \
 #       --overlay config/syllabi/overlays/as-chemistry-9701.yaml \
 #       --out config/syllabi/as-chemistry-9701.yaml
 #

@@ -4,9 +4,11 @@ Walks one recording through the stages, committing after each. Every stage is
 idempotent, so a worker that dies mid-flight simply has its job resumed from
 the last committed state — nothing needs unwinding.
 
-This class holds the sequencing; Celery task wrappers in tasks.py add the
-queue routing and retry policy on top. Keeping them separate means the whole
-pipeline can be run synchronously — which is what the dry run and the tests do.
+This class holds the sequencing and nothing else — no queue, no broker, no
+scheduler. It is called synchronously, which is what the dry run and the tests
+do, and is what a cron job will do. One machine processes one recording at a
+time; a queue is the answer to many workers competing for work, and there is
+one worker.
 """
 
 from __future__ import annotations

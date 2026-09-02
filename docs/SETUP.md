@@ -130,8 +130,7 @@ what that costs you in accuracy.
 
 | Component | Dev | Production |
 |---|---|---|
-| Database | SQLite (default, no setup) | Postgres — change `DATABASE_URL` and run migrations |
-| Queue | Redis | Redis (managed is fine) |
+| Job store | SQLite (default, a file on disk — no setup) | Still SQLite. Change `DATABASE_URL` only if one box stops coping |
 | ffmpeg | Only for the Zoom path — install and put on PATH | Included in the worker container image |
 | GPU | Optional | Needed for self-hosted ASR; skip it and use a hosted ASR provider instead |
 

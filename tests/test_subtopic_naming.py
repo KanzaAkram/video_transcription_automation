@@ -36,6 +36,7 @@ from pipeline.classify.service import KeywordClassifier
 from pipeline.config import ClassifySettings, NamingSettings
 from pipeline.models import Classification, Recording, Source, TopicMatch, Transcript
 from pipeline.naming import build_name
+from pipeline.naming.template import _fit_label
 from pipeline.syllabus import load_taxonomy
 
 # A two-chapter slice in the shape the overlay ingester produces: chapters at
@@ -274,6 +275,44 @@ def test_the_cap_is_honoured_when_lowered(recording_factory, chem):
         _recording(recording_factory, day=23), chem, ["chem.3_7", "chem.3_6"], max_subtopics=1
     )
     assert name == "Sep, 23 - Solubility in Solvents.mp4"
+
+
+def test_one_subtopics_own_ampersand_is_never_rewritten(recording_factory, chem):
+    """Regression: a single title's " & " came back as " + ".
+
+    `_fit_label` rebuilt every label from its parts and re-joined with
+    `subtopic_separator`. Half the syllabus short titles carry an "&" of their
+    own, so a one-subtopic label was split on the fallback separator and
+    reassembled as a two-subtopic one: the 19 August maths lecture was named
+    "Estimation + Rounding", a pair of topics that does not exist, from a
+    classification that had chosen the single subtopic "Estimation & Rounding".
+
+    83 of the labels in the shipped syllabi are exposed to this, so it is
+    checked on the real thing rather than on a fixture.
+    """
+    name = _named(_recording(recording_factory, day=23), chem, ["chem.11_4"])
+    assert name == "Sep, 23 - Chlorine & Disproportionation.mp4"
+    assert " + " not in name
+
+
+def test_a_label_that_fits_is_returned_byte_for_byte(chem):
+    """The correctness condition behind the test above, stated directly."""
+    settings = NamingSettings()
+    for label in (
+        "Estimation & Rounding",
+        "Acids, Bases & Buffers",
+        "Halogens & Hydrogen Halides",
+        "Indices I + Surds",
+    ):
+        assert _fit_label(label, settings.max_length, settings) == label
+
+
+def test_trimming_puts_back_the_separator_it_took_out(chem):
+    """A label that genuinely has to lose a subtopic keeps the joiner it came
+    with — dropping a part must not also rewrite the survivors."""
+    settings = NamingSettings()
+    joined = "Chlorine & Disproportionation + Halogens & Hydrogen Halides"
+    assert _fit_label(joined, 35, settings) == "Chlorine & Disproportionation"
 
 
 def test_two_subtopics_never_read_as_four(recording_factory, chem):

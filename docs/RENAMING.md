@@ -125,6 +125,46 @@ reached by a fallback on every other subject.
 An explicit `--level` still wins, and `lesson` falls back to `subtopic` where a
 syllabus has no lesson layer, so it is safe to pass against any subject.
 
+### The filename is the learning-outcome keywords
+
+A syllabus subtopic is not a lecture. AS Chemistry 1.1 carries seven learning
+outcomes taught over three lessons, so naming files after the subtopic heading
+gives three recordings called `Subatomic Particles` and an archive nobody can
+navigate. The syllabus already separates them one level below the heading — in
+the learning outcomes — and that is where the filename now comes from.
+
+The reply carries two extra fields:
+
+- `outcome_codes` — which outcomes the lecture taught, e.g. `["1.1.5"]`. The
+  citation, kept in the plan for audit.
+- `topic_keywords` — one to three short keyword phrases taken from the text of
+  exactly those outcomes. Joined with `" + "`, these **are** the name:
+
+```
+Aug, 11 - Behaviour in an Electric Field.mp4
+Aug, 13 - Relative Charges + Relative Masses.mp4
+Aug, 18 - Atomic Radius and Ionic Radius.mp4
+```
+
+All three are subtopic 1.1. The heading appears nowhere in the filename — it is
+the folder-level answer, and the folder already says it.
+
+**Keywords are the one place the model chooses words, so they are the one place
+words are checked.** Every word must appear in the text of the outcomes cited —
+connecting words excepted, and a grammatical form counts ("Behaviour" where the
+outcome says "describe the behaviour"). A keyword containing a word the
+syllabus never used is thrown away. Checking happens **per keyword**, so one
+invented phrase costs that phrase rather than the whole name, and two keywords
+that say the same thing in different words are collapsed to one.
+
+Grounding is restricted to the outcomes the model *claimed*. A keyword drawn
+from an outcome the lecture did not teach is grounded in the wrong thing, and
+would let "Respiratory Quotient" onto an ATP lecture because both live under
+12.1.
+
+If every keyword is rejected, the name falls back to the subtopic heading —
+coarse but never wrong.
+
 ### One to three subtopics, never four
 
 A recording that genuinely straddles more than one subtopic is named for each of
@@ -197,12 +237,14 @@ Full detail is in [CLASSIFICATION.md](CLASSIFICATION.md). The default path
 
 1. Send ChatGPT the **whole syllabus subtree** and the **whole transcript**, in
    one call.
-2. Get back one chapter id and one to three subtopic ids, drawn from an
-   enumeration of that subtree, with coverage, confidence and quoted evidence.
-3. Render the filename from the syllabus' own titles for those ids. The model
-   never writes a name, so it cannot invent one.
-4. Anything under the confidence threshold gets ` (review)` appended to the
-   proposed name rather than being filed silently.
+2. Get back one chapter id, one to three subtopic ids drawn from an enumeration
+   of that subtree, and the learning outcomes the lecture covered — with
+   coverage, confidence and quoted evidence.
+3. Render the filename from one to three learning-outcome keywords, every
+   word of which the syllabus supplied.
+4. Everything is filed into its chapter. Low-confidence results are recorded in
+   the plan under `low_confidence` and listed at the end of the run; pass
+   `--review-marker` to carry the flag in the filename as well.
 
 The keyword path (`--classifier keyword`) is the older behaviour, kept for
 offline runs and as the baseline the model is measured against:

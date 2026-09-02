@@ -61,8 +61,8 @@ class Secrets(BaseSettings):
     #: reason; see `ClassificationService`.
     openai_api_key: str | None = None
 
+    #: The job store. SQLite on disk; no broker and no second server.
     database_url: str = "sqlite+aiosqlite:///data/pipeline.db"
-    redis_url: str = "redis://localhost:6379/0"
 
     notify_channel: Literal["none", "email", "slack"] = "none"
     slack_webhook_url: str | None = None
