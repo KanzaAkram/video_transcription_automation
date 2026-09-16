@@ -39,6 +39,57 @@ def _require(binary: str) -> str:
     return path
 
 
+def _extract_with_pyav(source: Path, dest: Path, *, sample_rate: int) -> Path:
+    """16 kHz mono PCM via PyAV when the ffmpeg binary is not installed."""
+    try:
+        import av
+        from av.audio.resampler import AudioResampler
+    except ImportError as exc:
+        raise FFmpegMissing(
+            "ffmpeg not found on PATH and PyAV is not installed. "
+            "Install ffmpeg (Windows: winget install Gyan.FFmpeg) "
+            'or pip install -e ".[asr]".'
+        ) from exc
+
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_suffix(dest.suffix + ".partial")
+    incoming = av.open(str(source))
+    if not incoming.streams.audio:
+        incoming.close()
+        raise RuntimeError(f"{source.name} has no audio stream")
+
+    def as_frames(value):
+        if value is None:
+            return []
+        return value if isinstance(value, list) else [value]
+
+    outgoing = av.open(str(tmp), mode="w", format="wav")
+    ostream = outgoing.add_stream("pcm_s16le", rate=sample_rate)
+    resampler = AudioResampler(format="s16", layout="mono", rate=sample_rate)
+    try:
+        for frame in incoming.decode(audio=0):
+            for converted in as_frames(resampler.resample(frame)):
+                if converted is None:
+                    continue
+                for packet in ostream.encode(converted):
+                    outgoing.mux(packet)
+        for converted in as_frames(resampler.resample(None)):
+            if converted is None:
+                continue
+            for packet in ostream.encode(converted):
+                outgoing.mux(packet)
+        for packet in ostream.encode(None):
+            outgoing.mux(packet)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+    finally:
+        outgoing.close()
+        incoming.close()
+    tmp.rename(dest)
+    return dest
+
+
 def extract_audio(source: Path, dest: Path, *, sample_rate: int = 16000) -> Path:
     """Extract mono PCM audio at `sample_rate`.
 
@@ -49,9 +100,13 @@ def extract_audio(source: Path, dest: Path, *, sample_rate: int = 16000) -> Path
         log.debug("audio already extracted: %s", dest)
         return dest
 
-    ffmpeg = _require("ffmpeg")
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".partial")
+    try:
+        ffmpeg = _require("ffmpeg")
+    except FFmpegMissing:
+        log.info("ffmpeg not on PATH; extracting audio with PyAV")
+        return _extract_with_pyav(source, dest, sample_rate=sample_rate)
 
     cmd = [
         ffmpeg, "-nostdin", "-y",

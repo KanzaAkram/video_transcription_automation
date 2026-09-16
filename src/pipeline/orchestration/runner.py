@@ -13,6 +13,7 @@ one worker.
 
 from __future__ import annotations
 
+import json
 import logging
 import time
 from pathlib import Path
@@ -20,19 +21,25 @@ from pathlib import Path
 from pipeline.asr import ASRProvider
 from pipeline.classify import ClassificationService
 from pipeline.config import Settings, SubjectSettings
+from pipeline.ingest.drive import recording_from_drive_file
 from pipeline.media import extract_audio
+from pipeline.media.audio import FFmpegMissing
+from pipeline.m4a.discover import find_existing_video
+from pipeline.m4a.routing import detect_subject
 from pipeline.models import (
     Classification,
     PlacementPlan,
     ProcessingResult,
     Recording,
     Stage,
+    Transcript,
     TranscriptionHints,
+    TranscriptSegment,
 )
 from pipeline.naming import build_name
-from pipeline.placement import FolderResolver
+from pipeline.placement import FolderResolver, hierarchy_labels
 from pipeline.publish import render_markdown, render_sidecar, render_srt, render_vtt
-from pipeline.storage import DrivePort
+from pipeline.storage import DriveFile, DrivePort
 from pipeline.syllabus import Taxonomy
 
 log = logging.getLogger(__name__)
@@ -51,6 +58,7 @@ class PipelineRunner:
         resolver: FolderResolver,
         review_folder_id: str | None = None,
         work_dir: Path | None = None,
+        rename_only: bool = False,
     ) -> None:
         self.settings = settings
         self.subject = subject
@@ -63,12 +71,19 @@ class PipelineRunner:
         self.work_dir = work_dir or settings.runtime.media_cache_dir
         self.work_dir = Path(self.work_dir)
         self.work_dir.mkdir(parents=True, exist_ok=True)
+        #: Rename the Drive file in place and stop. No move, no folder
+        #: creation, no transcript upload. Used when the recording is already
+        #: in the right folder and only the name is wrong.
+        self.rename_only = rename_only
 
     # ── Entry point ──────────────────────────────────────────────────────────
 
     def process(self, recording: Recording) -> ProcessingResult:
         timings: dict[str, float] = {}
         try:
+            # A previous Whisper run is enough: classify still needs the text,
+            # but fetch/audio/ASR must not run again.
+            self._hydrate_from_transcript_cache(recording)
             for stage_name, step in (
                 ("fetch", self.fetch),
                 ("prepare_audio", self.prepare_audio),
@@ -126,6 +141,27 @@ class PipelineRunner:
             },
         )
 
+    def process_drive_file(self, file: DriveFile) -> ProcessingResult:
+        """The Drive → Recording → process() connection.
+
+        Class and subject are read from the filename when present, then handed
+        to the OpenAI classifier as weak context. Taxonomy still comes from the
+        runner — the matching syllabus is chosen when the runner is built.
+        """
+        recording = recording_from_drive_file(file, subject_id=self.subject.id)
+        try:
+            hint = detect_subject(file.name)
+        except (ValueError, FileNotFoundError):
+            hint = None
+        if hint is not None:
+            recording.meeting_topic = f"{hint.class_name} {hint.subject}"
+        return self.process(recording)
+
+    def process_date_folder(self, folder_id: str, stem: str | None = None) -> ProcessingResult:
+        """Find the .mp4 in a date folder (ignore chat.txt) and process it."""
+        video = find_existing_video(self.drive, folder_id, stem)
+        return self.process_drive_file(video)
+
     # ── Stages ───────────────────────────────────────────────────────────────
 
     def _local_source(self, recording: Recording) -> Path:
@@ -136,6 +172,52 @@ class PipelineRunner:
         """
         suffix = Path(recording.original_filename).suffix or ".mp4"
         return self.work_dir / f"{recording.id}{suffix}"
+
+    def _transcript_cache_path(self, recording: Recording) -> Path:
+        return self.work_dir / f"{recording.id}.transcript.json"
+
+    def _load_cached_transcript(self, recording: Recording) -> Transcript | None:
+        path = self._transcript_cache_path(recording)
+        if not path.exists():
+            return None
+        data = json.loads(path.read_text(encoding="utf-8"))
+        try:
+            return Transcript.model_validate(data)
+        except Exception:  # noqa: BLE001 - fixture-style JSON is also accepted
+            segments = [TranscriptSegment.model_validate(s) for s in data["segments"]]
+            return Transcript(
+                segments=segments,
+                language=data.get("language", "en"),
+                duration_s=data.get("duration_s", 0.0),
+                model=data.get("model", "cached"),
+                provider=data.get("provider", "cache"),
+                runtime_s=data.get("runtime_s"),
+            )
+
+    def _save_cached_transcript(self, recording: Recording) -> None:
+        if recording.transcript is None:
+            return
+        path = self._transcript_cache_path(recording)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(recording.transcript.model_dump_json(indent=1), encoding="utf-8")
+
+    def _hydrate_from_transcript_cache(self, recording: Recording) -> None:
+        """Skip download and Whisper when this recording was already transcribed.
+
+        Walks DISCOVERED → TRANSCRIBED so fetch/prepare/transcribe become
+        no-ops. Classification still runs: the cache is the transcript, not
+        the filing decision.
+        """
+        if recording.stage != Stage.DISCOVERED:
+            return
+        cached = self._load_cached_transcript(recording)
+        if cached is None:
+            return
+        recording.transcript = cached
+        recording.transition_to(Stage.FETCHED)
+        recording.transition_to(Stage.AUDIO_READY)
+        recording.transition_to(Stage.TRANSCRIBED)
+        log.info("reusing cached transcript for %s; skipping fetch and ASR", recording.id)
 
     def fetch(self, recording: Recording) -> None:
         """Bring the media within reach. Idempotent."""
@@ -162,10 +244,12 @@ class PipelineRunner:
         else:
             try:
                 audio = extract_audio(source, audio)
-            except Exception:
+            except Exception as exc:
                 # A stub ASR provider reads a fixture and needs no real audio,
-                # so a missing ffmpeg must not block the dry run.
-                if self.asr.name == "local_stub":
+                # so a missing ffmpeg must not block the dry run. faster-whisper
+                # decodes the original container through PyAV, so a missing
+                # ffmpeg binary is also not fatal for a downloaded mp4.
+                if self.asr.name == "local_stub" or isinstance(exc, FFmpegMissing):
                     audio = source
                 else:
                     raise
@@ -175,6 +259,13 @@ class PipelineRunner:
     def transcribe(self, recording: Recording) -> None:
         if recording.stage != Stage.AUDIO_READY:
             return
+        cached = self._load_cached_transcript(recording)
+        if cached is not None:
+            recording.transcript = cached
+            recording.transition_to(Stage.TRANSCRIBED)
+            log.info("reusing cached transcript for %s", recording.id)
+            return
+
         available, reason = self.asr.is_available()
         if not available:
             raise RuntimeError(f"ASR provider {self.asr.name} unavailable: {reason}")
@@ -193,6 +284,7 @@ class PipelineRunner:
         )
         recording.transcript = self.asr.transcribe(Path(recording.audio_path), hints)
         recording.transition_to(Stage.TRANSCRIBED)
+        self._save_cached_transcript(recording)
 
         if not self.settings.runtime.keep_audio_after_transcription:
             Path(recording.audio_path).unlink(missing_ok=True)
@@ -207,26 +299,56 @@ class PipelineRunner:
         recording.classification = classification
         recording.transition_to(Stage.CLASSIFIED)
 
+        # Confidence is reported, never a stop. A low score still files the
+        # best node the classifier produced so folder creation and rename run.
         if self.classifier.needs_review(classification):
+            primary = classification.primary
             log.info(
-                "recording %s routed to review: %s",
+                "recording %s below review threshold (%s, confidence %s); "
+                "filing best result",
                 recording.id,
-                classification.abstain_reason or "below confidence threshold",
+                classification.abstain_reason or "low confidence or coverage",
+                f"{primary.confidence:.2f}" if primary else "n/a",
             )
-            recording.transition_to(Stage.NEEDS_REVIEW)
-            self._place_in_review(recording, classification)
 
     def plan_name(self, recording: Recording) -> None:
         if recording.stage != Stage.CLASSIFIED:
             return
         assert recording.classification is not None
 
-        target = self.resolver.resolve(recording.classification.primary.node_id)  # type: ignore[union-attr]
-        existing = (
-            {f.name for f in self.drive.list_children(target.folder_id)}
-            if target.resolved
-            else set()
+        primary = recording.classification.primary
+        use_hierarchy = (
+            not self.rename_only
+            and self.subject.placement.allow_create_folders
+            and primary is not None
         )
+        serial: int | None = None
+        labels = None
+        planned_path = ""
+        if use_hierarchy:
+            labels = hierarchy_labels(
+                self.taxonomy, primary.node_id, subject_name=self.subject.name
+            )
+            # Preview only: do not create folders before the Detected: print.
+            target = self.resolver.ensure_hierarchy(
+                primary.node_id, subject_name=self.subject.name, create=False
+            )
+            planned_path = target.folder_path
+            existing, serial = self._sibling_videos(
+                target.folder_id, exclude_id=recording.drive_file_id
+            )
+        elif self.rename_only and recording.drive_parent_id:
+            # Collisions are against siblings in the current folder — we are
+            # not moving this file into the chapter folder.
+            target = None
+            existing = {f.name for f in self.drive.list_children(recording.drive_parent_id)}
+        else:
+            target = self.resolver.resolve(primary.node_id) if primary else None
+            existing = (
+                {f.name for f in self.drive.list_children(target.folder_id)}
+                if target is not None and target.resolved
+                else set()
+            )
         recording.name_plan = build_name(
             recording,
             recording.classification,
@@ -234,7 +356,10 @@ class PipelineRunner:
             self.settings.naming,
             existing_names=existing,
             is_low_confidence=False,
+            serial=serial,
         )
+        if labels is not None:
+            self._print_detected(labels, planned_path, recording.name_plan.filename)
         recording.transition_to(Stage.NAMED)
         self._target = target
 
@@ -242,30 +367,73 @@ class PipelineRunner:
         if recording.stage != Stage.NAMED:
             return
         assert recording.name_plan is not None
-        target = getattr(self, "_target", None)
+
+        # Always chain through the returned handle rather than reusing the
+        # original id. Google Drive ids survive a rename, but that is a
+        # property of Google's adapter, not of the interface — the local
+        # adapter keys on path. Threading the handle keeps the runner correct
+        # against both.
+        handle = recording.drive_file_id  # type: ignore[assignment]
+        if self.rename_only:
+            renamed = self.drive.rename(handle, recording.name_plan.filename)
+            recording.drive_file_id = renamed.id
+            parent_id = recording.drive_parent_id or ""
+            recording.placement_plan = PlacementPlan(
+                target_folder_id=parent_id,
+                target_folder_path=parent_id,
+                node_id=(
+                    recording.classification.primary.node_id
+                    if recording.classification and recording.classification.primary
+                    else ""
+                ),
+                resolution_method="in_place",
+                resolution_confidence=1.0,
+            )
+            recording.transition_to(Stage.PLACED)
+            return
+
+        primary = (
+            recording.classification.primary if recording.classification else None
+        )
+        if self.subject.placement.allow_create_folders and primary is not None:
+            # Find or create missing folders now — after the Detected: print.
+            target = self.resolver.ensure_hierarchy(
+                primary.node_id, subject_name=self.subject.name, create=True
+            )
+        else:
+            target = getattr(self, "_target", None)
+
         if target is None or not target.resolved:
             raise RuntimeError(
                 f"no Drive folder resolved for recording {recording.id}: "
                 f"{target.note if target else 'resolver not run'}"
             )
 
-        # Rename first, then move. If the move fails, the file keeps a correct
-        # name in its original location rather than a stale name in a new one.
-        #
-        # Always chain through the returned handle rather than reusing the
-        # original id. Google Drive ids survive a rename, but that is a
-        # property of Google's adapter, not of the interface — the local
-        # adapter keys on path. Threading the handle keeps the runner correct
-        # against both.
-        renamed = self.drive.rename(recording.drive_file_id, recording.name_plan.filename)  # type: ignore[arg-type]
-        moved = self.drive.move(renamed.id, target.folder_id, recording.drive_parent_id)
+        if recording.drive_parent_id != target.folder_id:
+            moved = self.drive.move(handle, target.folder_id, recording.drive_parent_id)
+            handle = moved.id
+            recording.drive_parent_id = target.folder_id
 
-        recording.drive_file_id = moved.id
+        occupied = {
+            f.name for f in self.drive.list_children(target.folder_id) if f.id != handle
+        }
+        if recording.name_plan.filename in occupied:
+            raise RuntimeError(
+                f"refusing to overwrite existing file {recording.name_plan.filename!r} "
+                f"in {target.folder_path}"
+            )
+
+        current = self.drive.get_file(handle)
+        if current.name != recording.name_plan.filename:
+            renamed = self.drive.rename(handle, recording.name_plan.filename)
+            handle = renamed.id
+
+        recording.drive_file_id = handle
         recording.drive_parent_id = target.folder_id
         recording.placement_plan = PlacementPlan(
             target_folder_id=target.folder_id,
             target_folder_path=target.folder_path,
-            node_id=recording.classification.primary.node_id,  # type: ignore[union-attr]
+            node_id=primary.node_id if primary else "",
             resolution_method=target.method,
             resolution_confidence=target.confidence,
         )
@@ -275,11 +443,19 @@ class PipelineRunner:
         """Upload transcript artifacts alongside the recording."""
         if recording.stage != Stage.PLACED:
             return
+        if self.rename_only:
+            # Metadata rename is the whole write. Do not upload transcripts
+            # or create a sidecar folder alongside the recording.
+            recording.transition_to(Stage.PUBLISHED)
+            return
+        cfg = self.settings.transcripts
+        if not cfg.formats and not cfg.write_sidecar:
+            recording.transition_to(Stage.PUBLISHED)
+            return
         assert recording.transcript and recording.name_plan and recording.placement_plan
 
         stem = Path(recording.name_plan.filename).stem
         parent_id = recording.placement_plan.target_folder_id
-        cfg = self.settings.transcripts
 
         if cfg.location == "subfolder":
             existing = self.drive.find_child_by_name(parent_id, cfg.subfolder_name)
@@ -350,6 +526,41 @@ class PipelineRunner:
     def _ensure_folder(self, name: str, parent_id: str) -> str:
         existing = self.drive.find_child_by_name(parent_id, name)
         return existing.id if existing else self.drive.create_folder(name, parent_id).id
+
+    def _sibling_videos(
+        self, folder_id: str | None, *, exclude_id: str | None
+    ) -> tuple[set[str], int]:
+        """Names already in `folder_id`, and the next per-folder video serial.
+
+        Serial counts video files in this folder only — never a global counter.
+        The recording being processed is excluded so a re-run does not skip a
+        number because it counted itself.
+        """
+        if not folder_id:
+            return set(), 1
+        video_exts = {ext.lower() for ext in self.settings.ingest.video_extensions}
+        names: set[str] = set()
+        video_count = 0
+        for child in self.drive.list_children(folder_id):
+            if child.id == exclude_id:
+                continue
+            names.add(child.name)
+            if not child.is_folder and child.extension in video_exts:
+                video_count += 1
+        return names, video_count + 1
+
+    def _print_detected(self, labels, folder_path: str, filename: str) -> None:
+        print(
+            "Detected:\n"
+            f"Class: {labels.class_name}\n"
+            f"Subject: {labels.subject}\n"
+            f"Chapter: {labels.chapter}\n"
+            f"Taught topic: {labels.subtopic}\n"
+            "\n"
+            f"Target folder: {folder_path}\n"
+            f"Final filename: {filename}",
+            flush=True,
+        )
 
     def _upload_text(self, content: str, filename: str, parent_id: str) -> None:
         tmp = self.work_dir / filename

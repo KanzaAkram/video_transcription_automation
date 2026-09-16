@@ -65,9 +65,9 @@ subjects:
 # ── Transcription ─────────────────────────────────────────────────────────────
 asr:
   provider: faster_whisper       # faster_whisper | whisperx | api | local_stub
-  model: large-v3                # large-v3 | distil-large-v3 (English-only) | medium
-  device: cuda                   # cuda | cpu | auto
-  compute_type: float16          # float16 | int8_float16 (less VRAM) | int8 (CPU)
+  model: base                    # production: base on CPU. large-v3 if a GPU is available
+  device: cpu                    # cuda | cpu | auto
+  compute_type: int8             # int8 (CPU) | float16 (GPU)
   beam_size: 5
 
   # Essential for long lectures — Whisper loops on repeated text without this.

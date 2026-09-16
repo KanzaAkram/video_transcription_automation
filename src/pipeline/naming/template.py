@@ -297,6 +297,7 @@ def build_name(
     *,
     existing_names: set[str] | None = None,
     is_low_confidence: bool = False,
+    serial: int | None = None,
 ) -> NamePlan:
     """Render the filename for a classified recording.
 
@@ -333,6 +334,7 @@ def build_name(
         "ext": extension,
         "part_suffix": "",
         "confidence_marker": settings.low_confidence_marker if is_low_confidence else "",
+        "serial": str(serial if serial is not None else 1),
     }
 
     def render(topic_text: str, part_suffix: str) -> str:
@@ -366,9 +368,26 @@ def build_name(
 
     candidate = render_fitted("")
     part_number: int | None = None
+    serial_value = serial if serial is not None else 1
 
     if candidate in existing_names:
-        if settings.collision_strategy == "part_suffix":
+        if "{serial}" in settings.template:
+            # Per-subtopic count, then the next free name in that folder.
+            # Never rename a sibling to free a number.
+            found = False
+            for number in range(serial_value + 1, serial_value + _MAX_COLLISION_ATTEMPTS + 1):
+                fields["serial"] = str(number)
+                cand = render_fitted("")
+                if cand not in existing_names:
+                    candidate = cand
+                    found = True
+                    break
+            if not found:
+                raise RuntimeError(
+                    f"gave up after {_MAX_COLLISION_ATTEMPTS} attempts to find a free "
+                    f"filename near {render_fitted('')!r}"
+                )
+        elif settings.collision_strategy == "part_suffix":
             # The first of the pair is retroactively "Part 1" only if it is
             # already on disk under the bare name; we never rename other
             # people's files, so this one becomes Part 2 onward.

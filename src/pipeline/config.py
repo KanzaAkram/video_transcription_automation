@@ -125,9 +125,9 @@ class SubjectSettings(BaseModel):
 
 class ASRSettings(BaseModel):
     provider: Literal["faster_whisper", "whisperx", "api", "local_stub"] = "faster_whisper"
-    model: str = "large-v3"
-    device: Literal["cuda", "cpu", "auto"] = "auto"
-    compute_type: str = "float16"
+    model: str = "base"
+    device: Literal["cuda", "cpu", "auto"] = "cpu"
+    compute_type: str = "int8"
     beam_size: int = 5
     # Essential on long lectures: leaving this on causes Whisper to loop,
     # emitting the same sentence for minutes. See docs/OPERATIONS.md.
