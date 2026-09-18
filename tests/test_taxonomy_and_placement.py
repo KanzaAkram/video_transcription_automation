@@ -271,3 +271,95 @@ def test_results_are_cached(drive, taxonomy):
     first = resolver.resolve("chem.hydrocarbons")
     assert "chem.hydrocarbons" in resolver.cache
     assert resolver.resolve("chem.hydrocarbons") is first
+
+
+def test_hierarchy_labels_come_from_the_taxonomy(taxonomy):
+    from pipeline.placement import hierarchy_labels
+
+    labels = hierarchy_labels(taxonomy, "chem.15_1", subject_name="AS Chemistry")
+    assert labels.class_name == "AS"
+    assert labels.subject == "Chemistry"
+    assert labels.chapter == "9. Halogenoalkanes (Chapter 16)"
+    assert labels.topic == "Halogenoalkanes"
+    assert labels.subtopic == "Halogenoalkanes"
+
+
+def test_hierarchy_labels_a2_electrolysis():
+    from pathlib import Path
+
+    from pipeline.placement import hierarchy_labels
+    from pipeline.syllabus import load_taxonomy
+
+    taxonomy = load_taxonomy(
+        Path(__file__).resolve().parents[1] / "config" / "syllabi" / "a2-chemistry-9701.yaml"
+    )
+    labels = hierarchy_labels(taxonomy, "a2chem.24_1", subject_name="A2 Chemistry")
+    assert labels.class_name == "A2"
+    assert labels.subject == "Chemistry"
+    assert labels.chapter == "2. Electrochemistry"
+    assert labels.topic == "Electrochemistry"
+    assert labels.subtopic == "Electrolysis"
+
+
+def test_a2_chemistry_23_3_is_a_separate_subtopic():
+    """23.3 Entropy must not be glued onto the last 23.2 outcome.
+
+    The PDF heading mixes HelveticaNeue-Bd with TimesNewRomanPS-BoldMT for Δ.
+    Requiring the substring 'Bd' on every span swallowed that heading into
+    23.2.4, so the OpenAI classifier had no legal id for an entropy lecture.
+    """
+    from pathlib import Path
+
+    from pipeline.syllabus import load_taxonomy
+
+    taxonomy = load_taxonomy(
+        Path(__file__).resolve().parents[1] / "config" / "syllabi" / "a2-chemistry-9701.yaml"
+    )
+    topic = taxonomy.require("a2chem.topic_23")
+    codes = [child.syllabus_topic for child in topic.children]
+    assert "23.2" in codes
+    assert "23.3" in codes
+
+    hydration = taxonomy.require("a2chem.23_2")
+    entropy = taxonomy.require("a2chem.23_3")
+    assert hydration.parent_id == topic.id
+    assert entropy.parent_id == topic.id
+    assert entropy.title == "Entropy change, ΔS"
+    assert entropy.short_title == "Entropy Change"
+    assert entropy.learning_outcomes
+    last_hydration = hydration.learning_outcomes[-1]
+    assert last_hydration.code == "23.2.4"
+    assert "23.3" not in last_hydration.text
+    assert all(o.code.startswith("23.3.") for o in entropy.learning_outcomes)
+    assert all(o.verified for o in entropy.learning_outcomes)
+
+
+def test_ensure_hierarchy_preview_does_not_create(drive, taxonomy):
+    resolver = _resolver(drive, taxonomy, allow_create_folders=True)
+    preview = resolver.ensure_hierarchy(
+        "chem.15_1", subject_name="AS Chemistry", create=False
+    )
+    assert not preview.resolved
+    assert preview.folder_path == "AS Chemistry/9. Halogenoalkanes (Chapter 16)"
+    assert "create_folder" not in [e["action"] for e in drive.audit]
+
+
+def test_ensure_hierarchy_creates_missing_and_reuses_existing(drive, taxonomy):
+    from pathlib import Path
+
+    resolver = _resolver(drive, taxonomy, allow_create_folders=True)
+    first = resolver.ensure_hierarchy("chem.15_1", subject_name="AS Chemistry", create=True)
+    assert first.resolved
+    assert first.method == "created"
+    leaf = Path(drive.root) / RECORDINGS_ROOT / first.folder_path
+    assert leaf.is_dir()
+
+    # Existing chapter folders at the recordings root are not moved.
+    original = Path(drive.root) / RECORDINGS_ROOT / "9. Halogenoalkanes (Chapter 16)"
+    assert original.is_dir()
+
+    created = [e for e in drive.audit if e["action"] == "create_folder"]
+    second = resolver.ensure_hierarchy("chem.15_1", subject_name="AS Chemistry", create=True)
+    assert second.folder_id == first.folder_id
+    assert second.method == "exact"
+    assert [e for e in drive.audit if e["action"] == "create_folder"] == created

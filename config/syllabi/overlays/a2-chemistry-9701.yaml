@@ -2,7 +2,7 @@
 # (2025-2027).
 #
 # The syllabus half of this taxonomy - topic and subtopic numbers, titles and
-# all 146 learning outcomes - is extracted verbatim from the official PDF by
+# all 153 learning outcomes - is extracted verbatim from the official PDF by
 # scripts/ingest_syllabus.py and marked verified: true. Nothing in this file
 # repeats it. What lives here is only what the PDF cannot say:
 #
@@ -149,7 +149,7 @@ topics:
     teaching_order: 1
     drive_folder_name: "1. Chemical Energetics"
     aliases: [energetics, lattice enthalpy, chapter 23]
-    keywords: [lattice energy, Born-Haber, enthalpy change, hydration]
+    keywords: [lattice energy, Born-Haber, enthalpy change, hydration, entropy, Gibbs]
     subtopics:
       "23.1":
         short_title: "Lattice Energy & Born-Haber"
@@ -157,6 +157,12 @@ topics:
       "23.2":
         short_title: "Solution & Hydration Enthalpies"
         keywords: [enthalpy of solution, enthalpy of hydration, ionic radius, solubility]
+      "23.3":
+        short_title: "Entropy Change"
+        keywords: [entropy, disorder, arrangements, standard entropy]
+      "23.4":
+        short_title: "Gibbs Free Energy"
+        keywords: [Gibbs, feasibility, free energy]
 
   "24":
     teaching_order: 2

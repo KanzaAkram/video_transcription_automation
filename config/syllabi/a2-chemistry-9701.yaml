@@ -104,6 +104,8 @@ nodes:
   - Born-Haber
   - enthalpy change
   - hydration
+  - entropy
+  - Gibbs
   children:
   - id: a2chem.23_1
     title: Lattice energy and Born-Haber cycles
@@ -161,7 +163,55 @@ nodes:
       verified: true
     - code: 23.2.4
       text: explain, in qualitative terms, the effect of ionic charge and of ionic radius on the numerical
-        magnitude of an enthalpy change of hydration 23.3 Entropy change, ΔS
+        magnitude of an enthalpy change of hydration
+      verified: true
+  - id: a2chem.23_3
+    title: Entropy change, ΔS
+    short_title: Entropy Change
+    syllabus_topic: '23.3'
+    verified: true
+    keywords:
+    - entropy
+    - disorder
+    - arrangements
+    - standard entropy
+    learning_outcomes:
+    - code: 23.3.1
+      text: define the term entropy, S, as the number of possible arrangements of the particles and their
+        energy in a given system
+      verified: true
+    - code: 23.3.2
+      text: 'predict and explain the sign of the entropy changes that occur: (a) during a change in state,
+        e.g. melting, boiling and dissolving (and their reverse) (b) during a temperature change (c) during
+        a reaction in which there is a change in the number of gaseous molecules'
+      verified: true
+    - code: 23.3.3
+      text: calculate the entropy change for a reaction, ΔS, given the standard entropies, S ⦵, of the
+        reactants and products, ΔS ⦵ = ΣS ⦵ (products) - ΣS ⦵ (reactants) (use of ΔS ⦵ = ΔSsurr + ΔSsys
+        is not required)
+      verified: true
+  - id: a2chem.23_4
+    title: Gibbs free energy change, ΔG
+    short_title: Gibbs Free Energy
+    syllabus_topic: '23.4'
+    verified: true
+    keywords:
+    - Gibbs
+    - feasibility
+    - free energy
+    learning_outcomes:
+    - code: 23.4.1
+      text: state and use the Gibbs equation ΔG ⦵ = ΔH ⦵ - TΔS ⦵
+      verified: true
+    - code: 23.4.2
+      text: perform calculations using the equation ΔG ⦵ = ΔH ⦵ - TΔS ⦵
+      verified: true
+    - code: 23.4.3
+      text: state whether a reaction or process will be feasible by using the sign of ΔG
+      verified: true
+    - code: 23.4.4
+      text: predict the effect of temperature change on the feasibility of a reaction, given standard
+        enthalpy and entropy changes
       verified: true
 - id: a2chem.topic_24
   title: Electrochemistry

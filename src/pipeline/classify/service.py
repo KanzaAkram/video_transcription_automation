@@ -766,14 +766,20 @@ class ClassificationService:
         self.settings = settings
         self.retriever = HybridRetriever(taxonomy, settings, retrieval)
         self.naming = naming or NamingSettings()
+        if use_llm:
+            provider = settings.provider
+            if provider == "openai" and not api_key:
+                raise RuntimeError(
+                    "OPENAI_API_KEY is required; the production classifier is OpenAI only"
+                )
+        else:
+            # Tests and the offline dry run pass use_llm=False. Production never does.
+            provider = "keyword"
         self.classifier = build_classifier(
             taxonomy,
             settings,
             self.naming,
-            # `use_llm=False` still means "no network", whatever the provider
-            # says. The dry run and the tests pass it, and a default that
-            # reached for an API key would break both on a fresh clone.
-            provider=settings.provider if use_llm else "keyword",
+            provider=provider,
             api_key=api_key,
             allowed_ids=allowed_ids,
         )

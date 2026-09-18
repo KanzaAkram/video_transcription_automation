@@ -860,7 +860,7 @@ class OpenAIClassifier:
             f"Original filename: {recording.original_filename}",
         ]
         if recording.meeting_topic:
-            parts.append(f"Zoom meeting topic: {recording.meeting_topic}")
+            parts.append(f"Detected class and subject: {recording.meeting_topic}")
         if recording.teacher:
             parts.append(f"Teacher: {recording.teacher}")
         if self._assigned:

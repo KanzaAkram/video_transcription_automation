@@ -20,7 +20,6 @@ Requires the `asr` extra and ffmpeg on PATH: pip install -e ".[asr]"
 from __future__ import annotations
 
 import logging
-import shutil
 import time
 from pathlib import Path
 
@@ -41,8 +40,6 @@ class FasterWhisperProvider(ASRProvider):
     # ── Availability ─────────────────────────────────────────────────────────
 
     def is_available(self) -> tuple[bool, str]:
-        if shutil.which("ffmpeg") is None:
-            return False, "ffmpeg not found on PATH (needed for audio extraction)"
         try:
             import faster_whisper  # noqa: F401
         except ImportError:

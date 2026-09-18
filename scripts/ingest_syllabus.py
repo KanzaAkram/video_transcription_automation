@@ -42,6 +42,12 @@ Everything in the PDF is set at 10pt, so size cannot separate them — but
 headings are set in the bold cut of the face and body text in the light cut.
 So the parser reads spans rather than plain text and carries a bold flag,
 which is what makes a bold "12" a topic and a light "12" an outcome.
+
+A heading that contains a Greek letter is still a heading. Cambridge substitutes
+Δ from TimesNewRomanPS-BoldMT into an otherwise HelveticaNeue …-Bd line, and
+that font spells bold as "Bold", not "Bd". Requiring the substring "Bd" on
+every span treated "23.3 Entropy change, ΔS" as body text, so it was appended
+to the previous outcome instead of becoming a subtopic.
 """
 
 from __future__ import annotations
@@ -110,6 +116,17 @@ _NUMBERED = re.compile(r"^(\d{1,2}) (.+)$")
 _END_OF_CONTENT = re.compile(r"\bDetails of the assessment\b")
 
 
+def _font_is_bold(font: str) -> bool:
+    """Whether this span is a bold cut of the face.
+
+    Headings are HelveticaNeue …-Bd except where a Greek letter is taken from
+    TimesNewRomanPS-BoldMT. Both are bold; only the first contains the letters
+    "Bd". See the module docstring.
+    """
+    lowered = font.casefold()
+    return "bd" in lowered or "bold" in lowered
+
+
 def _clean(line: str) -> str:
     """Normalise the PDF's mixed tab/en-space/nbsp separators to single spaces."""
     line = (
@@ -135,7 +152,7 @@ def _page_lines(page: Any) -> list[tuple[str, bool]]:
                 continue
             text = _clean("".join(s["text"] for s in spans))
             if text:
-                out.append((text, all("Bd" in s["font"] for s in spans)))
+                out.append((text, all(_font_is_bold(s["font"]) for s in spans)))
     return out
 
 

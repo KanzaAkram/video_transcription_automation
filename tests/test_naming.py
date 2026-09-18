@@ -306,3 +306,44 @@ def test_alternative_template_with_more_identifiers(recording_factory, taxonomy)
     assert plan.filename == (
         "2026-08-10 - Moles and Stoichiometry - Relative Atomic Mass [Ms Rahman].mp4"
     )
+
+
+SERIAL_TEMPLATE = "{serial} - {month_abbr} {day} - {subtopic}{ext}"
+
+
+def test_serial_template_starts_at_given_count(recording_factory, taxonomy):
+    recording = recording_factory("raw.mp4", recorded_at=datetime(2026, 9, 9, 14, 0))
+    plan = build_name(
+        recording,
+        _classification("chem.15_1", "Halogenoalkanes"),
+        taxonomy,
+        NamingSettings(template=SERIAL_TEMPLATE),
+        serial=1,
+    )
+    assert plan.filename == "1 - Sep 9 - Halogenoalkanes.mp4"
+
+
+def test_serial_is_per_folder_count_not_a_global_counter(recording_factory, taxonomy):
+    recording = recording_factory("raw.mp4", recorded_at=datetime(2026, 9, 9, 14, 0))
+    plan = build_name(
+        recording,
+        _classification("chem.15_1", "Halogenoalkanes"),
+        taxonomy,
+        NamingSettings(template=SERIAL_TEMPLATE),
+        serial=3,
+    )
+    assert plan.filename == "3 - Sep 9 - Halogenoalkanes.mp4"
+
+
+def test_serial_skips_a_name_that_already_exists(recording_factory, taxonomy):
+    """Never overwrite. The other file in the folder is left alone."""
+    recording = recording_factory("raw.mp4", recorded_at=datetime(2026, 9, 9, 14, 0))
+    plan = build_name(
+        recording,
+        _classification("chem.15_1", "Halogenoalkanes"),
+        taxonomy,
+        NamingSettings(template=SERIAL_TEMPLATE),
+        existing_names={"1 - Sep 9 - Halogenoalkanes.mp4"},
+        serial=1,
+    )
+    assert plan.filename == "2 - Sep 9 - Halogenoalkanes.mp4"
